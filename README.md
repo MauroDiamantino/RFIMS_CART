@@ -1,0 +1,2 @@
+# RFIMS_CART
+This software is intended to run in the "RF Interference Measurement System" which is going to be installed near the China-Argentina Radio Telescope (CART) to analize the RFI which could reach the telescope. The aim of this system is to measure the RF signals which arrive at the place where the telescope will be installed, taking into account different azimuthal positions and the two antenna polarizations. Then, it must process the sweeps and register them in a database.
