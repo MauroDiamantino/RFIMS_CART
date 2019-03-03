@@ -67,9 +67,8 @@ public:
 	 *  spectrum analyzer, and because that will not be used those commands are not added. There is an extra command
 	 *  type which is *UNINITIALIZED* whose purpose is to state that the object is still incomplete.
 	 */
-	enum CommandType : char { VERIFY, LOGOUT, GETSTPVAR, SETSTPVAR, UNINITIALIZED };
-	//This enumeration is placed here because a class attribute is defined with this type and it is necessary the enumeration
-	//to be defined before
+	enum CommandType : char { VERIFY=0x01, LOGOUT, GETSTPVAR=0x20, SETSTPVAR, UNINITIALIZED }; //This enumeration is placed here
+		//because a class attribute is defined with this type and it is necessary the enumeration to be defined before.
 private:
 	///////Private types//////////
 	union FloatToBytes{
@@ -94,8 +93,7 @@ public:
 	////Class interface////
 	Command();
 	Command(CommandType type);
-	Command(const unordered_map<float,float>& rbw_ind);
-	Command(const unordered_map<float,float>& rbw_ind, CommandType commType);
+	Command(const unordered_map<float,float>& rbw_ind, CommandType commType=UNINITIALIZED);
 	~Command();
 	void SetPointer(const unordered_map<float,float>& rbw_ind);
 	void SetAs(CommandType commType, VarName varName=VarName::UNINITIALIZED, float val=0.0);
@@ -107,13 +105,57 @@ public:
 	VarName GetVariableName() const {	return variableName;	}
 	//! A method to get the value which is going to be or has been used to modify a variable.
 	float GetValue() const {	return value;	}
-	const vector<uint8_t>& GetBytesVector() const;
-	const uint8_t* GetBytesPointer() const;
+	//! A method to obtain the bytes vector like this is implemented internally, a `vector` container.
+	const vector<uint8_t>& GetBytesVector() const {	return bytes;	}
+	//! A method to obtain the bytes vector but like a C-style array.
+	/*! This method returns a pointer to `uint8_t` so this allows to access directly to the memory addresses where the
+	 * vector's bytes are stored. Because of the Spectran Interface works with C-style arrays, that object uses this method.
+	 */
+	const uint8_t* GetBytesPointer() const {	return bytes.data();	}
 	//! A method which returns the size of the bytes vector.
 	unsigned int GetNumOfBytes() const {	return bytes.size();	}
 	void Clear();
 	const Command& operator=(const Command& command);
 };
 
+
+//! The class *Reply* is intended to receive a bytes vector sent by the spectrum analyzer and to extract its info.
+/*! When a command is sent to a Spectran HF-60105 V4 X spectrum analyzer, this will respond with another bytes vector
+ * (however some commands do not have reply), so the idea is to insert this in an object of class *Reply*, then the object
+ * will process and extract the info (variable id, value, etc.) of the bytes vector and finally the info will be available
+ * through the "Get" methods.
+ */
+class Reply{
+public:
+	//////////Public types////////////
+	enum ReplyType : char { VERIFY=0x01, GETSTPVAR=0x20, SETSTPVAR, AMPFREQDAT, UNINITIALIZED };
+private:
+	//////////Attributes////////////
+	//Constants
+	const unordered_map<float,float>* RBW_INDEX;
+	//Variables
+	vector<uint8_t> bytes;
+	ReplyType replyType;
+	float value;
+	//////////Private methods/////////
+	void ExtractData();
+public:
+	//////////Class interface///////////
+	Reply();
+	Reply(ReplyType type);
+	Reply(const unordered_map<float,float>& rbw_ind, ReplyType Type=UNINITIALIZED);
+	~Reply();
+	void PrepareTo(ReplyType replyType);
+	void InsertVector(uint8_t *data);
+	ReplyType GetReplyType() const {	return replyType;	}
+	string GetReplyTypeString() const;
+	const vector<uint8_t>& GetBytesVector() const {	return bytes;	}
+	const uint8_t* GetBytesPointer() const {	return bytes.data();	}
+	unsigned int GetNumOfBytes() const {	return bytes.size(); 	}
+	float GetValue() const {	return value;	}
+	bool IsRightReply();
+	void Clear();
+	const Reply& operator=(const Reply& reply);
+};
 
 #endif /* SPECTRANINTERFACE_H_ */

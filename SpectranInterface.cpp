@@ -34,17 +34,6 @@ Command::Command(CommandType type)
 	RBW_INDEX=nullptr;
 }
 
-//! A constructor which allows to set the internal pointers.
-/*! The internal pointers are used to get info about the variables' IDs and the RBW's indexes.
- * Again, the methods `SetAs()` and/or `SetParameters()` must be used to make the command ready to be sent.
- */
-Command::Command(const unordered_map<float,float>& rbw_ind) : RBW_INDEX(&rbw_ind)
-{
-	value=0.0;
-	commandType=UNINITIALIZED;
-	variableName=VarName::UNINITIALIZED;
-}
-
 //! The most complete constructor which allows to set the internal pointers and the command type.
 Command::Command(const unordered_map<float,float>& rbw_ind,	CommandType type) : RBW_INDEX(&rbw_ind)
 {
@@ -79,18 +68,18 @@ void Command::FillBytesVector()
 	switch(commandType)
 	{
 	case Command::VERIFY:
-		bytes.push_back(0x01);
+		bytes.push_back( uint8_t(Command::VERIFY) );
 		bytes.push_back(0xA5);
 		bytes.push_back(0x5A);
 		bytes.push_back(0xF1);
 		bytes.push_back(0x1F);
 		break;
 	case Command::LOGOUT:
-		bytes.push_back(0x02);
+		bytes.push_back( uint8_t(Command::LOGOUT) );
 		break;
 	case Command::GETSTPVAR:
 		var_id = uint8_t(variableName);
-		bytes.push_back(0x20);
+		bytes.push_back( uint8_t(Command::GETSTPVAR) );
 		bytes.push_back(var_id);
 		bytes.push_back(0);
 		break;
@@ -104,7 +93,7 @@ void Command::FillBytesVector()
 		}else{
 			floatBytes.floatValue=value;
 		}
-		bytes.push_back(0x21);
+		bytes.push_back( uint8_t(Command::SETSTPVAR) );
 		bytes.push_back(var_id);
 		bytes.push_back(0);
 		bytes.push_back(floatBytes.bytes[0]);
@@ -113,8 +102,9 @@ void Command::FillBytesVector()
 		bytes.push_back(floatBytes.bytes[3]);
 		break;
 	default:
-		string error="An error occurred when the object tried to build the bytes vector because the command type was wrong";
-		throw(error);
+		//A LOGOUT command is built by default
+		bytes.push_back( uint8_t(Command::LOGOUT) );
+		break;
 	}
 }
 
@@ -159,43 +149,6 @@ string Command::GetCommTypeString() const
 		break;
 	default:
 		return "UNINITIALIZED";
-	}
-}
-
-//! A method to obtain the bytes vector like this is implemented internally, a `vector` container.
-const vector<uint8_t>& Command::GetBytesVector() const
-{
-	switch(commandType)
-	{
-	case CommandType::VERIFY:
-	case CommandType::LOGOUT:
-	case CommandType::GETSTPVAR:
-	case CommandType::SETSTPVAR:
-		return bytes;
-		break;
-	default:
-		string error="An error occurred when the bytes vector was required because the command type was wrong";
-		throw(error);
-	}
-}
-
-//! A method to obtain the bytes vector but like a C-style array.
-/*! This method returns a pointer to `uint8_t` so this allows to access directly to the memory addresses where the
- * vector's bytes are stored. Because of the Spectran Interface works with C-style arrays, that object uses this method.
- */
-const uint8_t* Command::GetBytesPointer() const
-{
-	switch(commandType)
-	{
-	case CommandType::VERIFY:
-	case CommandType::LOGOUT:
-	case CommandType::GETSTPVAR:
-	case CommandType::SETSTPVAR:
-		return bytes.data();
-		break;
-	default:
-		string error="An error occurred when a pointer to the bytes was required because the command type was wrong";
-		throw(error);
 	}
 }
 
