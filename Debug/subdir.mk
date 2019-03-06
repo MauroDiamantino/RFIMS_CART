@@ -4,16 +4,19 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
-../SpectranInterface.cpp \
-../Testbench1.cpp 
+../Command.cpp \
+../Reply.cpp \
+../TestbenchReply.cpp 
 
 OBJS += \
-./SpectranInterface.o \
-./Testbench1.o 
+./Command.o \
+./Reply.o \
+./TestbenchReply.o 
 
 CPP_DEPS += \
-./SpectranInterface.d \
-./Testbench1.d 
+./Command.d \
+./Reply.d \
+./TestbenchReply.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

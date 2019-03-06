@@ -21,9 +21,12 @@ void PrintBytes(const Command& comm)
 int main()
 {
 	Command comm(RBW_INDEX);
+	const uint8_t * bytes;
 
 	cout << "Configuracion de un comando VERIFY" << endl;
 	comm.SetAs(Command::VERIFY);
+	bytes=comm.GetBytesPointer();
+	assert( bytes[0]==0x01 && bytes[1]==0xA5 && bytes[2]==0x5A && bytes[3]==0xF1 && bytes[4]==0x1F );
 	PrintBytes(comm);
 	comm.Clear();
 

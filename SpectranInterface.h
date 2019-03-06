@@ -13,7 +13,6 @@
  *  - iostream: cout, cin
  *  - vector: to use this container
  *  - string: to use this container
- *  - unordered_map: to use this container
  *
  *  The namespace *std* is used to simplify the uses of objects like cout and cin.
  */
@@ -25,7 +24,9 @@
 #include <iostream> //cout, cin
 #include <vector>
 #include <string>
-#include <unordered_map>
+//#include <unordered_map>
+#include <boost/bimap.hpp> //Bidirectional container
+#include <cassert> //To use assert() function to debug the code
 
 using namespace std;
 
@@ -38,11 +39,25 @@ enum VarName : uint8_t { STARTFREQ=0x01, STOPFREQ, RESBANDW, VIDBANDW, SWEEPTIME
 	RBWFSTEP=0x60, ANTGAIN,	PEAK1POW=0x80, PEAK2POW, PEAK3POW, PEAK1FREQ=0x84, PEAK2FREQ, PEAK3FREQ, MAXPEAKPOW=0x90,
 	STDTONE=0xC0, UNINITIALIZED };
 
+union FloatToBytes {
+	float floatValue;
+	uint8_t bytes[4];
+};//!< An union which is used to split a float value in its 4 bytes
+
+typedef boost::bimap<float,float> RBW_bimap;
+
 ///////////////Constants///////////////////////
-const unordered_map<float,float> RBW_INDEX( {	{100e6, 0.0}, {3e6, 1.0}, {1e6, 2.0}, {300e3, 3.0}, {100e3, 4.0},
-												{30e3, 5.0}, {10e3, 6.0}, {3e3, 7.0}, {1e3, 8.0}, {120e3, 100.0},
-												{9e3, 101.0}, {200.0, 102.0}, {5e6, 103.0},	{200e3, 104},
-												{1.5e6, 105.0} } );
+//const unordered_map<float,float> RBW_INDEX( {	{100e6, 0.0}, {3e6, 1.0}, {1e6, 2.0}, {300e3, 3.0}, {100e3, 4.0},
+//												{30e3, 5.0}, {10e3, 6.0}, {3e3, 7.0}, {1e3, 8.0}, {120e3, 100.0},
+//												{9e3, 101.0}, {200.0, 102.0}, {5e6, 103.0},	{200e3, 104},
+//												{1.5e6, 105.0} } );
+
+const vector<RBW_bimap::value_type> v( {	{100e6, 0.0}, {3e6, 1.0}, {1e6, 2.0}, {300e3, 3.0}, {100e3, 4.0},
+											{30e3, 5.0}, {10e3, 6.0}, {3e3, 7.0}, {1e3, 8.0}, {120e3, 100.0},
+											{9e3, 101.0}, {200.0, 102.0}, {5e6, 103.0},	{200e3, 104}, {1.5e6, 105.0} }	);
+
+const RBW_bimap RBW_INDEX( v.begin(), v.end() );
+
 
 /////////////////Classes/////////////////
 
@@ -58,44 +73,40 @@ const unordered_map<float,float> RBW_INDEX( {	{100e6, 0.0}, {3e6, 1.0}, {1e6, 2.
  * the bytes array which will be sent to the spectrum analyzer via the USB interface.
  * The objects of this class will be interchanged between the "Spectran configurator" and the "Spectran interface".
  */
-class Command{
+class Command {
 public:
 	///////Public types///////////
-	//! An enumeration which contains the commands types which can be sent to a Spectran HF-60105 V4 X spectrum analyzer.
+	//! An enumeration which contains the command types which can be sent to a Spectran HF-60105 V4 X spectrum analyzer.
 	/*! This enumeration contains just four commands from the Spectran USB Protocol: *VERIFY*, *LOGOUT*, *GETSTPVAR*
 	 *  and *SETSTPVAR*. The other commands are intended to modify or get information about the internal files of the
-	 *  spectrum analyzer, and because that will not be used those commands are not added. There is an extra command
+	 *  spectrum analyzer, and because those will not be used they are not added. There is an extra command
 	 *  type which is *UNINITIALIZED* whose purpose is to state that the object is still incomplete.
 	 */
-	enum CommandType : char { VERIFY=0x01, LOGOUT, GETSTPVAR=0x20, SETSTPVAR, UNINITIALIZED }; //This enumeration is placed here
-		//because a class attribute is defined with this type and it is necessary the enumeration to be defined before.
+	enum CommandType : char { VERIFY=0x01, LOGOUT, GETSTPVAR=0x20, SETSTPVAR, UNINITIALIZED }; //This enumeration is
+		//placed here because a class attribute is defined with this type and it is necessary the enumeration to be
+		//defined before.
 private:
-	///////Private types//////////
-	union FloatToBytes{
-		float floatValue;
-		uint8_t bytes[4];
-	};//!< An union which is used to split a float value in its 4 bytes
 	////////Attributes//////////
 	//Constants
-	//! This container allows to obtain the index (an integer value) which represent the given RBW value (in Hz), as it is defined in the Spectran USB Protocol.
-	/*! The container *RBW_INDEX* can also be used to obtain the index of a given VBW value (in Hz), because both variables
-	 * have the same indexes.
+	//! This container allows to obtain the index (an integer value) which represent a given RBW (resolution bandwidth) value (in Hz), as it is defined in the Spectran USB Protocol.
+	/*! The container *RBW_INDEX* can also be used to obtain the index of a given VBW (video bandwidth) value (in Hz),
+	 * because both variables have the same indexes.
 	 */
-	const unordered_map<float,float>* RBW_INDEX;
+	//const unordered_map<float,float>* RBW_INDEX;
+	const RBW_bimap* RBW_INDEX;
 	//Variables
 	vector<uint8_t> bytes; //!< Bytes array (or vector) which will be sent by the Spectran Interface.
 	CommandType commandType; //!< The command type of the object.
 	VarName variableName; //!< The variable name which will be modified or read if the command type is *GETSTPVAR* or *SETSTPVAR*
-	float value; //!< The value (as a float number) of the read Spectran variable or the value which will be used to modify a Spectran variable.
-	////Private methods////
+	float value; //!< The value (as a float number) which will be used to modify a Spectran variable. It is just used with *SETSTPVAR* command.
+	//////////Private methods/////////
 	void FillBytesVector();
 public:
-	////Class interface////
+	//////////Class interface//////////
 	Command();
-	Command(CommandType type);
-	Command(const unordered_map<float,float>& rbw_ind, CommandType commType=UNINITIALIZED);
-	~Command();
-	void SetPointer(const unordered_map<float,float>& rbw_ind);
+	Command(const RBW_bimap& rbw_ind, CommandType commType=UNINITIALIZED);
+	Command(const Command& anotherComm);
+	void SetPointer(const RBW_bimap& rbw_ind);
 	void SetAs(CommandType commType, VarName varName=VarName::UNINITIALIZED, float val=0.0);
 	void SetParameters(VarName varName, float val=0.0);
 	//! A method to get the current command type.
@@ -125,37 +136,90 @@ public:
  * will process and extract the info (variable id, value, etc.) of the bytes vector and finally the info will be available
  * through the "Get" methods.
  */
-class Reply{
+class Reply {
 public:
 	//////////Public types////////////
-	enum ReplyType : char { VERIFY=0x01, GETSTPVAR=0x20, SETSTPVAR, AMPFREQDAT, UNINITIALIZED };
+	//! An enumeration which contains the reply types which can be received from a Spectran HF-60105 V4 X spectrum analyzer.
+	/*! This enumeration contains just four commands from the Spectran USB Protocol: *VERIFY*, *GETSTPVAR*, *SETSTPVAR*
+	 * and *AMPFREQDAT*. The other replies are received when an internal file of the spectrum analyzer have been queried
+	 * or modified, and because that will not be done they are not added. There is an extra command type which is
+	 * *UNINITIALIZED* whose purpose is to state that the object is not prepared.
+	 */
+	enum ReplyType : char { VERIFY=0x01, GETSTPVAR=0x20, SETSTPVAR, AMPFREQDAT, UNINITIALIZED }; //This enumeration is
+	//placed here because a class attribute is defined with this type and it is necessary the enumeration to be
+	//defined before.
 private:
 	//////////Attributes////////////
 	//Constants
-	const unordered_map<float,float>* RBW_INDEX;
+	//! This container allows to obtain the index (an integer value) which represent a given RBW (resolution bandwidth) value (in Hz), as it is defined in the Spectran USB Protocol.
+	/*! The container *RBW_INDEX* can also be used to obtain the index of a given VBW (video bandwidth) value (in Hz),
+	 * because both variables have the same indexes.
+	 */
+	const RBW_bimap * RBW_INDEX;
 	//Variables
-	vector<uint8_t> bytes;
-	ReplyType replyType;
-	float value;
-	//////////Private methods/////////
-	void ExtractData();
+	ReplyType replyType; //!< The reply type of the object.
+	unsigned int numOfWaitedBytes; //!< The quantity of bytes which are waited taking into account the reply type.
+	VarName variableName; //!< The name of the variable which has been queried with a GETSTPVAR command.
+	//////////Private methods///////////
+	void PrepareReply();
+protected:
+	///////////Protected Attributes/////////////
+	vector<uint8_t> bytes; //!< Bytes array (or vector) which has been received from a spectrum analyzer.
+	float value; //!< The value (as a float number) of the queried Spectran variable or a power value. It has sense with *GETSTPVAR* and *AMPFREQDAT* replies.
+	///////////Protected methods//////////////
+	void FillBytesVector(uint8_t * data);
 public:
 	//////////Class interface///////////
 	Reply();
-	Reply(ReplyType type);
-	Reply(const unordered_map<float,float>& rbw_ind, ReplyType Type=UNINITIALIZED);
-	~Reply();
-	void PrepareTo(ReplyType replyType);
-	void InsertVector(uint8_t *data);
+	Reply(ReplyType type, VarName varName=VarName::UNINITIALIZED);
+	Reply(const RBW_bimap& rbw_ind, ReplyType type=UNINITIALIZED, VarName varName=VarName::UNINITIALIZED);
+	Reply(const Reply& anotherReply);
+	virtual ~Reply() {}
+	void SetPointer(const RBW_bimap& rbw_ind);
+	virtual void PrepareTo(ReplyType type, VarName varName=VarName::UNINITIALIZED);
+	virtual void InsertBytes(uint8_t * data);
+	//! A Get method which returns the reply type as the corresponding value of the class' internal enumerator.
 	ReplyType GetReplyType() const {	return replyType;	}
 	string GetReplyTypeString() const;
+	//! A method to get the bytes vector like this is implemented internally, a `vector` container.
 	const vector<uint8_t>& GetBytesVector() const {	return bytes;	}
+	//! A method to get a direct pointer to the bytes of the internal vector.
 	const uint8_t* GetBytesPointer() const {	return bytes.data();	}
-	unsigned int GetNumOfBytes() const {	return bytes.size(); 	}
+	//! A method which allows to know the size of the bytes vector.
+	unsigned int GetNumOfBytes() const {	return numOfWaitedBytes; 	}
+	//! A method to get the value of the variable which was queried with a *GETSTPVAR* command, or one of the power values of a *AMPFREQDAT* reply.
 	float GetValue() const {	return value;	}
-	bool IsRightReply();
-	void Clear();
-	const Reply& operator=(const Reply& reply);
+	bool IsRightReply() const;
+	virtual void Clear();
+	virtual const Reply& operator=(const Reply& anotherReply);
 };
+
+
+//! The class *SweepReply* derives from the base class *Reply*
+/*! The purpose of this class is to handle the *AMPFREQDAT* replies which carry out the frequency points. These specific
+ * replies need to be handled in a more complex way, so to simplify the base class ,which handles the others replies,
+ * a different class was made with the specific methods to extract the data from the AMPFREQDAT replies.
+ */
+class SweepReply : public Reply {
+	////////////Attributes/////////////
+	unsigned int timestamp;
+	float frequency;
+	float minValue;
+	float maxValue;
+public:
+	///////////Class Interface//////////
+	SweepReply();
+	SweepReply(uint8_t * bytesPtr);
+	~SweepReply() {}
+	void PrepareTo(ReplyType type, VarName varName=VarName::UNINITIALIZED) {}
+	void InsertBytes(uint8_t * b);
+	unsigned int GetTimestamp() const {	return timestamp;	};
+	float GetFrequency() const {	return frequency;	};
+	float GetMinValue() const {	return minValue;	};
+	float GetMaxValue() const {	return maxValue;	};
+	void Clear();
+	const SweepReply& operator=(const SweepReply& anotherReply);
+};
+
 
 #endif /* SPECTRANINTERFACE_H_ */

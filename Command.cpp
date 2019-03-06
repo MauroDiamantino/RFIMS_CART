@@ -1,10 +1,13 @@
 /*
- * SpectranInterface.cpp
+ * Command.cpp
  *
  *  Created on: 26/02/2019
  *      Author: new-mauro
  */
+
 #include "SpectranInterface.h"
+
+//////////////////////Implementations of some Command class' methods//////////////////////////
 
 //! Default constructor
 /*! When this constructor is used, the programmer must provide the command data with the method
@@ -20,34 +23,26 @@ Command::Command()
 	RBW_INDEX=nullptr;
 }
 
-//! A constructor which allows to determine the command type.
-/*! When this constructor is used, the programmer must provide the command data with the method
- * `SetAs(commType,varName,value)`, and even with the method `SetParameters(varName,value)`. Also, the programmer
- * must set the internal pointers with the method `SetPointers`. The internal pointers are used to get info about the
- * variables' IDs and the RBW's indexes.
+//! The most complete constructor which allows to set the internal pointers and optionally the command type.
+/*! If this constructor is used providing both parameters, then the method `SetParamerts` should be used to set the
+ * variable name (GETSTPVAR and SETSTPVAR commands) and its value (just SETSTPVAR command). If it used providing just
+ * the first parameter, then the method `SetAs` should be used to set command type, variable name and value.
  */
-Command::Command(CommandType type)
-{
-	value=0.0;
-	commandType=type;
-	variableName=VarName::UNINITIALIZED;
-	RBW_INDEX=nullptr;
-}
-
-//! The most complete constructor which allows to set the internal pointers and the command type.
-Command::Command(const unordered_map<float,float>& rbw_ind,	CommandType type) : RBW_INDEX(&rbw_ind)
+Command::Command(const RBW_bimap& rbw_ind,	CommandType type) : RBW_INDEX(&rbw_ind)
 {
 	commandType=type;
 	variableName=VarName::UNINITIALIZED;
 	value=0.0;
 }
 
-//! The Command class destructor.
-/*! The destructor just call the method `Clear()`
- */
-Command::~Command()
+//! The copy constructor
+Command::Command(const Command& anotherComm)
 {
-	Clear();
+	RBW_INDEX=anotherComm.RBW_INDEX;
+	bytes=anotherComm.bytes;
+	commandType=anotherComm.commandType;
+	variableName=anotherComm.variableName;
+	value=anotherComm.value;
 }
 
 //! This method build the bytes vector when the enough data have been given.
@@ -85,12 +80,18 @@ void Command::FillBytesVector()
 		break;
 	case Command::SETSTPVAR:
 		var_id = uint8_t(variableName);
-		if(variableName==VarName::RESBANDW || variableName==VarName::VIDBANDW){
-			floatBytes.floatValue = RBW_INDEX->at(value);
-		}else if (variableName==VarName::STARTFREQ || variableName==VarName::STOPFREQ ||
-				variableName==VarName::CENTERFREQ || variableName==VarName::SPANFREQ){
-			floatBytes.floatValue=value/1.0e6;
-		}else{
+		if( variableName==VarName::RESBANDW || variableName==VarName::VIDBANDW )
+		{
+			floatBytes.floatValue = RBW_INDEX->left.at(value); //The given value is the actual frequency value but the
+															//corresponding RBW (and VBW) index must be sent, so here
+															//this conversion is made
+		}else if ( variableName==VarName::STARTFREQ || variableName==VarName::STOPFREQ ||
+				variableName==VarName::CENTERFREQ || variableName==VarName::SPANFREQ )
+		{
+			floatBytes.floatValue=value/1.0e6; //The given value is in Hz but it must be sent in MHz, so it is divided by
+												//one million (1e6) to change it.
+		}else
+		{
 			floatBytes.floatValue=value;
 		}
 		bytes.push_back( uint8_t(Command::SETSTPVAR) );
@@ -108,8 +109,8 @@ void Command::FillBytesVector()
 	}
 }
 
-//! This method is intended to set the internal pointers when they have not been initialized in the constructor.
-void Command::SetPointer(const unordered_map<float,float>& rbw_ind)
+//! This method is intended to set the internal pointer when it has not been initialized in the constructor.
+void Command::SetPointer(const RBW_bimap& rbw_ind)
 {
 	RBW_INDEX = &rbw_ind;
 }
@@ -161,12 +162,13 @@ void Command::Clear()
 	value=0.0;
 }
 
-//! Overloading of the assignment operator.
-const Command& Command::operator=(const Command& comm)
+//! The overloading of the assignment operator.
+const Command& Command::operator=(const Command& anotherComm)
 {
-	bytes=comm.bytes;
-	commandType=comm.commandType;
-	variableName=comm.variableName;
-	value=comm.value;
+	RBW_INDEX=anotherComm.RBW_INDEX;
+	bytes=anotherComm.bytes;
+	commandType=anotherComm.commandType;
+	variableName=anotherComm.variableName;
+	value=anotherComm.value;
 	return *this;
 }
