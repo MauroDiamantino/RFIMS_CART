@@ -17,10 +17,9 @@
  */
 Command::Command()
 {
-	value=0.0;
 	commandType=UNINITIALIZED;
 	variableName=VarName::UNINITIALIZED;
-	RBW_INDEX=nullptr;
+	value=0.0;
 }
 
 //! The most complete constructor which allows to set the internal pointers and optionally the command type.
@@ -28,17 +27,17 @@ Command::Command()
  * variable name (GETSTPVAR and SETSTPVAR commands) and its value (just SETSTPVAR command). If it used providing just
  * the first parameter, then the method `SetAs` should be used to set command type, variable name and value.
  */
-Command::Command(const RBW_bimap& rbw_ind,	CommandType type) : RBW_INDEX(&rbw_ind)
+Command::Command(CommandType type, VarName varName, float val)
 {
 	commandType=type;
-	variableName=VarName::UNINITIALIZED;
-	value=0.0;
+	variableName=varName;
+	value=val;
+	FillBytesVector();
 }
 
 //! The copy constructor
 Command::Command(const Command& anotherComm)
 {
-	RBW_INDEX=anotherComm.RBW_INDEX;
 	bytes=anotherComm.bytes;
 	commandType=anotherComm.commandType;
 	variableName=anotherComm.variableName;
@@ -58,11 +57,10 @@ void Command::FillBytesVector()
 	uint8_t var_id;
 	FloatToBytes floatBytes;
 
-	bytes.clear();
-
 	switch(commandType)
 	{
 	case Command::VERIFY:
+		bytes.reserve(5);
 		bytes.push_back( uint8_t(Command::VERIFY) );
 		bytes.push_back(0xA5);
 		bytes.push_back(0x5A);
@@ -74,6 +72,7 @@ void Command::FillBytesVector()
 		break;
 	case Command::GETSTPVAR:
 		var_id = uint8_t(variableName);
+		bytes.reserve(3);
 		bytes.push_back( uint8_t(Command::GETSTPVAR) );
 		bytes.push_back(var_id);
 		bytes.push_back(0);
@@ -82,7 +81,7 @@ void Command::FillBytesVector()
 		var_id = uint8_t(variableName);
 		if( variableName==VarName::RESBANDW || variableName==VarName::VIDBANDW )
 		{
-			floatBytes.floatValue = RBW_INDEX->left.at(value); //The given value is the actual frequency value but the
+			floatBytes.floatValue = RBW_INDEX.left.at(value); //The given value is the actual frequency value but the
 															//corresponding RBW (and VBW) index must be sent, so here
 															//this conversion is made
 		}else if ( variableName==VarName::STARTFREQ || variableName==VarName::STOPFREQ ||
@@ -94,6 +93,7 @@ void Command::FillBytesVector()
 		{
 			floatBytes.floatValue=value;
 		}
+		bytes.reserve(7);
 		bytes.push_back( uint8_t(Command::SETSTPVAR) );
 		bytes.push_back(var_id);
 		bytes.push_back(0);
@@ -107,12 +107,6 @@ void Command::FillBytesVector()
 		bytes.push_back( uint8_t(Command::LOGOUT) );
 		break;
 	}
-}
-
-//! This method is intended to set the internal pointer when it has not been initialized in the constructor.
-void Command::SetPointer(const RBW_bimap& rbw_ind)
-{
-	RBW_INDEX = &rbw_ind;
 }
 
 //! This method is intended to provide to the object the enough data so this could configure itself to be ready to be sent.
@@ -165,7 +159,6 @@ void Command::Clear()
 //! The overloading of the assignment operator.
 const Command& Command::operator=(const Command& anotherComm)
 {
-	RBW_INDEX=anotherComm.RBW_INDEX;
 	bytes=anotherComm.bytes;
 	commandType=anotherComm.commandType;
 	variableName=anotherComm.variableName;

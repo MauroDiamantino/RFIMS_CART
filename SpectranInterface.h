@@ -24,15 +24,20 @@
 #include <iostream> //cout, cin
 #include <vector>
 #include <string>
-//#include <unordered_map>
+#include <unordered_map>
 #include <boost/bimap.hpp> //Bidirectional container
 #include <cassert> //To use assert() function to debug the code
+#include <ftd2xx.h> //The library which allows to communicate with the FTDI driver
+#include <exception>
+#include <cstdlib> //exit, EXIT_SUCCESS, EXIT_FAILURE
+#include <sstream> //stringstream
+#include <unistd.h> //usleep
 
 using namespace std;
 
 //////////////User-defined global types///////////
 //! An enumeration which contains the names of all the environment variables of the Spectran HF-60105 V4 X spectrum analyzer.
-enum VarName : uint8_t { STARTFREQ=0x01, STOPFREQ, RESBANDW, VIDBANDW, SWEEPTIME, ATTENFAC, REFLEVEL, DISPRANGE,
+enum class VarName : uint8_t { STARTFREQ=0x01, STOPFREQ, RESBANDW, VIDBANDW, SWEEPTIME, ATTENFAC, REFLEVEL, DISPRANGE,
 	DISPUNIT, DETMODE, DEMODMODE, SPECPROC, ANTTYPE, CABLETYPE, RECVCONF, CENTERFREQ=0x1E, SPANFREQ, PREAMPEN=0x10,
 	SWPDLYACC, SWPFRQPTS, REFOFFS, USBMEAS=0x20, USBSWPRST, USBSWPID, USBRUNPROG, LOGFILEID=0x30, LOGSAMPCNT,
 	LOGTIMEIVL,	SPECDISP=0x41, PEAKDISP, MARKMINPK, RDOUTIDX, MARKCOUNT, LEVELTONE, BACKBBEN, DISPDIS, SPKVOLUME,
@@ -52,14 +57,26 @@ typedef boost::bimap<float,float> RBW_bimap;
 //												{9e3, 101.0}, {200.0, 102.0}, {5e6, 103.0},	{200e3, 104},
 //												{1.5e6, 105.0} } );
 
-const vector<RBW_bimap::value_type> v( {	{100e6, 0.0}, {3e6, 1.0}, {1e6, 2.0}, {300e3, 3.0}, {100e3, 4.0},
+const vector<RBW_bimap::value_type> vect( {	{100e6, 0.0}, {3e6, 1.0}, {1e6, 2.0}, {300e3, 3.0}, {100e3, 4.0},
 											{30e3, 5.0}, {10e3, 6.0}, {3e3, 7.0}, {1e3, 8.0}, {120e3, 100.0},
 											{9e3, 101.0}, {200.0, 102.0}, {5e6, 103.0},	{200e3, 104}, {1.5e6, 105.0} }	);
 
-const RBW_bimap RBW_INDEX( v.begin(), v.end() );
-
+const RBW_bimap RBW_INDEX( vect.begin(), vect.end() );
 
 /////////////////Classes/////////////////
+
+//Class CustomException derived from standard class exception
+class CustomException : public exception
+{
+	string message;
+public:
+	CustomException(const string& msg="Error") : message(msg) {}
+	void SetMessage(const string& msg) {	message=msg;	}
+	virtual const char * what() const throw()
+	{
+		return message.c_str();
+	}
+};
 
 //! This class builds the corresponding bytes array to send a certain command to a Aaronia Spectran V4 series spectrum analyzer.
 /*! The "Command" class is intended to build the bytes array which will be sent a spectrum analyzer to perform
@@ -92,8 +109,8 @@ private:
 	/*! The container *RBW_INDEX* can also be used to obtain the index of a given VBW (video bandwidth) value (in Hz),
 	 * because both variables have the same indexes.
 	 */
-	//const unordered_map<float,float>* RBW_INDEX;
-	const RBW_bimap* RBW_INDEX;
+	//const unordered_map<float,float> RBW_INDEX;
+	//const RBW_bimap* RBW_INDEX;
 	//Variables
 	vector<uint8_t> bytes; //!< Bytes array (or vector) which will be sent by the Spectran Interface.
 	CommandType commandType; //!< The command type of the object.
@@ -104,9 +121,8 @@ private:
 public:
 	//////////Class interface//////////
 	Command();
-	Command(const RBW_bimap& rbw_ind, CommandType commType=UNINITIALIZED);
+	Command(CommandType commType, VarName varName=VarName::UNINITIALIZED, float val=0.0);
 	Command(const Command& anotherComm);
-	void SetPointer(const RBW_bimap& rbw_ind);
 	void SetAs(CommandType commType, VarName varName=VarName::UNINITIALIZED, float val=0.0);
 	void SetParameters(VarName varName, float val=0.0);
 	//! A method to get the current command type.
@@ -155,7 +171,7 @@ private:
 	/*! The container *RBW_INDEX* can also be used to obtain the index of a given VBW (video bandwidth) value (in Hz),
 	 * because both variables have the same indexes.
 	 */
-	const RBW_bimap * RBW_INDEX;
+	//const RBW_bimap * RBW_INDEX;
 	//Variables
 	ReplyType replyType; //!< The reply type of the object.
 	unsigned int numOfWaitedBytes; //!< The quantity of bytes which are waited taking into account the reply type.
@@ -172,10 +188,8 @@ public:
 	//////////Class interface///////////
 	Reply();
 	Reply(ReplyType type, VarName varName=VarName::UNINITIALIZED);
-	Reply(const RBW_bimap& rbw_ind, ReplyType type=UNINITIALIZED, VarName varName=VarName::UNINITIALIZED);
 	Reply(const Reply& anotherReply);
 	virtual ~Reply() {}
-	void SetPointer(const RBW_bimap& rbw_ind);
 	virtual void PrepareTo(ReplyType type, VarName varName=VarName::UNINITIALIZED);
 	virtual void InsertBytes(uint8_t * data);
 	//! A Get method which returns the reply type as the corresponding value of the class' internal enumerator.
@@ -189,7 +203,7 @@ public:
 	unsigned int GetNumOfBytes() const {	return numOfWaitedBytes; 	}
 	//! A method to get the value of the variable which was queried with a *GETSTPVAR* command, or one of the power values of a *AMPFREQDAT* reply.
 	float GetValue() const {	return value;	}
-	bool IsRightReply() const;
+	bool IsRight() const;
 	virtual void Clear();
 	virtual const Reply& operator=(const Reply& anotherReply);
 };
@@ -221,5 +235,43 @@ public:
 	const SweepReply& operator=(const SweepReply& anotherReply);
 };
 
+
+//! Class *SpectranInterface*
+class SpectranInterface {
+	////////////Attributes/////////////
+	//Constants
+	const DWORD VID = 0x0403;
+	const DWORD PID = 0xE8D8;
+	const string DEVICE_DESCRIPTION = "Aaronia SPECTRAN HF-60105 X";
+	const DWORD USB_RD_TIMEOUT_MS = 500;
+	const DWORD USB_WR_TIMEOUT_MS = 1000;
+	const float SPK_VOLUME = 0.5;
+	const float LOG_IN_SOUND_DURATION = 100.0;
+	const float LOG_OUT_SOUND_DURATION = 500.0;
+	const unsigned int WAITING_TIME_US = 50000;
+	//Variables
+	FT_HANDLE ftHandle;
+	bool flagLogIn;
+	FT_STATUS ftStatus;
+	////////////Private methods/////////////
+	void SoundLogIn();
+	void SoundLogOut();
+	void OpenAndSetUp();
+public:
+	////////////Class Interface/////////////
+	SpectranInterface();
+	~SpectranInterface();
+	void Initialize();
+	void Write(const Command& command);
+	void Read(Reply& reply);
+	unsigned int Available();
+	void Purge();
+	void Reset();
+	void LogOut();
+	DWORD GetVID() const {	return VID;	}
+	DWORD GetPID() const { 	return PID;	}
+	string GetDevDescription() const {	return DEVICE_DESCRIPTION;	}
+	bool IsLogged() const {	return flagLogIn;	}
+};
 
 #endif /* SPECTRANINTERFACE_H_ */

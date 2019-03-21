@@ -6,10 +6,9 @@
  */
 #include "SpectranInterface.h"
 
-
 int main()
 {
-	Reply reply(RBW_INDEX);
+	Reply reply;
 	vector<uint8_t> bytesVector;
 
 	//Verificacion de la respuesta VERIFY
@@ -22,7 +21,7 @@ int main()
 	bytesVector.push_back(0xF5);
 	bytesVector.push_back(0xAF);
 	reply.InsertBytes( bytesVector.data() );
-	assert(reply.IsRightReply()==true);
+	assert(reply.IsRight()==true);
 
 	//Verificacion del metodo Clear()
 	bytesVector.clear();
@@ -46,7 +45,7 @@ int main()
 		bytesVector.push_back(0x80);
 		bytesVector.push_back(0x3F); //Byte mas significativo del valor flotante 1.0
 		reply.InsertBytes( bytesVector.data() );
-		assert(reply.IsRightReply()==true);
+		assert(reply.IsRight()==true);
 		assert(reply.GetValue()==1e6); //El valor se entrega en Hz en vez de MHz
 		bytesVector.clear();
 		reply.Clear();
@@ -67,7 +66,7 @@ int main()
 		bytesVector.push_back(0xCC);
 		bytesVector.push_back(0x42); //Byte mas significativo del valor flotante 102.0
 		reply.InsertBytes( bytesVector.data() );
-		assert(reply.IsRightReply()==true);
+		assert(reply.IsRight()==true);
 		assert(reply.GetValue()==200.0); //El valor se entrega en Hz en vez de entregar el indice correspondiente
 		bytesVector.clear();
 		reply.Clear();
@@ -78,14 +77,14 @@ int main()
 	//convierta. Ademas se evaluara el constructor mas completo de la clase y el metodo GetReplyTypeString().
 	//Se considera que todas las variables estan configuradas en 0.0
 	for (auto i=0x09; i<=0x0B; i++){
-		Reply reply2(RBW_INDEX, Reply::GETSTPVAR, VarName(i));
+		Reply reply2(Reply::GETSTPVAR, VarName(i));
 		assert(reply2.GetReplyTypeString()=="GETSTPVAR");
 		assert(reply2.GetNumOfBytes()==6);
 		bytesVector.push_back(0x20);
 		bytesVector.push_back(0);
 		bytesVector.insert(bytesVector.begin()+2, 4, 0); //Valor flotante 0.0
 		reply2.InsertBytes( bytesVector.data() );
-		assert(reply2.IsRightReply()==true);
+		assert(reply2.IsRight()==true);
 		assert(reply2.GetValue()==0.0);
 		bytesVector.clear();
 	}
@@ -99,13 +98,13 @@ int main()
 	bytesVector.push_back(0x21);
 	bytesVector.push_back(0);
 	reply.InsertBytes( bytesVector.data() );
-	assert(reply.IsRightReply()==true);
+	assert(reply.IsRight()==true);
 	bytesVector.clear();
 	reply.Clear();
 
 	//Verificacion de la respuesta AMPFREQDAT. Esta respuesta esta formada por 17 bytes: un header, 4 bytes de timestamp
-	//(valor entero), 4 bytes para la frecuencia (valor flotante en Hz/10), 4 bytes para la potencia minima
-	//(valor flotante, en dBm) y 4 bytes para la potencia maxima (valor flotante, en dBm). Se considerara que el
+	//(valor entero sin signo), 4 bytes para la frecuencia (valor entero sin signo en Hz/10), 4 bytes para la potencia
+	//minima (valor flotante, en dBm) y 4 bytes para la potencia maxima (valor flotante, en dBm). Se considerara que el
 	//timestamp es 1000, la frecuencia 850.0 MHz, la potencia minima -50.2 dBm y la potencia maxima -45.5 dBm.
 	//Se debe tener en cuenta que con objetos de la clase base Reply solo se puede obtener el valor de potencia minima
 	//con esta clase de respuesta
@@ -113,14 +112,14 @@ int main()
 	assert(reply.GetReplyType()==Reply::AMPFREQDAT);
 	assert(reply.GetNumOfBytes()==17);
 	bytesVector.push_back(0x22); //header de la respuesta
-	bytesVector.push_back(0xE8); //Byte menos significativo del timpestamp
+	bytesVector.push_back(0xE8); //Byte menos significativo del timpestamp (entero sin signo, 1000)
 	bytesVector.push_back(0x03);
 	bytesVector.push_back(0x00);
 	bytesVector.push_back(0x00); //Byte mas significativo del timestamp
-	bytesVector.push_back(0xE8); //Byte menos significativo de la frecuencia
-	bytesVector.push_back(0x1F);
-	bytesVector.push_back(0xA2);
-	bytesVector.push_back(0x4C); //Byte mas significativo de la frecuencia
+	bytesVector.push_back(0x40); //Byte menos significativo de la frecuencia (entero sin signo, 85000000)
+	bytesVector.push_back(0xFF);
+	bytesVector.push_back(0x10);
+	bytesVector.push_back(0x05); //Byte mas significativo de la frecuencia
 	bytesVector.push_back(0xCD); //Byte menos significativo de la potencia minima
 	bytesVector.push_back(0xCC);
 	bytesVector.push_back(0x48);
@@ -130,7 +129,7 @@ int main()
 	bytesVector.push_back(0x36);
 	bytesVector.push_back(0xC2); //Byte mas significativo de la potencia maxima
 	reply.InsertBytes( bytesVector.data() );
-	assert(reply.IsRightReply()==true);
+	assert(reply.IsRight()==true);
 	assert(reply.GetValue()==-50.2f);
 
 
@@ -143,7 +142,7 @@ int main()
 	assert(swReply.GetNumOfBytes()==17);
 	//El vector de bytes no fue borrado por lo que no es necesario llenarlo de nuevo
 	swReply.InsertBytes( bytesVector.data() );
-	assert(swReply.IsRightReply()==true);
+	assert(swReply.IsRight()==true);
 	assert(swReply.GetTimestamp()==1000);
 	assert(swReply.GetFrequency()==850e6);
 	assert(swReply.GetMinValue()==-50.2f);

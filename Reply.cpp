@@ -12,7 +12,6 @@
 //! Default constructor
 Reply::Reply()
 {
-	RBW_INDEX=nullptr;
 	replyType=Reply::UNINITIALIZED;
 	variableName=VarName::UNINITIALIZED;
 	value=0.0;
@@ -22,17 +21,6 @@ Reply::Reply()
 //! A constructor which allows to set the reply type.
 Reply::Reply(ReplyType type, VarName varName)
 {
-	RBW_INDEX=nullptr;
-	replyType=type;
-	variableName=varName;
-	value=0.0;
-	PrepareReply();
-}
-
-//! The most complete constructor which allows to set reply type and initialize the pointer to the container with the RBW indexes.
-Reply::Reply(const RBW_bimap& rbw_ind, ReplyType type, VarName varName)
-{
-	RBW_INDEX=&rbw_ind;
 	replyType=type;
 	variableName=varName;
 	value=0.0;
@@ -42,18 +30,11 @@ Reply::Reply(const RBW_bimap& rbw_ind, ReplyType type, VarName varName)
 //! The copy constructor
 Reply::Reply(const Reply& anotherReply)
 {
-	RBW_INDEX=anotherReply.RBW_INDEX;
 	bytes=anotherReply.bytes;
 	replyType=anotherReply.replyType;
 	numOfWaitedBytes=anotherReply.numOfWaitedBytes;
 	variableName=anotherReply.variableName;
 	value=anotherReply.value;
-}
-
-//! This method is intended to set the internal pointer when it has not been initialized in the constructor.
-void Reply::SetPointer(const RBW_bimap& rbw_ind)
-{
-	RBW_INDEX=&rbw_ind;
 }
 
 //! This method is intended to prepare the object to receive the bytes sent by the spectrum analyzer.
@@ -120,7 +101,7 @@ void Reply::InsertBytes(uint8_t* data)
 
 		if( variableName==VarName::RESBANDW || variableName==VarName::VIDBANDW )
 		{
-			value = RBW_INDEX->right.at( floatBytes.floatValue ); //The obtained value is the RBW index so it is changed
+			value = RBW_INDEX.right.at( floatBytes.floatValue ); //The obtained value is the RBW index so it is changed
 																//for the actual frequency value in Hz
 		}else if ( variableName==VarName::STARTFREQ || variableName==VarName::STOPFREQ ||
 				variableName==VarName::CENTERFREQ || variableName==VarName::SPANFREQ )
@@ -169,14 +150,14 @@ string Reply::GetReplyTypeString() const
  * received byte and then, if the reply type is VERIFY it checks if the following bytes are correct, or if the reply
  * type is GETSTPVAR or SETSTPVAR it checks the "status" byte, which must be zero when all is right.
  */
-bool Reply::IsRightReply() const
+bool Reply::IsRight() const
 {
 	bool flagRight;
 
 	switch(replyType){
 	case ReplyType::VERIFY:
-		if ( bytes[0]==ReplyType::VERIFY && bytes[1]==0x51 &&
-				bytes[2]==0x1A && bytes[3]==0xF5 && bytes[4]==0xAF ){
+		if ( bytes[0]==ReplyType::VERIFY && bytes[1]==0x51 && bytes[2]==0x1A
+				&& bytes[3]==0xF5 && bytes[4]==0xAF ){
 			flagRight=true;
 		}else{
 			flagRight=false;
@@ -214,16 +195,16 @@ bool Reply::IsRightReply() const
 //! The method to reset the object.
 void Reply::Clear()
 {
-	bytes.clear();
 	replyType=ReplyType::UNINITIALIZED;
 	numOfWaitedBytes=0;
+	variableName=VarName::UNINITIALIZED;
+	bytes.clear();
 	value=0.0;
 }
 
 //! The overloading of the assignment operator.
 const Reply& Reply::operator =(const Reply& anotherReply)
 {
-	RBW_INDEX=anotherReply.RBW_INDEX;
 	bytes=anotherReply.bytes;
 	replyType=anotherReply.replyType;
 	numOfWaitedBytes=anotherReply.numOfWaitedBytes;
@@ -252,34 +233,36 @@ void SweepReply::InsertBytes(uint8_t * data)
 	union UnIntToBytes{
 		unsigned int intValue;
 		uint8_t bytes[4];
-	}unIntBytes;
+	}unsIntBytes;
 
 	FloatToBytes floatBytes;
 
 	FillBytesVector(data);
 
-	//Timestamp extraction
-	unIntBytes.bytes[0]=bytes.at(1);
-	unIntBytes.bytes[1]=bytes.at(2);
-	unIntBytes.bytes[2]=bytes.at(3);
-	unIntBytes.bytes[3]=bytes.at(4);
-	timestamp=unIntBytes.intValue;
+	/*! Timestamp extraction: this value is received as a 4-bytes unsigned integer and it represents the count of Spectran's
+	 * an internal timer. The timer period is approximately 3.5 nS and it is a 32-bit timer.
+	 */
+	unsIntBytes.bytes[0]=bytes.at(1);
+	unsIntBytes.bytes[1]=bytes.at(2);
+	unsIntBytes.bytes[2]=bytes.at(3);
+	unsIntBytes.bytes[3]=bytes.at(4);
+	timestamp=unsIntBytes.intValue;
 
-	//Frequency extraction
-	floatBytes.bytes[0]=bytes.at(5);
-	floatBytes.bytes[1]=bytes.at(6);
-	floatBytes.bytes[2]=bytes.at(7);
-	floatBytes.bytes[3]=bytes.at(8);
-	frequency=floatBytes.floatValue*10;
+	/*! Frequency extraction: this value is received as a 4-bytes unsigned integer in Hz/10. */
+	unsIntBytes.bytes[0]=bytes.at(5);
+	unsIntBytes.bytes[1]=bytes.at(6);
+	unsIntBytes.bytes[2]=bytes.at(7);
+	unsIntBytes.bytes[3]=bytes.at(8);
+	frequency=float(unsIntBytes.intValue*10);
 
-	//Min power extraction
+	/*! Min power extraction: this value is received as a 4-bytes floating point value, measured in dBm. */
 	floatBytes.bytes[0]=bytes.at(9);
 	floatBytes.bytes[1]=bytes.at(10);
 	floatBytes.bytes[2]=bytes.at(11);
 	floatBytes.bytes[3]=bytes.at(12);
 	value=minValue=floatBytes.floatValue;
 
-	//Max power extraction
+	/*! Max power extraction: this value is received as a 4-bytes floating point value, measured in dBm. */
 	floatBytes.bytes[0]=bytes.at(13);
 	floatBytes.bytes[1]=bytes.at(14);
 	floatBytes.bytes[2]=bytes.at(15);
@@ -289,7 +272,8 @@ void SweepReply::InsertBytes(uint8_t * data)
 
 void SweepReply::Clear()
 {
-	Reply::Clear();
+	bytes.clear();
+	value=0.0;
 	timestamp=0.0;
 	frequency=0.0;
 	minValue=0.0;
@@ -298,7 +282,8 @@ void SweepReply::Clear()
 
 const SweepReply& SweepReply::operator=(const SweepReply& anotherReply)
 {
-	Reply::operator=(anotherReply);
+	bytes=anotherReply.bytes;
+	value=anotherReply.value;
 	timestamp=anotherReply.timestamp;
 	frequency=anotherReply.frequency;
 	minValue=anotherReply.minValue;
