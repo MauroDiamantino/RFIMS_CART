@@ -85,28 +85,8 @@ int main(){
 
 		cout << "Iniciando la sesion con el dispositivo" << endl;
 		unsigned int errorCounter=0;
-		bool flagWrongLastTry=false;
 
-		do
-		{
-			try
-			{
-				interface.Initialize();
-				flagWrongLastTry=false;
-			}
-			catch (exception& except)
-			{
-				cerr << except.what() << endl;
-				flagWrongLastTry=true;
-				errorCounter++;
-				if(errorCounter<3){
-					cerr << "Error: the Spectran interface could not correctly initialize the communication. It will try again.\n" << endl;
-				}else{
-					CustomException except("Error: the Spectran interface could not initialize the communication with the Spectran device after the interface tried it three times.");
-					throw(except);
-				}
-			}
-		}while(flagWrongLastTry==true);
+		interface.Initialize();
 		assert( interface.IsLogged()==true );
 		cout << "La sesion fue iniciada con exito\n" << endl;
 

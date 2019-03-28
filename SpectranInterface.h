@@ -35,6 +35,7 @@
 
 using namespace std;
 
+
 //////////////User-defined global types///////////
 //! An enumeration which contains the names of all the environment variables of the Spectran HF-60105 V4 X spectrum analyzer.
 enum class VarName : uint8_t { STARTFREQ=0x01, STOPFREQ, RESBANDW, VIDBANDW, SWEEPTIME, ATTENFAC, REFLEVEL, DISPRANGE,
@@ -51,21 +52,25 @@ union FloatToBytes {
 
 typedef boost::bimap<float,float> RBW_bimap;
 
-///////////////Constants///////////////////////
-//const unordered_map<float,float> RBW_INDEX( {	{100e6, 0.0}, {3e6, 1.0}, {1e6, 2.0}, {300e3, 3.0}, {100e3, 4.0},
-//												{30e3, 5.0}, {10e3, 6.0}, {3e3, 7.0}, {1e3, 8.0}, {120e3, 100.0},
-//												{9e3, 101.0}, {200.0, 102.0}, {5e6, 103.0},	{200e3, 104},
-//												{1.5e6, 105.0} } );
 
+///////////////Constants///////////////////////
+//! A vector which is initialized with the pairs of values {RBW(Hz), RBW index}. The vector is used to initialize a bidirectional map.
 const vector<RBW_bimap::value_type> vect( {	{100e6, 0.0}, {3e6, 1.0}, {1e6, 2.0}, {300e3, 3.0}, {100e3, 4.0},
 											{30e3, 5.0}, {10e3, 6.0}, {3e3, 7.0}, {1e3, 8.0}, {120e3, 100.0},
 											{9e3, 101.0}, {200.0, 102.0}, {5e6, 103.0},	{200e3, 104}, {1.5e6, 105.0} }	);
 
+//! A bidirectional map (bimap) which contains the pairs of values {RBW(Hz), RBW index}
+/*! These pairs of values relates a RBW frequency value with its corresponding index taking into account the Spectran
+ * USB protocol. So this bidirectional container allows to get the corresponding index given a frequency value or to
+ * get the corresponding frequency value given an index. This allows to work with frequency values of RBW at high
+ * level, eliminating the need to learn the protocol's indexes. This container is used by the classes Command and Reply.
+ */
 const RBW_bimap RBW_INDEX( vect.begin(), vect.end() );
 
-/////////////////Classes/////////////////
 
-//!Class CustomException derived from standard class exception
+/////////////////////Classes///////////////////////
+
+//!Class CustomException derived from standard class exception.
 class CustomException : public exception
 {
 	string message;
@@ -237,7 +242,11 @@ public:
 };
 
 
-//! Class *SpectranInterface*
+//! The class *SpectranInterface* is intended to manage the communication with the Aaronia Spectran device.
+/*! This class establishes the communication with the Aaronia Spectran device (VID=0403, PID=E8D8) and allows
+ * to write commands to the device and read its replies. Also, it allows to know the available bytes in the
+ * input buffer, purge that buffer and reset the communication with the device.
+ */
 class SpectranInterface {
 	////////////Attributes/////////////
 	//Constants

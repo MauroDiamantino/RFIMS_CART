@@ -130,34 +130,49 @@ SpectranInterface::~SpectranInterface()
 void SpectranInterface::Initialize()
 {
 	Reply reply;
-	unsigned int errorCounter=0;
+	unsigned int errorCounter=0, retryCounter=0;
+	bool flagSuccess=false;
 
-	//if (flagLogIn==true)
-		//LogOut();
-
-	//Sending of two VERIFY commands
 	Command command(Command::VERIFY);
-	for (auto i=0; i<2; i++)
+
+	do
 	{
-		try
+		//Sending a LOGOUT command to make sure the device will reply correctly to the VERIFY commands
+		LogOut();
+
+		//Sending of two VERIFY commands
+		do
 		{
-			Write(command);
-			reply.Clear();
-			reply.PrepareTo(Reply::VERIFY);
-			Read(reply);
-		}
-		catch (exception& exc)
+			try
+			{
+				Write(command);
+				reply.Clear();
+				reply.PrepareTo(Reply::VERIFY);
+				Read(reply);
+				flagSuccess=true;
+			}
+			catch (exception& exc)
+			{
+				cerr << "Warning: one of the two commands VERIFY to initialize the communication failed." << endl;
+				errorCounter++;
+			}
+		}while(flagSuccess==false && errorCounter<2); //Just one error is accepted
+
+		if(flagSuccess==false)
 		{
-			//cerr << "Initialize()->" << exc.what() << endl;
-			cerr << "Warning: one of the two commands VERIFY to initialize the communication failed." << endl;
-			errorCounter++;
-			//Just one error is accepted
-			if (errorCounter>1){
-				CustomException except("The two commands VERIFY received a wrong reply or no reply.");
-				throw(except);
+			retryCounter++;
+			if(retryCounter<3) //Just three retry are accepted
+			{
+				cerr << "Warning: Two commands VERIFY failed but the Spectran interface will reset the device and try again." << endl;
+				//Turn off the device then turn it back on
+			}
+			else
+			{
+				CustomException exc("The Spectran interface could not initiliaze the communicaiton with the Spectran device.");
+				throw(exc);
 			}
 		}
-	}
+	}while(flagSuccess==false);
 
 	//Disabling the transmission of measurements from the spectrum analyzer. Two commands are sent.
 	command.Clear();
@@ -285,15 +300,18 @@ unsigned int SpectranInterface::Available()
 
 void SpectranInterface::Purge()
 {
-	//The input and output buffers are purged
-	ftStatus=FT_Purge(ftHandle, FT_PURGE_RX | FT_PURGE_TX);
+	//The input buffer is purged
+	ftStatus=FT_Purge(ftHandle, FT_PURGE_RX);
 	if (ftStatus!=FT_OK){
-		CustomException except("The Spectran Interface failed when it tried to purge the input and output buffers.");
+		CustomException except("The Spectran Interface failed when it tried to purge the input buffer.");
 		throw(except);
 	}
 }
 
-//! The USB device is restarted
+//! The USB device is restarted.
+/*! First, a logout is performed, then the communication is restarted and finally the Spectran interface
+ * initialize the communication again.
+ */
 void SpectranInterface::Reset()
 {
 	LogOut();
@@ -305,6 +323,8 @@ void SpectranInterface::Reset()
 	}
 
 	sleep(3);
+
+	Initialize();
 }
 
 void SpectranInterface::LogOut()
