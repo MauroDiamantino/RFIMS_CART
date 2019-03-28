@@ -17,7 +17,7 @@ const string DEVICE_DESCRIPTION = "Aaronia SPECTRAN HF-60105 X";
 const float START_FREQ = 750e6;
 const float STOP_FREQ = 760e6;
 const float SPAN = (STOP_FREQ - START_FREQ);
-const float SWEEP_TIME = 5e3;
+const float SWEEP_TIME = 1e3;
 const float RBW = 1e6;
 const float VBW = 3e6;
 const float SAMPLE_POINTS = 2*SPAN/RBW + 1;
@@ -173,7 +173,6 @@ int main(){
 		cout << "\tIndice\t\tFrecuencia(Hz)\t\tPotencia(dBm)" << endl;
 		while (flagSweepReady==false)
 		{
-			//while( interface.Available() < swReply.GetNumOfBytes() );
 			swReply.Clear();
 			interface.Read(swReply);
 			frequency=swReply.GetFrequency();
@@ -182,6 +181,7 @@ int main(){
 			flagSweepReady = !mapReply.second;
 			i++;
 			cout << '\t' << i << "\t\t" << frequency << "\t\t" << power << endl;
+			usleep( (__useconds_t) SWEEP_TIME/51 ); //tiempo teorico entre muestras dado un sweep time de 5s y que la cantidad de muestras es 51
 		}
 		cout << "La cantidad de puntos capturados es: " << sweep.size() << endl;
 //		assert( sweep.size()==SAMPLE_POINTS );
@@ -225,6 +225,12 @@ int main(){
 			throw(except);
 		}
 		cout << "La deshabilitacion fue realizada con exito" << endl;
+
+		cout << "Limpieza de los buffers de entrada y salida" << endl;
+		interface.Purge();
+		cout << "Limpieza exitosa" << endl;
+
+		sleep(1);
 
 		//El envio del comando LOGOUT y el cierre de la comunicacion con el dispositivo seran realizados por el destructor
 

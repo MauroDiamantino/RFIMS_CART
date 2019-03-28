@@ -15,7 +15,7 @@ SpectranInterface::SpectranInterface()
 	ftStatus=FT_SetVIDPID(VID, PID);
 
 	if (ftStatus!=FT_OK){
-		CustomException except("Error when the Spectran Interface tried to include the pair of values (PID,VID) of the Spectran device in the list of possible values.");
+		CustomException except("The Spectran Interface could not include the pair of values (PID,VID) of the Spectran device in the list of possible values.");
 		throw(except);
 
 	}else{
@@ -34,14 +34,14 @@ void SpectranInterface::OpenAndSetUp()
 		switch(ftStatus)
 		{
 		case 2:
-			except.SetMessage("Error: the Spectran device was not found.");
+			except.SetMessage("The Spectran device was not found.");
 			throw(except);
 		case 3:
-			except.SetMessage("Error: the Spectran device could not be opened.");
+			except.SetMessage("The Spectran device could not be opened.");
 			throw(except);
 		default:
 			stringstream ss;
-			ss << "Error: the function FT_OpenEx() returned a ftStatus value of " << ftStatus;
+			ss << "The function FT_OpenEx(), of the D2XX library, returned a ftStatus value of " << ftStatus;
 			except.SetMessage( ss.str() );
 			throw(except);
 		}
@@ -49,7 +49,7 @@ void SpectranInterface::OpenAndSetUp()
 		//////////////Setting up the FTDI IC///////////////
 		ftStatus=FT_SetTimeouts(ftHandle, USB_RD_TIMEOUT_MS, USB_WR_TIMEOUT_MS);
 		if (ftStatus!=FT_OK){
-			CustomException except("Error: the read and write timeouts could not be set up.");
+			CustomException except("The read and write timeouts could not be set up.");
 			throw(except);
 		}
 
@@ -86,35 +86,35 @@ void SpectranInterface::OpenAndSetUp()
 		ftStatus = FT_SetFlowControl(ftHandle, FT_FLOW_NONE, 0, 0);
 		if(ftStatus!=FT_OK)
 		{
-			CustomException exc("Error: the flow control could not be set up.");
+			CustomException exc("The flow control could not be set up.");
 			throw(exc);
 		}
 
 		ftStatus = FT_SetDataCharacteristics(ftHandle, FT_BITS_8, FT_STOP_BITS_2, FT_PARITY_NONE);
 		if(ftStatus!=FT_OK)
 		{
-			CustomException exc("Error: the data characteristics could not be set up.");
+			CustomException exc("The data characteristics could not be set up.");
 			throw(exc);
 		}
 
-		ftStatus = FT_SetBaudRate(ftHandle, FT_BAUD_921600);
+		ftStatus = FT_SetBaudRate(ftHandle, FT_BAUD_115200);
 		if(ftStatus!=FT_OK)
 		{
-			CustomException exc("Error: the baud rate could not be set up.");
+			CustomException exc("The baud rate could not be set up.");
 			throw(exc);
 		}
 
 		ftStatus = FT_SetChars(ftHandle, 0, 0, 0, 0);
 		if(ftStatus!=FT_OK)
 		{
-			CustomException exc("Error: the special characters could not be disabled.");
+			CustomException exc("The special characters could not be disabled.");
 			throw(exc);
 		}
 
 		ftStatus = FT_SetUSBParameters(ftHandle, 0x1000, 0x000);
 		if(ftStatus!=FT_OK)
 		{
-			CustomException exc("Error: the USB request transfer size could not be set up.");
+			CustomException exc("The USB request transfer size could not be set up.");
 			throw(exc);
 		}
 	}
@@ -153,7 +153,7 @@ void SpectranInterface::Initialize()
 			errorCounter++;
 			//Just one error is accepted
 			if (errorCounter>1){
-				CustomException except("Initialize(). Error sending the two commands VERIFY. Both commands received a wrong reply or no reply.");
+				CustomException except("The two commands VERIFY received a wrong reply or no reply.");
 				throw(except);
 			}
 		}
@@ -175,13 +175,13 @@ void SpectranInterface::Initialize()
 	}
 	catch(exception& exc)
 	{
-		CustomException except("Error: there was an error when the Spectran interface tried to disable the transmission of measurements.");
+		CustomException except("There was an error when the Spectran interface tried to disable the transmission of measurements.");
 		throw(except);
 	}
 
 	if(reply.IsRight()==false)
 	{
-		CustomException except("Error: the reply to the 2nd command to disable the transmission of measurements was wrong.");
+		CustomException except("The reply to the 2nd command to disable the transmission of measurements was wrong.");
 		throw(except);
 	}
 
@@ -197,13 +197,13 @@ void SpectranInterface::Initialize()
 	}
 	catch (exception& exc)
 	{
-		CustomException except("Error: there was an error when the Spectran interface tried to set up the speaker volume.");
+		CustomException except("There was an error when the Spectran interface tried to set up the speaker volume.");
 		throw(except);
 	}
 
 	if (reply.IsRight()!=true){
 		stringstream ss;
-		ss << "Error: the Spectran Interface tried to set the speaker volume to " << SPK_VOLUME << " but the reply was not right.";
+		ss << "The Spectran Interface tried to set the speaker volume to " << SPK_VOLUME << " but the reply was not right.";
 		CustomException except( ss.str() );
 		throw(except);
 	}
@@ -216,7 +216,7 @@ void SpectranInterface::Initialize()
 	Purge();
 }
 
-void SpectranInterface::Write(const Command& command)
+inline void SpectranInterface::Write(const Command& command)
 {
 	DWORD writtenBytes;
 	unsigned int numOfBytes = command.GetNumOfBytes();
@@ -229,28 +229,41 @@ void SpectranInterface::Write(const Command& command)
 
 	ftStatus=FT_Write(ftHandle, txBuffer, numOfBytes, &writtenBytes);
 	if (ftStatus!=FT_OK){
-		CustomException except("Write(). Error when the Spectran Interface tried to write a command, the function FT_Write() returned an error value.");
+		CustomException except("The Spectran Interface could not write a command, the function FT_Write() returned an error value.");
 		throw(except);
 	}else if (writtenBytes!=numOfBytes){
-		CustomException except("Write(). Error when the Spectran Interface tried to write a command, not all bytes were written");
+		CustomException except("The Spectran Interface could not write a command correctly, not all bytes were written");
 		throw(except);
 	}
 }
 
-void SpectranInterface::Read(Reply& reply)
+inline void SpectranInterface::Read(Reply& reply)
 {
 	DWORD receivedBytes;
 	unsigned int numOfBytes=reply.GetNumOfBytes();
 	uint8_t rxBuffer[numOfBytes];
 
-	usleep(200000);
+	unsigned int i=0;
+	unsigned int currNumOfBytes=0;
+	while ( currNumOfBytes<numOfBytes && i++<20 )
+	{
+		currNumOfBytes = Available();
+		usleep(70000);
+	}
+	if(i>=20)
+	{
+		CustomException exc("In a reading operation, the input bytes were waited too much time.");
+		throw(exc);
+	}
+
+//	usleep(100000);
 
 	ftStatus=FT_Read(ftHandle, rxBuffer, numOfBytes, &receivedBytes);
 	if (ftStatus!=FT_OK){
-		CustomException except("Read(). Error when the Spectran interface tried to read a Spectran reply, the function FT_Read returned an error value.");
+		CustomException except("The Spectran interface could not read a Spectran reply, the function FT_Read returned an error value.");
 		throw(except);
 	}else if (receivedBytes!=numOfBytes){
-		CustomException except("Read(). Error when the Spectran interface tried to read a Spectran reply, not all bytes were read.");
+		CustomException except("The Spectran interface tried to read a Spectran reply but not all bytes were read.");
 		throw(except);
 	}
 	reply.InsertBytes(rxBuffer); //The received bytes are inserted in the given Reply object
@@ -260,8 +273,10 @@ unsigned int SpectranInterface::Available()
 {
 	DWORD numOfInputBytes;
 	ftStatus=FT_GetQueueStatus(ftHandle, &numOfInputBytes);
+	//DWORD numOfOutputBytes, events;
+	//ftStatus=FT_GetStatus(ftHandle, &numOfInputBytes, &numOfOutputBytes, &events);
 	if (ftStatus!=FT_OK){
-		CustomException except("Available(). Error when the Spectran interface tried to read the number of bytes in the receive queue.");
+		CustomException except("The Spectran interface could not read the number of bytes in the receive queue.");
 		throw(except);
 	}
 
@@ -273,7 +288,7 @@ void SpectranInterface::Purge()
 	//The input and output buffers are purged
 	ftStatus=FT_Purge(ftHandle, FT_PURGE_RX | FT_PURGE_TX);
 	if (ftStatus!=FT_OK){
-		CustomException except("Error when the Spectran Interface tried to purge the input and output buffers.");
+		CustomException except("The Spectran Interface failed when it tried to purge the input and output buffers.");
 		throw(except);
 	}
 }
@@ -285,20 +300,11 @@ void SpectranInterface::Reset()
 
 	ftStatus=FT_ResetDevice(ftHandle);
 	if(ftStatus!=FT_OK){
-		CustomException except("Error: the USB device could not be restarted.");
+		CustomException except("The USB device could not be restarted.");
 		throw(except);
 	}
 
 	sleep(3);
-
-	ftStatus=FT_Close(ftHandle);
-	if(ftStatus!=FT_OK){
-		CustomException except("Error: the USB could not be closed to reset the communication.");
-		throw(except);
-	}
-
-	OpenAndSetUp();
-
 }
 
 void SpectranInterface::LogOut()
@@ -322,13 +328,13 @@ void SpectranInterface::LogOut()
 		}
 		catch(exception& exc)
 		{
-			CustomException except("Error: there was an error when the Spectran interface tried to disable the transmission of measurements.");
+			CustomException except("There was an error when the Spectran interface tried to disable the transmission of measurements.");
 			throw(except);
 		}
 
 		if(reply.IsRight()==false)
 		{
-			CustomException except("Error: the reply to the 2nd command to disable the transmission of measurements was wrong.");
+			CustomException except("The reply to the 2nd command to disable the transmission of measurements was wrong.");
 			throw(except);
 		}
 
@@ -343,12 +349,10 @@ void SpectranInterface::LogOut()
 	{
 		Write(command);
 	}
-	catch(exception& exc)
+	catch(CustomException& exc)
 	{
-		string str( exc.what() );
-		str.insert(0, "LogOut()->");
-		CustomException exc2(str);
-		throw(exc2);
+		exc.Append("\nThe command LOGOUT failed.");
+		throw;
 	}
 
 	flagLogIn=false;
@@ -365,17 +369,14 @@ void SpectranInterface::SoundLogIn()
 		{
 			Write(command);
 			Read(reply);
+			if (reply.IsRight()!=true)
+			{
+				cerr << "Warning: the reply of one of the commands to produce one of the beeps which sound in the login was wrong" << endl;
+			}
 		}
 		catch(exception& exc)
 		{
-			string str(exc.what());
-			str.insert(0, "SoundLogIn()->");
-			CustomException except(str);
-			throw(except);
-		}
-		if (reply.IsRight()!=true){
-			CustomException except("Error when the Spectran Interface tried to make the Log-In sound.");
-			throw(except);
+			cerr << "Warning: one of the commands to produce one of the beeps which sound in the login failed." << endl;
 		}
 	}
 }
@@ -388,16 +389,14 @@ void SpectranInterface::SoundLogOut()
 	{
 		Write(command);
 		Read(reply);
+		if (reply.IsRight()!=true)
+		{
+			cerr << "Warning: The reply of the command to produce the beep which sound in the logout was wrong." << endl;
+		}
 	}
 	catch(exception& exc)
 	{
-		string str(exc.what());
-		str.insert(0, "SoundLogOut()->");
-		CustomException except(str);
-		throw(except);
-	}
-	if (reply.IsRight()!=true){
-		CustomException except("Error when the Spectran Interface tried to make the Log-Out sound.");
-		throw(except);
+		cerr << "Warning: " << exc.what() << endl;
+		cerr << "There was a failure with the command to produce the beep which sound in the logout failed." << endl;
 	}
 }

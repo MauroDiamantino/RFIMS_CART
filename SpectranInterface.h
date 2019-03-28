@@ -65,13 +65,14 @@ const RBW_bimap RBW_INDEX( vect.begin(), vect.end() );
 
 /////////////////Classes/////////////////
 
-//Class CustomException derived from standard class exception
+//!Class CustomException derived from standard class exception
 class CustomException : public exception
 {
 	string message;
 public:
 	CustomException(const string& msg="Error") : message(msg) {}
 	void SetMessage(const string& msg) {	message=msg;	}
+	void Append(const string& msg){		message+=msg;	}
 	virtual const char * what() const throw()
 	{
 		return message.c_str();
