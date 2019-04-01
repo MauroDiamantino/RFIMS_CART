@@ -176,7 +176,7 @@ void SpectranInterface::Initialize()
 
 	//Disabling the transmission of measurements from the spectrum analyzer. Two commands are sent.
 	command.Clear();
-	command.SetAs(Command::SETSTPVAR, VarName::USBMEAS, 0.0);
+	command.SetAs(Command::SETSTPVAR, SpecVariable::USBMEAS, 0.0);
 	Write(command); //First command to set USBMEAS to 0
 	reply.Clear();
 	reply.PrepareTo(Reply::SETSTPVAR);
@@ -202,7 +202,7 @@ void SpectranInterface::Initialize()
 
 	//Setting the speaker volume
 	command.Clear();
-	command.SetAs(Command::SETSTPVAR, VarName::SPKVOLUME, SPK_VOLUME);
+	command.SetAs(Command::SETSTPVAR, SpecVariable::SPKVOLUME, SPK_VOLUME);
 	try
 	{
 		Write(command);
@@ -335,7 +335,7 @@ void SpectranInterface::LogOut()
 	if(flagLogIn==true)
 	{
 		//Disabling the transmission of measurements
-		command.SetAs(Command::SETSTPVAR, VarName::USBMEAS, 0.0);
+		command.SetAs(Command::SETSTPVAR, SpecVariable::USBMEAS, 0.0);
 		Write(command); //First command to set USBMEAS to 0
 		reply.PrepareTo(Reply::SETSTPVAR);
 		Read(reply);
@@ -380,7 +380,7 @@ void SpectranInterface::LogOut()
 
 void SpectranInterface::SoundLogIn()
 {
-	Command command(Command::SETSTPVAR, VarName::STDTONE, LOG_IN_SOUND_DURATION);
+	Command command(Command::SETSTPVAR, SpecVariable::STDTONE, LOG_IN_SOUND_DURATION);
 
 	for (auto i=0; i<2; i++)
 	{
@@ -403,7 +403,7 @@ void SpectranInterface::SoundLogIn()
 
 void SpectranInterface::SoundLogOut()
 {
-	Command command(Command::SETSTPVAR, VarName::STDTONE, LOG_OUT_SOUND_DURATION);
+	Command command(Command::SETSTPVAR, SpecVariable::STDTONE, LOG_OUT_SOUND_DURATION);
 	Reply reply(Reply::SETSTPVAR);
 	try
 	{

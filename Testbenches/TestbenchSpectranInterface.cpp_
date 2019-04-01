@@ -23,7 +23,7 @@ const float VBW = 3e6;
 const float SAMPLE_POINTS = 2*SPAN/RBW + 1;
 //const float DELTA_FREQ = SPAN/(SAMPLE_POINTS);
 
-void SetAndReadVariables(SpectranInterface& interface, VarName var1, VarName var2, float value)
+void SetAndReadVariables(SpectranInterface& interface, SpecVariable var1, SpecVariable var2, float value)
 {
 	Command comm;
 	Reply reply;
@@ -36,7 +36,7 @@ void SetAndReadVariables(SpectranInterface& interface, VarName var1, VarName var
 		cout << "Configuracion de la variable ";
 		printf("%02X", i);
 		cout << endl;
-		comm.SetAs(Command::SETSTPVAR, VarName(i), value);
+		comm.SetAs(Command::SETSTPVAR, SpecVariable(i), value);
 		interface.Write(comm);
 		reply.PrepareTo(Reply::SETSTPVAR);
 		interface.Read(reply);
@@ -50,9 +50,9 @@ void SetAndReadVariables(SpectranInterface& interface, VarName var1, VarName var
 		cout << "Lectura de la variable ";
 		printf("%02X", i);
 		cout << endl;
-		comm.SetAs(Command::GETSTPVAR, VarName(i));
+		comm.SetAs(Command::GETSTPVAR, SpecVariable(i));
 		interface.Write(comm);
-		reply.PrepareTo(Reply::GETSTPVAR, VarName(i));
+		reply.PrepareTo(Reply::GETSTPVAR, SpecVariable(i));
 		interface.Read(reply);
 		assert( reply.IsRight()==true );
 		assert( reply.GetValue()==value );
@@ -62,7 +62,7 @@ void SetAndReadVariables(SpectranInterface& interface, VarName var1, VarName var
 	}
 }
 
-void SetAndReadVariables(SpectranInterface& interface, VarName var1, float value){ SetAndReadVariables(interface, var1, var1, value);	}
+void SetAndReadVariables(SpectranInterface& interface, SpecVariable var1, float value){ SetAndReadVariables(interface, var1, var1, value);	}
 
 
 int main(){
@@ -91,36 +91,36 @@ int main(){
 		cout << "La sesion fue iniciada con exito\n" << endl;
 
 //		cout << "Configuracion de la variable STARTFREQ en 800 MHz" << endl;
-//		SetAndReadVariables(interface, VarName::STARTFREQ, 800e6);
+//		SetAndReadVariables(interface, SpecVariable::STARTFREQ, 800e6);
 //
 //		cout << "Configuracion de la variable STOPFREQ en 900 MHz" << endl;
-//		SetAndReadVariables(interface, VarName::STOPFREQ, 900e6);
+//		SetAndReadVariables(interface, SpecVariable::STOPFREQ, 900e6);
 //
-//		SetAndReadVariables(interface, VarName::RESBANDW, VarName::SWEEPTIME, 200.0);
+//		SetAndReadVariables(interface, SpecVariable::RESBANDW, SpecVariable::SWEEPTIME, 200.0);
 //
-//		SetAndReadVariables(interface, VarName::ATTENFAC, VarName::REFLEVEL, 10.0);
+//		SetAndReadVariables(interface, SpecVariable::ATTENFAC, SpecVariable::REFLEVEL, 10.0);
 //
-//		SetAndReadVariables(interface, VarName::DISPUNIT, VarName::DEMODMODE, 0.0);
+//		SetAndReadVariables(interface, SpecVariable::DISPUNIT, SpecVariable::DEMODMODE, 0.0);
 //
-//		SetAndReadVariables(interface, VarName::ANTTYPE, VarName::RECVCONF, 0.0);
+//		SetAndReadVariables(interface, SpecVariable::ANTTYPE, SpecVariable::RECVCONF, 0.0);
 //
-//		SetAndReadVariables(interface, VarName::CENTERFREQ, 500e6);
+//		SetAndReadVariables(interface, SpecVariable::CENTERFREQ, 500e6);
 //
-//		SetAndReadVariables(interface, VarName::SPANFREQ, 100e6);
+//		SetAndReadVariables(interface, SpecVariable::SPANFREQ, 100e6);
 //
-//		SetAndReadVariables(interface, VarName::PREAMPEN, VarName::SWPDLYACC, 0.0);
+//		SetAndReadVariables(interface, SpecVariable::PREAMPEN, SpecVariable::SWPDLYACC, 0.0);
 
-		//SetAndReadVariables(interface, VarName::SWPFRQPTS, SAMPLE_POINTS);
+		//SetAndReadVariables(interface, SpecVariable::SWPFRQPTS, SAMPLE_POINTS);
 
-		//SetAndReadVariables(interface, VarName::ANTGAIN, 5.0);
+		//SetAndReadVariables(interface, SpecVariable::ANTGAIN, 5.0);
 
 		//Configuracion de las variables STARTFREQ, STOPFREQ, SWEEPTIME y RBW para luego capturar
 		//un barrido con una cantidad accesible de puntos
-		SetAndReadVariables(interface, VarName::STARTFREQ, START_FREQ);
-		SetAndReadVariables(interface, VarName::STOPFREQ, STOP_FREQ);
-		SetAndReadVariables(interface, VarName::SWEEPTIME, SWEEP_TIME);
-		SetAndReadVariables(interface, VarName::RESBANDW, RBW);
-		SetAndReadVariables(interface, VarName::VIDBANDW, VBW);
+		SetAndReadVariables(interface, SpecVariable::STARTFREQ, START_FREQ);
+		SetAndReadVariables(interface, SpecVariable::STOPFREQ, STOP_FREQ);
+		SetAndReadVariables(interface, SpecVariable::SWEEPTIME, SWEEP_TIME);
+		SetAndReadVariables(interface, SpecVariable::RESBANDW, RBW);
+		SetAndReadVariables(interface, SpecVariable::VIDBANDW, VBW);
 
 		cout << "\nCaptura de un barrido y presentacion de los valores en linea" << endl;
 		typedef map<float,float> SweepMap;
@@ -133,7 +133,7 @@ int main(){
 
 		//Reinicio del barrido actual
 //		comm.Clear();
-//		comm.SetAs(Command::SETSTPVAR, VarName::USBSWPRST, 1.0);
+//		comm.SetAs(Command::SETSTPVAR, SpecVariable::USBSWPRST, 1.0);
 //		interface.Write(comm);
 //		reply.Clear();
 //		reply.PrepareTo(Reply::SETSTPVAR);
@@ -143,7 +143,7 @@ int main(){
 		cout << "Habilitacion del envio de barridos y reinicio del barrido actual\n" << endl;
 		comm.Clear();
 		reply.Clear();
-		comm.SetAs(Command::SETSTPVAR, VarName::USBMEAS, 1.0);
+		comm.SetAs(Command::SETSTPVAR, SpecVariable::USBMEAS, 1.0);
 		interface.Write(comm);
 		reply.PrepareTo(Reply::SETSTPVAR);
 		interface.Read(reply);
@@ -175,7 +175,7 @@ int main(){
 //		assert( delta==DELTA_FREQ );
 
 		cout << "\nDeshabilitacion del envio de barridos" << endl;
-		Command comm(Command::SETSTPVAR, VarName::USBMEAS, 0.0);
+		Command comm(Command::SETSTPVAR, SpecVariable::USBMEAS, 0.0);
 		Reply reply;
 		errorCounter=0;
 

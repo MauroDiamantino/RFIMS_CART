@@ -13,16 +13,16 @@
 Reply::Reply()
 {
 	replyType=Reply::UNINITIALIZED;
-	variableName=VarName::UNINITIALIZED;
+	variableName=SpecVariable::UNINITIALIZED;
 	value=0.0;
 	numOfWaitedBytes=0;
 }
 
 //! A constructor which allows to set the reply type.
-Reply::Reply(ReplyType type, VarName varName)
+Reply::Reply(ReplyType type, SpecVariable variable)
 {
 	replyType=type;
-	variableName=varName;
+	variableName=variable;
 	value=0.0;
 	PrepareReply();
 }
@@ -70,10 +70,10 @@ void Reply::PrepareReply()
  * private method `PrepareReply()`. The variable name must be set for the GETSTPVAR replies, for other cases it
  * is not important.
  */
-void Reply::PrepareTo(ReplyType type, VarName varName)
+void Reply::PrepareTo(ReplyType type, SpecVariable variable)
 {
 	replyType=type;
-	variableName=varName;
+	variableName=variable;
 	PrepareReply();
 }
 
@@ -99,12 +99,12 @@ void Reply::InsertBytes(uint8_t* data)
 		floatBytes.bytes[2] = bytes.at(4);
 		floatBytes.bytes[3] = bytes.at(5);
 
-		if( variableName==VarName::RESBANDW || variableName==VarName::VIDBANDW )
+		if( variableName==SpecVariable::RESBANDW || variableName==SpecVariable::VIDBANDW )
 		{
 			value = RBW_INDEX.right.at( floatBytes.floatValue ); //The obtained value is the RBW index so it is changed
 																//for the actual frequency value in Hz
-		}else if ( variableName==VarName::STARTFREQ || variableName==VarName::STOPFREQ ||
-				variableName==VarName::CENTERFREQ || variableName==VarName::SPANFREQ )
+		}else if ( variableName==SpecVariable::STARTFREQ || variableName==SpecVariable::STOPFREQ ||
+				variableName==SpecVariable::CENTERFREQ || variableName==SpecVariable::SPANFREQ )
 		{
 			value = floatBytes.floatValue*1.0e6; //The measurement unit is converted from MHz to Hz
 		}else
@@ -142,6 +142,110 @@ string Reply::GetReplyTypeString() const
 		break;
 	default:
 		return "UNINITIALIZED";
+	}
+}
+
+//! A method which returns the name, as a std::string, of the Spectran's variable which is related with the reply (GETSTPVAR reply)
+string Reply::GetVariableName() const
+{
+	switch(variableName)
+	{
+	case SpecVariable::ANTGAIN:
+		return "antenna gain";
+	case SpecVariable::ANTTYPE:
+		return "antenna type";
+	case SpecVariable::ATTENFAC:
+		return "attenuator factor";
+	case SpecVariable::BACKBBEN:
+		return "background BB detector";
+	case SpecVariable::CABLETYPE:
+		return "cable type";
+	case SpecVariable::CENTERFREQ:
+		return "center frequency";
+	case SpecVariable::DEMODMODE:
+		return "demodulator mode";
+	case SpecVariable::DETMODE:
+		return "detector mode";
+	case SpecVariable::DISPDIS:
+		return "display update";
+	case SpecVariable::DISPRANGE:
+		return "display range";
+	case SpecVariable::DISPUNIT:
+		return "display unit";
+	case SpecVariable::LEVELTONE:
+		return "peak level audio tone";
+	case SpecVariable::LOGFILEID:
+		return "log file id";
+	case SpecVariable::LOGSAMPCNT:
+		return "log samples count";
+	case SpecVariable::LOGTIMEIVL:
+		return "log time interval";
+	case SpecVariable::MARKCOUNT:
+		return "marker count";
+	case SpecVariable::MARKMINPK:
+		return "marker minimum peak";
+	case SpecVariable::MAXPEAKPOW:
+		return "global maximal peak power";
+	case SpecVariable::PEAK1FREQ:
+		return "peak 1 frequency";
+	case SpecVariable::PEAK1POW:
+		return "peak 1 power";
+	case SpecVariable::PEAK2FREQ:
+		return "peak 2 frequency";
+	case SpecVariable::PEAK2POW:
+		return "peak 2 power";
+	case SpecVariable::PEAK3FREQ:
+		return "peak 3 frequency";
+	case SpecVariable::PEAK3POW:
+		return "peak 3 power";
+	case SpecVariable::PEAKDISP:
+		return "peak display mode";
+	case SpecVariable::PREAMPEN:
+		return "internal preamplifier enabling";
+	case SpecVariable::RBWFSTEP:
+		return "rbw frequency (read only)";
+	case SpecVariable::RDOUTIDX:
+		return "vertical line marker";
+	case SpecVariable::RECVCONF:
+		return "receiver configuration";
+	case SpecVariable::REFLEVEL:
+		return "reference level";
+	case SpecVariable::REFOFFS:
+		return "manual calibration value";
+	case SpecVariable::RESBANDW:
+		return "rbw";
+	case SpecVariable::SPANFREQ:
+		return "span";
+	case SpecVariable::SPECDISP:
+		return "spectrum display mode";
+	case SpecVariable::SPECPROC:
+		return "spectrum processing mode";
+	case SpecVariable::SPKVOLUME:
+		return "speaker volume";
+	case SpecVariable::STARTFREQ:
+		return "start frequency";
+	case SpecVariable::STDTONE:
+		return "output standard speaker tone";
+	case SpecVariable::STOPFREQ:
+		return "stop frequency";
+	case SpecVariable::SWEEPTIME:
+		return "sweep time";
+	case SpecVariable::SWPDLYACC:
+		return "sweep delay for accuracy mode";
+	case SpecVariable::SWPFRQPTS:
+		return "sweep frequency points";
+	case SpecVariable::USBMEAS:
+		return "measurements data to USB enabling";
+	case SpecVariable::USBRUNPROG:
+		return "run spectran program";
+	case SpecVariable::USBSWPID:
+		return "usb sweep id request";
+	case SpecVariable::USBSWPRST:
+		return "reset current sweep";
+	case SpecVariable::VIDBANDW:
+		return "vbw";
+	default:
+		return "unknown";
 	}
 }
 
@@ -197,7 +301,7 @@ void Reply::Clear()
 {
 	replyType=ReplyType::UNINITIALIZED;
 	numOfWaitedBytes=0;
-	variableName=VarName::UNINITIALIZED;
+	variableName=SpecVariable::UNINITIALIZED;
 	bytes.clear();
 	value=0.0;
 }

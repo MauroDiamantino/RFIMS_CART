@@ -25,20 +25,23 @@
 #include <vector>
 #include <string>
 #include <unordered_map>
-#include <boost/bimap.hpp> //Bidirectional container
 #include <cassert> //To use assert() function to debug the code
 #include <ftd2xx.h> //The library which allows to communicate with the FTDI driver
 #include <exception>
 #include <cstdlib> //exit, EXIT_SUCCESS, EXIT_FAILURE
 #include <sstream> //stringstream
 #include <unistd.h> //usleep
+#include <fstream> //ifstream
+#include <boost/bimap.hpp> //Bidirectional container
+#include <boost/algorithm/string.hpp> //to_lower(string)
+#include <boost/filesystem/operations.hpp> //last_write_time(path)
 
 using namespace std;
 
 
 //////////////User-defined global types///////////
 //! An enumeration which contains the names of all the environment variables of the Spectran HF-60105 V4 X spectrum analyzer.
-enum class VarName : uint8_t { STARTFREQ=0x01, STOPFREQ, RESBANDW, VIDBANDW, SWEEPTIME, ATTENFAC, REFLEVEL, DISPRANGE,
+enum class SpecVariable : uint8_t { STARTFREQ=0x01, STOPFREQ, RESBANDW, VIDBANDW, SWEEPTIME, ATTENFAC, REFLEVEL, DISPRANGE,
 	DISPUNIT, DETMODE, DEMODMODE, SPECPROC, ANTTYPE, CABLETYPE, RECVCONF, CENTERFREQ=0x1E, SPANFREQ, PREAMPEN=0x10,
 	SWPDLYACC, SWPFRQPTS, REFOFFS, USBMEAS=0x20, USBSWPRST, USBSWPID, USBRUNPROG, LOGFILEID=0x30, LOGSAMPCNT,
 	LOGTIMEIVL,	SPECDISP=0x41, PEAKDISP, MARKMINPK, RDOUTIDX, MARKCOUNT, LEVELTONE, BACKBBEN, DISPDIS, SPKVOLUME,
@@ -55,7 +58,7 @@ typedef boost::bimap<float,float> RBW_bimap;
 
 ///////////////Constants///////////////////////
 //! A vector which is initialized with the pairs of values {RBW(Hz), RBW index}. The vector is used to initialize a bidirectional map.
-const vector<RBW_bimap::value_type> vect( {	{100e6, 0.0}, {3e6, 1.0}, {1e6, 2.0}, {300e3, 3.0}, {100e3, 4.0},
+const vector<RBW_bimap::value_type> vect( {	{50e6, 0.0}, {3e6, 1.0}, {1e6, 2.0}, {300e3, 3.0}, {100e3, 4.0},
 											{30e3, 5.0}, {10e3, 6.0}, {3e3, 7.0}, {1e3, 8.0}, {120e3, 100.0},
 											{9e3, 101.0}, {200.0, 102.0}, {5e6, 103.0},	{200e3, 104}, {1.5e6, 105.0} }	);
 
@@ -120,22 +123,22 @@ private:
 	//Variables
 	vector<uint8_t> bytes; //!< Bytes array (or vector) which will be sent by the Spectran Interface.
 	CommandType commandType; //!< The command type of the object.
-	VarName variableName; //!< The variable name which will be modified or read if the command type is *GETSTPVAR* or *SETSTPVAR*
+	SpecVariable variableName; //!< The variable name which will be modified or read if the command type is *GETSTPVAR* or *SETSTPVAR*
 	float value; //!< The value (as a float number) which will be used to modify a Spectran variable. It is just used with *SETSTPVAR* command.
 	//////////Private methods/////////
 	void FillBytesVector();
 public:
 	//////////Class interface//////////
 	Command();
-	Command(CommandType commType, VarName varName=VarName::UNINITIALIZED, float val=0.0);
+	Command(CommandType commType, SpecVariable variable=SpecVariable::UNINITIALIZED, float val=0.0);
 	Command(const Command& anotherComm);
-	void SetAs(CommandType commType, VarName varName=VarName::UNINITIALIZED, float val=0.0);
-	void SetParameters(VarName varName, float val=0.0);
+	void SetAs(CommandType commType, SpecVariable variable=SpecVariable::UNINITIALIZED, float val=0.0);
+	void SetParameters(SpecVariable variable, float val=0.0);
 	//! A method to get the current command type.
 	CommandType GetCommandType() const {	return commandType;	}
 	string GetCommTypeString() const;
 	//! A method to get the variable name which is going to be or has been modified or read.
-	VarName GetVariableName() const {	return variableName;	}
+	SpecVariable GetVariableName() const {	return variableName;	}
 	//! A method to get the value which is going to be or has been used to modify a variable.
 	float GetValue() const {	return value;	}
 	//! A method to obtain the bytes vector like this is implemented internally, a `vector` container.
@@ -181,7 +184,7 @@ private:
 	//Variables
 	ReplyType replyType; //!< The reply type of the object.
 	unsigned int numOfWaitedBytes; //!< The quantity of bytes which are waited taking into account the reply type.
-	VarName variableName; //!< The name of the variable which has been queried with a GETSTPVAR command.
+	SpecVariable variableName; //!< The name of the variable which has been queried with a GETSTPVAR command.
 	//////////Private methods///////////
 	void PrepareReply();
 protected:
@@ -193,14 +196,15 @@ protected:
 public:
 	//////////Class interface///////////
 	Reply();
-	Reply(ReplyType type, VarName varName=VarName::UNINITIALIZED);
+	Reply(ReplyType type, SpecVariable variable=SpecVariable::UNINITIALIZED);
 	Reply(const Reply& anotherReply);
 	virtual ~Reply() {}
-	virtual void PrepareTo(ReplyType type, VarName varName=VarName::UNINITIALIZED);
+	virtual void PrepareTo(ReplyType type, SpecVariable variable=SpecVariable::UNINITIALIZED);
 	virtual void InsertBytes(uint8_t * data);
 	//! A Get method which returns the reply type as the corresponding value of the class' internal enumerator.
 	ReplyType GetReplyType() const {	return replyType;	}
 	string GetReplyTypeString() const;
+	string GetVariableName() const;
 	//! A method to get the bytes vector like this is implemented internally, a `vector` container.
 	const vector<uint8_t>& GetBytesVector() const {	return bytes;	}
 	//! A method to get a direct pointer to the bytes of the internal vector.
@@ -231,7 +235,7 @@ public:
 	SweepReply();
 	SweepReply(uint8_t * bytesPtr);
 	~SweepReply() {}
-	void PrepareTo(ReplyType type, VarName varName=VarName::UNINITIALIZED) {}
+	void PrepareTo(ReplyType type, SpecVariable variable=SpecVariable::UNINITIALIZED) {}
 	void InsertBytes(uint8_t * b);
 	unsigned int GetTimestamp() const {	return timestamp;	};
 	float GetFrequency() const {	return frequency;	};
@@ -282,6 +286,65 @@ public:
 	DWORD GetPID() const { 	return PID;	}
 	string GetDevDescription() const {	return DEVICE_DESCRIPTION;	}
 	bool IsLogged() const {	return flagLogIn;	}
+};
+
+//! The class *SpectranConfigurator* is intended to manage the process of configuring the Aaronia Spectran device.
+class SpectranConfigurator
+{
+	////////Private class' types/////////
+	struct VarParameters
+	{
+		bool flagEnable; //it determines if the band is used or not
+		float startFreq;
+		float stopFreq;
+		float rbw; //resolution bandwidth
+		float vbw; //video bandwidth
+		unsigned long int sweepTime;
+		unsigned int samplePoints; //number of samples
+		unsigned int detector; //”rms”(0) or “min/max”(1)
+	};
+	struct FixedParameters
+	{
+		int attenFactor;
+		unsigned int displayUnit; //”dBm” or “dBuV” or “V/m” or “A/m”
+		unsigned int demodMode; //”off” or “am” or “fm”
+		unsigned int antennaType;
+		int cableType; //-1 is none, 0 is “1m standard cable”
+		unsigned int recvConf; //0=spectrum, 1=broadband
+		bool internPreamp; //0=off, 1=on
+		bool sweepDelayAcc; //Sweep delay for accuracy. 1=enable, 0=disable
+		bool peakLevelAudioTone; //0=disable, 1=enable
+		bool backBBDetector; //0=disable, 1=enable
+		float speakerVol; //range from 0.0 to 1.0
+		float antennaGain; //Nominal antenna gain in dB
+	};
+	///////////Attributes///////////////
+	//Constants
+	const string FILES_PATH = "/home/new-mauro/RFIMS-CART/parameters/";
+	//Variables
+	ifstream ifs;
+	SpectranInterface & interface;
+	vector<VarParameters> bands;
+	unsigned int bandIndex;
+	FixedParameters fixedParam;
+	time_t lastWriteTimes[2];
+	bool flagSweepsEnabled;
+	//////////Private methods//////////////
+	void SetAndCheckVariable(SpecVariable variable, float value);
+public:
+	/////////////////Class' interface//////////////
+	SpectranConfigurator(SpectranInterface& interf);
+	~SpectranConfigurator();
+	bool LoadParameters();
+	void InitialConfiguration();
+	unsigned int ConfigureNextBand();
+	void EnableSweep();
+	void DisableSweep();
+	vector<VarParameters> GetBandsParam() const {	return bands;	}
+	unsigned int GetNumOfBands() const {	return bands.size();	}
+	unsigned int GetBandIndex() const {		return bandIndex;	}
+	bool IsLastBand() const {	return ( bandIndex>=bands.size() );	}
+	bool IsSweepEnabled() const {	return flagSweepsEnabled;	}
 };
 
 #endif /* SPECTRANINTERFACE_H_ */

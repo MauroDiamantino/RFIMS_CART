@@ -11,14 +11,14 @@
 
 //! Default constructor
 /*! When this constructor is used, the programmer must provide the command data with the method
- * `SetAs(commType,varName,value)`, and even with the method `SetParameters(varName,value)`. Also, the programmer
+ * `SetAs(commType,variable,value)`, and even with the method `SetParameters(variable,value)`. Also, the programmer
  * must set the internal pointers with the method `SetPointers`. The internal pointers are used to get info about the
  * variables' IDs and the RBW's indexes.
  */
 Command::Command()
 {
 	commandType=UNINITIALIZED;
-	variableName=VarName::UNINITIALIZED;
+	variableName=SpecVariable::UNINITIALIZED;
 	value=0.0;
 }
 
@@ -27,10 +27,10 @@ Command::Command()
  * variable name (GETSTPVAR and SETSTPVAR commands) and its value (just SETSTPVAR command). If it used providing just
  * the first parameter, then the method `SetAs` should be used to set command type, variable name and value.
  */
-Command::Command(CommandType type, VarName varName, float val)
+Command::Command(CommandType type, SpecVariable variable, float val)
 {
 	commandType=type;
-	variableName=varName;
+	variableName=variable;
 	value=val;
 	FillBytesVector();
 }
@@ -79,13 +79,13 @@ void Command::FillBytesVector()
 		break;
 	case Command::SETSTPVAR:
 		var_id = uint8_t(variableName);
-		if( variableName==VarName::RESBANDW || variableName==VarName::VIDBANDW )
+		if( variableName==SpecVariable::RESBANDW || variableName==SpecVariable::VIDBANDW )
 		{
 			floatBytes.floatValue = RBW_INDEX.left.at(value); //The given value is the actual frequency value but the
 															//corresponding RBW (and VBW) index must be sent, so here
 															//this conversion is made
-		}else if ( variableName==VarName::STARTFREQ || variableName==VarName::STOPFREQ ||
-				variableName==VarName::CENTERFREQ || variableName==VarName::SPANFREQ )
+		}else if ( variableName==SpecVariable::STARTFREQ || variableName==SpecVariable::STOPFREQ ||
+				variableName==SpecVariable::CENTERFREQ || variableName==SpecVariable::SPANFREQ )
 		{
 			floatBytes.floatValue=value/1.0e6; //The given value is in Hz but it must be sent in MHz, so it is divided by
 												//one million (1e6) to change it.
@@ -110,18 +110,18 @@ void Command::FillBytesVector()
 }
 
 //! This method is intended to provide to the object the enough data so this could configure itself to be ready to be sent.
-void Command::SetAs(CommandType commType, VarName varName, float val)
+void Command::SetAs(CommandType commType, SpecVariable variable, float val)
 {
 	commandType=commType;
-	variableName=varName;
+	variableName=variable;
 	value=val;
 	FillBytesVector();
 }
 
 //! This method is intended to set the command's parameters, so it should be used when the command type has already been set.
-void Command::SetParameters(VarName varName, float val)
+void Command::SetParameters(SpecVariable variable, float val)
 {
-	variableName=varName;
+	variableName=variable;
 	value=val;
 	FillBytesVector();
 }
@@ -152,7 +152,7 @@ void Command::Clear()
 {
 	bytes.clear();
 	commandType=UNINITIALIZED;
-	variableName=VarName::UNINITIALIZED;
+	variableName=SpecVariable::UNINITIALIZED;
 	value=0.0;
 }
 

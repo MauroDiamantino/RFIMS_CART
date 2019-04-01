@@ -1,0 +1,552 @@
+/*
+ * TestbenchSpectranConfigurator_2.cpp
+ *
+ *  Created on: 31/03/2019
+ *      Author: new-mauro
+ */
+
+#include "SpectranInterface.h"
+
+////////Private class' types/////////
+struct VarParameters
+{
+	bool flagEnable; //it determines if the band is used or not
+	float startFreq;
+	float stopFreq;
+	float rbw; //resolution bandwidth
+	float vbw; //video bandwidth
+	unsigned long int sweepTime;
+	unsigned int samplePoints; //number of samples
+	unsigned int detector; //”rms”(0) or “min/max”(1)
+};
+struct FixedParameters
+{
+	int attenFactor;
+	unsigned int displayUnit; //”dBm” or “dBuV” or “V/m” or “A/m”
+	unsigned int demodMode; //”off” or “am” or “fm”
+	unsigned int antennaType;
+	int cableType; //-1 is none, 0 is “1m standard cable”
+	unsigned int recvConf; //0=spectrum, 1=broadband
+	bool internPreamp; //0=off, 1=on
+	bool sweepDelayAcc; //Sweep delay for accuracy. 1=enable, 0=disable
+	bool peakLevelAudioTone; //0=disable, 1=enable
+	bool backBBDetector; //0=disable, 1=enable
+	float speakerVol; //range from 0.0 to 1.0
+	float antennaGain; //Nominal antenna gain in dB
+};
+///////////Attributes///////////////
+//Constants
+const string FILES_PATH = "/home/new-mauro/RFIMS-CART/parameters/";
+//Variables
+ifstream ifs;
+vector<VarParameters> bands;
+unsigned int bandIndex;
+FixedParameters fixedParam;
+time_t lastWriteTimes[2];
+bool flagSweepsEnabled;
+
+bool LoadParameters()
+{
+	string paramName, line;
+	char endChar;
+	size_t definitionEndPos, endCharPos, equalPos;
+	string pathAndName;
+	bool flagFixParamReload=false;
+
+	pathAndName = FILES_PATH + "fixedparameters.txt";
+	//boost::filesystem::path fixParamFilePath(pathAndName);
+	//Checking if the fixed parameters have been modified
+	//if( lastWriteTimes[0] < boost::filesystem::last_write_time(fixParamFilePath) )
+	if( lastWriteTimes[0] < boost::filesystem::last_write_time(pathAndName) )
+	{
+		//lastWriteTimes[0] = boost::filesystem::last_write_time(fixParamFilePath);
+		lastWriteTimes[0] = boost::filesystem::last_write_time(pathAndName);
+
+		flagFixParamReload = true;
+
+		//Opening the files with the fixed parameters and loading these ones
+		ifs.open(pathAndName);
+		do
+		{
+			line.clear();
+			getline(ifs, line);
+			//The next instruction determines if there are comments and which position they start in.
+			//If there are no comments, the position returned by the method find() will be string::npos.
+			definitionEndPos = line.find("//");
+
+			if( ( endCharPos = line.find(',') ) < definitionEndPos ||
+					( endCharPos = line.find(';') ) < definitionEndPos )
+			{
+				//The definition has an end character (a comma or a semicolon) before the comment (if this exists)
+				equalPos = line.find('=');
+				paramName = line.substr(0, equalPos);
+				endChar = line.at(endCharPos);
+			}
+			else
+			{
+				//The definition is incomplete
+				string str = "The parameter's definition \"" + line + "\" does not have a comma or semicolon in the end.";
+				CustomException exc(str);
+				throw(exc);
+			}
+
+			//The parameter's name is transformed to lower case
+			boost::algorithm::to_lower(paramName);
+
+			//The parameter's value is extracted and transformed to lower case
+			string valueString = line.substr(equalPos+1, endCharPos-equalPos-1);
+			boost::algorithm::to_lower(valueString);
+
+			istringstream iss;
+			if(paramName=="attenuator factor")
+			{
+				if(valueString=="auto")
+				{
+					fixedParam.attenFactor = -10;
+				}
+				else
+				{
+					//The value is numerical
+					iss.str(valueString);
+					iss >> fixedParam.attenFactor;
+					if(fixedParam.attenFactor<0 || fixedParam.attenFactor>30)
+					{
+						string str = "The given value to configure variable " + paramName + " is invalid.";
+						CustomException exc(str);
+						throw(exc);
+					}
+				}
+			}
+			else if(paramName=="display unit")
+			{
+				if(valueString=="dbm")
+				{
+					fixedParam.displayUnit=0;
+				}
+				else if(valueString=="dbuv")
+				{
+					fixedParam.displayUnit=1;
+				}
+				else if(valueString=="v/m")
+				{
+					fixedParam.displayUnit=2;
+				}
+				else if(valueString=="a/m")
+				{
+					fixedParam.displayUnit=3;
+				}
+				else
+				{
+					string str = "The given value to configure variable " + paramName + " is invalid.";
+					CustomException exc(str);
+					throw(exc);
+				}
+			}
+			else if(paramName=="demodulator mode")
+			{
+				if(valueString=="off")
+				{
+					fixedParam.demodMode=0;
+				}
+				else if(valueString=="am")
+				{
+					fixedParam.demodMode=1;
+				}
+				else if(valueString=="fm")
+				{
+					fixedParam.demodMode=3;
+				}
+				else
+				{
+					string str = "The given value to configure variable " + paramName + " is invalid.";
+					CustomException exc(str);
+					throw(exc);
+				}
+			}
+			else if(paramName=="antenna type")
+			{
+				if(valueString=="hl7025")
+				{
+					fixedParam.antennaType=0;
+				}
+				else if(valueString=="hl7040")
+				{
+					fixedParam.antennaType=1;
+				}
+				else if(valueString=="hl7060")
+				{
+					fixedParam.antennaType=2;
+				}
+				else if(valueString=="hl6080")
+				{
+					fixedParam.antennaType=3;
+				}
+				else if(valueString=="h60100")
+				{
+					fixedParam.antennaType=4;
+				}
+				else
+				{
+					string str = "The given value to configure variable " + paramName + " is invalid.";
+					CustomException exc(str);
+					throw(exc);
+				}
+			}
+			else if(paramName=="cable type")
+			{
+				iss.str(valueString);
+				iss >> fixedParam.cableType;
+				if(fixedParam.cableType!=-1 && fixedParam.cableType!=0)
+				{
+					string str = "The given value to configure variable " + paramName + " is invalid.";
+					CustomException exc(str);
+					throw(exc);
+				}
+			}
+			else if(paramName=="receiver configuration")
+			{
+				iss.str(valueString);
+				iss >> fixedParam.recvConf;
+				if(fixedParam.recvConf!=0 && fixedParam.recvConf!=1)
+				{
+					string str = "The given value to configure variable " + paramName + " is invalid.";
+					CustomException exc(str);
+					throw(exc);
+				}
+			}
+			else if(paramName=="internal preamplifier")
+			{
+				if(valueString=="off")
+				{
+					fixedParam.internPreamp=false;
+				}
+				else if(valueString=="on")
+				{
+					fixedParam.internPreamp=true;
+				}
+				else
+				{
+					string str = "The given value to configure variable " + paramName + " is invalid.";
+					CustomException exc(str);
+					throw(exc);
+				}
+//				iss.str(valueString);
+//				iss >> fixedParam.internPreamp;
+//				if(fixedParam.internPreamp!=0 && fixedParam.internPreamp!=1)
+//				{
+//					string str = "The given value to configure variable " + paramName + " is invalid.";
+//					CustomException exc(str);
+//					throw(exc);
+//				}
+			}
+			else if(paramName=="sweep delay accuracy")
+			{
+				if(valueString=="off")
+				{
+					fixedParam.sweepDelayAcc=false;
+				}
+				else if(valueString=="on")
+				{
+					fixedParam.sweepDelayAcc=true;
+				}
+				else
+				{
+					string str = "The given value to configure variable " + paramName + " is invalid.";
+					CustomException exc(str);
+					throw(exc);
+				}
+//				iss.str(valueString);
+//				iss >> fixedParam.sweepDelayAcc;
+//				if(fixedParam.sweepDelayAcc!=0 && fixedParam.recvConf!=1)
+//				{
+//					string str = "The given value to configure variable " + paramName + " is invalid.";
+//					CustomException exc(str);
+//					throw(exc);
+//				}
+			}
+			else if(paramName=="peak level audio tone")
+			{
+				if(valueString=="off")
+				{
+					fixedParam.peakLevelAudioTone=false;
+				}
+				else if(valueString=="on")
+				{
+					fixedParam.peakLevelAudioTone=true;
+				}
+				else
+				{
+					string str = "The given value to configure variable " + paramName + " is invalid.";
+					CustomException exc(str);
+					throw(exc);
+				}
+//				iss.str(valueString);
+//				iss >> fixedParam.peakLevelAudioTone;
+//				if(fixedParam.peakLevelAudioTone!=0 && fixedParam.peakLevelAudioTone!=1)
+//				{
+//					string str = "The given value to configure variable " + paramName + " is invalid.";
+//					CustomException exc(str);
+//					throw(exc);
+//				}
+			}
+			else if(paramName=="back bb detector")
+			{
+				if(valueString=="off")
+				{
+					fixedParam.backBBDetector=false;
+				}
+				else if(valueString=="on")
+				{
+					fixedParam.backBBDetector=true;
+				}
+				else
+				{
+					string str = "The given value to configure variable " + paramName + " is invalid.";
+					CustomException exc(str);
+					throw(exc);
+				}
+//				iss.str(valueString);
+//				iss >> fixedParam.backBBDetector;
+//				if(fixedParam.backBBDetector!=0 && fixedParam.backBBDetector!=1)
+//				{
+//					string str = "The given value to configure variable " + paramName + " is invalid.";
+//					CustomException exc(str);
+//					throw(exc);
+//				}
+			}
+			else if(paramName=="speaker volume")
+			{
+				iss.str(valueString);
+				iss >> fixedParam.speakerVol;
+				if(fixedParam.speakerVol<0.0 || fixedParam.speakerVol>1.0)
+				{
+					string str = "The given value to configure variable " + paramName + " is invalid.";
+					CustomException exc(str);
+					throw(exc);
+				}
+			}
+			else if(paramName=="antenna gain")
+			{
+				iss.str(valueString);
+				iss >> fixedParam.antennaGain;
+				if(fixedParam.antennaGain<0 || fixedParam.antennaGain>20)
+				{
+					string str = "The given value to configure variable " + paramName + " is invalid.";
+					CustomException exc(str);
+					throw(exc);
+				}
+			}
+			else
+			{
+				string str = "The parameter " + paramName + " is not a valid parameter.";
+				CustomException exc(str);
+				throw(exc);
+			}
+		}while( endChar!=';' );
+
+		ifs.close();
+	}
+
+
+	pathAndName = FILES_PATH + "freqbands.txt";
+	//boost::filesystem::path bandsParFilePath(pathAndName);
+	//if( lastWriteTimes[1] < boost::filesystem::last_write_time(bandsParFilePath) )
+	if( lastWriteTimes[1] < boost::filesystem::last_write_time(pathAndName) )
+	{
+		//lastWriteTimes[1] = boost::filesystem::last_write_time(bandsParFilePath);
+		lastWriteTimes[1] = boost::filesystem::last_write_time(pathAndName);
+		//Opening the files with the frequency bands's parameters and loading these ones
+		ifs.open(pathAndName);
+
+		VarParameters varParam = {false, 0.0, 0.0, 0.0, 0.0, 0, 0, 0};
+		do
+		{
+			line.clear();
+			getline(ifs, line);
+			//The next instruction determines if there are comments and which position they start in.
+			//If there are no comments, the position returned by the method find() will be string::npos.
+			definitionEndPos = line.find("//");
+
+			if( ( endCharPos = line.find(',') ) < definitionEndPos ||
+					( endCharPos = line.find(';') ) < definitionEndPos )
+			{
+				//The definition has an end character (a comma or a semicolon) before the comment (if this exists)
+				equalPos = line.find('=');
+				paramName = line.substr(0, equalPos);
+				endChar = line.at(endCharPos);
+			}
+			else
+			{
+				//The definition is incomplete
+				string str = "The parameter's definition \"" + line + "\" does not have a comma or semicolon in the end.";
+				CustomException exc(str);
+				throw(exc);
+			}
+
+			//The parameter's name is transformed to lower case
+			boost::algorithm::to_lower(paramName);
+
+			//The parameter's value is extracted and transformed to lower case
+			string valueString = line.substr(equalPos+1, endCharPos-equalPos-1);
+			boost::algorithm::to_lower(valueString);
+
+			istringstream iss;
+			if(paramName=="band index")
+			{}
+			else if(paramName=="enabled")
+			{
+				if(valueString=="y")
+				{
+					varParam.flagEnable=true;
+				}
+				else if(valueString=="n")
+				{
+					varParam.flagEnable=false;
+				}
+				else
+				{
+					ostringstream oss;
+					oss << "It is not clear if the band " << (bands.size()+1) << " is enabled or not.";
+					CustomException exc( oss.str() );
+					throw(exc);
+				}
+			}
+			else if(paramName=="fstart")
+			{
+				iss.str(valueString);
+				iss >> varParam.startFreq;
+				if(varParam.startFreq<1e6 || varParam.startFreq>9.4e9)
+				{
+					string str = "The given value to configure variable " + paramName + " is out of range.";
+					CustomException exc(str);
+					throw(exc);
+				}
+			}
+			else if(paramName=="fstop")
+			{
+				iss.str(valueString);
+				iss >> varParam.stopFreq;
+				if(varParam.stopFreq<1e6 || varParam.stopFreq>9.4e9)
+				{
+					string str = "The given value to configure variable " + paramName + " is out of range.";
+					CustomException exc(str);
+					throw(exc);
+				}
+			}
+			else if(paramName=="rbw")
+			{
+				if(valueString=="full")
+				{
+					varParam.rbw=50e6;
+				}
+				else
+				{
+					//The value is numerical
+					iss.str(valueString);
+					iss >> varParam.rbw;
+					if(varParam.rbw!=3e6 && varParam.rbw!=1e6 && varParam.rbw!=300e3 && varParam.rbw!=100e3 &&
+							varParam.rbw!=30e3 && varParam.rbw!=10e3 && varParam.rbw!=3e3 && varParam.rbw!=1e3 &&
+							varParam.rbw!=120e3 && varParam.rbw!=9e3 && varParam.rbw!=200.0 && varParam.rbw!=5e6 &&
+							varParam.rbw!=200e3 && varParam.rbw!=1.5e6)
+					{
+						string str = "The given value to configure variable " + paramName + " is invalid.";
+						CustomException exc(str);
+						throw(exc);
+					}
+				}
+			}
+			else if(paramName=="vbw")
+			{
+				if(valueString=="full")
+				{
+					varParam.vbw=50e6;
+				}
+				else
+				{
+					//The value is numerical
+					iss.str(valueString);
+					iss >> varParam.vbw;
+					if(varParam.vbw!=3e6 && varParam.vbw!=1e6 && varParam.vbw!=300e3 && varParam.vbw!=100e3 &&
+							varParam.vbw!=30e3 && varParam.vbw!=10e3 && varParam.vbw!=3e3 && varParam.vbw!=1e3 &&
+							varParam.vbw!=120e3 && varParam.vbw!=9e3 && varParam.vbw!=200.0 && varParam.vbw!=5e6 &&
+							varParam.vbw!=200e3 && varParam.vbw!=1.5e6)
+					{
+						string str = "The given value to configure variable " + paramName + " is invalid.";
+						CustomException exc(str);
+						throw(exc);
+					}
+				}
+			}
+			else if(paramName=="sweep time")
+			{
+				iss.str(valueString);
+				iss >> varParam.sweepTime;
+				if(varParam.sweepTime<10 || varParam.sweepTime>600000)
+				{
+					string str = "The given value to configure variable " + paramName + " is invalid.";
+					CustomException exc(str);
+					throw(exc);
+				}
+			}
+			else if(paramName=="sample points")
+			{
+				iss.str(valueString);
+				iss >> varParam.samplePoints;
+			}
+			else if(paramName=="detector")
+			{
+				if(valueString=="rms")
+				{
+					varParam.detector=0;
+				}
+				else if(valueString=="min/max")
+				{
+					varParam.detector=1;
+				}
+				else
+				{
+					string str = "The given value to configure variable " + paramName + " is invalid.";
+					CustomException exc(str);
+					throw(exc);
+				}
+			}
+			else
+			{
+				string str = "The parameter " + paramName + " is not a valid parameter.";
+				CustomException exc(str);
+				throw(exc);
+			}
+
+			//Control if the definitions of one band finished
+			if(endChar==';')
+			{
+				bands.push_back(varParam);
+				varParam = {false, 0.0, 0.0, 0.0, 0.0, 0, 0, 0};
+
+				if( ifs.peek()=='\n' )
+					ifs.get();
+			}
+		}while(ifs.eof()!=true);
+
+		ifs.close();
+	}
+
+	return flagFixParamReload;
+}
+
+
+int main()
+{
+	try
+	{
+		for(auto i=0; i<2; i++)
+			LoadParameters();
+	}
+	catch(exception & exc)
+	{
+		cerr << exc.what() << endl;
+		exit(EXIT_FAILURE);
+	}
+	return 0;
+}
+
