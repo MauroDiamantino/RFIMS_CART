@@ -1,0 +1,93 @@
+/*
+ * TestbenchSweepCapturing.cpp
+ *
+ *  Created on: 31/03/2019
+ *      Author: new-mauro
+ */
+
+#include "SpectranInterface.h"
+#include "SweepProcessing.h"
+
+void WaitForKey()
+{
+    cin.clear();
+    cin.ignore(std::cin.rdbuf()->in_avail());
+    cin.get();
+}
+
+int main()
+{
+	cout << "\t\tTestbench de las clases SpectranInterface, SpectranConfigurator y SweepBuilder" << endl;
+
+	try
+	{
+		SpectranInterface specInterface;
+
+		cout << "\nIniciando la comunicacion con el dispositivo Spectran HF-60100 V4 X" << endl;
+		specInterface.Initialize();
+		cout << "La sesion fue iniciada con exito" << endl;
+
+		SpectranConfigurator specConfigurator(specInterface);
+		SweepBuilder swBuilder(specInterface);
+
+		//Cargando los parametros
+		cout << "\nCargando los parametros de configuracion del dispositivo Spectran desde los archivos correspondientes" << endl;
+		if( specConfigurator.LoadParameters()==true )
+		{
+			//If the fixed parameters were loaded for the first time or they were reloaded, the initial configuration will be repeated
+			cout << "Los parametros fijos fueron cargados por primera vez o fueron recargados por lo que se efectuara la configuracion inicial" << endl;
+			specConfigurator.InitialConfiguration();
+			cout << "La configuracion inicial fue realizada con exito" << endl;
+		}
+
+		VarParameters bandParam;
+		FreqValueSet wholeSweep, freqBand;
+
+		//Capturando los barridos
+		for(unsigned int i=0; i < specConfigurator.GetNumOfBands(); i++)
+		{
+			cout << "\nSe inicia el proceso de captura de un nuevo barrido, correspondiente a la banda frecuencial N° " << i+1 << endl;
+			cout << "Configurando el dispositivo Spectran con los parametros de la siguiente banda frecuencial" << endl;
+			specConfigurator.ConfigureNextBand();
+
+			bandParam = specConfigurator.GetCurrBandParam();
+			swBuilder.SetBandParameters(bandParam);
+
+			cout << "Capturando los puntos de un barrido" << endl;
+			freqBand = swBuilder.CaptureOneSweep();
+			cout << "La captura de un barrido finalizo" << endl;
+
+			cout << "Agregando el barrido de la banda frecuencial actual al final del barrido completo" << endl;
+			wholeSweep.PushBack(freqBand);
+		}
+
+		cout.precision(1);
+		cout.setf(ios::fixed, ios::floatfield);
+
+		cout << "\nA continuacion se graficara el barrido completo capturado." << endl;
+		cout << "Presione ENTER para que se inicie la visualizacion del barrido..." << endl;
+		cout << "\n\t\tFrequency (Hz)\t\tPower (dBm)" << endl;
+
+		WaitForKey();
+
+		for(uint8_t i=0; i < wholeSweep.values.size(); i++)
+			cout << "\t\t" << wholeSweep.frequencies[i] << "\t\t" << wholeSweep.values[i] << endl;
+
+		RFPloter rfPloter;
+
+		rfPloter.PlotSweep(wholeSweep);
+
+		cout << "\nPresione ENTER para terminar..." << endl;
+		WaitForKey();
+	}
+	catch(exception & exc)
+	{
+		cerr << "\nError: " << exc.what() << endl;
+
+		WaitForKey();
+
+		exit(EXIT_FAILURE);
+	}
+
+	return 0;
+}
