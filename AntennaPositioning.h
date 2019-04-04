@@ -20,16 +20,15 @@
 #ifndef ANTENNAPOSITIONING_H_
 #define ANTENNAPOSITIONING_H_
 
-#include <iostream>
+#include "RFIMS_CART.h"
+
 #include <nmea.h> //Library libnmea
 #include <nmea/gprmc.h> //parser of GPRMC messages
 #include <nmea/gpgga.h> //parser of GPGGA messages
-#include <string>
 #include <ftd2xx.h> //FTDI library
 #include <sstream> //stringstream
 #include <fstream> //filestream
 #include <unistd.h> //usleep
-#include <vector>
 #include <cmath> //atan2, M_PI
 #include <dirent.h> //To get filenames
 
@@ -55,19 +54,6 @@ typedef struct
 } GPSCoordinates;
 
 ///////////////////////Classes//////////////////////////
-//!Class CustomException derived from standard class exception
-class CustomException : public exception
-{
-	string message;
-public:
-	CustomException(const string& msg="Error") : message(msg) {}
-	void SetMessage(const string& msg) {	message=msg;	}
-	void Append(const string& msg){		message+=msg;	}
-	virtual const char * what() const throw()
-	{
-		return message.c_str();
-	}
-};
 
 //!It is intended to establish the communication with the Aaronia GPS receiver, to request and capture messages from this and extract useful data from messages
 class GPSInterface
