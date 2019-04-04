@@ -5,15 +5,13 @@
  *      Author: new-mauro
  */
 
-#include "SpectranInterface.h"
+#include "Spectran.h"
 
 //! The only one constructor of class SpectranConfigurator
 SpectranConfigurator::SpectranConfigurator(SpectranInterface& interf) : interface(interf)
 {
-	bandIndex=0;
-	lastWriteTimes[0]=0;
-	lastWriteTimes[1]=0;
-	flagSweepsEnabled=false;
+	bandIndex=10000;
+	lastWriteTimes[0]=lastWriteTimes[1]=0;
 }
 
 //! The destructor of class SpectranConfigurator
@@ -309,17 +307,6 @@ bool SpectranConfigurator::LoadParameters()
 					throw(exc);
 				}
 			}
-			else if(paramName=="antenna gain")
-			{
-				iss.str(valueString);
-				iss >> fixedParam.antennaGain;
-				if(fixedParam.antennaGain<0 || fixedParam.antennaGain>20)
-				{
-					string str = "The given value to configure variable " + paramName + " is invalid.";
-					CustomException exc(str);
-					throw(exc);
-				}
-			}
 			else
 			{
 				string str = "The parameter " + paramName + " is not a valid parameter.";
@@ -390,7 +377,7 @@ bool SpectranConfigurator::LoadParameters()
 				else
 				{
 					ostringstream oss;
-					oss << "It is not clear if the band " << (bands.size()+1) << " is enabled or not.";
+					oss << "It is not clear if the band " << (bandsParam.size()+1) << " is enabled or not.";
 					CustomException exc( oss.str() );
 					throw(exc);
 				}
@@ -476,6 +463,7 @@ bool SpectranConfigurator::LoadParameters()
 			{
 				iss.str(valueString);
 				iss >> varParam.samplePoints;
+				varParam.flagDefaultSamplePoints = (varParam.samplePoints==0);
 			}
 			else if(paramName=="detector")
 			{
@@ -504,7 +492,10 @@ bool SpectranConfigurator::LoadParameters()
 			//Control if the definitions of one band finished
 			if(endChar==';')
 			{
-				bands.push_back(varParam);
+				if(varParam.flagDefaultSamplePoints)
+					varParam.samplePoints = 2 * (unsigned int)( (varParam.stopFreq - varParam.startFreq) / varParam.rbw ) + 1;
+
+				bandsParam.push_back(varParam);
 				varParam = {false, 0.0, 0.0, 0.0, 0.0, 0, 0, 0};
 
 				if( ifs.peek()=='\n' )
@@ -529,14 +520,14 @@ void SpectranConfigurator::SetAndCheckVariable(SpecVariable variable, float valu
 		interface.Read(reply);
 		if(reply.IsRight()!=true)
 		{
-			string str = "The reply to the command to set up the \"" + reply.GetVariableName() + "\" was wrong.";
+			string str = "The reply to the command to set up the variable \"" + reply.GetVariableNameString() + "\" was wrong.";
 			CustomException exc(str);
 			throw(exc);
 		}
 	}
 	catch(CustomException & exc)
 	{
-		exc.Append("\nThe setting of the variable \"" + reply.GetVariableName() + "\" failed.");
+		exc.Append("\nThe setting of the variable \"" + reply.GetVariableNameString() + "\" failed.");
 		throw;
 	}
 
@@ -552,20 +543,20 @@ void SpectranConfigurator::SetAndCheckVariable(SpecVariable variable, float valu
 		interface.Read(reply);
 		if( reply.IsRight()!=true )
 		{
-			string str = "The reply to the command to get the current value of the \"" + reply.GetVariableName() + "\" was wrong.";
+			string str = "The reply to the command to get the current value of the \"" + reply.GetVariableNameString() + "\" was wrong.";
 			CustomException exc(str);
 			throw(exc);
 		}
 		else if( reply.GetValue()!=value )
 		{
-			string str = "The reply to the command to get the current value of the \"" + reply.GetVariableName() + "\" stated a different value with respect to the one which was used to configure it.";
+			string str = "The reply to the command to get the current value of the \"" + reply.GetVariableNameString() + "\" stated a different value with respect to the one which was used to configure it.";
 			CustomException exc(str);
 			throw(exc);
 		}
 	}
 	catch(CustomException & exc)
 	{
-		exc.Append("\nThe checking of the configured variable \"" + reply.GetVariableName() + "\" failed.");
+		exc.Append("\nThe checking of the configured variable \"" + reply.GetVariableNameString() + "\" failed.");
 		throw;
 	}
 }
@@ -598,8 +589,6 @@ void SpectranConfigurator::InitialConfiguration()
 	SetAndCheckVariable( SpecVariable::BACKBBEN, float(fixedParam.backBBDetector) );
 
 	SetAndCheckVariable( SpecVariable::SPKVOLUME, fixedParam.speakerVol );
-
-	SetAndCheckVariable( SpecVariable::ANTGAIN, fixedParam.antennaGain );
 }
 
 //! The aim of this method is to configure the spectrum analyzer with parameters of the next frequency band.
@@ -610,116 +599,28 @@ void SpectranConfigurator::InitialConfiguration()
  */
 unsigned int SpectranConfigurator::ConfigureNextBand()
 {
-	//Checking if the current band is enabled
-	while(bands[bandIndex].flagEnable!=true)
+	do
 	{
-		//The band is disable so it moves to the next one
-		bandIndex++;
-		if( bandIndex>=bands.size() )
+		if( ++bandIndex >= bandsParam.size() )
 		{
 			bandIndex=0;
 		}
-	}
+	}while(bandsParam[bandIndex].flagEnable==false); //Checking if the current band is enabled
 
-	SetAndCheckVariable( SpecVariable::STARTFREQ, bands[bandIndex].startFreq );
+	SetAndCheckVariable( SpecVariable::STARTFREQ, bandsParam[bandIndex].startFreq );
 
-	SetAndCheckVariable( SpecVariable::STOPFREQ, bands[bandIndex].stopFreq );
+	SetAndCheckVariable( SpecVariable::STOPFREQ, bandsParam[bandIndex].stopFreq );
 
-	SetAndCheckVariable( SpecVariable::RESBANDW, bands[bandIndex].rbw );
+	SetAndCheckVariable( SpecVariable::RESBANDW, bandsParam[bandIndex].rbw );
 
-	SetAndCheckVariable( SpecVariable::VIDBANDW, bands[bandIndex].vbw );
+	SetAndCheckVariable( SpecVariable::VIDBANDW, bandsParam[bandIndex].vbw );
 
-	SetAndCheckVariable( SpecVariable::SWEEPTIME, float(bands[bandIndex].sweepTime) );
+	SetAndCheckVariable( SpecVariable::SWEEPTIME, float(bandsParam[bandIndex].sweepTime) );
 
-	if(bands[bandIndex].samplePoints!=0)
-		SetAndCheckVariable( SpecVariable::SWPFRQPTS, float(bands[bandIndex].samplePoints) );
+	if(!bandsParam[bandIndex].flagDefaultSamplePoints)
+		SetAndCheckVariable( SpecVariable::SWPFRQPTS, float(bandsParam[bandIndex].samplePoints) );
 
-	SetAndCheckVariable( SpecVariable::DETMODE, float(bands[bandIndex].detector) );
-
-	bandIndex++;
-	if( bandIndex>=bands.size() )
-	{
-		bandIndex=0;
-	}
+	SetAndCheckVariable( SpecVariable::DETMODE, float(bandsParam[bandIndex].detector) );
 
 	return bandIndex;
-}
-
-//! The aim of this method is to enable the sending of measurements via USB
-void SpectranConfigurator::EnableSweep()
-{
-	Command comm(Command::SETSTPVAR, SpecVariable::STDTONE, 100.0);
-	Reply reply(Reply::SETSTPVAR);
-	try
-	{
-		interface.Write(comm);
-		interface.Read(reply);
-		if(reply.IsRight()!=true)
-		{
-			CustomException exc("The reply to the command to make the sound which indicates the start of a new sweep was wrong.");
-			throw(exc);
-		}
-	}
-	catch(CustomException & exc)
-	{
-		exc.Append("\nThe sound to show that a new sweep will be captured could not be made.");
-		throw;
-	}
-
-	comm.Clear();
-	comm.SetAs(Command::SETSTPVAR, SpecVariable::USBMEAS, 1.0);
-	try
-	{
-		interface.Write(comm);
-		reply.Clear();
-		reply.PrepareTo(Reply::SETSTPVAR);
-		interface.Read(reply);
-		if(reply.IsRight()!=true)
-		{
-			CustomException exc("The reply to the command to enable the sending of measurements via USB was wrong.");
-			throw(exc);
-		}
-	}
-	catch(CustomException & exc)
-	{
-		exc.Append("\nThe enabling of the sending of measurements via USB failed.");
-		throw;
-	}
-
-	flagSweepsEnabled=true;
-}
-
-//! This method allows to disable the sending of measurements via USB
-void SpectranConfigurator::DisableSweep()
-{
-	Command comm(Command::SETSTPVAR, SpecVariable::USBMEAS, 0.0);
-	Reply reply;
-	unsigned int errorCounter=0;
-
-	for(unsigned int i=0; i<2; i++)
-	{
-		try
-		{
-			interface.Write(comm);
-			reply.Clear();
-			reply.PrepareTo(Reply::SETSTPVAR);
-			interface.Read(reply);
-			if(reply.IsRight()!=true)
-			{
-				CustomException exc("The reply to the command to disable the sending of measurements via USB was wrong.");
-				throw(exc);
-			}
-		}
-		catch(CustomException & exc)
-		{
-			cerr << "Warning: one of the commands to disable the sending of measurements via USB failed." << endl;
-			if(++errorCounter >= 2)
-			{
-				exc.Append("\nThe disabling of the sending of measurements via USB failed.");
-				throw;
-			}
-		}
-	}
-
-	flagSweepsEnabled=false;
 }

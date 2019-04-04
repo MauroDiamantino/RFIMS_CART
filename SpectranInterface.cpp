@@ -5,11 +5,12 @@
  *      Author: new-mauro
  */
 
-#include "SpectranInterface.h"
+#include "Spectran.h"
 
 SpectranInterface::SpectranInterface()
 {
 	flagLogIn=false;
+	flagSweepsEnabled=false;
 
 	//The pair of values (VID,PID) of the Spectran HF-60105 V4 X are included in the list of possible values.
 	ftStatus=FT_SetVIDPID(VID, PID);
@@ -53,35 +54,6 @@ void SpectranInterface::OpenAndSetUp()
 			throw(except);
 		}
 
-		////////////Configuracion obtenida de la documentacion del GPS//////////////////
-//		ftStatus=FT_SetBaudRate(ftHandle, 625000);
-//		if(ftStatus!=FT_OK)
-//		{
-//			if(ftStatus==7){
-//				CustomException except("Error: the baud rate could not be set up because the given value is not invalid.");
-//				throw(except);
-//			}else{
-//				stringstream ss;
-//				ss << "Error: the baud rate could not be set up. ftStatus = " << ftStatus;
-//				CustomException except( ss.str() );
-//				throw(except);
-//			}
-//		}
-//
-//		ftStatus=FT_SetDataCharacteristics(ftHandle, FT_BITS_8, FT_STOP_BITS_2, FT_PARITY_NONE);
-//		if(ftStatus!=FT_OK)
-//		{
-//			CustomException exc("Error: the data format could not be set up.");
-//			throw(exc);
-//		}
-//
-//		ftStatus=FT_SetFlowControl(ftHandle, FT_FLOW_NONE, 0, 0);
-//		if(ftStatus!=FT_OK)
-//		{
-//			CustomException exc("Error: the flow control could not be set up.");
-//			throw(exc);
-//		}
-
 		///////////////////Configuracion obtenida del Foro////////////////////////
 		ftStatus = FT_SetFlowControl(ftHandle, FT_FLOW_NONE, 0, 0);
 		if(ftStatus!=FT_OK)
@@ -122,9 +94,20 @@ void SpectranInterface::OpenAndSetUp()
 
 SpectranInterface::~SpectranInterface()
 {
-	LogOut();
+	try
+	{
+		LogOut();
+	}
+	catch(exception & exc)
+	{
+		cerr << "Error: " << exc.what() << " During destruction of class SpectraInterface." << endl;
+	}
 
-	FT_Close(ftHandle);
+	ftStatus = FT_Close(ftHandle);
+	if(ftStatus!=FT_OK)
+	{
+		cerr << "Error: The communication with the Spectran device could not be closed." << endl;
+	}
 }
 
 void SpectranInterface::Initialize()
@@ -174,31 +157,9 @@ void SpectranInterface::Initialize()
 		}
 	}while(flagSuccess==false);
 
-	//Disabling the transmission of measurements from the spectrum analyzer. Two commands are sent.
-	command.Clear();
-	command.SetAs(Command::SETSTPVAR, SpecVariable::USBMEAS, 0.0);
-	Write(command); //First command to set USBMEAS to 0
-	reply.Clear();
-	reply.PrepareTo(Reply::SETSTPVAR);
-	Read(reply);
-	try
-	{
-		Write(command); //Second command to set USBMEAS to 0
-		reply.Clear();
-		reply.PrepareTo(Reply::SETSTPVAR);
-		Read(reply);
-	}
-	catch(exception& exc)
-	{
-		CustomException except("There was an error when the Spectran interface tried to disable the transmission of measurements.");
-		throw(except);
-	}
 
-	if(reply.IsRight()==false)
-	{
-		CustomException except("The reply to the 2nd command to disable the transmission of measurements was wrong.");
-		throw(except);
-	}
+	//Disabling the transmission of measurements from the spectrum analyzer. Two commands are sent.
+	DisableSweep();
 
 	//Setting the speaker volume
 	command.Clear();
@@ -258,20 +219,20 @@ inline void SpectranInterface::Read(Reply& reply)
 	unsigned int numOfBytes=reply.GetNumOfBytes();
 	uint8_t rxBuffer[numOfBytes];
 
-	unsigned int i=0;
-	unsigned int currNumOfBytes=0;
-	while ( currNumOfBytes<numOfBytes && i++<20 )
-	{
-		currNumOfBytes = Available();
-		usleep(70000);
-	}
-	if(i>=20)
-	{
-		CustomException exc("In a reading operation, the input bytes were waited too much time.");
-		throw(exc);
-	}
+//	unsigned int i=0;
+//	unsigned int currNumOfBytes=0;
+//	while ( currNumOfBytes<numOfBytes && i++<20 )
+//	{
+//		currNumOfBytes = Available();
+//		usleep(70000);
+//	}
+//	if(i>=20)
+//	{
+//		CustomException exc("In a reading operation, the input bytes were waited too much time.");
+//		throw(exc);
+//	}
 
-//	usleep(100000);
+	usleep(200000);
 
 	ftStatus=FT_Read(ftHandle, rxBuffer, numOfBytes, &receivedBytes);
 	if (ftStatus!=FT_OK){
@@ -296,6 +257,78 @@ unsigned int SpectranInterface::Available()
 	}
 
 	return numOfInputBytes;
+}
+
+//! The aim of this method is to enable the sending of measurements via USB
+void SpectranInterface::EnableSweep()
+{
+//	interface.Purge();
+//	usleep(300000);
+
+	Command comm(Command::SETSTPVAR, SpecVariable::USBMEAS, 1.0);
+	Reply reply;
+	try
+	{
+		Write(comm);
+		reply.Clear();
+		reply.PrepareTo(Reply::SETSTPVAR);
+		Read(reply);
+		if(reply.IsRight()!=true)
+		{
+			CustomException exc("The reply to the command to enable the sending of measurements via USB was wrong.");
+			throw(exc);
+		}
+	}
+	catch(CustomException & exc)
+	{
+		exc.Append("\nThe enabling of the sending of measurements via USB failed.");
+		throw;
+	}
+
+	flagSweepsEnabled=true;
+}
+
+//! This method allows to disable the sending of measurements via USB
+void SpectranInterface::DisableSweep()
+{
+	Command comm(Command::SETSTPVAR, SpecVariable::USBMEAS, 0.0);
+	Reply reply;
+	unsigned int errorCounter=0;
+
+	for(unsigned int i=0; i<2; i++)
+	{
+		try
+		{
+			Write(comm);
+			reply.Clear();
+			reply.PrepareTo(Reply::SETSTPVAR);
+			Read(reply);
+			if(reply.IsRight()!=true)
+			{
+				CustomException exc("The reply to the command to disable the sending of measurements via USB was wrong.");
+				throw(exc);
+			}
+		}
+		catch(CustomException & exc)
+		{
+			cerr << "Warning: one of the commands to disable the sending of measurements via USB failed." << endl;
+
+			if(++errorCounter < 2)
+			{
+				Purge();
+				usleep(500000);
+			}
+			else
+			{
+				exc.Append("\nThe disabling of the sending of measurements via USB failed.");
+				throw;
+			}
+		}
+	}
+
+	//interface.Purge();
+
+	flagSweepsEnabled=false;
 }
 
 void SpectranInterface::Purge()
@@ -335,28 +368,7 @@ void SpectranInterface::LogOut()
 	if(flagLogIn==true)
 	{
 		//Disabling the transmission of measurements
-		command.SetAs(Command::SETSTPVAR, SpecVariable::USBMEAS, 0.0);
-		Write(command); //First command to set USBMEAS to 0
-		reply.PrepareTo(Reply::SETSTPVAR);
-		Read(reply);
-		try
-		{
-			Write(command); //Second command to set USBMEAS to 0
-			reply.Clear();
-			reply.PrepareTo(Reply::SETSTPVAR);
-			Read(reply);
-		}
-		catch(exception& exc)
-		{
-			CustomException except("There was an error when the Spectran interface tried to disable the transmission of measurements.");
-			throw(except);
-		}
-
-		if(reply.IsRight()==false)
-		{
-			CustomException except("The reply to the 2nd command to disable the transmission of measurements was wrong.");
-			throw(except);
-		}
+		DisableSweep();
 
 		//Sound to indicate the session has been finished
 		SoundLogOut();

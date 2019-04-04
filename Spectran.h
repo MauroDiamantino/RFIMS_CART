@@ -1,11 +1,11 @@
 /*
- * SpectranInterface.h
+ * Spectran.h
  *
  *  Created on: 26/02/2019
  *      Author: new-mauro
  */
 
-/*! \file SpectranInterface.h
+/*! \file Spectran.h
  *  \brief This header file contains the definition of the needed classes for the communication with a Aaronia
  *  Spectran HF-60105 V4 X spectrum analyzer.
  *
@@ -17,17 +17,15 @@
  *  The namespace *std* is used to simplify the uses of objects like cout and cin.
  */
 
-#ifndef SPECTRANINTERFACE_H_
-#define SPECTRANINTERFACE_H_
+#ifndef SPECTRAN_H_
+#define SPECTRAN_H_
 
 /////////////Libraries//////////////////
-#include <iostream> //cout, cin
 #include <vector>
-#include <string>
-#include <unordered_map>
+#include <map>
+//#include <unordered_map>
 #include <cassert> //To use assert() function to debug the code
 #include <ftd2xx.h> //The library which allows to communicate with the FTDI driver
-#include <exception>
 #include <cstdlib> //exit, EXIT_SUCCESS, EXIT_FAILURE
 #include <sstream> //stringstream
 #include <unistd.h> //usleep
@@ -36,8 +34,8 @@
 #include <boost/algorithm/string.hpp> //to_lower(string)
 #include <boost/filesystem/operations.hpp> //last_write_time(path)
 
-using namespace std;
-
+///////////Other header files/////////////
+#include "RFIMS_CART.h"
 
 //////////////User-defined global types///////////
 //! An enumeration which contains the names of all the environment variables of the Spectran HF-60105 V4 X spectrum analyzer.
@@ -72,20 +70,6 @@ const RBW_bimap RBW_INDEX( vect.begin(), vect.end() );
 
 
 /////////////////////Classes///////////////////////
-
-//!Class CustomException derived from standard class exception.
-class CustomException : public exception
-{
-	string message;
-public:
-	CustomException(const string& msg="Error") : message(msg) {}
-	void SetMessage(const string& msg) {	message=msg;	}
-	void Append(const string& msg){		message+=msg;	}
-	virtual const char * what() const throw()
-	{
-		return message.c_str();
-	}
-};
 
 //! This class builds the corresponding bytes array to send a certain command to a Aaronia Spectran V4 series spectrum analyzer.
 /*! The "Command" class is intended to build the bytes array which will be sent a spectrum analyzer to perform
@@ -137,6 +121,7 @@ public:
 	//! A method to get the current command type.
 	CommandType GetCommandType() const {	return commandType;	}
 	string GetCommTypeString() const;
+	string GetVariableNameString() const;
 	//! A method to get the variable name which is going to be or has been modified or read.
 	SpecVariable GetVariableName() const {	return variableName;	}
 	//! A method to get the value which is going to be or has been used to modify a variable.
@@ -204,7 +189,7 @@ public:
 	//! A Get method which returns the reply type as the corresponding value of the class' internal enumerator.
 	ReplyType GetReplyType() const {	return replyType;	}
 	string GetReplyTypeString() const;
-	string GetVariableName() const;
+	string GetVariableNameString() const;
 	//! A method to get the bytes vector like this is implemented internally, a `vector` container.
 	const vector<uint8_t>& GetBytesVector() const {	return bytes;	}
 	//! A method to get a direct pointer to the bytes of the internal vector.
@@ -234,7 +219,7 @@ public:
 	///////////Class Interface//////////
 	SweepReply();
 	SweepReply(uint8_t * bytesPtr);
-	~SweepReply() {}
+	//~SweepReply() {}
 	void PrepareTo(ReplyType type, SpecVariable variable=SpecVariable::UNINITIALIZED) {}
 	void InsertBytes(uint8_t * b);
 	unsigned int GetTimestamp() const {	return timestamp;	};
@@ -267,6 +252,7 @@ class SpectranInterface {
 	FT_HANDLE ftHandle;
 	bool flagLogIn;
 	FT_STATUS ftStatus;
+	bool flagSweepsEnabled;
 	////////////Private methods/////////////
 	void SoundLogIn();
 	void SoundLogOut();
@@ -279,6 +265,8 @@ public:
 	void Write(const Command& command);
 	void Read(Reply& reply);
 	unsigned int Available();
+	void EnableSweep();
+	void DisableSweep();
 	void Purge();
 	void Reset();
 	void LogOut();
@@ -286,23 +274,29 @@ public:
 	DWORD GetPID() const { 	return PID;	}
 	string GetDevDescription() const {	return DEVICE_DESCRIPTION;	}
 	bool IsLogged() const {	return flagLogIn;	}
+	bool IsSweepEnabled() const {	return flagSweepsEnabled;	}
+};
+
+struct VarParameters
+{
+	bool flagEnable; //It determines if the band is used or not
+	float startFreq;
+	float stopFreq;
+	float rbw; //resolution bandwidth
+	float vbw; //video bandwidth
+	unsigned long int sweepTime;
+	bool flagDefaultSamplePoints; //It determines if the sample points number must be configured with next
+								//parameter or if it is left with its default value which is determined
+								//by the Spectran device.
+	unsigned int samplePoints; //Number of samples points. The value determined by the Spectran device (default value) or the forced value.
+	unsigned int detector; //”rms”(0) or “min/max”(1)
 };
 
 //! The class *SpectranConfigurator* is intended to manage the process of configuring the Aaronia Spectran device.
 class SpectranConfigurator
 {
-	////////Private class' types/////////
-	struct VarParameters
-	{
-		bool flagEnable; //it determines if the band is used or not
-		float startFreq;
-		float stopFreq;
-		float rbw; //resolution bandwidth
-		float vbw; //video bandwidth
-		unsigned long int sweepTime;
-		unsigned int samplePoints; //number of samples
-		unsigned int detector; //”rms”(0) or “min/max”(1)
-	};
+public:
+	/////////////Public class's data types/////////////////
 	struct FixedParameters
 	{
 		int attenFactor;
@@ -318,17 +312,17 @@ class SpectranConfigurator
 		float speakerVol; //range from 0.0 to 1.0
 		float antennaGain; //Nominal antenna gain in dB
 	};
+private:
 	///////////Attributes///////////////
 	//Constants
 	const string FILES_PATH = "/home/new-mauro/RFIMS-CART/parameters/";
 	//Variables
 	ifstream ifs;
 	SpectranInterface & interface;
-	vector<VarParameters> bands;
+	vector<VarParameters> bandsParam;
 	unsigned int bandIndex;
 	FixedParameters fixedParam;
 	time_t lastWriteTimes[2];
-	bool flagSweepsEnabled;
 	//////////Private methods//////////////
 	void SetAndCheckVariable(SpecVariable variable, float value);
 public:
@@ -338,13 +332,35 @@ public:
 	bool LoadParameters();
 	void InitialConfiguration();
 	unsigned int ConfigureNextBand();
-	void EnableSweep();
-	void DisableSweep();
-	vector<VarParameters> GetBandsParam() const {	return bands;	}
-	unsigned int GetNumOfBands() const {	return bands.size();	}
+	const FixedParameters& GetFixedParam() const {	return fixedParam;	}
+	const vector<VarParameters>& GetBandsParam() const {	return bandsParam;	}
+	const VarParameters& GetCurrBandParam() const {	return bandsParam[bandIndex];	}
+	unsigned int GetNumOfBands() const {	return bandsParam.size();	}
 	unsigned int GetBandIndex() const {		return bandIndex;	}
-	bool IsLastBand() const {	return ( bandIndex>=bands.size() );	}
-	bool IsSweepEnabled() const {	return flagSweepsEnabled;	}
+	bool IsLastBand() const {	return ( bandIndex>=bandsParam.size() );	}
 };
 
-#endif /* SPECTRANINTERFACE_H_ */
+//! The aim of class *SweepBuilder* is to build the complete sweep from the individual sweep points which are deliverd by the Spectran Interface
+class SweepBuilder
+{
+	//////////Attributes////////////
+	SpectranInterface & interface;
+	VarParameters bandParam;
+	typedef map<float,float> SweepMap;
+	SweepMap partialSweep;
+	FreqValueSet sweep;
+	////////////Private methods/////////
+	void BuildSweep();
+	void SoundNewSweep();
+public:
+	/////////Class' interface/////////
+	SweepBuilder(SpectranInterface & interf);
+	//~SweepBuilder();
+	void SetBandParameters(const VarParameters& param){		bandParam=param;	}
+//	void SetSweepTime(unsigned int swTime){		sweepTime=swTime;	}
+//	void SetSamplePoints(unsigned int sampPoints){	samplePoints=sampPoints;	}
+	const FreqValueSet& CaptureOneSweep();
+	const FreqValueSet& GetSweep() const {	return sweep;	}
+};
+
+#endif /* SPECTRAN_H_ */

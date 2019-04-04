@@ -5,7 +5,7 @@
  *      Author: new-mauro
  */
 
-#include "SpectranInterface.h"
+#include "Spectran.h"
 
 ////////////////////Implementations of some Reply class' methods//////////////////
 
@@ -146,7 +146,7 @@ string Reply::GetReplyTypeString() const
 }
 
 //! A method which returns the name, as a std::string, of the Spectran's variable which is related with the reply (GETSTPVAR reply)
-string Reply::GetVariableName() const
+string Reply::GetVariableNameString() const
 {
 	switch(variableName)
 	{
