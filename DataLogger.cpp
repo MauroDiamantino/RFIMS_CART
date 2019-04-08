@@ -18,7 +18,21 @@ DataLogger::DataLogger()
 		}
 	}
 						
-	ofs.exceptions ( std::ofstream::failbit | std::ofstream::badbit );
+	ofs.exceptions( std::ofstream::failbit | std::ofstream::badbit );
+}
+
+DataLogger::~DataLogger()
+{
+	ofs.exceptions( std::ofstream::goodbit );
+	ofs.close();
+}
+
+
+void DataLogger::SetSweep(const FreqValueSet & swp)
+{
+	sweep=swp;
+	if(++sweepIndex >= 2*NUM_OF_POSITIONS) //2 polarizations multiplied by NUM_OF_POSITIONS azimuthal positions
+		sweepIndex=0;
 }
 
 bool DataLogger::SaveData()
@@ -26,13 +40,9 @@ bool DataLogger::SaveData()
 	//The data are saved only if a sweep has been loaded
 	if( !sweep.Empty() )
 	{
-		//At least a sweep was loaded
-
-		if(++sweepIndex >= 2*NUM_OF_POSITIONS) //2 polarizations multiplied by NUM_OF_POSITIONS azimuthal positions
+		if(sweepIndex==0)
 		{
 			//First sweep
-			sweepIndex=0;
-			
 			firstSweepDate=sweep.timestamp.date;
 			
 			//Creating the sweeps file
@@ -51,7 +61,7 @@ bool DataLogger::SaveData()
 			//Writing header with frequency values
 			ofs << "Timestamp,Azimuthal Angle,Polarization,";
 			for(auto& f : sweep.frequencies)
-				ofs << f << ',';
+				ofs << std::setprecision(6) << (f/1e6) << ',';
 			ofs << "\r\n";
 		}
 		else
@@ -71,9 +81,9 @@ bool DataLogger::SaveData()
 		}
 		
 		//Writing sweep's power values
-		ofs << sweep.timestamp.Whole() << ',' << antPosition << ',' << antPolarization;
+		ofs << sweep.timestamp.Whole() << ',' << std::setprecision(4) << antPosition << ',' << antPolarization << ',';
 		for(auto& p : sweep.values)
-			ofs << p << ',';
+			ofs << std::setprecision(5) << p << ',';
 		ofs << "\r\n";
 		
 		ofs.close();

@@ -7,31 +7,33 @@
 
 #include "SweepProcessing.h"
 
-int main()
+int main() throw(std::exception)
 {
 	FreqValueSet sweep;
 	DataLogger logger;
 
 	for(uint8_t i=0; i<10; i++)
 	{
-		sweep.frequencies.push_back(1001e6 + i*1e6);
-		sweep.values.push_back(-60.1 + i*10.0);
+		sweep.frequencies.push_back(1e9 + i*1e6);
+		sweep.values.push_back(-60.1 + i*1.0);
 	}
+	sweep.timestamp.date="08-04-2019";
+	sweep.timestamp.time="19:08:55";
 
 	logger.SetSweep(sweep);
-	logger.SetAntennaData(45.0, "horizontal");
+	logger.SetAntennaData(45.5, "horizontal");
 	logger.SaveData();
 
-	sweep.Clear();
+	sweep.values.clear();
 
 	for(uint8_t i=0; i<10; i++)
-	{
-		sweep.frequencies.push_back(1011e6 + i*1e6);
-		sweep.values.push_back(-70.1 + i*10.0);
-	}
+		sweep.values.push_back(-70.1 + i*1.0);
+
+	sweep.timestamp.date="08-04-2019";
+	sweep.timestamp.time="19:10:55";
 
 	logger.SetSweep(sweep);
-	logger.SetAntennaData(45.0, "vertical");
+	logger.SetAntennaData(45.5, "vertical");
 	logger.SaveData();
 
 	return 0;

@@ -20,20 +20,20 @@ RFPloter::~RFPloter()
 void RFPloter::PlotSweep(const FreqValueSet& sweep)
 {
 	ploter.set_style("lines");
-	vector<float> freqMHz;
+	std::vector<float> freqMHz;
 	for(auto f : sweep.frequencies)
 		freqMHz.push_back( f/1e6 );
 
 	ploter.plot_xy(freqMHz, sweep.values, "Sweep");
 }
 
-void RFPloter::PlotRFI(const vector<FreqValueSet>& rfiVector)
+void RFPloter::PlotRFI(const std::vector<FreqValueSet>& rfiVector)
 {
 	ploter.set_style("points");
-	ostringstream oss;
+	std::ostringstream oss;
 	for(auto rfi : rfiVector)
 	{
-		vector<float> freqMHz;
+		std::vector<float> freqMHz;
 		for(auto f : rfi.frequencies)
 			freqMHz.push_back( f/1e6 );
 
