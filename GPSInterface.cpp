@@ -51,9 +51,9 @@ GPSInterface::GPSInterface()
 			exc.SetMessage("The Aaronia GPS receiver could not be opened.");
 			throw(exc);
 		default:
-			stringstream ss;
-			ss << "The function FT_OpenEx() returned a FT_STATUS value of " << ftStatus;
-			exc.SetMessage( ss.str() );
+			std::ostringstream oss;
+			oss << "The function FT_OpenEx() returned a FT_STATUS value of " << ftStatus;
+			exc.SetMessage( oss.str() );
 			throw(exc);
 		}
 	}
@@ -96,10 +96,10 @@ GPSInterface::GPSInterface()
 
 	DIR * dir;
 	struct dirent * ent;
-	string filename;
+	std::string filename;
 	bool flagFound=false;
 	unsigned int index, maxIndex=0;
-	istringstream iss;
+	std::istringstream iss;
 	size_t posIndex, posPoint;
 
 	dir=opendir( SENSORS_FILES_PATH.c_str() );
@@ -112,7 +112,7 @@ GPSInterface::GPSInterface()
 	while( (ent=readdir(dir)) != NULL )
 	{
 		filename = ent->d_name;
-		if( filename.find("sensorsdata_")!=string::npos && filename.find(".txt")!=string::npos )
+		if( filename.find("sensorsdata_")!=std::string::npos && filename.find(".txt")!=std::string::npos )
 		{
 			flagFound=true;
 			posIndex = filename.find('_') + 1;
@@ -125,10 +125,10 @@ GPSInterface::GPSInterface()
 		}
 	}
 
-	string pathAndName;
+	std::string pathAndName;
 	if(flagFound)
 	{
-		ostringstream oss;
+		std::ostringstream oss;
 		oss << "sensorsdata_" << (maxIndex + 1) << ".txt" << endl;
 		pathAndName = SENSORS_FILES_PATH + oss.str();
 	}
@@ -138,7 +138,7 @@ GPSInterface::GPSInterface()
 	}
 
 	//Enabling exceptions for logical errors (failbit) and read/writing errors (badbit) on i/o operations
-	sensorFile.exceptions(ofstream::failbit | ofstream::badbit);
+	sensorFile.exceptions(std::ofstream::failbit | std::ofstream::badbit);
 	//Associating the output file stream with the corresponding file where the sensors data will be stored
 	sensorFile.open(pathAndName);
 	sensorFile << "Timestamp,Gyroscope.x,Gyroscope.y,Gyroscope.z,Compass.x,Compass.y,Compass.z,Accelerometer.x,Accelerometer.y,Accelerometer.z,yaw,pitch,roll\n";
@@ -160,18 +160,18 @@ GPSInterface::~GPSInterface()
 	{
 		DisableStreaming();
 	}
-	catch(exception& exc)
+	catch(std::exception& exc)
 	{
 		cerr << "Warning: The GPSInterface's destructor could not make sure the data streaming is disabled." << endl;
 	}
 
 	//Disabling the data logging into the microSD card
-	string command("PAAG,FILE,STOP,\r\n");
+	std::string command("PAAG,FILE,STOP,\r\n");
 	try
 	{
 		Write(command);
 	}
-	catch(exception& exc)
+	catch(std::exception& exc)
 	{
 		cerr << "Warning: The GPSInterface's destructor could not make sure the data logging into file is disabled." << endl;
 	}
@@ -181,7 +181,7 @@ GPSInterface::~GPSInterface()
 	{
 		Purge();
 	}
-	catch(exception& exc)
+	catch(std::exception& exc)
 	{
 		cerr << exc.what();
 	}
@@ -198,7 +198,7 @@ GPSInterface::~GPSInterface()
 }
 
 //! A private method which takes a command and sends it to the Aaronia GPS receiver, using the D2XX library.
-inline void GPSInterface::Write(const string& command)
+inline void GPSInterface::Write(const std::string& command)
 {
 	DWORD writtenBytes;
 	DWORD numOfBytes = command.size();
@@ -227,7 +227,7 @@ inline void GPSInterface::Write(const string& command)
  * (which represent a certain time interval). When the number of bytes is not given, i.e. the second parameter takes
  * the default value which is zero, the method will just wait a fixed interval time for the reply's bytes.
  */
-inline void GPSInterface::Read(string& reply, unsigned int numOfBytes)
+inline void GPSInterface::Read(std::string& reply, unsigned int numOfBytes)
 {
 	DWORD receivedBytes;
 	char rxBuffer;
@@ -270,7 +270,7 @@ inline void GPSInterface::Read(string& reply, unsigned int numOfBytes)
 	}while(rxBuffer!='\n');
 }
 
-inline bool GPSInterface::ControlChecksum(const string& reply)
+inline bool GPSInterface::ControlChecksum(const std::string& reply)
 {
 	unsigned int receivedChecksum, calculChecksum = 0;
 	unsigned int i=1; //the operation starts with the second element
@@ -279,7 +279,7 @@ inline bool GPSInterface::ControlChecksum(const string& reply)
 		calculChecksum ^= reply[i++];
 
 	size_t checksumPos = reply.find('*') + 1;
-	string checksumString = reply.substr(checksumPos, 2);
+	std::string checksumString = reply.substr(checksumPos, 2);
 	sscanf(checksumString.c_str(), "%x", &receivedChecksum);
 
 	if(receivedChecksum==calculChecksum)
@@ -289,13 +289,13 @@ inline bool GPSInterface::ControlChecksum(const string& reply)
 }
 
 //! A method which is intended to configure a GPS receiver's variable
-void GPSInterface::ConfigureVariable(const string& variable, unsigned int value)
+void GPSInterface::ConfigureVariable(const std::string& variable, unsigned int value)
 {
 	//Setting up a GPS receiver's variable
-	stringstream ss;
+	std::stringstream ss;
 	ss << "$PAAG,VAR," << variable << ',' << value << "\r\n";
-	string command( ss.str() );
-	string reply;
+	std::string command( ss.str() );
+	std::string reply;
 	try
 	{
 		Write(command);
@@ -314,14 +314,14 @@ void GPSInterface::ConfigureVariable(const string& variable, unsigned int value)
 	}
 	size_t valuePos = reply.find(variable) + variable.size() + 1; //The position of the current value of the accelerometer range
 	size_t delPos = reply.find('*'); //The position of the delimiter *
-	string valueString = reply.substr(valuePos, delPos-valuePos);
+	std::string valueString = reply.substr(valuePos, delPos-valuePos);
 	ss.clear();
 	ss.str(valueString);
 	unsigned int currentValue;
 	ss >> currentValue;
 	if(currentValue!=value)
 	{
-		ostringstream oss;
+		std::ostringstream oss;
 		oss << "The reply of the command to set up the variable " << variable;
 		oss << " stated that the range was not configured with the desired value, " << value;
 		CustomException exc( oss.str() );
@@ -342,9 +342,9 @@ inline void GPSInterface::CalculateCardanAngles()
 /*! Also, this method controls the checksum of the desired reply. The method throws exception when the checksum is wrong
  * and when the desired reply was not found.
  */
-unsigned int GPSInterface::FindAndCheckDataReply(const vector<string>& replies, const string& replyType, char sensor)
+unsigned int GPSInterface::FindAndCheckDataReply(const std::vector<std::string>& replies, const std::string& replyType, char sensor)
 {
-	string header;
+	std::string header;
 	if(replyType=="PAAG")
 	{
 		header = "$PAAG,DATA,";
@@ -357,7 +357,7 @@ unsigned int GPSInterface::FindAndCheckDataReply(const vector<string>& replies, 
 	}
 
 	unsigned int i=0;
-	while( replies[i].find(header)==string::npos && i<replies.size() )
+	while( replies[i].find(header)==std::string::npos && i<replies.size() )
 		i++;
 
 	if( i>=replies.size() )
@@ -388,17 +388,17 @@ void GPSInterface::SaveSensorsData()
 {
 	//Timestamp,Gyroscope.x,Gyroscope.y,Gyroscope.z,Compass.x,Compass.y,Compass.z,Accelerometer.x,Accelerometer.y,Accelerometer.z,yaw,pitch,roll\n
 
-	sensorFile << timestamp << ',' << gyroData.x << ',' << gyroData.y << ',' << gyroData.z << ',';
+	sensorFile << timeData.timestamp() << ',' << gyroData.x << ',' << gyroData.y << ',' << gyroData.z << ',';
 	sensorFile << compassData.x << ',' << compassData.y << ',' << compassData.z << ',';
 	sensorFile << accelData.x << ',' << accelData.y << ',' << accelData.z << ',';
 	sensorFile << yaw << ',' << pitch << ',' << roll << '\n';
 }
 
 //! The aim of this method is take the data replies (GPRMC, GPGGA and PAAG,DATA) and parse and extract the data from them.
-void GPSInterface::ProcessDataReplies(vector<string>& replies)
+void GPSInterface::ProcessDataReplies(std::vector<std::string>& replies)
 {
 	nmea_s * data;
-	stringstream ss;
+	std::stringstream ss;
 	unsigned int i;
 	char * auxString;
 
@@ -415,10 +415,12 @@ void GPSInterface::ProcessDataReplies(vector<string>& replies)
 		CustomException exc("It was not possible to parse the GPRMC reply.");
 		throw(exc);
 	}
+
 	nmea_gprmc_s * gprmc = (nmea_gprmc_s*) data;
-	ss << gprmc->time.tm_mday << '-' << (gprmc->time.tm_mon + 1) << '-' << (gprmc->time.tm_year + 1900);
-	ss << 'T' << (gprmc->time.tm_hour - 3) << ':' << gprmc->time.tm_min << ':' << gprmc->time.tm_sec;
-	timestamp = ss.str();
+
+	timeData.day = gprmc->time.tm_mday; timeData.month = gprmc->time.tm_mon+1; timeData.year = gprmc->time.tm_year+1900;
+	timeData.hour = gprmc->time.tm_hour-3; timeData.minute = gprmc->time.tm_min; timeData.second = gprmc->time.tm_sec;
+
 	coordinates.latitude = double(gprmc->latitude.degrees + gprmc->latitude.minutes/60.0) * (gprmc->latitude.cardinal=='S' ? -1.0 : 1.0);
 	coordinates.longitude = double(gprmc->longitude.degrees + gprmc->longitude.minutes/60.0) * (gprmc->longitude.cardinal=='W' ? -1.0 : 1.0);
 
@@ -451,7 +453,7 @@ void GPSInterface::ProcessDataReplies(vector<string>& replies)
 	size_t xPos = replies[i].find(',', 13) + 1;
 	char delimiter[2];
 	ss.clear();
-	string aux = replies[i].substr(xPos, statusPos-xPos-1);
+	std::string aux = replies[i].substr(xPos, statusPos-xPos-1);
 	ss.str( aux );
 	ss >> gyroData.x >> delimiter[0] >> gyroData.y >> delimiter[1] >> gyroData.z;
 	//Scaling the gyroscope data so they are in degrees/s
@@ -561,8 +563,8 @@ void GPSInterface::Initialize()
 
 	//Trying the communication with an ID command
 	cout << "Trying the communication with the Aaronia GPS Receiver with an ID command" << endl;
-	string command("$PAAG,ID\r\n");
-	string reply;
+	std::string command("$PAAG,ID\r\n");
+	std::string reply;
 	bool flagSuccess=false;
 	unsigned int i=0;
 	while(flagSuccess==false)
@@ -579,7 +581,7 @@ void GPSInterface::Initialize()
 			}
 
 			//Showing the reply of the ID command
-			string hardVersion, firmVersion, protocolVersion;
+			std::string hardVersion, firmVersion, protocolVersion;
 			size_t pos[4]; //an array with the positions of the elements after the delimiters (comma and asterisk)
 			pos[0] = reply.find(',', 6) + 1;
 			pos[1] = reply.find(',', pos[0]) + 1;
@@ -620,7 +622,7 @@ void GPSInterface::Initialize()
 	}
 
 	//Setting up the GPS receiver's variables
-	string variable;
+	std::string variable;
 	//Accelerometer range
 	variable = "ACCRANGE";
 	ConfigureVariable(variable, ACCRANGE);
@@ -644,8 +646,8 @@ void GPSInterface::Initialize()
 	do
 	{
 		sleep(1); //1s
-		string command("$PAAG,MODE,READONE\r\n");
-		vector<string> dataReplies(7);
+		std::string command("$PAAG,MODE,READONE\r\n");
+		std::vector<std::string> dataReplies(7);
 		try
 		{
 			Write(command);
@@ -693,7 +695,7 @@ unsigned int GPSInterface::Available()
 //! This method send a command to get just one data set, rather than a streaming of measurements, and update the class attributes with that data set.
 void GPSInterface::ReadOneDataSet()
 {
-	string command("$PAAG,MODE,READONE\r\n");
+	std::string command("$PAAG,MODE,READONE\r\n");
 	try
 	{
 		Write(command);
@@ -704,7 +706,7 @@ void GPSInterface::ReadOneDataSet()
 		throw;
 	}
 
-	vector<string> dataReplies(7);
+	std::vector<std::string> dataReplies(7);
 	try
 	{
 		for(unsigned int i=0; i<7; i++)
@@ -728,7 +730,7 @@ void GPSInterface::ReadOneDataSet()
 //{
 //	Purge();
 //
-//	string command("$PAAG,MODE,START\r\n");
+//	std::string command("$PAAG,MODE,START\r\n");
 //	try
 //	{
 //		Write(command);
@@ -749,7 +751,7 @@ void GPSInterface::ReadOneDataSet()
 //	//Waiting for the next data set
 //	usleep( (__useconds_t)1/DATARATE );
 //
-//	vector<string> dataReplies(7);
+//	std::vector<std::string> dataReplies(7);
 //	try
 //	{
 //		ReadDataReplies(dataReplies);
@@ -765,7 +767,7 @@ void GPSInterface::ReadOneDataSet()
 //! This method is intended to disable the data streaming from the Aaronia GPS receiver.
 void GPSInterface::DisableStreaming()
 {
-	string command("$PAAG,MODE,STOP\r\n");
+	std::string command("$PAAG,MODE,STOP\r\n");
 	try
 	{
 		Write(command);

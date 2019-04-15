@@ -12,34 +12,62 @@
 #include <exception>
 #include <vector>
 #include <string>
+#include <sstream> //ostringstream, istringstream
+#include <iomanip>
+#include <fstream> //filestream
+#include <unistd.h> //usleep
+#include <wiringPi.h>
+#include <cstdint>
 
-using namespace std;
+using std::cout;
+using std::cin;
+using std::cerr;
+using std::endl;
 
 //!Class CustomException derived from standard class exception.
-class CustomException : public exception
+class CustomException : public std::exception
 {
-	string message;
+	std::string message;
 public:
-	CustomException(const string& msg="Error") : message(msg) {}
-	void SetMessage(const string& msg) {	message=msg;	}
-	void Append(const string& msg){		message+=msg;	}
+	CustomException(const std::string& msg="Error") : message(msg) {}
+	void SetMessage(const std::string& msg) {	message=msg;	}
+	void Append(const std::string& msg){		message+=msg;	}
 	virtual const char * what() const throw()
 	{
 		return message.c_str();
 	}
 };
 
+struct TimeData
+{
+	unsigned int year;
+	unsigned int month;
+	unsigned int day;
+	unsigned int hour;
+	unsigned int minute;
+	unsigned int second;
+	TimeData();
+	TimeData(const TimeData& timeData);
+	std::string date();
+	std::string time();
+	std::string timestamp();
+	const TimeData& operator=(const TimeData& anotherTimeData);
+};
+
 struct FreqValueSet
 {
-	string type; //!< ”sweep”, “frequency response”, “calibration curve”, “threshold curve” or “rfi x”, where 'x' is a positive integer number
+	std::string type; //!< ”sweep”, “frequency response”, “calibration curve”, “threshold curve” or “rfi x”, where 'x' is a positive integer number
 	unsigned int index; //!< A positive integer number associated with a detected RFI
-	vector<float> values; //!< RF power (dBm) or gain (dB or dBi)
-	vector<float> frequencies; //!< Frequency values in Hz.
-	string timestamp; //!< Timestamp with the following format: DD-MM-YYYYTHH:MM:SS (where the word T separates the date and time)
-	const FreqValueSet& operator=(const FreqValueSet & freqValueSet); //defined in SweepBuilder.cpp
-	const FreqValueSet& operator+=(const FreqValueSet& rhs); //defined in SweepBuilder.cpp
+	std::vector<float> values; //!< RF power (dBm) or gain (dB or dBi)
+	std::vector<float> frequencies; //!< Frequency values in Hz.
+	TimeData timeData; //!< Timestamp with the following format: DD-MM-YYYYTHH:MM:SS (where the word T separates the date and time)
+	FreqValueSet(const std::string& typ="sweep", unsigned int ind=0) : type(typ), index(ind) {}
+	FreqValueSet(const FreqValueSet& freqValueSet);
 	void PushBack(const FreqValueSet& freqValueSet);
 	void Clear() { values.clear(); frequencies.clear();	}
+	bool Empty() const {	return values.empty();		}
+	const FreqValueSet& operator=(const FreqValueSet & freqValueSet); //defined in SweepBuilder.cpp
+	const FreqValueSet& operator+=(const FreqValueSet& rhs); //defined in SweepBuilder.cpp
 	friend FreqValueSet operator+(const FreqValueSet & lhs, const FreqValueSet & rhs); //defined in SweepBuilder.cpp
 };
 

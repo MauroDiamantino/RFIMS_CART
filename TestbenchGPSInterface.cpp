@@ -6,7 +6,6 @@
  */
 
 #include "AntennaPositioning.h"
-//#include <cstdlib>
 
 int main()
 {
@@ -32,7 +31,7 @@ int main()
 			//system("clear");
 
 			cout << "\nDatos del GPS:" << endl;
-			cout << "\tTimestamp: " << gpsInterface.GetTimestamp() << endl;
+			cout << "\tTimestamp: " << gpsInterface.GetTimeData().timestamp() << endl;
 			coordinates = gpsInterface.GetCoordinates();
 			cout << "\tLatitud: " << coordinates.latitude << " °" << endl;
 			cout << "\tLongitud: " << coordinates.longitude << " °" << endl;
@@ -60,7 +59,7 @@ int main()
 			//usleep(500000);
 		}
 	}
-	catch(exception& exc)
+	catch(std::exception& exc)
 	{
 		cerr << exc.what() << endl;
 		exit(EXIT_FAILURE);
@@ -68,5 +67,3 @@ int main()
 
 	return 0;
 }
-
-

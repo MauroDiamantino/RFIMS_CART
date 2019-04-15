@@ -26,20 +26,15 @@
 #include <nmea/gprmc.h> //parser of GPRMC messages
 #include <nmea/gpgga.h> //parser of GPGGA messages
 #include <ftd2xx.h> //FTDI library
-#include <sstream> //stringstream
-#include <fstream> //filestream
-#include <unistd.h> //usleep
 #include <cmath> //atan2, M_PI
 #include <dirent.h> //To get filenames
-
-using namespace std;
 
 //! A structure intended to save the the tri-axial values of the 3D sensors which are integrated in the GPS receiver.
 typedef struct
 {
 	enum SensorType : char { GYROSCOPE, COMPASS, BAROMETER, ACCELEROMETER, TEMPERATURE, UNINITIALIZED };
 	SensorType sensor;
-	string time;
+	std::string time;
 	double x;
 	double y;
 	double z;
@@ -61,21 +56,21 @@ class GPSInterface
 	///////////Attributes///////////
 	//Constants
 	const DWORD VID = 0x0403, PID = 0xE8DB;
-	const string DEVICE_DESCRIPTION = "Aaronia GPS Logger A";
+	const std::string DEVICE_DESCRIPTION = "Aaronia GPS Logger A";
 	const DWORD RD_TIMEOUT_US = 50000, WR_TIMEOUT_US = 10000;
 	const unsigned int READ_DELAY_US = 200000;
 	const unsigned int ACCRANGE = 2; //+-2g
 	const unsigned int GYRO_FILTERFREQ = 4;
 	const unsigned int GYRO_FILTERDIV = 1;
 	const unsigned int DATARATE = 20; //T = 50 mS
-	const string SENSORS_FILES_PATH = "/home/new-mauro/RFIMS-CART/gps/";
+	const std::string SENSORS_FILES_PATH = "/home/new-mauro/RFIMS-CART/gps/";
 	const unsigned int MIN_NUM_OF_SATELLITES = 1;
 	//Variables
 	FT_HANDLE ftHandle;
 	FT_STATUS ftStatus;
-	ofstream sensorFile;
+	std::ofstream sensorFile;
 	bool flagConnected;
-	string timestamp; //date & time
+	TimeData timeData; //date & time
 	GPSCoordinates coordinates;
 	unsigned int numOfSatellites;
 	unsigned int gpsElevation; //over sea level, measured in meters (m) and based on GPS data
@@ -88,14 +83,14 @@ class GPSInterface
 	float pressure; //measured in hPa
 	float presElevation; //over sea level, measured in meters (m) and based on pressure.
 	///////Private Methods//////////
-	inline void Write(const string& command);
-	inline void Read(string& reply, unsigned int numOfBytes=0);
-	inline bool ControlChecksum(const string& reply);
-	void ConfigureVariable(const string& variable, unsigned int value);
+	inline void Write(const std::string& command);
+	inline void Read(std::string& reply, unsigned int numOfBytes=0);
+	inline bool ControlChecksum(const std::string& reply);
+	void ConfigureVariable(const std::string& variable, unsigned int value);
 	inline void CalculateCardanAngles();
-	unsigned int FindAndCheckDataReply(const vector<string>& replies, const string& replyType, char sensor='\0');
+	unsigned int FindAndCheckDataReply(const std::vector<std::string>& replies, const std::string& replyType, char sensor='\0');
 	inline void SaveSensorsData();
-	void ProcessDataReplies(vector<string>& replies);
+	void ProcessDataReplies(std::vector<std::string>& replies);
 public:
 	///////Class Interface//////////
 	GPSInterface();
@@ -107,7 +102,7 @@ public:
 	//void CaptureStreamData();
 	void DisableStreaming();
 	void Purge();
-	string GetTimestamp() const {	return timestamp;	}
+	TimeData GetTimeData() const {	return timeData;	}
 	GPSCoordinates GetCoordinates() const {	return coordinates;	}
 	unsigned int GetNumOfSatellites() const {	return numOfSatellites;	}
 	float GetGPSElevation() const {	return gpsElevation;	}
@@ -120,6 +115,36 @@ public:
 	double GetRoll() const {	return roll;	}
 	double GetPitch() const {	return pitch;	}
 	bool IsConnected() const {	return flagConnected;	}
+};
+
+
+//!The aim of this class is to drive the antenna positioning
+class AntennaPositioner
+{
+	/////////Class types//////////
+	enum PolarizationType : char { HORIZONTAL, VERTICAL, UNKNOWN };
+	/////////Attributes//////////
+	//Constants
+	const std::uint8_t PIN_LED_AZIMUTHAL = 10;
+	const std::uint8_t PIN_SW_AZIMUTHAL = 11;
+	const std::uint8_t PIN_LED_POLARIZACION = 12;
+	const std::uint8_t PIN_SW_POLARIZATION = 13;
+	const std::uint8_t NUM_OF_POSITIONS = 8;
+	const std::uint8_t ROTATION_ANGLE = 360/NUM_OF_POSITIONS;
+	//Variables
+	float azimuthAngle;
+	PolarizationType polarization;
+	std::uint8_t positionIndex;
+public:
+	AntennaPositioner();
+	bool Initialize();
+	bool NextAzimPosition();
+	bool ChangePolarization();
+	float GetAzimPosition() {	return azimuthAngle;	}
+	std::string GetPolarization();
+	unsigned int GetPositionIndex()	{	return positionIndex;	}
+	unsigned int GetNumOfPositions() {	return NUM_OF_POSITIONS;	}
+	bool IsLastPosition() {	return ( positionIndex >= (NUM_OF_POSITIONS-1) );	}
 };
 
 
