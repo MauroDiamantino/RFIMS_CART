@@ -12,6 +12,8 @@
 #include <exception>
 #include <vector>
 #include <string>
+#include <sstream> //ostringstream, istringstream
+#include <iomanip>
 
 using std::cout;
 using std::cin;
@@ -31,11 +33,20 @@ public:
 	}
 };
 
-struct Timestamp
+struct TimeData
 {
-	std::string date;
-	std::string time;
-	std::string Whole() { return (date + 'T' + time);	}
+	unsigned int year;
+	unsigned int month;
+	unsigned int day;
+	unsigned int hour;
+	unsigned int minute;
+	unsigned int second;
+	TimeData();
+	TimeData(const TimeData& timeData);
+	std::string date();
+	std::string time();
+	std::string timestamp();
+	const TimeData& operator=(const TimeData& anotherTimeData);
 };
 
 struct FreqValueSet
@@ -44,8 +55,9 @@ struct FreqValueSet
 	unsigned int index; //!< A positive integer number associated with a detected RFI
 	std::vector<float> values; //!< RF power (dBm) or gain (dB or dBi)
 	std::vector<float> frequencies; //!< Frequency values in Hz.
-	Timestamp timestamp; //!< Timestamp with the following format: DD-MM-YYYYTHH:MM:SS (where the word T separates the date and time)
+	TimeData timeData; //!< Timestamp with the following format: DD-MM-YYYYTHH:MM:SS (where the word T separates the date and time)
 	FreqValueSet(const std::string& typ="sweep", unsigned int ind=0) : type(typ), index(ind) {}
+	FreqValueSet(const FreqValueSet& freqValueSet);
 	void PushBack(const FreqValueSet& freqValueSet);
 	void Clear() { values.clear(); frequencies.clear();	}
 	bool Empty() const {	return values.empty();		}

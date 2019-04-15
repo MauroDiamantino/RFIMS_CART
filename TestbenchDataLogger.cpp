@@ -17,8 +17,14 @@ int main() throw(std::exception)
 		sweep.frequencies.push_back(1e9 + i*1e6);
 		sweep.values.push_back(-60.1 + i*1.0);
 	}
-	sweep.timestamp.date="08-04-2019";
-	sweep.timestamp.time="19:08:55";
+	//sweep.timestamp.date="08-04-2019";
+	sweep.timeData.day=8;
+	sweep.timeData.month=4;
+	sweep.timeData.year=2019;
+	//sweep.timestamp.time="19:08:55";
+	sweep.timeData.hour=19;
+	sweep.timeData.minute=8;
+	sweep.timeData.second=55;
 
 	logger.SetSweep(sweep);
 	logger.SetAntennaData(45.5, "horizontal");
@@ -29,8 +35,14 @@ int main() throw(std::exception)
 	for(uint8_t i=0; i<10; i++)
 		sweep.values.push_back(-70.1 + i*1.0);
 
-	sweep.timestamp.date="08-04-2019";
-	sweep.timestamp.time="19:10:55";
+	//sweep.timestamp.date="08-04-2019";
+	sweep.timeData.day=8;
+	sweep.timeData.month=4;
+	sweep.timeData.year=2019;
+	//sweep.timestamp.time="19:10:55";
+	sweep.timeData.hour=19;
+	sweep.timeData.minute=10;
+	sweep.timeData.second=55;
 
 	logger.SetSweep(sweep);
 	logger.SetAntennaData(45.5, "vertical");

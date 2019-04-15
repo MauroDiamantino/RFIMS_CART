@@ -16,6 +16,11 @@
  * sizes as the "frequencies" vectors. The other attributes of the returned object (type, index and timestamp) will
  * take the contents of the corresponding attributes of the left-hand argument.
  */
+FreqValueSet::FreqValueSet(const FreqValueSet& freqValueSet)
+{
+	*this=freqValueSet;
+}
+
 FreqValueSet operator+(const FreqValueSet & lhs, const FreqValueSet & rhs)
 {
 	if(lhs.frequencies != rhs.frequencies)
@@ -43,7 +48,7 @@ FreqValueSet operator+(const FreqValueSet & lhs, const FreqValueSet & rhs)
 
 	result.type = lhs.type;
 	result.index = lhs.index;
-	result.timestamp = lhs.timestamp;
+	result.timeData = lhs.timeData;
 
 	return result;
 }
@@ -55,7 +60,7 @@ const FreqValueSet& FreqValueSet::operator=(const FreqValueSet & freqSet)
 	index = freqSet.index;
 	values = freqSet.values;
 	frequencies = freqSet.frequencies;
-	timestamp = freqSet.timestamp;
+	timeData = freqSet.timeData;
 
 	return *this;
 }

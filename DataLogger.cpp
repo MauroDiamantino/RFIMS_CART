@@ -43,7 +43,7 @@ bool DataLogger::SaveData()
 		if(sweepIndex==0)
 		{
 			//First sweep
-			firstSweepDate=sweep.timestamp.date;
+			firstSweepDate=sweep.timeData.date();
 			
 			//Creating the sweeps file
 			boost::filesystem::path filesPath(MEASUREMENTS_PATH);
@@ -81,7 +81,8 @@ bool DataLogger::SaveData()
 		}
 		
 		//Writing sweep's power values
-		ofs << sweep.timestamp.Whole() << ',' << std::setprecision(4) << antPosition << ',' << antPolarization << ',';
+		std::string aux = sweep.timeData.timestamp();
+		ofs << sweep.timeData.timestamp() << ',' << std::setprecision(4) << antPosition << ',' << antPolarization << ',';
 		for(auto& p : sweep.values)
 			ofs << std::setprecision(5) << p << ',';
 		ofs << "\r\n";

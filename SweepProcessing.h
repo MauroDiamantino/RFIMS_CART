@@ -11,7 +11,6 @@
 #include "RFIMS_CART.h"
 #include "gnuplot_i.hpp" //A C++ interface to gnuplot
 #include <boost/filesystem.hpp>
-#include <iomanip>
 
 //! Class Ploter
 class RFPloter
