@@ -57,7 +57,7 @@ const FreqValueSet& SweepBuilder::CaptureOneSweep()
 	bool flagSweepReady=false;
 	SweepReply swReply;
 	float frequency, power;
-	pair< SweepMap::iterator, bool> mapReply;
+	std::pair< SweepMap::iterator, bool> mapReply;
 	__useconds_t deltaTime = 1000*(bandParam.sweepTime/bandParam.samplePoints); //theoretical time interval between sweep points
 	unsigned int errorTimeCount=0, errorFreqCount=0;
 

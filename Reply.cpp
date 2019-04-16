@@ -77,7 +77,7 @@ void Reply::PrepareTo(ReplyType type, SpecVariable variable)
 	PrepareReply();
 }
 
-void Reply::FillBytesVector(uint8_t * data)
+void Reply::FillBytesVector(std::uint8_t * data)
 {
 	bytes.insert(bytes.begin(), data, data+numOfWaitedBytes);
 }
@@ -85,7 +85,7 @@ void Reply::FillBytesVector(uint8_t * data)
 //! The bytes vector must be inserted in the Reply object with this method to extract the reply data then.
 /*! The reply object must have been prepared before inserting the bytes vector.
  */
-void Reply::InsertBytes(uint8_t* data)
+void Reply::InsertBytes(std::uint8_t* data)
 {
 	FloatToBytes floatBytes;
 
@@ -125,7 +125,7 @@ void Reply::InsertBytes(uint8_t* data)
 }
 
 //! A method which returns the reply type but as a string.
-string Reply::GetReplyTypeString() const
+std::string Reply::GetReplyTypeString() const
 {
 	switch(replyType){
 	case ReplyType::VERIFY:
@@ -146,7 +146,7 @@ string Reply::GetReplyTypeString() const
 }
 
 //! A method which returns the name, as a std::string, of the Spectran's variable which is related with the reply (GETSTPVAR reply)
-string Reply::GetVariableNameString() const
+std::string Reply::GetVariableNameString() const
 {
 	switch(variableName)
 	{
@@ -327,16 +327,16 @@ SweepReply::SweepReply() : Reply(Reply::AMPFREQDAT)
 	maxValue=0.0;
 }
 
-SweepReply::SweepReply(uint8_t* bytesPtr) : Reply(Reply::AMPFREQDAT)
+SweepReply::SweepReply(std::uint8_t* bytesPtr) : Reply(Reply::AMPFREQDAT)
 {
 	SweepReply::InsertBytes(bytesPtr);
 }
 
-void SweepReply::InsertBytes(uint8_t * data)
+void SweepReply::InsertBytes(std::uint8_t * data)
 {
 	union UnIntToBytes{
 		unsigned int intValue;
-		uint8_t bytes[4];
+		std::uint8_t bytes[4];
 	}unsIntBytes;
 
 	FloatToBytes floatBytes;

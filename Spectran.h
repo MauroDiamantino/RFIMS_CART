@@ -21,15 +21,7 @@
 #define SPECTRAN_H_
 
 /////////////Libraries//////////////////
-#include <vector>
 #include <map>
-//#include <unordered_map>
-#include <cassert> //To use assert() function to debug the code
-#include <ftd2xx.h> //The library which allows to communicate with the FTDI driver
-#include <cstdlib> //exit, EXIT_SUCCESS, EXIT_FAILURE
-#include <sstream> //stringstream
-#include <unistd.h> //usleep
-#include <fstream> //ifstream
 #include <boost/bimap.hpp> //Bidirectional container
 #include <boost/algorithm/string.hpp> //to_lower(string)
 #include <boost/filesystem/operations.hpp> //last_write_time(path)
@@ -48,7 +40,7 @@ enum class SpecVariable : uint8_t { STARTFREQ=0x01, STOPFREQ, RESBANDW, VIDBANDW
 
 union FloatToBytes {
 	float floatValue;
-	uint8_t bytes[4];
+	std::uint8_t bytes[4];
 };//!< An union which is used to split a float value in its 4 bytes
 
 typedef boost::bimap<float,float> RBW_bimap;
@@ -56,7 +48,7 @@ typedef boost::bimap<float,float> RBW_bimap;
 
 ///////////////Constants///////////////////////
 //! A vector which is initialized with the pairs of values {RBW(Hz), RBW index}. The vector is used to initialize a bidirectional map.
-const vector<RBW_bimap::value_type> vect( {	{50e6, 0.0}, {3e6, 1.0}, {1e6, 2.0}, {300e3, 3.0}, {100e3, 4.0},
+const std::vector<RBW_bimap::value_type> vect( {	{50e6, 0.0}, {3e6, 1.0}, {1e6, 2.0}, {300e3, 3.0}, {100e3, 4.0},
 											{30e3, 5.0}, {10e3, 6.0}, {3e3, 7.0}, {1e3, 8.0}, {120e3, 100.0},
 											{9e3, 101.0}, {200.0, 102.0}, {5e6, 103.0},	{200e3, 104}, {1.5e6, 105.0} }	);
 
@@ -105,7 +97,7 @@ private:
 	//const unordered_map<float,float> RBW_INDEX;
 	//const RBW_bimap* RBW_INDEX;
 	//Variables
-	vector<uint8_t> bytes; //!< Bytes array (or vector) which will be sent by the Spectran Interface.
+	std::vector<std::uint8_t> bytes; //!< Bytes array (or vector) which will be sent by the Spectran Interface.
 	CommandType commandType; //!< The command type of the object.
 	SpecVariable variableName; //!< The variable name which will be modified or read if the command type is *GETSTPVAR* or *SETSTPVAR*
 	float value; //!< The value (as a float number) which will be used to modify a Spectran variable. It is just used with *SETSTPVAR* command.
@@ -120,19 +112,19 @@ public:
 	void SetParameters(SpecVariable variable, float val=0.0);
 	//! A method to get the current command type.
 	CommandType GetCommandType() const {	return commandType;	}
-	string GetCommTypeString() const;
-	string GetVariableNameString() const;
+	std::string GetCommTypeString() const;
+	std::string GetVariableNameString() const;
 	//! A method to get the variable name which is going to be or has been modified or read.
 	SpecVariable GetVariableName() const {	return variableName;	}
 	//! A method to get the value which is going to be or has been used to modify a variable.
 	float GetValue() const {	return value;	}
-	//! A method to obtain the bytes vector like this is implemented internally, a `vector` container.
-	const vector<uint8_t>& GetBytesVector() const {	return bytes;	}
+	//! A method to obtain the bytes vector like this is implemented internally, a `std::vector` container.
+	const std::vector<std::uint8_t>& GetBytesVector() const {	return bytes;	}
 	//! A method to obtain the bytes vector but like a C-style array.
-	/*! This method returns a pointer to `uint8_t` so this allows to access directly to the memory addresses where the
+	/*! This method returns a pointer to `std::uint8_t` so this allows to access directly to the memory addresses where the
 	 * vector's bytes are stored. Because of the Spectran Interface works with C-style arrays, that object uses this method.
 	 */
-	const uint8_t* GetBytesPointer() const {	return bytes.data();	}
+	const std::uint8_t* GetBytesPointer() const {	return bytes.data();	}
 	//! A method which returns the size of the bytes vector.
 	unsigned int GetNumOfBytes() const {	return bytes.size();	}
 	void Clear();
@@ -174,10 +166,10 @@ private:
 	void PrepareReply();
 protected:
 	///////////Protected Attributes/////////////
-	vector<uint8_t> bytes; //!< Bytes array (or vector) which has been received from a spectrum analyzer.
+	std::vector<std::uint8_t> bytes; //!< Bytes array (or vector) which has been received from a spectrum analyzer.
 	float value; //!< The value (as a float number) of the queried Spectran variable or a power value. It has sense with *GETSTPVAR* and *AMPFREQDAT* replies.
 	///////////Protected methods//////////////
-	void FillBytesVector(uint8_t * data);
+	void FillBytesVector(std::uint8_t * data);
 public:
 	//////////Class interface///////////
 	Reply();
@@ -185,15 +177,15 @@ public:
 	Reply(const Reply& anotherReply);
 	virtual ~Reply() {}
 	virtual void PrepareTo(ReplyType type, SpecVariable variable=SpecVariable::UNINITIALIZED);
-	virtual void InsertBytes(uint8_t * data);
+	virtual void InsertBytes(std::uint8_t * data);
 	//! A Get method which returns the reply type as the corresponding value of the class' internal enumerator.
 	ReplyType GetReplyType() const {	return replyType;	}
-	string GetReplyTypeString() const;
-	string GetVariableNameString() const;
-	//! A method to get the bytes vector like this is implemented internally, a `vector` container.
-	const vector<uint8_t>& GetBytesVector() const {	return bytes;	}
+	std::string GetReplyTypeString() const;
+	std::string GetVariableNameString() const;
+	//! A method to get the bytes vector like this is implemented internally, a `std::vector` container.
+	const std::vector<std::uint8_t>& GetBytesVector() const {	return bytes;	}
 	//! A method to get a direct pointer to the bytes of the internal vector.
-	const uint8_t* GetBytesPointer() const {	return bytes.data();	}
+	const std::uint8_t* GetBytesPointer() const {	return bytes.data();	}
 	//! A method which allows to know the size of the bytes vector.
 	unsigned int GetNumOfBytes() const {	return numOfWaitedBytes; 	}
 	//! A method to get the value of the variable which was queried with a *GETSTPVAR* command, or one of the power values of a *AMPFREQDAT* reply.
@@ -218,10 +210,10 @@ class SweepReply : public Reply {
 public:
 	///////////Class Interface//////////
 	SweepReply();
-	SweepReply(uint8_t * bytesPtr);
+	SweepReply(std::uint8_t * bytesPtr);
 	//~SweepReply() {}
 	void PrepareTo(ReplyType type, SpecVariable variable=SpecVariable::UNINITIALIZED) {}
-	void InsertBytes(uint8_t * b);
+	void InsertBytes(std::uint8_t * b);
 	unsigned int GetTimestamp() const {	return timestamp;	};
 	float GetFrequency() const {	return frequency;	};
 	float GetMinValue() const {	return minValue;	};
@@ -241,7 +233,7 @@ class SpectranInterface {
 	//Constants
 	const DWORD VID = 0x0403;
 	const DWORD PID = 0xE8D8;
-	const string DEVICE_DESCRIPTION = "Aaronia SPECTRAN HF-60105 X";
+	const std::string DEVICE_DESCRIPTION = "Aaronia SPECTRAN HF-60105 X";
 	const DWORD USB_RD_TIMEOUT_MS = 500;
 	const DWORD USB_WR_TIMEOUT_MS = 1000;
 	const float SPK_VOLUME = 0.5;
@@ -272,7 +264,7 @@ public:
 	void LogOut();
 	DWORD GetVID() const {	return VID;	}
 	DWORD GetPID() const { 	return PID;	}
-	string GetDevDescription() const {	return DEVICE_DESCRIPTION;	}
+	std::string GetDevDescription() const {	return DEVICE_DESCRIPTION;	}
 	bool IsLogged() const {	return flagLogIn;	}
 	bool IsSweepEnabled() const {	return flagSweepsEnabled;	}
 };
@@ -315,11 +307,11 @@ public:
 private:
 	///////////Attributes///////////////
 	//Constants
-	const string FILES_PATH = "/home/new-mauro/RFIMS-CART/parameters/";
+	const std::string FILES_PATH = "/home/new-mauro/RFIMS-CART/parameters/";
 	//Variables
-	ifstream ifs;
+	std::ifstream ifs;
 	SpectranInterface & interface;
-	vector<VarParameters> bandsParam;
+	std::vector<VarParameters> bandsParam;
 	unsigned int bandIndex;
 	FixedParameters fixedParam;
 	time_t lastWriteTimes[2];
@@ -329,11 +321,12 @@ public:
 	/////////////////Class' interface//////////////
 	SpectranConfigurator(SpectranInterface& interf);
 	~SpectranConfigurator();
-	bool LoadParameters();
+	bool LoadFixedParameters();
+	bool LoadBandsParameters();
 	void InitialConfiguration();
 	unsigned int ConfigureNextBand();
 	const FixedParameters& GetFixedParam() const {	return fixedParam;	}
-	const vector<VarParameters>& GetBandsParam() const {	return bandsParam;	}
+	const std::vector<VarParameters>& GetBandsParam() const {	return bandsParam;	}
 	const VarParameters& GetCurrBandParam() const {	return bandsParam[bandIndex];	}
 	unsigned int GetNumOfBands() const {	return bandsParam.size();	}
 	unsigned int GetBandIndex() const {		return bandIndex;	}
@@ -346,7 +339,7 @@ class SweepBuilder
 	//////////Attributes////////////
 	SpectranInterface & interface;
 	VarParameters bandParam;
-	typedef map<float,float> SweepMap;
+	typedef std::map<float,float> SweepMap;
 	SweepMap partialSweep;
 	FreqValueSet sweep;
 	////////////Private methods/////////

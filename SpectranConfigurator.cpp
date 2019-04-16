@@ -27,24 +27,18 @@ SpectranConfigurator::~SpectranConfigurator()
  * loading and if that is true reloads the parameters. The method returns a boolean value to indicate if the fixed
  * parameters have been updated so the initial configuration should be repeated.
  */
-bool SpectranConfigurator::LoadParameters()
+bool SpectranConfigurator::LoadFixedParameters()
 {
-	string paramName, line;
+	std::string paramName, line;
 	char endChar;
 	size_t definitionEndPos, endCharPos, equalPos;
-	string pathAndName;
-	bool flagFixParamReload=false;
+	std::string pathAndName;
 
 	pathAndName = FILES_PATH + "fixedparameters.txt";
-	//boost::filesystem::path fixParamFilePath(pathAndName);
 	//Checking if the fixed parameters have been modified
-	//if( lastWriteTimes[0] < boost::filesystem::last_write_time(fixParamFilePath) )
 	if( lastWriteTimes[0] < boost::filesystem::last_write_time(pathAndName) )
 	{
-		//lastWriteTimes[0] = boost::filesystem::last_write_time(fixParamFilePath);
 		lastWriteTimes[0] = boost::filesystem::last_write_time(pathAndName);
-
-		flagFixParamReload = true;
 
 		//Opening the files with the fixed parameters and loading these ones
 		ifs.open(pathAndName);
@@ -53,7 +47,7 @@ bool SpectranConfigurator::LoadParameters()
 			line.clear();
 			getline(ifs, line);
 			//The next instruction determines if there are comments and which position they start in.
-			//If there are no comments, the position returned by the method find() will be string::npos.
+			//If there are no comments, the position returned by the method find() will be std::string::npos.
 			definitionEndPos = line.find("//");
 
 			if( ( endCharPos = line.find(',') ) < definitionEndPos ||
@@ -67,7 +61,7 @@ bool SpectranConfigurator::LoadParameters()
 			else
 			{
 				//The definition is incomplete
-				string str = "The parameter's definition \"" + line + "\" does not have a comma or semicolon in the end.";
+				std::string str = "The parameter's definition \"" + line + "\" does not have a comma or semicolon in the end.";
 				CustomException exc(str);
 				throw(exc);
 			}
@@ -76,10 +70,10 @@ bool SpectranConfigurator::LoadParameters()
 			boost::algorithm::to_lower(paramName);
 
 			//The parameter's value is extracted and transformed to lower case
-			string valueString = line.substr(equalPos+1, endCharPos-equalPos-1);
+			std::string valueString = line.substr(equalPos+1, endCharPos-equalPos-1);
 			boost::algorithm::to_lower(valueString);
 
-			istringstream iss;
+			std::istringstream iss;
 			if(paramName=="attenuator factor")
 			{
 				if(valueString=="auto")
@@ -93,7 +87,7 @@ bool SpectranConfigurator::LoadParameters()
 					iss >> fixedParam.attenFactor;
 					if(fixedParam.attenFactor<0 || fixedParam.attenFactor>30)
 					{
-						string str = "The given value to configure variable " + paramName + " is invalid.";
+						std::string str = "The given value to configure variable " + paramName + " is invalid.";
 						CustomException exc(str);
 						throw(exc);
 					}
@@ -119,7 +113,7 @@ bool SpectranConfigurator::LoadParameters()
 				}
 				else
 				{
-					string str = "The given value to configure variable " + paramName + " is invalid.";
+					std::string str = "The given value to configure variable " + paramName + " is invalid.";
 					CustomException exc(str);
 					throw(exc);
 				}
@@ -140,7 +134,7 @@ bool SpectranConfigurator::LoadParameters()
 				}
 				else
 				{
-					string str = "The given value to configure variable " + paramName + " is invalid.";
+					std::string str = "The given value to configure variable " + paramName + " is invalid.";
 					CustomException exc(str);
 					throw(exc);
 				}
@@ -169,7 +163,7 @@ bool SpectranConfigurator::LoadParameters()
 				}
 				else
 				{
-					string str = "The given value to configure variable " + paramName + " is invalid.";
+					std::string str = "The given value to configure variable " + paramName + " is invalid.";
 					CustomException exc(str);
 					throw(exc);
 				}
@@ -180,7 +174,7 @@ bool SpectranConfigurator::LoadParameters()
 				iss >> fixedParam.cableType;
 				if(fixedParam.cableType!=-1 && fixedParam.cableType!=0)
 				{
-					string str = "The given value to configure variable " + paramName + " is invalid.";
+					std::string str = "The given value to configure variable " + paramName + " is invalid.";
 					CustomException exc(str);
 					throw(exc);
 				}
@@ -191,7 +185,7 @@ bool SpectranConfigurator::LoadParameters()
 				iss >> fixedParam.recvConf;
 				if(fixedParam.recvConf!=0 && fixedParam.recvConf!=1)
 				{
-					string str = "The given value to configure variable " + paramName + " is invalid.";
+					std::string str = "The given value to configure variable " + paramName + " is invalid.";
 					CustomException exc(str);
 					throw(exc);
 				}
@@ -208,7 +202,7 @@ bool SpectranConfigurator::LoadParameters()
 				}
 				else
 				{
-					string str = "The given value to configure variable " + paramName + " is invalid.";
+					std::string str = "The given value to configure variable " + paramName + " is invalid.";
 					CustomException exc(str);
 					throw(exc);
 				}
@@ -216,7 +210,7 @@ bool SpectranConfigurator::LoadParameters()
 //				iss >> fixedParam.internPreamp;
 //				if(fixedParam.internPreamp!=0 && fixedParam.internPreamp!=1)
 //				{
-//					string str = "The given value to configure variable " + paramName + " is invalid.";
+//					std::string str = "The given value to configure variable " + paramName + " is invalid.";
 //					CustomException exc(str);
 //					throw(exc);
 //				}
@@ -233,7 +227,7 @@ bool SpectranConfigurator::LoadParameters()
 				}
 				else
 				{
-					string str = "The given value to configure variable " + paramName + " is invalid.";
+					std::string str = "The given value to configure variable " + paramName + " is invalid.";
 					CustomException exc(str);
 					throw(exc);
 				}
@@ -241,7 +235,7 @@ bool SpectranConfigurator::LoadParameters()
 //				iss >> fixedParam.sweepDelayAcc;
 //				if(fixedParam.sweepDelayAcc!=0 && fixedParam.recvConf!=1)
 //				{
-//					string str = "The given value to configure variable " + paramName + " is invalid.";
+//					std::string str = "The given value to configure variable " + paramName + " is invalid.";
 //					CustomException exc(str);
 //					throw(exc);
 //				}
@@ -258,7 +252,7 @@ bool SpectranConfigurator::LoadParameters()
 				}
 				else
 				{
-					string str = "The given value to configure variable " + paramName + " is invalid.";
+					std::string str = "The given value to configure variable " + paramName + " is invalid.";
 					CustomException exc(str);
 					throw(exc);
 				}
@@ -266,7 +260,7 @@ bool SpectranConfigurator::LoadParameters()
 //				iss >> fixedParam.peakLevelAudioTone;
 //				if(fixedParam.peakLevelAudioTone!=0 && fixedParam.peakLevelAudioTone!=1)
 //				{
-//					string str = "The given value to configure variable " + paramName + " is invalid.";
+//					std::string str = "The given value to configure variable " + paramName + " is invalid.";
 //					CustomException exc(str);
 //					throw(exc);
 //				}
@@ -283,7 +277,7 @@ bool SpectranConfigurator::LoadParameters()
 				}
 				else
 				{
-					string str = "The given value to configure variable " + paramName + " is invalid.";
+					std::string str = "The given value to configure variable " + paramName + " is invalid.";
 					CustomException exc(str);
 					throw(exc);
 				}
@@ -291,7 +285,7 @@ bool SpectranConfigurator::LoadParameters()
 //				iss >> fixedParam.backBBDetector;
 //				if(fixedParam.backBBDetector!=0 && fixedParam.backBBDetector!=1)
 //				{
-//					string str = "The given value to configure variable " + paramName + " is invalid.";
+//					std::string str = "The given value to configure variable " + paramName + " is invalid.";
 //					CustomException exc(str);
 //					throw(exc);
 //				}
@@ -302,29 +296,36 @@ bool SpectranConfigurator::LoadParameters()
 				iss >> fixedParam.speakerVol;
 				if(fixedParam.speakerVol<0.0 || fixedParam.speakerVol>1.0)
 				{
-					string str = "The given value to configure variable " + paramName + " is invalid.";
+					std::string str = "The given value to configure variable " + paramName + " is invalid.";
 					CustomException exc(str);
 					throw(exc);
 				}
 			}
 			else
 			{
-				string str = "The parameter " + paramName + " is not a valid parameter.";
+				std::string str = "The parameter " + paramName + " is not a valid parameter.";
 				CustomException exc(str);
 				throw(exc);
 			}
 		}while( endChar!=';' );
 
 		ifs.close();
+		return true;
 	}
 
+	return false;
+}
+
+bool SpectranConfigurator::LoadBandsParameters()
+{
+	std::string paramName, line;
+	char endChar;
+	size_t definitionEndPos, endCharPos, equalPos;
+	std::string pathAndName;
 
 	pathAndName = FILES_PATH + "freqbands.txt";
-	//boost::filesystem::path bandsParFilePath(pathAndName);
-	//if( lastWriteTimes[1] < boost::filesystem::last_write_time(bandsParFilePath) )
 	if( lastWriteTimes[1] < boost::filesystem::last_write_time(pathAndName) )
 	{
-		//lastWriteTimes[1] = boost::filesystem::last_write_time(bandsParFilePath);
 		lastWriteTimes[1] = boost::filesystem::last_write_time(pathAndName);
 		//Opening the files with the frequency bands's parameters and loading these ones
 		ifs.open(pathAndName);
@@ -335,7 +336,7 @@ bool SpectranConfigurator::LoadParameters()
 			line.clear();
 			getline(ifs, line);
 			//The next instruction determines if there are comments and which position they start in.
-			//If there are no comments, the position returned by the method find() will be string::npos.
+			//If there are no comments, the position returned by the method find() will be std::string::npos.
 			definitionEndPos = line.find("//");
 
 			if( ( endCharPos = line.find(',') ) < definitionEndPos ||
@@ -349,7 +350,7 @@ bool SpectranConfigurator::LoadParameters()
 			else
 			{
 				//The definition is incomplete
-				string str = "The parameter's definition \"" + line + "\" does not have a comma or semicolon in the end.";
+				std::string str = "The parameter's definition \"" + line + "\" does not have a comma or semicolon in the end.";
 				CustomException exc(str);
 				throw(exc);
 			}
@@ -358,10 +359,10 @@ bool SpectranConfigurator::LoadParameters()
 			boost::algorithm::to_lower(paramName);
 
 			//The parameter's value is extracted and transformed to lower case
-			string valueString = line.substr(equalPos+1, endCharPos-equalPos-1);
+			std::string valueString = line.substr(equalPos+1, endCharPos-equalPos-1);
 			boost::algorithm::to_lower(valueString);
 
-			istringstream iss;
+			std::istringstream iss;
 			if(paramName=="band index")
 			{}
 			else if(paramName=="enabled")
@@ -376,7 +377,7 @@ bool SpectranConfigurator::LoadParameters()
 				}
 				else
 				{
-					ostringstream oss;
+					std::ostringstream oss;
 					oss << "It is not clear if the band " << (bandsParam.size()+1) << " is enabled or not.";
 					CustomException exc( oss.str() );
 					throw(exc);
@@ -388,7 +389,7 @@ bool SpectranConfigurator::LoadParameters()
 				iss >> varParam.startFreq;
 				if(varParam.startFreq<1e6 || varParam.startFreq>9.4e9)
 				{
-					string str = "The given value to configure variable " + paramName + " is out of range.";
+					std::string str = "The given value to configure variable " + paramName + " is out of range.";
 					CustomException exc(str);
 					throw(exc);
 				}
@@ -399,7 +400,7 @@ bool SpectranConfigurator::LoadParameters()
 				iss >> varParam.stopFreq;
 				if(varParam.stopFreq<1e6 || varParam.stopFreq>9.4e9)
 				{
-					string str = "The given value to configure variable " + paramName + " is out of range.";
+					std::string str = "The given value to configure variable " + paramName + " is out of range.";
 					CustomException exc(str);
 					throw(exc);
 				}
@@ -420,7 +421,7 @@ bool SpectranConfigurator::LoadParameters()
 							varParam.rbw!=120e3 && varParam.rbw!=9e3 && varParam.rbw!=200.0 && varParam.rbw!=5e6 &&
 							varParam.rbw!=200e3 && varParam.rbw!=1.5e6)
 					{
-						string str = "The given value to configure variable " + paramName + " is invalid.";
+						std::string str = "The given value to configure variable " + paramName + " is invalid.";
 						CustomException exc(str);
 						throw(exc);
 					}
@@ -442,7 +443,7 @@ bool SpectranConfigurator::LoadParameters()
 							varParam.vbw!=120e3 && varParam.vbw!=9e3 && varParam.vbw!=200.0 && varParam.vbw!=5e6 &&
 							varParam.vbw!=200e3 && varParam.vbw!=1.5e6)
 					{
-						string str = "The given value to configure variable " + paramName + " is invalid.";
+						std::string str = "The given value to configure variable " + paramName + " is invalid.";
 						CustomException exc(str);
 						throw(exc);
 					}
@@ -454,7 +455,7 @@ bool SpectranConfigurator::LoadParameters()
 				iss >> varParam.sweepTime;
 				if(varParam.sweepTime<10 || varParam.sweepTime>600000)
 				{
-					string str = "The given value to configure variable " + paramName + " is invalid.";
+					std::string str = "The given value to configure variable " + paramName + " is invalid.";
 					CustomException exc(str);
 					throw(exc);
 				}
@@ -477,14 +478,14 @@ bool SpectranConfigurator::LoadParameters()
 				}
 				else
 				{
-					string str = "The given value to configure variable " + paramName + " is invalid.";
+					std::string str = "The given value to configure variable " + paramName + " is invalid.";
 					CustomException exc(str);
 					throw(exc);
 				}
 			}
 			else
 			{
-				string str = "The parameter " + paramName + " is not a valid parameter.";
+				std::string str = "The parameter " + paramName + " is not a valid parameter.";
 				CustomException exc(str);
 				throw(exc);
 			}
@@ -504,9 +505,10 @@ bool SpectranConfigurator::LoadParameters()
 		}while(ifs.eof()!=true);
 
 		ifs.close();
+		return true;
 	}
 
-	return flagFixParamReload;
+	return false;
 }
 
 void SpectranConfigurator::SetAndCheckVariable(SpecVariable variable, float value)
@@ -520,7 +522,7 @@ void SpectranConfigurator::SetAndCheckVariable(SpecVariable variable, float valu
 		interface.Read(reply);
 		if(reply.IsRight()!=true)
 		{
-			string str = "The reply to the command to set up the variable \"" + reply.GetVariableNameString() + "\" was wrong.";
+			std::string str = "The reply to the command to set up the variable \"" + reply.GetVariableNameString() + "\" was wrong.";
 			CustomException exc(str);
 			throw(exc);
 		}
@@ -543,13 +545,13 @@ void SpectranConfigurator::SetAndCheckVariable(SpecVariable variable, float valu
 		interface.Read(reply);
 		if( reply.IsRight()!=true )
 		{
-			string str = "The reply to the command to get the current value of the \"" + reply.GetVariableNameString() + "\" was wrong.";
+			std::string str = "The reply to the command to get the current value of the \"" + reply.GetVariableNameString() + "\" was wrong.";
 			CustomException exc(str);
 			throw(exc);
 		}
 		else if( reply.GetValue()!=value )
 		{
-			string str = "The reply to the command to get the current value of the \"" + reply.GetVariableNameString() + "\" stated a different value with respect to the one which was used to configure it.";
+			std::string str = "The reply to the command to get the current value of the \"" + reply.GetVariableNameString() + "\" stated a different value with respect to the one which was used to configure it.";
 			CustomException exc(str);
 			throw(exc);
 		}

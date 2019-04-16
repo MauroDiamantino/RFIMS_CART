@@ -41,9 +41,9 @@ void SpectranInterface::OpenAndSetUp()
 			except.SetMessage("The Spectran device could not be opened.");
 			throw(except);
 		default:
-			stringstream ss;
-			ss << "The function FT_OpenEx(), of the D2XX library, returned a ftStatus value of " << ftStatus;
-			except.SetMessage( ss.str() );
+			std::ostringstream oss;
+			oss << "The function FT_OpenEx(), of the D2XX library, returned a ftStatus value of " << ftStatus;
+			except.SetMessage( oss.str() );
 			throw(except);
 		}
 	}else{
@@ -98,7 +98,7 @@ SpectranInterface::~SpectranInterface()
 	{
 		LogOut();
 	}
-	catch(exception & exc)
+	catch(std::exception & exc)
 	{
 		cerr << "Error: " << exc.what() << " During destruction of class SpectraInterface." << endl;
 	}
@@ -134,7 +134,7 @@ void SpectranInterface::Initialize()
 				Read(reply);
 				flagSuccess=true;
 			}
-			catch (exception& exc)
+			catch (std::exception& exc)
 			{
 				cerr << "Warning: one of the two commands VERIFY to initialize the communication failed." << endl;
 				errorCounter++;
@@ -171,16 +171,16 @@ void SpectranInterface::Initialize()
 		reply.PrepareTo(Reply::SETSTPVAR);
 		Read(reply);
 	}
-	catch (exception& exc)
+	catch (std::exception& exc)
 	{
 		CustomException except("There was an error when the Spectran interface tried to set up the speaker volume.");
 		throw(except);
 	}
 
 	if (reply.IsRight()!=true){
-		stringstream ss;
-		ss << "The Spectran Interface tried to set the speaker volume to " << SPK_VOLUME << " but the reply was not right.";
-		CustomException except( ss.str() );
+		std::ostringstream oss;
+		oss << "The Spectran Interface tried to set the speaker volume to " << SPK_VOLUME << " but the reply was not right.";
+		CustomException except( oss.str() );
 		throw(except);
 	}
 
@@ -196,8 +196,8 @@ inline void SpectranInterface::Write(const Command& command)
 {
 	DWORD writtenBytes;
 	unsigned int numOfBytes = command.GetNumOfBytes();
-	uint8_t txBuffer[numOfBytes];
-	const uint8_t * bytesPtr = command.GetBytesPointer();
+	std::uint8_t txBuffer[numOfBytes];
+	const std::uint8_t * bytesPtr = command.GetBytesPointer();
 
 	for(unsigned int i=0; i<numOfBytes; i++){
 		txBuffer[i] = bytesPtr[i];
@@ -217,7 +217,7 @@ inline void SpectranInterface::Read(Reply& reply)
 {
 	DWORD receivedBytes;
 	unsigned int numOfBytes=reply.GetNumOfBytes();
-	uint8_t rxBuffer[numOfBytes];
+	std::uint8_t rxBuffer[numOfBytes];
 
 //	unsigned int i=0;
 //	unsigned int currNumOfBytes=0;
@@ -406,7 +406,7 @@ void SpectranInterface::SoundLogIn()
 				cerr << "Warning: the reply of one of the commands to produce one of the beeps which sound in the login was wrong" << endl;
 			}
 		}
-		catch(exception& exc)
+		catch(std::exception& exc)
 		{
 			cerr << "Warning: one of the commands to produce one of the beeps which sound in the login failed." << endl;
 		}
@@ -426,7 +426,7 @@ void SpectranInterface::SoundLogOut()
 			cerr << "Warning: The reply of the command to produce the beep which sound in the logout was wrong." << endl;
 		}
 	}
-	catch(exception& exc)
+	catch(std::exception& exc)
 	{
 		cerr << "Warning: " << exc.what() << endl;
 		cerr << "There was a failure with the command to produce the beep which sound in the logout failed." << endl;

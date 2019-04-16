@@ -54,31 +54,31 @@ Command::Command(const Command& anotherComm)
  */
 void Command::FillBytesVector()
 {
-	uint8_t var_id;
+	std::uint8_t var_id;
 	FloatToBytes floatBytes;
 
 	switch(commandType)
 	{
 	case Command::VERIFY:
 		bytes.reserve(5);
-		bytes.push_back( uint8_t(Command::VERIFY) );
+		bytes.push_back( std::uint8_t(Command::VERIFY) );
 		bytes.push_back(0xA5);
 		bytes.push_back(0x5A);
 		bytes.push_back(0xF1);
 		bytes.push_back(0x1F);
 		break;
 	case Command::LOGOUT:
-		bytes.push_back( uint8_t(Command::LOGOUT) );
+		bytes.push_back( std::uint8_t(Command::LOGOUT) );
 		break;
 	case Command::GETSTPVAR:
-		var_id = uint8_t(variableName);
+		var_id = std::uint8_t(variableName);
 		bytes.reserve(3);
-		bytes.push_back( uint8_t(Command::GETSTPVAR) );
+		bytes.push_back( std::uint8_t(Command::GETSTPVAR) );
 		bytes.push_back(var_id);
 		bytes.push_back(0);
 		break;
 	case Command::SETSTPVAR:
-		var_id = uint8_t(variableName);
+		var_id = std::uint8_t(variableName);
 		if( variableName==SpecVariable::RESBANDW || variableName==SpecVariable::VIDBANDW )
 		{
 			floatBytes.floatValue = RBW_INDEX.left.at(value); //The given value is the actual frequency value but the
@@ -94,7 +94,7 @@ void Command::FillBytesVector()
 			floatBytes.floatValue=value;
 		}
 		bytes.reserve(7);
-		bytes.push_back( uint8_t(Command::SETSTPVAR) );
+		bytes.push_back( std::uint8_t(Command::SETSTPVAR) );
 		bytes.push_back(var_id);
 		bytes.push_back(0);
 		bytes.push_back(floatBytes.bytes[0]);
@@ -104,7 +104,7 @@ void Command::FillBytesVector()
 		break;
 	default:
 		//A LOGOUT command is built by default
-		bytes.push_back( uint8_t(Command::LOGOUT) );
+		bytes.push_back( std::uint8_t(Command::LOGOUT) );
 		break;
 	}
 }
@@ -127,7 +127,7 @@ void Command::SetParameters(SpecVariable variable, float val)
 }
 
 //! A method which returns the command type as a std::string.
-string Command::GetCommTypeString() const
+std::string Command::GetCommTypeString() const
 {
 	switch(commandType)
 	{
@@ -149,7 +149,7 @@ string Command::GetCommTypeString() const
 }
 
 //! A method which returns the name, as a std::string, of the Spectran's variable which is related with the command (GETSTPVAR and SETSTPVAR commands)
-string Command::GetVariableNameString() const
+std::string Command::GetVariableNameString() const
 {
 	switch(variableName)
 	{
