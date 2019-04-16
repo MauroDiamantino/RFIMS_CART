@@ -16,6 +16,7 @@
 #include <iomanip>
 
 using std::cout;
+using std::cerr;
 using std::cin;
 using std::endl;
 

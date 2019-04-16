@@ -5,7 +5,7 @@
  *      Author: new-mauro
  */
 
-#include "SpectranInterface.h"
+#include "Spectran.h"
 #include "SweepProcessing.h"
 
 void WaitForKey()
@@ -17,13 +17,13 @@ void WaitForKey()
 
 int main()
 {
-	cout << "\t\tTestbench de las clases SpectranInterface, SpectranConfigurator y SweepBuilder" << endl;
+	cout << "\t\tTestbench de las clases SpectranInterface, SpectranConfigurator, SweepBuilder, RFPloter y DataLogger" << endl;
 
 	try
 	{
 		SpectranInterface specInterface;
 
-		cout << "\nIniciando la comunicacion con el dispositivo Spectran HF-60100 V4 X" << endl;
+		cout << "\nIniciando la comunicacion con el dispositivo Spectran HF-60105 V4 X" << endl;
 		specInterface.Initialize();
 		cout << "La sesion fue iniciada con exito" << endl;
 
@@ -32,7 +32,7 @@ int main()
 
 		//Cargando los parametros
 		cout << "\nCargando los parametros de configuracion del dispositivo Spectran desde los archivos correspondientes" << endl;
-		if( specConfigurator.LoadParameters()==true )
+		if( specConfigurator.LoadFixedParameters() )
 		{
 			//If the fixed parameters were loaded for the first time or they were reloaded, the initial configuration will be repeated
 			cout << "Los parametros fijos fueron cargados por primera vez o fueron recargados por lo que se efectuara la configuracion inicial" << endl;
@@ -40,12 +40,18 @@ int main()
 			cout << "La configuracion inicial fue realizada con exito" << endl;
 		}
 
-		VarParameters bandParam;
-		FreqValueSet wholeSweep, freqBand;
+		cout << "\nCargando los parametros de las bandas frecuenciales" << endl;
+		specConfigurator.LoadBandsParameters();
+		cout << "\nLos parametros de las bandas fueron cargados exitosamente" << endl;
 
-		//Capturando los barridos
+		FreqValueSet wholeSweep;
+
+		//Capturando los barridos de cada una de las bandas que componen el barrido completo
 		for(unsigned int i=0; i < specConfigurator.GetNumOfBands(); i++)
 		{
+			VarParameters bandParam;
+			FreqValueSet freqBand;
+
 			cout << "\nSe inicia el proceso de captura de un nuevo barrido, correspondiente a la banda frecuencial N° " << i+1 << endl;
 			cout << "Configurando el dispositivo Spectran con los parametros de la siguiente banda frecuencial" << endl;
 			specConfigurator.ConfigureNextBand();
@@ -61,26 +67,41 @@ int main()
 			wholeSweep.PushBack(freqBand);
 		}
 
-		cout.precision(1);
-		cout.setf(ios::fixed, ios::floatfield);
+//		cout.precision(1);
+//		cout.setf(std::ios::fixed, std::ios::floatfield);
+//
+//		cout << "\nA continuacion se graficara el barrido completo capturado." << endl;
+//		cout << "Presione ENTER para que se inicie la visualizacion del barrido..." << endl;
+//
+//		WaitForKey();
+//
+//		cout << "\n\t\tFrequency (Hz)\t\tPower (dBm)" << endl;
+//		for(std::uint8_t i=0; i < wholeSweep.values.size(); i++)
+//			cout << "\t\t" << wholeSweep.frequencies[i] << "\t\t" << wholeSweep.values[i] << endl;
 
-		cout << "\nA continuacion se graficara el barrido completo capturado." << endl;
-		cout << "Presione ENTER para que se inicie la visualizacion del barrido..." << endl;
-		cout << "\n\t\tFrequency (Hz)\t\tPower (dBm)" << endl;
+		DataLogger logger;
+		logger.SetSweep(wholeSweep);
 
-		WaitForKey();
-
-		for(uint8_t i=0; i < wholeSweep.values.size(); i++)
-			cout << "\t\t" << wholeSweep.frequencies[i] << "\t\t" << wholeSweep.values[i] << endl;
+		cout << "\nAlmacenando el barrido completo 16 veces con distintos valores de timestamp y de posicion de la antena para emular un funcionamiento real" << endl;
+		for(uint8_t i=0; i<8; i++)
+		{
+			logger.SetAntennaData(45.0*i, "horizontal");
+			logger.SaveData();
+			wholeSweep.timeData.hour++;
+			logger.SetAntennaData(45.0*i, "vertical");
+			logger.SaveData();
+			wholeSweep.timeData.hour++;
+		}
+		cout << "Almacenamiento de los datos finalizado" << endl;
 
 		RFPloter rfPloter;
-
+		cout << "\nGraficando el barrido completo" << endl;
 		rfPloter.PlotSweep(wholeSweep);
 
-		cout << "\nPresione ENTER para terminar..." << endl;
+		cout << "\nPresione cualquier tecla para terminar..." << endl;
 		WaitForKey();
 	}
-	catch(exception & exc)
+	catch(std::exception & exc)
 	{
 		cerr << "\nError: " << exc.what() << endl;
 
