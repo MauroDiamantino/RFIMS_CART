@@ -269,7 +269,7 @@ public:
 	bool IsSweepEnabled() const {	return flagSweepsEnabled;	}
 };
 
-struct VarParameters
+struct BandParameters
 {
 	bool flagEnable; //It determines if the band is used or not
 	float startFreq;
@@ -302,16 +302,19 @@ public:
 		bool peakLevelAudioTone; //0=disable, 1=enable
 		bool backBBDetector; //0=disable, 1=enable
 		float speakerVol; //range from 0.0 to 1.0
-		float antennaGain; //Nominal antenna gain in dB
 	};
 private:
 	///////////Attributes///////////////
 	//Constants
+#ifdef RASPBERRY_PI
+	const std::string FILES_PATH = "/home/pi/RFIMS-CART/parameters/";
+#else
 	const std::string FILES_PATH = "/home/new-mauro/RFIMS-CART/parameters/";
+#endif
 	//Variables
 	std::ifstream ifs;
 	SpectranInterface & interface;
-	std::vector<VarParameters> bandsParam;
+	std::vector<BandParameters> bandsParam;
 	unsigned int bandIndex;
 	FixedParameters fixedParam;
 	time_t lastWriteTimes[2];
@@ -326,8 +329,8 @@ public:
 	void InitialConfiguration();
 	unsigned int ConfigureNextBand();
 	const FixedParameters& GetFixedParam() const {	return fixedParam;	}
-	const std::vector<VarParameters>& GetBandsParam() const {	return bandsParam;	}
-	const VarParameters& GetCurrBandParam() const {	return bandsParam[bandIndex];	}
+	const std::vector<BandParameters>& GetBandsParam() const {	return bandsParam;	}
+	const BandParameters& GetCurrBandParam() const {	return bandsParam[bandIndex];	}
 	unsigned int GetNumOfBands() const {	return bandsParam.size();	}
 	unsigned int GetBandIndex() const {		return bandIndex;	}
 	bool IsLastBand() const {	return ( bandIndex>=bandsParam.size() );	}
@@ -338,7 +341,7 @@ class SweepBuilder
 {
 	//////////Attributes////////////
 	SpectranInterface & interface;
-	VarParameters bandParam;
+	BandParameters bandParam;
 	typedef std::map<float,float> SweepMap;
 	SweepMap partialSweep;
 	FreqValueSet sweep;
@@ -349,10 +352,10 @@ public:
 	/////////Class' interface/////////
 	SweepBuilder(SpectranInterface & interf);
 	//~SweepBuilder();
-	void SetBandParameters(const VarParameters& param){		bandParam=param;	}
+	void SetBandParameters(const BandParameters& param){		bandParam=param;	}
 //	void SetSweepTime(unsigned int swTime){		sweepTime=swTime;	}
 //	void SetSamplePoints(unsigned int sampPoints){	samplePoints=sampPoints;	}
-	const FreqValueSet& CaptureOneSweep();
+	const FreqValueSet& CaptureSweep();
 	const FreqValueSet& GetSweep() const {	return sweep;	}
 };
 

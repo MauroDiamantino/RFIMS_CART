@@ -330,7 +330,7 @@ bool SpectranConfigurator::LoadBandsParameters()
 		//Opening the files with the frequency bands's parameters and loading these ones
 		ifs.open(pathAndName);
 
-		VarParameters varParam = {false, 0.0, 0.0, 0.0, 0.0, 0, 0, 0};
+		BandParameters bandParam = {false, 0.0, 0.0, 0.0, 0.0, 0, 0, 0};
 		do
 		{
 			line.clear();
@@ -369,11 +369,11 @@ bool SpectranConfigurator::LoadBandsParameters()
 			{
 				if(valueString=="y")
 				{
-					varParam.flagEnable=true;
+					bandParam.flagEnable=true;
 				}
 				else if(valueString=="n")
 				{
-					varParam.flagEnable=false;
+					bandParam.flagEnable=false;
 				}
 				else
 				{
@@ -386,8 +386,8 @@ bool SpectranConfigurator::LoadBandsParameters()
 			else if(paramName=="fstart")
 			{
 				iss.str(valueString);
-				iss >> varParam.startFreq;
-				if(varParam.startFreq<1e6 || varParam.startFreq>9.4e9)
+				iss >> bandParam.startFreq;
+				if(bandParam.startFreq<1e6 || bandParam.startFreq>9.4e9)
 				{
 					std::string str = "The given value to configure variable " + paramName + " is out of range.";
 					CustomException exc(str);
@@ -397,8 +397,8 @@ bool SpectranConfigurator::LoadBandsParameters()
 			else if(paramName=="fstop")
 			{
 				iss.str(valueString);
-				iss >> varParam.stopFreq;
-				if(varParam.stopFreq<1e6 || varParam.stopFreq>9.4e9)
+				iss >> bandParam.stopFreq;
+				if(bandParam.stopFreq<1e6 || bandParam.stopFreq>9.4e9)
 				{
 					std::string str = "The given value to configure variable " + paramName + " is out of range.";
 					CustomException exc(str);
@@ -409,17 +409,17 @@ bool SpectranConfigurator::LoadBandsParameters()
 			{
 				if(valueString=="full")
 				{
-					varParam.rbw=50e6;
+					bandParam.rbw=50e6;
 				}
 				else
 				{
 					//The value is numerical
 					iss.str(valueString);
-					iss >> varParam.rbw;
-					if(varParam.rbw!=3e6 && varParam.rbw!=1e6 && varParam.rbw!=300e3 && varParam.rbw!=100e3 &&
-							varParam.rbw!=30e3 && varParam.rbw!=10e3 && varParam.rbw!=3e3 && varParam.rbw!=1e3 &&
-							varParam.rbw!=120e3 && varParam.rbw!=9e3 && varParam.rbw!=200.0 && varParam.rbw!=5e6 &&
-							varParam.rbw!=200e3 && varParam.rbw!=1.5e6)
+					iss >> bandParam.rbw;
+					if(bandParam.rbw!=3e6 && bandParam.rbw!=1e6 && bandParam.rbw!=300e3 && bandParam.rbw!=100e3 &&
+							bandParam.rbw!=30e3 && bandParam.rbw!=10e3 && bandParam.rbw!=3e3 && bandParam.rbw!=1e3 &&
+							bandParam.rbw!=120e3 && bandParam.rbw!=9e3 && bandParam.rbw!=200.0 && bandParam.rbw!=5e6 &&
+							bandParam.rbw!=200e3 && bandParam.rbw!=1.5e6)
 					{
 						std::string str = "The given value to configure variable " + paramName + " is invalid.";
 						CustomException exc(str);
@@ -431,17 +431,17 @@ bool SpectranConfigurator::LoadBandsParameters()
 			{
 				if(valueString=="full")
 				{
-					varParam.vbw=50e6;
+					bandParam.vbw=50e6;
 				}
 				else
 				{
 					//The value is numerical
 					iss.str(valueString);
-					iss >> varParam.vbw;
-					if(varParam.vbw!=3e6 && varParam.vbw!=1e6 && varParam.vbw!=300e3 && varParam.vbw!=100e3 &&
-							varParam.vbw!=30e3 && varParam.vbw!=10e3 && varParam.vbw!=3e3 && varParam.vbw!=1e3 &&
-							varParam.vbw!=120e3 && varParam.vbw!=9e3 && varParam.vbw!=200.0 && varParam.vbw!=5e6 &&
-							varParam.vbw!=200e3 && varParam.vbw!=1.5e6)
+					iss >> bandParam.vbw;
+					if(bandParam.vbw!=3e6 && bandParam.vbw!=1e6 && bandParam.vbw!=300e3 && bandParam.vbw!=100e3 &&
+							bandParam.vbw!=30e3 && bandParam.vbw!=10e3 && bandParam.vbw!=3e3 && bandParam.vbw!=1e3 &&
+							bandParam.vbw!=120e3 && bandParam.vbw!=9e3 && bandParam.vbw!=200.0 && bandParam.vbw!=5e6 &&
+							bandParam.vbw!=200e3 && bandParam.vbw!=1.5e6)
 					{
 						std::string str = "The given value to configure variable " + paramName + " is invalid.";
 						CustomException exc(str);
@@ -452,8 +452,8 @@ bool SpectranConfigurator::LoadBandsParameters()
 			else if(paramName=="sweep time")
 			{
 				iss.str(valueString);
-				iss >> varParam.sweepTime;
-				if(varParam.sweepTime<10 || varParam.sweepTime>600000)
+				iss >> bandParam.sweepTime;
+				if(bandParam.sweepTime<10 || bandParam.sweepTime>600000)
 				{
 					std::string str = "The given value to configure variable " + paramName + " is invalid.";
 					CustomException exc(str);
@@ -463,18 +463,18 @@ bool SpectranConfigurator::LoadBandsParameters()
 			else if(paramName=="sample points")
 			{
 				iss.str(valueString);
-				iss >> varParam.samplePoints;
-				varParam.flagDefaultSamplePoints = (varParam.samplePoints==0);
+				iss >> bandParam.samplePoints;
+				bandParam.flagDefaultSamplePoints = (bandParam.samplePoints==0);
 			}
 			else if(paramName=="detector")
 			{
 				if(valueString=="rms")
 				{
-					varParam.detector=0;
+					bandParam.detector=0;
 				}
 				else if(valueString=="min/max")
 				{
-					varParam.detector=1;
+					bandParam.detector=1;
 				}
 				else
 				{
@@ -493,11 +493,11 @@ bool SpectranConfigurator::LoadBandsParameters()
 			//Control if the definitions of one band finished
 			if(endChar==';')
 			{
-				if(varParam.flagDefaultSamplePoints)
-					varParam.samplePoints = 2 * (unsigned int)( (varParam.stopFreq - varParam.startFreq) / varParam.rbw ) + 1;
+				if(bandParam.flagDefaultSamplePoints)
+					bandParam.samplePoints = 2 * (unsigned int)( (bandParam.stopFreq - bandParam.startFreq) / bandParam.rbw ) + 1;
 
-				bandsParam.push_back(varParam);
-				varParam = {false, 0.0, 0.0, 0.0, 0.0, 0, 0, 0};
+				bandsParam.push_back(bandParam);
+				bandParam = {false, 0.0, 0.0, 0.0, 0.0, 0, 0, 0};
 
 				if( ifs.peek()=='\n' )
 					ifs.get();

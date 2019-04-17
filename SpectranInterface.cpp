@@ -219,20 +219,20 @@ inline void SpectranInterface::Read(Reply& reply)
 	unsigned int numOfBytes=reply.GetNumOfBytes();
 	std::uint8_t rxBuffer[numOfBytes];
 
-//	unsigned int i=0;
-//	unsigned int currNumOfBytes=0;
-//	while ( currNumOfBytes<numOfBytes && i++<20 )
-//	{
-//		currNumOfBytes = Available();
-//		usleep(70000);
-//	}
-//	if(i>=20)
-//	{
-//		CustomException exc("In a reading operation, the input bytes were waited too much time.");
-//		throw(exc);
-//	}
+	unsigned int i=0;
+	unsigned int currNumOfBytes=0;
+	while ( currNumOfBytes<numOfBytes && i++<20 )
+	{
+		currNumOfBytes = Available();
+		usleep(70000);
+	}
+	if(i>=20)
+	{
+		CustomException exc("In a reading operation, the input bytes were waited too much time.");
+		throw(exc);
+	}
 
-	usleep(200000);
+//	usleep(200000);
 
 	ftStatus=FT_Read(ftHandle, rxBuffer, numOfBytes, &receivedBytes);
 	if (ftStatus!=FT_OK){
@@ -295,7 +295,7 @@ void SpectranInterface::DisableSweep()
 	Reply reply;
 	unsigned int errorCounter=0;
 
-	for(unsigned int i=0; i<2; i++)
+	for(unsigned int i=0; i<3; i++)
 	{
 		try
 		{
@@ -313,7 +313,7 @@ void SpectranInterface::DisableSweep()
 		{
 			cerr << "Warning: one of the commands to disable the sending of measurements via USB failed." << endl;
 
-			if(++errorCounter < 2)
+			if(++errorCounter < 3)
 			{
 				Purge();
 				usleep(500000);
