@@ -1,0 +1,90 @@
+/*
+ * TestbenchCalibration.cpp
+ *
+ *  Created on: 19/04/2019
+ *      Author: new-mauro
+ */
+
+#include "SweepProcessing.h"
+
+const uint8_t NUM_OF_SAMPLES = 11;
+const float RBW = 1e3;
+
+void WaitForKey()
+{
+	cin.clear();
+	cin.ignore(std::cin.rdbuf()->in_avail());
+	cin.get();
+}
+
+int main()
+{
+	cout << "Testbench de las clases asociadas con la calibracion del front end y de los datos" << endl;
+
+	BandParameters aux;
+	std::vector<BandParameters> bandsParam;
+
+	aux.detector=0;
+	aux.flagDefaultSamplePoints=false;
+	aux.flagEnable=true;
+	aux.rbw=RBW;
+	aux.samplePoints=NUM_OF_SAMPLES;
+	aux.startFreq=900e6;
+	aux.stopFreq=1000e6;
+	aux.sweepTime=1000;
+	aux.vbw=3e3;
+	bandsParam.push_back(aux);
+
+	CurveAdjuster adjuster(bandsParam);
+	FrontEndCalibrator frontCalibrator(adjuster, bandsParam);
+
+	frontCalibrator.LoadENR();
+
+	frontCalibrator.StartCalibration();
+
+	FreqValueSet sweepNSoff("sweep"), sweepNSon("sweep");
+
+	sweepNSoff.frequencies.reserve(NUM_OF_SAMPLES);
+	sweepNSoff.values.reserve(NUM_OF_SAMPLES);
+	for(unsigned int i=0; i<NUM_OF_SAMPLES; i++)
+	{
+		sweepNSoff.frequencies.push_back( 900e6 + i*10e6 ); //MHz
+
+		if( sweepNSoff.frequencies.back() <= 950e6 )
+			sweepNSoff.values.push_back(-133.98); //dBm
+		else
+			sweepNSoff.values.push_back(-135.98); //dBm
+	}
+
+	frontCalibrator.SetSweep(sweepNSoff);
+	frontCalibrator.TurnOnNS();
+
+	sweepNSon.frequencies.reserve(NUM_OF_SAMPLES);
+	sweepNSon.values.reserve(NUM_OF_SAMPLES);
+	for(unsigned int i=0; i<NUM_OF_SAMPLES; i++)
+	{
+		sweepNSon.frequencies.push_back( 900e6 + i*10e6 );
+
+		if( sweepNSon.frequencies.back() <= 950e6 )
+			sweepNSon.values.push_back(-129.2); //dBm
+		else
+			sweepNSon.values.push_back(-131.2); //dBm
+	}
+
+	frontCalibrator.SetSweep(sweepNSon);
+	frontCalibrator.SetNSoffTemperature(290.0);
+
+	FrontEndParameters frontParameters = frontCalibrator.CalculateParameters();
+
+	frontCalibrator.EndCalibration();
+
+	Gnuplot ploter1, ploter2;
+
+	ploter1.plot_xy(frontParameters.frequency, frontParameters.noiseFigure, "Figura de ruido del front end(NF, dB)");
+	ploter2.plot_xy(frontParameters.frequency, frontParameters.gain_dB, "Ganancia del front end (G, dB)");
+
+	cout << "Presione una tecla para terminar..." << endl;
+	WaitForKey();
+
+	return 0;
+}
