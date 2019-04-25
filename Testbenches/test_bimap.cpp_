@@ -1,0 +1,36 @@
+/*
+ * test_bimap.cpp
+ *
+ *  Created on: 03/03/2019
+ *      Author: new-mauro
+ */
+
+#include <iostream>
+#include <boost/bimap.hpp>
+#include <string>
+
+//using namespace boost;
+using namespace std;
+
+int main()
+{
+	typedef boost::bimap<int,string> my_bm_type;
+	my_bm_type bm;
+
+	bm.insert( my_bm_type::value_type(1, "one") );
+	bm.insert( my_bm_type::value_type(2, "two") );
+	bm.insert( my_bm_type::value_type(3, "three") );
+
+
+	cout << "\nUn contenedor bidireccional fue creado con los siguientes pares de valores" << endl;
+	for (my_bm_type::left_const_iterator it=bm.left.begin(); it!=bm.left.end(); it++)
+	{
+		cout << "{ " << it->first << " , " << it->second << " }" << endl;
+	}
+
+	cout << "El elemento que esta mapeado con 1 es: " << bm.left.at(1) << endl;
+
+	cout << "El elemento que esta mapeado con \"two\" es: " << bm.right.at("two") << endl;
+
+	return 0;
+}
