@@ -21,6 +21,7 @@
 #define SPECTRAN_H_
 
 /////////////Libraries//////////////////
+#include <ftd2xx.h>
 #include <map>
 #include <boost/bimap.hpp> //Bidirectional container
 #include <cmath>
@@ -253,21 +254,6 @@ public:
 	std::string GetDevDescription() const {	return DEVICE_DESCRIPTION;	}
 	bool IsLogged() const {	return flagLogIn;	}
 	bool IsSweepEnabled() const {	return flagSweepsEnabled;	}
-};
-
-struct BandParameters
-{
-	bool flagEnable; //It determines if the band is used or not
-	float startFreq;
-	float stopFreq;
-	float rbw; //resolution bandwidth
-	float vbw; //video bandwidth
-	unsigned long int sweepTime;
-	bool flagDefaultSamplePoints; //It determines if the sample points number must be configured with next
-								//parameter or if it is left with its default value which is determined
-								//by the Spectran device.
-	unsigned int samplePoints; //Number of samples points. The value determined by the Spectran device (default value) or the forced value.
-	unsigned int detector; //”rms”(0) or “min/max”(1)
 };
 
 //! The class *SpectranConfigurator* is intended to manage the process of configuring the Aaronia Spectran device.

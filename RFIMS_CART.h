@@ -12,17 +12,14 @@
 #include <exception>
 #include <vector>
 #include <string>
-#include <cassert> //To use assert() function to debug the code
-#include <ftd2xx.h> //The library which allows to communicate with the FTDI driver
-#include <cstdlib> //exit, EXIT_SUCCESS, EXIT_FAILURE
-#include <sstream> //stringstream
-#include <unistd.h> //usleep
-#include <fstream> //ifstream
+#include <sstream> //ostringstream, istringstream
 #include <iomanip>
-#include <boost/algorithm/string.hpp> //to_lower(string)
-#include <boost/filesystem/operations.hpp> //last_write_time(path)
-
-//#define RASPBERRY_PI
+#include <boost/algorithm/string.hpp>
+#include <boost/filesystem.hpp>
+#include <cmath>
+#ifdef RASPBERRY_PI
+#include <wiringPi.h>
+#endif
 
 using std::cout;
 using std::cerr;
@@ -37,7 +34,7 @@ public:
 	CustomException(const std::string& msg="Error") : message(msg) {}
 	void SetMessage(const std::string& msg) {	message=msg;	}
 	void Append(const std::string& msg){		message+=msg;	}
-	virtual const char * what() const throw() {		return message.c_str();		}
+	virtual const char * what() const throw(){	return message.c_str();	}
 };
 
 struct TimeData
@@ -48,22 +45,26 @@ struct TimeData
 	unsigned int hour;
 	unsigned int minute;
 	unsigned int second;
-	std::ostringstream oss;
-	TimeData() {	year=month=day=hour=minute=second=0; oss.fill('0'); oss.setf(std::ios::right, std::ios::adjustfield);	}
-	TimeData(const TimeData& timeData) {	*this=timeData;		}
-	std::string date()
+	TimeData()
 	{
-		oss.str("");
+		year=month=day=hour=minute=second=0;
+	}
+	TimeData(const TimeData& timeData) {	*this=timeData;		}
+	std::string date() const
+	{
+		std::ostringstream oss;
+		oss.fill('0'); oss.setf(std::ios::right, std::ios::adjustfield);
 		oss << std::setw(2) << day << '-' << std::setw(2) << month << '-' << year;
 		return oss.str();
 	}
-	std::string time()
+	std::string time() const
 	{
-		oss.str("");
+		std::ostringstream oss;
+		oss.fill('0'); oss.setf(std::ios::right, std::ios::adjustfield);
 		oss << std::setw(2) << hour << ':' << std::setw(2) << minute << ':' << std::setw(2) << second;
 		return oss.str();
 	}
-	std::string timestamp(){	return ( date() + 'T' + time() );	}
+	std::string timestamp() const {	return ( date() + 'T' + time() );	}
 	const TimeData& operator=(const TimeData& anotherTimeData)
 	{
 		year=anotherTimeData.year; month=anotherTimeData.month; day=anotherTimeData.day;
@@ -84,9 +85,36 @@ struct FreqValueSet
 	void PushBack(const FreqValueSet& freqValueSet);
 	void Clear() { values.clear(); frequencies.clear();	}
 	bool Empty() const {	return values.empty();		}
-	const FreqValueSet& operator=(const FreqValueSet & freqValueSet); //defined in SweepBuilder.cpp
-	const FreqValueSet& operator+=(const FreqValueSet& rhs); //defined in SweepBuilder.cpp
-	friend FreqValueSet operator+(const FreqValueSet & lhs, const FreqValueSet & rhs); //defined in SweepBuilder.cpp
+	const FreqValueSet& operator=(const FreqValueSet & freqValueSet);
+	const FreqValueSet& operator+=(const FreqValueSet& rhs);
+	friend FreqValueSet operator-(const FreqValueSet& argument);
+	friend FreqValueSet operator+(const FreqValueSet & lhs, const FreqValueSet & rhs); //defined in FreqValueSet.cpp
+	friend FreqValueSet operator+(const FreqValueSet & lhs, const float rhs); //defined in FreqValueSet.cpp
+	friend FreqValueSet operator+(const float lhs, const FreqValueSet & rhs);
+	friend FreqValueSet operator-(const FreqValueSet & lhs, const FreqValueSet & rhs);
+	friend FreqValueSet operator-(const FreqValueSet & lhs, const float rhs);
+	friend FreqValueSet operator-(const float lhs, const FreqValueSet & rhs);
+	friend FreqValueSet operator*(const FreqValueSet & lhs, const FreqValueSet & rhs); //defined in FreqValueSet.cpp
+	friend FreqValueSet operator*(const float lhs, const FreqValueSet & rhs); //defined in FreqValueSet.cpp
+	friend FreqValueSet operator*(const FreqValueSet & lhs, const float rhs);
+	friend FreqValueSet operator/(const FreqValueSet & lhs, const FreqValueSet & rhs); //defined in FreqValueSet.cpp
+	friend FreqValueSet log10(const FreqValueSet & argument); //decimal logarithm, defined in FreqValueSet.cpp
+	friend FreqValueSet pow(const FreqValueSet & base, const float exponent); //exponentiation, defined in FreqValueSet.cpp
+	friend FreqValueSet pow(const float base, const FreqValueSet & exponent); //exponentiation, defined in FreqValueSet.cpp
 };
 
+struct BandParameters
+{
+	bool flagEnable; //It determines if the band is used or not
+	float startFreq;
+	float stopFreq;
+	float rbw; //resolution bandwidth
+	float vbw; //video bandwidth
+	unsigned long int sweepTime;
+	bool flagDefaultSamplePoints; //It determines if the sample points number must be configured with next
+								//parameter or if it is left with its default value which is determined
+								//by the Spectran device.
+	unsigned int samplePoints; //Number of samples points. The value determined by the Spectran device (default value) or the forced value.
+	unsigned int detector; //”rms”(0) or “min/max”(1)
+};
 #endif /* RFIMS_CART_H_ */

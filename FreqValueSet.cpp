@@ -21,36 +21,15 @@ FreqValueSet::FreqValueSet(const FreqValueSet& freqValueSet)
 	*this=freqValueSet;
 }
 
-FreqValueSet operator+(const FreqValueSet & lhs, const FreqValueSet & rhs)
+void FreqValueSet::PushBack(const FreqValueSet& freqValueSet)
 {
-	if(lhs.frequencies != rhs.frequencies)
+	if( !frequencies.empty() && frequencies.back()==freqValueSet.frequencies.front() )
 	{
-		CustomException exc("The sum could not be performed because the frequencies do not match");
-		throw(exc);
+		frequencies.pop_back();
+		values.pop_back();
 	}
-
-	if( lhs.frequencies.size()!=lhs.values.size() && rhs.frequencies.size()!=rhs.values.size() )
-	{
-		CustomException exc("The sum could not be performed because one (or both) \"values\" vector has a different size with respect to the \"frequencies\" vector.");
-		throw(exc);
-	}
-
-	FreqValueSet result;
-
-	auto it1=lhs.values.begin();
-	auto it2=rhs.values.begin();
-	auto it3=lhs.frequencies.begin();
-	for( ; it1!=lhs.values.end(); it1++, it2++, it3++)
-	{
-		result.values.push_back( *it1 + *it2 );
-		result.frequencies.push_back( *it3 );
-	}
-
-	result.type = lhs.type;
-	result.index = lhs.index;
-	result.timeData = lhs.timeData;
-
-	return result;
+	values.insert(values.end(), freqValueSet.values.begin(), freqValueSet.values.end());
+	frequencies.insert(frequencies.end(), freqValueSet.frequencies.begin(), freqValueSet.frequencies.end());
 }
 
 //! The overloading of the assignment operator.
@@ -70,13 +49,13 @@ const FreqValueSet& FreqValueSet::operator+=(const FreqValueSet& rhs)
 {
 	if(rhs.frequencies != frequencies)
 	{
-		CustomException exc("The sum could not be performed because the frequencies do not match");
+		CustomException exc("A sum could not be performed because the frequencies do not match");
 		throw(exc);
 	}
 
 	if( frequencies.size()!=values.size() && rhs.frequencies.size()!=rhs.values.size() )
 	{
-		CustomException exc("The sum could not be performed because one (or both) \"values\" vector has a different size with respect to the \"frequencies\" vector.");
+		CustomException exc("A sum could not be performed because one (or both) \"values\" vector has a different size with respect to the \"frequencies\" vector.");
 		throw(exc);
 	}
 
@@ -88,13 +67,202 @@ const FreqValueSet& FreqValueSet::operator+=(const FreqValueSet& rhs)
 	return *this;
 }
 
-void FreqValueSet::PushBack(const FreqValueSet& freqValueSet)
+
+/////////Friends functions/////////////
+
+FreqValueSet operator-(const FreqValueSet & argument)
 {
-	if( !frequencies.empty() && frequencies.back()==freqValueSet.frequencies.front() )
+	FreqValueSet result;
+	result.values.reserve( argument.values.size() );
+
+	for(auto v : argument.values)
+		result.values.push_back( -v );
+
+	result.type = argument.type;
+	result.index = argument.index;
+	result.timeData = argument.timeData;
+	result.frequencies = argument.frequencies;
+
+	return result;
+}
+
+FreqValueSet operator+(const FreqValueSet & lhs, const FreqValueSet & rhs)
+{
+	if(lhs.frequencies != rhs.frequencies)
 	{
-		frequencies.pop_back();
-		values.pop_back();
+		CustomException exc("A sum could not be performed because the frequencies do not match");
+		throw(exc);
 	}
-	frequencies.insert(frequencies.end(), freqValueSet.frequencies.begin(), freqValueSet.frequencies.end());
-	values.insert(values.end(), freqValueSet.values.begin(), freqValueSet.values.end());
+
+	if( lhs.frequencies.size()!=lhs.values.size() && rhs.frequencies.size()!=rhs.values.size() )
+	{
+		CustomException exc("A sum could not be performed because one (or both) \"values\" vector has a different size with respect to the \"frequencies\" vector.");
+		throw(exc);
+	}
+
+	FreqValueSet result;
+	result.values.reserve( lhs.values.size() );
+
+	auto it1=lhs.values.begin();
+	auto it2=rhs.values.begin();
+	for( ; it1!=lhs.values.end(); it1++, it2++)
+		result.values.push_back( *it1 + *it2 );
+
+	result.type = lhs.type;
+	result.index = lhs.index;
+	result.timeData = lhs.timeData;
+	result.frequencies = lhs.frequencies;
+
+	return result;
+}
+
+FreqValueSet operator+(const FreqValueSet & lhs, const float rhs)
+{
+	FreqValueSet result;
+	result.values.reserve( lhs.values.size() );
+
+	for(auto& value : lhs.values)
+		result.values.push_back( value + rhs );
+
+	result.type = lhs.type;
+	result.index = lhs.index;
+	result.timeData = lhs.timeData;
+	result.frequencies = lhs.frequencies;
+
+	return result;
+}
+
+FreqValueSet operator+(const float lhs, const FreqValueSet & rhs) {	return (rhs + lhs);		}
+
+FreqValueSet operator-(const FreqValueSet & lhs, const FreqValueSet & rhs) { return( lhs + (-rhs) );	}
+
+FreqValueSet operator-(const FreqValueSet & lhs, const float rhs) {	return( lhs + (-rhs) );	}
+
+FreqValueSet operator-(const float lhs, const FreqValueSet & rhs) {	return( lhs + (-rhs) );		}
+
+FreqValueSet operator*(const FreqValueSet & lhs, const FreqValueSet & rhs)
+{
+	if(lhs.frequencies != rhs.frequencies)
+	{
+		CustomException exc("A multiplication could not be performed because the frequencies do not match.");
+		throw(exc);
+	}
+
+	if( lhs.frequencies.size()!=lhs.values.size() && rhs.frequencies.size()!=rhs.values.size() )
+	{
+		CustomException exc("A multiplication could not be performed because one (or both) \"values\" vector has a different size with respect to the \"frequencies\" vector.");
+		throw(exc);
+	}
+
+	FreqValueSet result;
+	result.values.reserve( lhs.values.size() );
+
+	auto it1=lhs.values.begin();
+	auto it2=rhs.values.begin();
+	for( ; it1!=lhs.values.end(); it1++, it2++)
+		result.values.push_back( *it1 * *it2 );
+
+	result.type = lhs.type;
+	result.index = lhs.index;
+	result.timeData = lhs.timeData;
+	result.frequencies = lhs.frequencies;
+
+	return result;
+}
+
+
+FreqValueSet operator*(const float lhs, const FreqValueSet & rhs)
+{
+	FreqValueSet result;
+	result.values.reserve( rhs.values.size() );
+
+	for(auto& value : rhs.values)
+		result.values.push_back( lhs*value );
+
+	result.type = rhs.type;
+	result.index = rhs.index;
+	result.timeData = rhs.timeData;
+	result.frequencies = rhs.frequencies;
+
+	return result;
+}
+
+FreqValueSet operator*(const FreqValueSet & lhs, const float rhs){	return (rhs * lhs);		}
+
+FreqValueSet operator/(const FreqValueSet & lhs, const FreqValueSet & rhs)
+{
+	if(lhs.frequencies != rhs.frequencies)
+	{
+		CustomException exc("A division could not be performed because the frequencies do not match");
+		throw(exc);
+	}
+
+	if( lhs.frequencies.size()!=lhs.values.size() && rhs.frequencies.size()!=rhs.values.size() )
+	{
+		CustomException exc("A division could not be performed because one (or both) \"values\" vector has a different size with respect to the \"frequencies\" vector.");
+		throw(exc);
+	}
+
+	FreqValueSet result;
+	result.values.reserve( lhs.values.size() );
+
+	auto it1=lhs.values.begin();
+	auto it2=rhs.values.begin();
+	for( ; it1!=lhs.values.end(); it1++, it2++)
+		result.values.push_back( *it1 / *it2 );
+
+	result.type = lhs.type;
+	result.index = lhs.index;
+	result.timeData = lhs.timeData;
+	result.frequencies = lhs.frequencies;
+
+	return result;
+}
+
+FreqValueSet log10(const FreqValueSet & argument) //decimal logarithm
+{
+	FreqValueSet result;
+	result.values.reserve( argument.values.size() );
+
+	for(auto& value : argument.values)
+		result.values.push_back( log10(value) );
+
+	result.type = argument.type;
+	result.index = argument.index;
+	result.timeData = argument.timeData;
+	result.frequencies = argument.frequencies;
+
+	return result;
+}
+
+FreqValueSet pow(const FreqValueSet & base, const float exponent) //exponentiation
+{
+	FreqValueSet result;
+	result.values.reserve( base.values.size() );
+
+	for(auto& value : base.values)
+		result.values.push_back( pow(value, exponent) );
+
+	result.frequencies = base.frequencies;
+	result.type = base.type;
+	result.index = base.index;
+	result.timeData = base.timeData;
+
+	return result;
+}
+
+FreqValueSet pow(const float base, const FreqValueSet & exponent)
+{
+	FreqValueSet result;
+	result.values.reserve( exponent.values.size() );
+
+	for(auto& value : exponent.values)
+		result.values.push_back( pow(base, value) );
+
+	result.frequencies = exponent.frequencies;
+	result.type = exponent.type;
+	result.index = exponent.index;
+	result.timeData = exponent.timeData;
+
+	return result;
 }
