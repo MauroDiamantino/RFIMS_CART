@@ -23,8 +23,7 @@
 /////////////Libraries//////////////////
 #include <map>
 #include <boost/bimap.hpp> //Bidirectional container
-#include <boost/algorithm/string.hpp> //to_lower(string)
-#include <boost/filesystem/operations.hpp> //last_write_time(path)
+#include <cmath>
 
 ///////////Other header files/////////////
 #include "RFIMS_CART.h"
@@ -44,7 +43,6 @@ union FloatToBytes {
 };//!< An union which is used to split a float value in its 4 bytes
 
 typedef boost::bimap<float,float> RBW_bimap;
-
 
 ///////////////Constants///////////////////////
 //! A vector which is initialized with the pairs of values {RBW(Hz), RBW index}. The vector is used to initialize a bidirectional map.
@@ -89,13 +87,6 @@ public:
 		//defined before.
 private:
 	////////Attributes//////////
-	//Constants
-	//! This container allows to obtain the index (an integer value) which represent a given RBW (resolution bandwidth) value (in Hz), as it is defined in the Spectran USB Protocol.
-	/*! The container *RBW_INDEX* can also be used to obtain the index of a given VBW (video bandwidth) value (in Hz),
-	 * because both variables have the same indexes.
-	 */
-	//const unordered_map<float,float> RBW_INDEX;
-	//const RBW_bimap* RBW_INDEX;
 	//Variables
 	std::vector<std::uint8_t> bytes; //!< Bytes array (or vector) which will be sent by the Spectran Interface.
 	CommandType commandType; //!< The command type of the object.
@@ -152,12 +143,6 @@ public:
 	//defined before.
 private:
 	//////////Attributes////////////
-	//Constants
-	//! This container allows to obtain the index (an integer value) which represent a given RBW (resolution bandwidth) value (in Hz), as it is defined in the Spectran USB Protocol.
-	/*! The container *RBW_INDEX* can also be used to obtain the index of a given VBW (video bandwidth) value (in Hz),
-	 * because both variables have the same indexes.
-	 */
-	//const RBW_bimap * RBW_INDEX;
 	//Variables
 	ReplyType replyType; //!< The reply type of the object.
 	unsigned int numOfWaitedBytes; //!< The quantity of bytes which are waited taking into account the reply type.
@@ -236,10 +221,10 @@ class SpectranInterface {
 	const std::string DEVICE_DESCRIPTION = "Aaronia SPECTRAN HF-60105 X";
 	const DWORD USB_RD_TIMEOUT_MS = 500;
 	const DWORD USB_WR_TIMEOUT_MS = 1000;
-	const float SPK_VOLUME = 0.5;
+	const float DEFAULT_SPK_VOLUME = 0.5;
 	const float LOG_IN_SOUND_DURATION = 100.0;
 	const float LOG_OUT_SOUND_DURATION = 500.0;
-	const unsigned int WAITING_TIME_US = 50000;
+	//const unsigned int WAITING_TIME_US = 50000;
 	//Variables
 	FT_HANDLE ftHandle;
 	bool flagLogIn;
@@ -257,10 +242,11 @@ public:
 	void Write(const Command& command);
 	void Read(Reply& reply);
 	unsigned int Available();
+	void ResetSweep();
 	void EnableSweep();
 	void DisableSweep();
 	void Purge();
-	void Reset();
+	void ResetDevice();
 	void LogOut();
 	DWORD GetVID() const {	return VID;	}
 	DWORD GetPID() const { 	return PID;	}
@@ -293,23 +279,23 @@ public:
 	{
 		int attenFactor;
 		unsigned int displayUnit; //”dBm” or “dBuV” or “V/m” or “A/m”
-		unsigned int demodMode; //”off” or “am” or “fm”
-		unsigned int antennaType;
+		const unsigned int demodMode=0; //0=off or 1=am or 2=fm
+		unsigned int antennaType; //0=HL7025, 1=HL7040, 2=HL7060, 3=HL6080 or 4=H60100
 		int cableType; //-1 is none, 0 is “1m standard cable”
-		unsigned int recvConf; //0=spectrum, 1=broadband
+		const unsigned int recvConf=0; //0=spectrum, 1=broadband
 		bool internPreamp; //0=off, 1=on
 		bool sweepDelayAcc; //Sweep delay for accuracy. 1=enable, 0=disable
-		bool peakLevelAudioTone; //0=disable, 1=enable
-		bool backBBDetector; //0=disable, 1=enable
+		const bool peakLevelAudioTone=0; //0=disable, 1=enable
+		const bool backBBDetector=0; //0=disable, 1=enable
 		float speakerVol; //range from 0.0 to 1.0
 	};
 private:
 	///////////Attributes///////////////
 	//Constants
 #ifdef RASPBERRY_PI
-	const std::string FILES_PATH = "/home/pi/RFIMS-CART/parameters/";
+	const boost::filesystem::path FILES_PATH = "/home/pi/RFIMS-CART/parameters";
 #else
-	const std::string FILES_PATH = "/home/new-mauro/RFIMS-CART/parameters/";
+	const boost::filesystem::path FILES_PATH = "/home/new-mauro/RFIMS-CART/parameters";
 #endif
 	//Variables
 	std::ifstream ifs;
@@ -319,18 +305,22 @@ private:
 	FixedParameters fixedParam;
 	time_t lastWriteTimes[2];
 	//////////Private methods//////////////
-	void SetAndCheckVariable(SpecVariable variable, float value);
+	void SetVariable(SpecVariable variable, float value);
+	void CheckVariable(SpecVariable variable, float value);
+	void CheckFreqVariable(SpecVariable variable, float value);
 public:
 	/////////////////Class' interface//////////////
 	SpectranConfigurator(SpectranInterface& interf);
-	~SpectranConfigurator();
+	//! The destructor of class SpectranConfigurator, which just makes sure the input file stream (ifs) is closed.
+	~SpectranConfigurator() {	ifs.close();	}
 	bool LoadFixedParameters();
 	bool LoadBandsParameters();
 	void InitialConfiguration();
-	unsigned int ConfigureNextBand();
-	const FixedParameters& GetFixedParam() const {	return fixedParam;	}
-	const std::vector<BandParameters>& GetBandsParam() const {	return bandsParam;	}
-	const BandParameters& GetCurrBandParam() const {	return bandsParam[bandIndex];	}
+	BandParameters ConfigureNextBand();
+	void SetCurrBandParameters(const BandParameters & currBandParam) {	bandsParam[bandIndex]=currBandParam;	}
+	const FixedParameters& GetFixedParameters() const {	return fixedParam;	}
+	const std::vector<BandParameters>& GetBandsParameters() const {	return bandsParam;	}
+	const BandParameters& GetCurrBandParameters() const {	return bandsParam[bandIndex];	}
 	unsigned int GetNumOfBands() const {	return bandsParam.size();	}
 	unsigned int GetBandIndex() const {		return bandIndex;	}
 	bool IsLastBand() const {	return ( bandIndex>=bandsParam.size() );	}
@@ -341,7 +331,6 @@ class SweepBuilder
 {
 	//////////Attributes////////////
 	SpectranInterface & interface;
-	BandParameters bandParam;
 	typedef std::map<float,float> SweepMap;
 	SweepMap partialSweep;
 	FreqValueSet sweep;
@@ -351,11 +340,7 @@ class SweepBuilder
 public:
 	/////////Class' interface/////////
 	SweepBuilder(SpectranInterface & interf);
-	//~SweepBuilder();
-	void SetBandParameters(const BandParameters& param){		bandParam=param;	}
-//	void SetSweepTime(unsigned int swTime){		sweepTime=swTime;	}
-//	void SetSamplePoints(unsigned int sampPoints){	samplePoints=sampPoints;	}
-	const FreqValueSet& CaptureSweep();
+	const FreqValueSet& CaptureSweep(BandParameters& bandParam);
 	const FreqValueSet& GetSweep() const {	return sweep;	}
 };
 

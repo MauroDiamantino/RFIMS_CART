@@ -357,21 +357,21 @@ void SweepReply::InsertBytes(std::uint8_t * data)
 	unsIntBytes.bytes[1]=bytes.at(6);
 	unsIntBytes.bytes[2]=bytes.at(7);
 	unsIntBytes.bytes[3]=bytes.at(8);
-	frequency=float(unsIntBytes.intValue*10);
+	frequency=float(unsIntBytes.intValue)*10.0;
 
 	/*! Min power extraction: this value is received as a 4-bytes floating point value, measured in dBm. */
 	floatBytes.bytes[0]=bytes.at(9);
 	floatBytes.bytes[1]=bytes.at(10);
 	floatBytes.bytes[2]=bytes.at(11);
 	floatBytes.bytes[3]=bytes.at(12);
-	value=minValue=floatBytes.floatValue;
+	minValue=floatBytes.floatValue;
 
 	/*! Max power extraction: this value is received as a 4-bytes floating point value, measured in dBm. */
 	floatBytes.bytes[0]=bytes.at(13);
 	floatBytes.bytes[1]=bytes.at(14);
 	floatBytes.bytes[2]=bytes.at(15);
 	floatBytes.bytes[3]=bytes.at(16);
-	maxValue=floatBytes.floatValue;
+	value=maxValue=floatBytes.floatValue;
 }
 
 void SweepReply::Clear()

@@ -69,7 +69,8 @@ void SpectranInterface::OpenAndSetUp()
 			throw(exc);
 		}
 
-		ftStatus = FT_SetBaudRate(ftHandle, FT_BAUD_115200);
+		ftStatus = FT_SetBaudRate(ftHandle, FT_BAUD_921600);
+		//ftStatus = FT_SetBaudRate(ftHandle, FT_BAUD_115200);
 		if(ftStatus!=FT_OK)
 		{
 			CustomException exc("The baud rate could not be set up.");
@@ -163,7 +164,7 @@ void SpectranInterface::Initialize()
 
 	//Setting the speaker volume
 	command.Clear();
-	command.SetAs(Command::SETSTPVAR, SpecVariable::SPKVOLUME, SPK_VOLUME);
+	command.SetAs(Command::SETSTPVAR, SpecVariable::SPKVOLUME, DEFAULT_SPK_VOLUME);
 	try
 	{
 		Write(command);
@@ -179,7 +180,7 @@ void SpectranInterface::Initialize()
 
 	if (reply.IsRight()!=true){
 		std::ostringstream oss;
-		oss << "The Spectran Interface tried to set the speaker volume to " << SPK_VOLUME << " but the reply was not right.";
+		oss << "The Spectran Interface tried to set the speaker volume to " << DEFAULT_SPK_VOLUME << " but the reply was not right.";
 		CustomException except( oss.str() );
 		throw(except);
 	}
@@ -259,12 +260,29 @@ unsigned int SpectranInterface::Available()
 	return numOfInputBytes;
 }
 
+
+void SpectranInterface::ResetSweep()
+{
+	//Reseting the current sweep
+	Command comm(Command::SETSTPVAR, SpecVariable::USBSWPRST, 1.0);
+	Reply reply(Reply::SETSTPVAR);
+	try
+	{
+		Write(comm);
+		Read(reply);
+		if(!reply.IsRight())
+			throw( CustomException("A wrong reply was received.") );
+	}
+	catch(CustomException & exc)
+	{
+		exc.Append("\nThe command to reset the current sweep failed.");
+		throw;
+	}
+}
+
 //! The aim of this method is to enable the sending of measurements via USB
 void SpectranInterface::EnableSweep()
 {
-//	interface.Purge();
-//	usleep(300000);
-
 	Command comm(Command::SETSTPVAR, SpecVariable::USBMEAS, 1.0);
 	Reply reply;
 	try
@@ -326,7 +344,8 @@ void SpectranInterface::DisableSweep()
 		}
 	}
 
-	//interface.Purge();
+	Purge();
+	usleep(500000);
 
 	flagSweepsEnabled=false;
 }
@@ -345,7 +364,7 @@ void SpectranInterface::Purge()
 /*! First, a logout is performed, then the communication is restarted and finally the Spectran interface
  * initialize the communication again.
  */
-void SpectranInterface::Reset()
+void SpectranInterface::ResetDevice()
 {
 	LogOut();
 

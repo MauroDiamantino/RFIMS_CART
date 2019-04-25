@@ -14,14 +14,6 @@ SpectranConfigurator::SpectranConfigurator(SpectranInterface& interf) : interfac
 	lastWriteTimes[0]=lastWriteTimes[1]=0;
 }
 
-//! The destructor of class SpectranConfigurator
-/*! The destructor just makes sure the input file stream (ifs) is closed.
- */
-SpectranConfigurator::~SpectranConfigurator()
-{
-	ifs.close();
-}
-
 //! This method loads the Spectran's parameters from the corresponding files.
 /*! The method opens the files with the Spectran's parameters, checks if they have been modified since the last
  * loading and if that is true reloads the parameters. The method returns a boolean value to indicate if the fixed
@@ -32,16 +24,16 @@ bool SpectranConfigurator::LoadFixedParameters()
 	std::string paramName, line;
 	char endChar;
 	size_t definitionEndPos, endCharPos, equalPos;
-	std::string pathAndName;
+	boost::filesystem::path pathAndFilename(FILES_PATH);
+	pathAndFilename /= "fixedparameters.txt";
 
-	pathAndName = FILES_PATH + "fixedparameters.txt";
 	//Checking if the fixed parameters have been modified
-	if( lastWriteTimes[0] < boost::filesystem::last_write_time(pathAndName) )
+	if( lastWriteTimes[0] < boost::filesystem::last_write_time(pathAndFilename) )
 	{
-		lastWriteTimes[0] = boost::filesystem::last_write_time(pathAndName);
+		lastWriteTimes[0] = boost::filesystem::last_write_time(pathAndFilename);
 
 		//Opening the files with the fixed parameters and loading these ones
-		ifs.open(pathAndName);
+		ifs.open( pathAndFilename.string() );
 		do
 		{
 			line.clear();
@@ -118,27 +110,6 @@ bool SpectranConfigurator::LoadFixedParameters()
 					throw(exc);
 				}
 			}
-			else if(paramName=="demodulator mode")
-			{
-				if(valueString=="off")
-				{
-					fixedParam.demodMode=0;
-				}
-				else if(valueString=="am")
-				{
-					fixedParam.demodMode=1;
-				}
-				else if(valueString=="fm")
-				{
-					fixedParam.demodMode=3;
-				}
-				else
-				{
-					std::string str = "The given value to configure variable " + paramName + " is invalid.";
-					CustomException exc(str);
-					throw(exc);
-				}
-			}
 			else if(paramName=="antenna type")
 			{
 				if(valueString=="hl7025")
@@ -179,17 +150,6 @@ bool SpectranConfigurator::LoadFixedParameters()
 					throw(exc);
 				}
 			}
-			else if(paramName=="receiver configuration")
-			{
-				iss.str(valueString);
-				iss >> fixedParam.recvConf;
-				if(fixedParam.recvConf!=0 && fixedParam.recvConf!=1)
-				{
-					std::string str = "The given value to configure variable " + paramName + " is invalid.";
-					CustomException exc(str);
-					throw(exc);
-				}
-			}
 			else if(paramName=="internal preamplifier")
 			{
 				if(valueString=="off")
@@ -206,14 +166,6 @@ bool SpectranConfigurator::LoadFixedParameters()
 					CustomException exc(str);
 					throw(exc);
 				}
-//				iss.str(valueString);
-//				iss >> fixedParam.internPreamp;
-//				if(fixedParam.internPreamp!=0 && fixedParam.internPreamp!=1)
-//				{
-//					std::string str = "The given value to configure variable " + paramName + " is invalid.";
-//					CustomException exc(str);
-//					throw(exc);
-//				}
 			}
 			else if(paramName=="sweep delay accuracy")
 			{
@@ -231,64 +183,6 @@ bool SpectranConfigurator::LoadFixedParameters()
 					CustomException exc(str);
 					throw(exc);
 				}
-//				iss.str(valueString);
-//				iss >> fixedParam.sweepDelayAcc;
-//				if(fixedParam.sweepDelayAcc!=0 && fixedParam.recvConf!=1)
-//				{
-//					std::string str = "The given value to configure variable " + paramName + " is invalid.";
-//					CustomException exc(str);
-//					throw(exc);
-//				}
-			}
-			else if(paramName=="peak level audio tone")
-			{
-				if(valueString=="off")
-				{
-					fixedParam.peakLevelAudioTone=false;
-				}
-				else if(valueString=="on")
-				{
-					fixedParam.peakLevelAudioTone=true;
-				}
-				else
-				{
-					std::string str = "The given value to configure variable " + paramName + " is invalid.";
-					CustomException exc(str);
-					throw(exc);
-				}
-//				iss.str(valueString);
-//				iss >> fixedParam.peakLevelAudioTone;
-//				if(fixedParam.peakLevelAudioTone!=0 && fixedParam.peakLevelAudioTone!=1)
-//				{
-//					std::string str = "The given value to configure variable " + paramName + " is invalid.";
-//					CustomException exc(str);
-//					throw(exc);
-//				}
-			}
-			else if(paramName=="back bb detector")
-			{
-				if(valueString=="off")
-				{
-					fixedParam.backBBDetector=false;
-				}
-				else if(valueString=="on")
-				{
-					fixedParam.backBBDetector=true;
-				}
-				else
-				{
-					std::string str = "The given value to configure variable " + paramName + " is invalid.";
-					CustomException exc(str);
-					throw(exc);
-				}
-//				iss.str(valueString);
-//				iss >> fixedParam.backBBDetector;
-//				if(fixedParam.backBBDetector!=0 && fixedParam.backBBDetector!=1)
-//				{
-//					std::string str = "The given value to configure variable " + paramName + " is invalid.";
-//					CustomException exc(str);
-//					throw(exc);
-//				}
 			}
 			else if(paramName=="speaker volume")
 			{
@@ -321,14 +215,14 @@ bool SpectranConfigurator::LoadBandsParameters()
 	std::string paramName, line;
 	char endChar;
 	size_t definitionEndPos, endCharPos, equalPos;
-	std::string pathAndName;
+	boost::filesystem::path pathAndFilename(FILES_PATH);
+	pathAndFilename /= "freqbands.txt";
 
-	pathAndName = FILES_PATH + "freqbands.txt";
-	if( lastWriteTimes[1] < boost::filesystem::last_write_time(pathAndName) )
+	if( lastWriteTimes[1] < boost::filesystem::last_write_time(pathAndFilename) )
 	{
-		lastWriteTimes[1] = boost::filesystem::last_write_time(pathAndName);
+		lastWriteTimes[1] = boost::filesystem::last_write_time(pathAndFilename);
 		//Opening the files with the frequency bands's parameters and loading these ones
-		ifs.open(pathAndName);
+		ifs.open( pathAndFilename.string() );
 
 		BandParameters bandParam = {false, 0.0, 0.0, 0.0, 0.0, 0, 0, 0};
 		do
@@ -362,7 +256,6 @@ bool SpectranConfigurator::LoadBandsParameters()
 			std::string valueString = line.substr(equalPos+1, endCharPos-equalPos-1);
 			boost::algorithm::to_lower(valueString);
 
-			std::istringstream iss;
 			if(paramName=="band index")
 			{}
 			else if(paramName=="enabled")
@@ -385,7 +278,7 @@ bool SpectranConfigurator::LoadBandsParameters()
 			}
 			else if(paramName=="fstart")
 			{
-				iss.str(valueString);
+				std::istringstream iss(valueString);
 				iss >> bandParam.startFreq;
 				if(bandParam.startFreq<1e6 || bandParam.startFreq>9.4e9)
 				{
@@ -396,7 +289,7 @@ bool SpectranConfigurator::LoadBandsParameters()
 			}
 			else if(paramName=="fstop")
 			{
-				iss.str(valueString);
+				std::istringstream iss(valueString);
 				iss >> bandParam.stopFreq;
 				if(bandParam.stopFreq<1e6 || bandParam.stopFreq>9.4e9)
 				{
@@ -414,7 +307,7 @@ bool SpectranConfigurator::LoadBandsParameters()
 				else
 				{
 					//The value is numerical
-					iss.str(valueString);
+					std::istringstream iss(valueString);
 					iss >> bandParam.rbw;
 					if(bandParam.rbw!=3e6 && bandParam.rbw!=1e6 && bandParam.rbw!=300e3 && bandParam.rbw!=100e3 &&
 							bandParam.rbw!=30e3 && bandParam.rbw!=10e3 && bandParam.rbw!=3e3 && bandParam.rbw!=1e3 &&
@@ -436,7 +329,7 @@ bool SpectranConfigurator::LoadBandsParameters()
 				else
 				{
 					//The value is numerical
-					iss.str(valueString);
+					std::istringstream iss(valueString);
 					iss >> bandParam.vbw;
 					if(bandParam.vbw!=3e6 && bandParam.vbw!=1e6 && bandParam.vbw!=300e3 && bandParam.vbw!=100e3 &&
 							bandParam.vbw!=30e3 && bandParam.vbw!=10e3 && bandParam.vbw!=3e3 && bandParam.vbw!=1e3 &&
@@ -451,7 +344,7 @@ bool SpectranConfigurator::LoadBandsParameters()
 			}
 			else if(paramName=="sweep time")
 			{
-				iss.str(valueString);
+				std::istringstream iss(valueString);
 				iss >> bandParam.sweepTime;
 				if(bandParam.sweepTime<10 || bandParam.sweepTime>600000)
 				{
@@ -462,9 +355,15 @@ bool SpectranConfigurator::LoadBandsParameters()
 			}
 			else if(paramName=="sample points")
 			{
-				iss.str(valueString);
+				std::istringstream iss(valueString);
 				iss >> bandParam.samplePoints;
-				bandParam.flagDefaultSamplePoints = (bandParam.samplePoints==0);
+				unsigned int defaultNumOfSamples = 2 * (unsigned int)(bandParam.stopFreq - bandParam.startFreq) / bandParam.rbw + 1;
+				if(defaultNumOfSamples<51) defaultNumOfSamples=51;
+				if(bandParam.samplePoints < defaultNumOfSamples)
+				{
+					bandParam.samplePoints = defaultNumOfSamples;
+					bandParam.flagDefaultSamplePoints=true;
+				}
 			}
 			else if(paramName=="detector")
 			{
@@ -493,10 +392,49 @@ bool SpectranConfigurator::LoadBandsParameters()
 			//Control if the definitions of one band finished
 			if(endChar==';')
 			{
-				if(bandParam.flagDefaultSamplePoints)
-					bandParam.samplePoints = 2 * (unsigned int)( (bandParam.stopFreq - bandParam.startFreq) / bandParam.rbw ) + 1;
+				float spansRatio = (bandParam.stopFreq - bandParam.startFreq) / 200e6;
+				unsigned int numOfSubBands = ceil(spansRatio);
 
-				bandsParam.push_back(bandParam);
+				if(numOfSubBands>1)
+				{
+					//If number of sub-bands is greater than 1 (span greater than 200MHz) the corresponding band is partitioned
+					BandParameters subBandParam = bandParam;
+					bool flagLastSubBand=false;
+
+					for(unsigned int i=0; i<numOfSubBands; i++)
+					{
+						subBandParam.stopFreq = bandParam.startFreq + (i+1)*200e6;
+						if( subBandParam.stopFreq  > bandParam.stopFreq )
+						{
+							//Last sub-band
+							subBandParam.stopFreq = bandParam.stopFreq;
+							subBandParam.sweepTime = bandParam.sweepTime * (1 - (numOfSubBands-1) / spansRatio);
+							flagLastSubBand=true;
+						}
+						else
+							subBandParam.sweepTime = bandParam.sweepTime / spansRatio;
+
+						if(flagLastSubBand)
+							subBandParam.samplePoints = bandParam.samplePoints * (1 - (numOfSubBands-1) / spansRatio);
+						else
+							subBandParam.samplePoints = bandParam.samplePoints / spansRatio;
+
+						//Estimative calculation of the number of samples
+						unsigned int defaultNumOfSamples = 2.0 * (subBandParam.stopFreq - subBandParam.startFreq) / subBandParam.rbw + 1;
+						if(defaultNumOfSamples<51)	defaultNumOfSamples=51;
+						if(subBandParam.samplePoints < defaultNumOfSamples)
+						{
+							subBandParam.samplePoints = defaultNumOfSamples;
+							subBandParam.flagDefaultSamplePoints=true;
+						}
+
+						bandsParam.push_back(subBandParam);
+						subBandParam.startFreq = subBandParam.stopFreq;
+					}
+				}
+				else
+					bandsParam.push_back(bandParam);
+
 				bandParam = {false, 0.0, 0.0, 0.0, 0.0, 0, 0, 0};
 
 				if( ifs.peek()=='\n' )
@@ -511,7 +449,7 @@ bool SpectranConfigurator::LoadBandsParameters()
 	return false;
 }
 
-void SpectranConfigurator::SetAndCheckVariable(SpecVariable variable, float value)
+void SpectranConfigurator::SetVariable(SpecVariable variable, float value)
 {
 	//Setting up the variable
 	Command comm(Command::SETSTPVAR, variable, value);
@@ -532,16 +470,17 @@ void SpectranConfigurator::SetAndCheckVariable(SpecVariable variable, float valu
 		exc.Append("\nThe setting of the variable \"" + reply.GetVariableNameString() + "\" failed.");
 		throw;
 	}
+}
 
 
+void SpectranConfigurator::CheckVariable(SpecVariable variable, float value)
+{
 	//Checking the variable's current value
-	comm.Clear();
-	comm.SetAs(Command::GETSTPVAR, variable);
+	Command comm(Command::GETSTPVAR, variable);
+	Reply reply(Reply::GETSTPVAR, variable);
 	try
 	{
 		interface.Write(comm);
-		reply.Clear();
-		reply.PrepareTo(Reply::GETSTPVAR, variable);
 		interface.Read(reply);
 		if( reply.IsRight()!=true )
 		{
@@ -563,6 +502,35 @@ void SpectranConfigurator::SetAndCheckVariable(SpecVariable variable, float valu
 	}
 }
 
+void SpectranConfigurator::CheckFreqVariable(SpecVariable variable, float value)
+{
+	//Checking the variable's current value
+	Command comm(Command::GETSTPVAR, variable);
+	Reply reply(Reply::GETSTPVAR, variable);
+	try
+	{
+		interface.Write(comm);
+		interface.Read(reply);
+		if( reply.IsRight()!=true )
+		{
+			std::string str = "The reply to the command to get the current value of the \"" + reply.GetVariableNameString() + "\" was wrong.";
+			CustomException exc(str);
+			throw(exc);
+		}
+		else if( reply.GetValue()<(0.9*value) || reply.GetValue()>(1.1*value) )
+		{
+			std::string str = "The reply to the command to get the current value of the \"" + reply.GetVariableNameString() + "\" stated a different value with respect to the one which was used to configure it.";
+			CustomException exc(str);
+			throw(exc);
+		}
+	}
+	catch(CustomException & exc)
+	{
+		exc.Append("\nThe checking of the configured variable \"" + reply.GetVariableNameString() + "\" failed.");
+		throw;
+	}
+}
+
 //! This method is intended to configure the spectrum analyzer with the parameters which will stay fixed during the multiple sweeps.
 /*! This method should be used the first time the spectrum analyzer will be configured and when a measurements cycle has
  * finished if the fixed parameters have changed. Obviously, the sending of measurements via USB must be disable before
@@ -570,27 +538,38 @@ void SpectranConfigurator::SetAndCheckVariable(SpecVariable variable, float valu
  */
 void SpectranConfigurator::InitialConfiguration()
 {
-	SetAndCheckVariable( SpecVariable::ATTENFAC, float(fixedParam.attenFactor) );
+	SetVariable( SpecVariable::ATTENFAC, float(fixedParam.attenFactor) );
+	CheckVariable( SpecVariable::ATTENFAC, float(fixedParam.attenFactor) );
 
-	SetAndCheckVariable( SpecVariable::DISPUNIT, float(fixedParam.displayUnit) );
+	SetVariable( SpecVariable::DISPUNIT, float(fixedParam.displayUnit) );
+	CheckVariable( SpecVariable::DISPUNIT, float(fixedParam.displayUnit) );
 
-	SetAndCheckVariable( SpecVariable::DEMODMODE, float(fixedParam.demodMode) );
+	SetVariable( SpecVariable::DEMODMODE, float(fixedParam.demodMode) );
+	CheckVariable( SpecVariable::DEMODMODE, float(fixedParam.demodMode) );
 
-	SetAndCheckVariable( SpecVariable::ANTTYPE, float(fixedParam.antennaType) );
+	SetVariable( SpecVariable::ANTTYPE, float(fixedParam.antennaType) );
+	CheckVariable( SpecVariable::ANTTYPE, float(fixedParam.antennaType) );
 
-	SetAndCheckVariable( SpecVariable::CABLETYPE, float(fixedParam.cableType) );
+	SetVariable( SpecVariable::CABLETYPE, float(fixedParam.cableType) );
+	CheckVariable( SpecVariable::CABLETYPE, float(fixedParam.cableType) );
 
-	SetAndCheckVariable( SpecVariable::RECVCONF, float(fixedParam.recvConf) );
+	SetVariable( SpecVariable::RECVCONF, float(fixedParam.recvConf) );
+	CheckVariable( SpecVariable::RECVCONF, float(fixedParam.recvConf) );
 
-	SetAndCheckVariable( SpecVariable::PREAMPEN, float(fixedParam.internPreamp) );
+	SetVariable( SpecVariable::PREAMPEN, float(fixedParam.internPreamp) );
+	CheckVariable( SpecVariable::PREAMPEN, float(fixedParam.internPreamp) );
 
-	SetAndCheckVariable( SpecVariable::SWPDLYACC, float(fixedParam.sweepDelayAcc) );
+	SetVariable( SpecVariable::SWPDLYACC, float(fixedParam.sweepDelayAcc) );
+	CheckVariable( SpecVariable::SWPDLYACC, float(fixedParam.sweepDelayAcc) );
 
-	SetAndCheckVariable( SpecVariable::LEVELTONE, float(fixedParam.peakLevelAudioTone) );
+	SetVariable( SpecVariable::LEVELTONE, float(fixedParam.peakLevelAudioTone) );
+	CheckVariable( SpecVariable::LEVELTONE, float(fixedParam.peakLevelAudioTone) );
 
-	SetAndCheckVariable( SpecVariable::BACKBBEN, float(fixedParam.backBBDetector) );
+	SetVariable( SpecVariable::BACKBBEN, float(fixedParam.backBBDetector) );
+	CheckVariable( SpecVariable::BACKBBEN, float(fixedParam.backBBDetector) );
 
-	SetAndCheckVariable( SpecVariable::SPKVOLUME, fixedParam.speakerVol );
+	SetVariable( SpecVariable::SPKVOLUME, fixedParam.speakerVol );
+	CheckVariable( SpecVariable::SPKVOLUME, fixedParam.speakerVol );
 }
 
 //! The aim of this method is to configure the spectrum analyzer with parameters of the next frequency band.
@@ -599,30 +578,36 @@ void SpectranConfigurator::InitialConfiguration()
  * the first band's parameters. Again, the sending of measurements via USB should be disabled before calling this
  * method. The method returns the index of the next frequency band.
  */
-unsigned int SpectranConfigurator::ConfigureNextBand()
+BandParameters SpectranConfigurator::ConfigureNextBand()
 {
 	do
 	{
 		if( ++bandIndex >= bandsParam.size() )
-		{
 			bandIndex=0;
-		}
 	}while(bandsParam[bandIndex].flagEnable==false); //Checking if the current band is enabled
 
-	SetAndCheckVariable( SpecVariable::STARTFREQ, bandsParam[bandIndex].startFreq );
+	SetVariable( SpecVariable::STARTFREQ, bandsParam[bandIndex].startFreq );
+	CheckFreqVariable( SpecVariable::STARTFREQ, bandsParam[bandIndex].startFreq );
 
-	SetAndCheckVariable( SpecVariable::STOPFREQ, bandsParam[bandIndex].stopFreq );
+	SetVariable( SpecVariable::STOPFREQ, bandsParam[bandIndex].stopFreq );
+	CheckFreqVariable( SpecVariable::STOPFREQ, bandsParam[bandIndex].stopFreq );
 
-	SetAndCheckVariable( SpecVariable::RESBANDW, bandsParam[bandIndex].rbw );
+	SetVariable( SpecVariable::RESBANDW, bandsParam[bandIndex].rbw );
+	CheckVariable( SpecVariable::RESBANDW, bandsParam[bandIndex].rbw );
 
-	SetAndCheckVariable( SpecVariable::VIDBANDW, bandsParam[bandIndex].vbw );
+	SetVariable( SpecVariable::VIDBANDW, bandsParam[bandIndex].vbw );
+	CheckVariable( SpecVariable::RESBANDW, bandsParam[bandIndex].rbw );
 
-	SetAndCheckVariable( SpecVariable::SWEEPTIME, float(bandsParam[bandIndex].sweepTime) );
+	SetVariable( SpecVariable::SWEEPTIME, float(bandsParam[bandIndex].sweepTime) );
+	CheckVariable( SpecVariable::SWEEPTIME, float(bandsParam[bandIndex].sweepTime) );
 
 	if(!bandsParam[bandIndex].flagDefaultSamplePoints)
-		SetAndCheckVariable( SpecVariable::SWPFRQPTS, float(bandsParam[bandIndex].samplePoints) );
+		SetVariable( SpecVariable::SWPFRQPTS, float(bandsParam[bandIndex].samplePoints) );
+	else
+		SetVariable( SpecVariable::SWPFRQPTS, 1.0 );
 
-	SetAndCheckVariable( SpecVariable::DETMODE, float(bandsParam[bandIndex].detector) );
+	SetVariable( SpecVariable::DETMODE, float(bandsParam[bandIndex].detector) );
+	CheckVariable( SpecVariable::DETMODE, float(bandsParam[bandIndex].detector) );
 
-	return bandIndex;
+	return bandsParam[bandIndex];
 }

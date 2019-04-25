@@ -90,7 +90,7 @@ const FreqValueSet& FreqValueSet::operator+=(const FreqValueSet& rhs)
 
 void FreqValueSet::PushBack(const FreqValueSet& freqValueSet)
 {
-	if( frequencies.back()==freqValueSet.frequencies.front() )
+	if( !frequencies.empty() && frequencies.back()==freqValueSet.frequencies.front() )
 	{
 		frequencies.pop_back();
 		values.pop_back();

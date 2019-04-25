@@ -8,13 +8,10 @@
 #ifndef RFIMS_CART_H_
 #define RFIMS_CART_H_
 
-#define RASPBERRY_PI
-
 #include <iostream> //cout, cin
 #include <exception>
 #include <vector>
 #include <string>
-#include <vector>
 #include <cassert> //To use assert() function to debug the code
 #include <ftd2xx.h> //The library which allows to communicate with the FTDI driver
 #include <cstdlib> //exit, EXIT_SUCCESS, EXIT_FAILURE
@@ -22,6 +19,10 @@
 #include <unistd.h> //usleep
 #include <fstream> //ifstream
 #include <iomanip>
+#include <boost/algorithm/string.hpp> //to_lower(string)
+#include <boost/filesystem/operations.hpp> //last_write_time(path)
+
+//#define RASPBERRY_PI
 
 using std::cout;
 using std::cerr;

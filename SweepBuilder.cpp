@@ -12,8 +12,6 @@
 //! The SweepBuilder class's constructor
 SweepBuilder::SweepBuilder(SpectranInterface & interf) : interface(interf)
 {
-	//samplePoints=sweepTime=0;
-	bandParam = {false, 0.0, 0.0, 0.0, 0.0, false, 0, 0};
 	sweep.type = "sweep";
 	sweep.index = 0;
 }
@@ -51,8 +49,9 @@ void SweepBuilder::SoundNewSweep()
 	}
 }
 
+
 //! The aim of this method is to capture one sweep from the Spectran Interface and return it.
-const FreqValueSet& SweepBuilder::CaptureSweep()
+const FreqValueSet& SweepBuilder::CaptureSweep(BandParameters & bandParam)
 {
 	bool flagSweepReady=false;
 	SweepReply swReply;
@@ -60,35 +59,24 @@ const FreqValueSet& SweepBuilder::CaptureSweep()
 	std::pair< SweepMap::iterator, bool> mapReply;
 	__useconds_t deltaTime = 1000*(bandParam.sweepTime/bandParam.samplePoints); //theoretical time interval between sweep points
 	unsigned int errorTimeCount=0, errorFreqCount=0;
+	unsigned long samplesCount=0;
 
 	SoundNewSweep();
 
-	//Reseting the current sweep
-	Command comm(Command::SETSTPVAR, SpecVariable::USBSWPRST, 1.0);
-	Reply reply(Reply::SETSTPVAR);
-	try
-	{
-		interface.Write(comm);
-		interface.Read(reply);
-		if(!reply.IsRight())
-			throw( CustomException("A wrong reply was received.") );
-	}
-	catch(CustomException & exc)
-	{
-		exc.Append("\nThe command to reset the current sweep failed.");
-		throw;
-	}
+	interface.ResetSweep();
 
 	partialSweep.clear();
 
-	interface.EnableSweep();
+	cout << "\t\tFrecuencia\t\tPotencia" << endl;
+	cout.setf(std::ios::fixed, std::ios::floatfield);
+	cout.precision(3);
 
-	usleep(10*deltaTime);
+	usleep(300000);
+
+	interface.EnableSweep();
 
 	while (flagSweepReady==false)
 	{
-		usleep( deltaTime );
-
 		swReply.Clear();
 		try
 		{
@@ -112,6 +100,9 @@ const FreqValueSet& SweepBuilder::CaptureSweep()
 		}
 
 		frequency=swReply.GetFrequency();
+		/////////
+		cout << "\t\t" << std::setw(8) << frequency/1e6 << " MHz";
+		//////////
 		if( frequency<bandParam.startFreq || frequency>bandParam.stopFreq )
 		{
 			if(++errorFreqCount < 3)
@@ -120,24 +111,8 @@ const FreqValueSet& SweepBuilder::CaptureSweep()
 
 				interface.DisableSweep();
 
-				//Reseting the current sweep
-				Command comm(Command::SETSTPVAR, SpecVariable::USBSWPRST, 1.0);
-				Reply reply(Reply::SETSTPVAR);
-				try
-				{
-					interface.Write(comm);
-					interface.Read(reply);
-					if(!reply.IsRight())
-						throw( CustomException("A wrong reply was received.") );
-				}
-				catch(CustomException & exc)
-				{
-					exc.Append("\nThe command to reset the current sweep failed.");
-					throw;
-				}
+				interface.ResetSweep();
 
-				//Purging the input buffer
-				//interface.Purge();
 				partialSweep.clear();
 				usleep(500000);
 
@@ -154,9 +129,18 @@ const FreqValueSet& SweepBuilder::CaptureSweep()
 		}
 
 		power=swReply.GetValue();
+		///////////
+		cout << "\t\t" << power << " dBm" << endl;
+		//////////
 		mapReply = partialSweep.insert( SweepMap::value_type(frequency, power) );
 		flagSweepReady = !mapReply.second;
+		++samplesCount;
+
+		//usleep( deltaTime );
 	}
+
+	--samplesCount;
+	bandParam.samplePoints = samplesCount;
 
 	interface.DisableSweep();
 
