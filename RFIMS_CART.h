@@ -45,27 +45,26 @@ struct TimeData
 	unsigned int hour;
 	unsigned int minute;
 	unsigned int second;
-	std::ostringstream oss;
 	TimeData()
 	{
 		year=month=day=hour=minute=second=0;
-		oss.fill('0');
-		oss.setf(std::ios::right, std::ios::adjustfield);
 	}
 	TimeData(const TimeData& timeData) {	*this=timeData;		}
-	std::string date()
+	std::string date() const
 	{
-		oss.str("");
+		std::ostringstream oss;
+		oss.fill('0'); oss.setf(std::ios::right, std::ios::adjustfield);
 		oss << std::setw(2) << day << '-' << std::setw(2) << month << '-' << year;
 		return oss.str();
 	}
-	std::string time()
+	std::string time() const
 	{
-		oss.str("");
+		std::ostringstream oss;
+		oss.fill('0'); oss.setf(std::ios::right, std::ios::adjustfield);
 		oss << std::setw(2) << hour << ':' << std::setw(2) << minute << ':' << std::setw(2) << second;
 		return oss.str();
 	}
-	std::string timestamp(){	return ( date() + 'T' + time() );	}
+	std::string timestamp() const {	return ( date() + 'T' + time() );	}
 	const TimeData& operator=(const TimeData& anotherTimeData)
 	{
 		year=anotherTimeData.year; month=anotherTimeData.month; day=anotherTimeData.day;

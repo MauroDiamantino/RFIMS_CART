@@ -10,7 +10,7 @@
 FrontEndCalibrator::FrontEndCalibrator(CurveAdjuster & adj) : corrENR("enr"), sweepNSoff("sweep"), sweepNSon("sweep"),
 		noiseTempNSoff("noise temperature"), noiseTempNSon("noise temperature"), adjuster(adj)
 {
-	enrFilelastWriteTime = -100;
+	enrFileLastWriteTime = -100;
 	tsoff = REF_TEMPERATURE;
 #ifdef RASPBERRY_PI
 	digitalWrite(piPins.NOISE_SOURCE, LOW);
@@ -23,7 +23,7 @@ FrontEndCalibrator::FrontEndCalibrator(CurveAdjuster & adj, std::vector<BandPara
 		sweepNSoff("sweep"), sweepNSon("sweep"), noiseTempNSoff("noise temperature"), noiseTempNSon("noise temperature"),
 		 bandsParameters(bandsParam), adjuster(adj)
 {
-	enrFilelastWriteTime = -100;
+	enrFileLastWriteTime = -100;
 	tsoff = REF_TEMPERATURE;
 #ifdef RASPBERRY_PI
 	digitalWrite(piPins.NOISE_SOURCE, LOW);
@@ -37,8 +37,10 @@ void FrontEndCalibrator::LoadENR()
 	boost::filesystem::path pathAndFilename(FILES_PATH);
 	pathAndFilename /= "enr.txt";
 
-	if( enrFilelastWriteTime < boost::filesystem::last_write_time(pathAndFilename) )
+	if( enrFileLastWriteTime < boost::filesystem::last_write_time(pathAndFilename) )
 	{
+		enrFileLastWriteTime = boost::filesystem::last_write_time(pathAndFilename);
+
 		std::ifstream ifs( pathAndFilename.string() );
 		std::string line, deviceName;
 		size_t devNamePos;
@@ -136,4 +138,46 @@ const FrontEndParameters& FrontEndCalibrator::CalculateParameters()
 	frontEndParam.frequency = frontEndNoiseTemp.frequencies;
 
 	return frontEndParam;
+}
+
+void FrontEndCalibrator::SaveFrontEndParam(const TimeData & timeData)
+{
+	boost::filesystem::path filePath(FILES_PATH);
+	filePath /= "frontendparam";
+	if( !boost::filesystem::exists(filePath) )
+		boost::filesystem::create_directory(filePath);
+
+	std::string filename("noisefigure");
+	filename = timeData.date() + ".txt";
+	filePath /= filename;
+	std::ofstream ofs( filePath.string() );
+
+	//Saving the noise figure data
+	ofs << "Timestamp";
+	for(auto& freq : frontEndParam.frequency)
+		ofs << ',' << freq;
+	ofs << "\r\n";
+	ofs << timeData.timestamp();
+	for(auto& nf : frontEndParam.noiseFigure)
+		ofs << ',' << nf;
+	ofs << "\r\n";
+
+	ofs.close();
+
+	filename = "gain" + timeData.date() + ".txt";
+	filePath.remove_filename();
+	filePath /= filename;
+	ofs.open( filePath.string() );
+
+	//Saving the gain data
+	ofs << "Timestamp";
+	for(auto& freq : frontEndParam.frequency)
+		ofs << ',' << freq;
+	ofs << "\r\n";
+	ofs << timeData.timestamp();
+	for(auto& gain : frontEndParam.gain_dB)
+		ofs << ',' << gain;
+	ofs << "\r\n";
+
+	ofs.close();
 }

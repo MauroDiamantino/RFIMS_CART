@@ -35,7 +35,7 @@ void DataLogger::SetSweep(const FreqValueSet & swp)
 		sweepIndex=0;
 }
 
-bool DataLogger::SaveData()
+void DataLogger::SaveData()
 {
 	//The data are saved only if a sweep has been loaded
 	if( !sweep.Empty() )
@@ -88,9 +88,5 @@ bool DataLogger::SaveData()
 		ofs << "\r\n";
 		
 		ofs.close();
-
-		return true;
 	}
-
-	return false;
 }

@@ -133,7 +133,7 @@ int main()
 	frontCalibrator.SetSweep(outFrontEndPowerdBm);
 	outputPloter.plot_xy(outFrontEndPowerdBm.frequencies, outFrontEndPowerdBm.values, "Potencia de salida con NS encendido");
 
-	frontCalibrator.SetNSoffTemperature(REF_TEMPERATURE);
+	frontCalibrator.SetNSoffTemp(REF_TEMPERATURE);
 
 	FrontEndParameters frontParameters = frontCalibrator.CalculateParameters();
 

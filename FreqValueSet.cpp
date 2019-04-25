@@ -49,13 +49,13 @@ const FreqValueSet& FreqValueSet::operator+=(const FreqValueSet& rhs)
 {
 	if(rhs.frequencies != frequencies)
 	{
-		CustomException exc("The sum could not be performed because the frequencies do not match");
+		CustomException exc("A sum could not be performed because the frequencies do not match");
 		throw(exc);
 	}
 
 	if( frequencies.size()!=values.size() && rhs.frequencies.size()!=rhs.values.size() )
 	{
-		CustomException exc("The sum could not be performed because one (or both) \"values\" vector has a different size with respect to the \"frequencies\" vector.");
+		CustomException exc("A sum could not be performed because one (or both) \"values\" vector has a different size with respect to the \"frequencies\" vector.");
 		throw(exc);
 	}
 
@@ -90,17 +90,18 @@ FreqValueSet operator+(const FreqValueSet & lhs, const FreqValueSet & rhs)
 {
 	if(lhs.frequencies != rhs.frequencies)
 	{
-		CustomException exc("The sum could not be performed because the frequencies do not match");
+		CustomException exc("A sum could not be performed because the frequencies do not match");
 		throw(exc);
 	}
 
 	if( lhs.frequencies.size()!=lhs.values.size() && rhs.frequencies.size()!=rhs.values.size() )
 	{
-		CustomException exc("The sum could not be performed because one (or both) \"values\" vector has a different size with respect to the \"frequencies\" vector.");
+		CustomException exc("A sum could not be performed because one (or both) \"values\" vector has a different size with respect to the \"frequencies\" vector.");
 		throw(exc);
 	}
 
 	FreqValueSet result;
+	result.values.reserve( lhs.values.size() );
 
 	auto it1=lhs.values.begin();
 	auto it2=rhs.values.begin();
@@ -118,6 +119,7 @@ FreqValueSet operator+(const FreqValueSet & lhs, const FreqValueSet & rhs)
 FreqValueSet operator+(const FreqValueSet & lhs, const float rhs)
 {
 	FreqValueSet result;
+	result.values.reserve( lhs.values.size() );
 
 	for(auto& value : lhs.values)
 		result.values.push_back( value + rhs );
@@ -136,23 +138,24 @@ FreqValueSet operator-(const FreqValueSet & lhs, const FreqValueSet & rhs) { ret
 
 FreqValueSet operator-(const FreqValueSet & lhs, const float rhs) {	return( lhs + (-rhs) );	}
 
-FreqValueSet operator-(const float lhs, const FreqValueSet & rhs) {	return (rhs - lhs);		}
+FreqValueSet operator-(const float lhs, const FreqValueSet & rhs) {	return( lhs + (-rhs) );		}
 
 FreqValueSet operator*(const FreqValueSet & lhs, const FreqValueSet & rhs)
 {
 	if(lhs.frequencies != rhs.frequencies)
 	{
-		CustomException exc("The multiplication could not be performed because the frequencies do not match");
+		CustomException exc("A multiplication could not be performed because the frequencies do not match.");
 		throw(exc);
 	}
 
 	if( lhs.frequencies.size()!=lhs.values.size() && rhs.frequencies.size()!=rhs.values.size() )
 	{
-		CustomException exc("The multiplication could not be performed because one (or both) \"values\" vector has a different size with respect to the \"frequencies\" vector.");
+		CustomException exc("A multiplication could not be performed because one (or both) \"values\" vector has a different size with respect to the \"frequencies\" vector.");
 		throw(exc);
 	}
 
 	FreqValueSet result;
+	result.values.reserve( lhs.values.size() );
 
 	auto it1=lhs.values.begin();
 	auto it2=rhs.values.begin();
@@ -171,6 +174,7 @@ FreqValueSet operator*(const FreqValueSet & lhs, const FreqValueSet & rhs)
 FreqValueSet operator*(const float lhs, const FreqValueSet & rhs)
 {
 	FreqValueSet result;
+	result.values.reserve( rhs.values.size() );
 
 	for(auto& value : rhs.values)
 		result.values.push_back( lhs*value );
@@ -189,17 +193,18 @@ FreqValueSet operator/(const FreqValueSet & lhs, const FreqValueSet & rhs)
 {
 	if(lhs.frequencies != rhs.frequencies)
 	{
-		CustomException exc("The division could not be performed because the frequencies do not match");
+		CustomException exc("A division could not be performed because the frequencies do not match");
 		throw(exc);
 	}
 
 	if( lhs.frequencies.size()!=lhs.values.size() && rhs.frequencies.size()!=rhs.values.size() )
 	{
-		CustomException exc("The division could not be performed because one (or both) \"values\" vector has a different size with respect to the \"frequencies\" vector.");
+		CustomException exc("A division could not be performed because one (or both) \"values\" vector has a different size with respect to the \"frequencies\" vector.");
 		throw(exc);
 	}
 
 	FreqValueSet result;
+	result.values.reserve( lhs.values.size() );
 
 	auto it1=lhs.values.begin();
 	auto it2=rhs.values.begin();
@@ -217,6 +222,7 @@ FreqValueSet operator/(const FreqValueSet & lhs, const FreqValueSet & rhs)
 FreqValueSet log10(const FreqValueSet & argument) //decimal logarithm
 {
 	FreqValueSet result;
+	result.values.reserve( argument.values.size() );
 
 	for(auto& value : argument.values)
 		result.values.push_back( log10(value) );
@@ -232,9 +238,7 @@ FreqValueSet log10(const FreqValueSet & argument) //decimal logarithm
 FreqValueSet pow(const FreqValueSet & base, const float exponent) //exponentiation
 {
 	FreqValueSet result;
-	auto size = base.frequencies.size();
-	result.frequencies.reserve( size );
-	result.values.reserve( size );
+	result.values.reserve( base.values.size() );
 
 	for(auto& value : base.values)
 		result.values.push_back( pow(value, exponent) );
@@ -250,9 +254,7 @@ FreqValueSet pow(const FreqValueSet & base, const float exponent) //exponentiati
 FreqValueSet pow(const float base, const FreqValueSet & exponent)
 {
 	FreqValueSet result;
-	auto size = exponent.frequencies.size();
-	result.frequencies.reserve( size );
-	result.values.reserve( size );
+	result.values.reserve( exponent.values.size() );
 
 	for(auto& value : exponent.values)
 		result.values.push_back( pow(base, value) );

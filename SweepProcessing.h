@@ -69,9 +69,22 @@ public:
 			//ajuste de la curva
 		}
 		else
-			throw( CustomException("The total gain curve was not set.") );
+			throw( CustomException("The total gain curve is empty.") );
 	}
-	const FreqValueSet& CalibrateSweep(const FreqValueSet& uncalSweep) {  return( calSweep = uncalSweep + calCurve );	}
+	const FreqValueSet& CalibrateSweep(const FreqValueSet& uncalSweep)
+	{
+		try
+		{
+			calSweep = uncalSweep + calCurve;
+		}
+		catch(CustomException & exc)
+		{
+			CustomException exc1("A sweep could not be calibrated: ");
+			exc1.Append( exc.what() );
+			throw exc1;
+		}
+		return(calSweep);
+	}
 	const FreqValueSet& GetCalSweep() const {	return calSweep;	}
 	const FreqValueSet& GetCalCurve() const {	return calCurve;	}
 };
@@ -104,9 +117,9 @@ class FrontEndCalibrator
 	const std::string FILES_PATH = "/home/new-mauro/RFIMS-CART/calibration";
 #endif
 	const float REF_TEMPERATURE = 290.0; // °K
-	const float BOLTZMANN_CONST = 1.3806e-23; // J/°K
+	const float BOLTZMANN_CONST = 1.3806488e-23; // J/°K
 	//Variables
-	time_t enrFilelastWriteTime;
+	time_t enrFileLastWriteTime;
 	FreqValueSet corrENR;
 	float tsoff;
 	FreqValueSet sweepNSoff, sweepNSon;
@@ -142,11 +155,12 @@ public:
 	void EndCalibration() {		flagNSon = false;	}
 #endif
 	void SetSweep(const FreqValueSet & sweep);
-	void SetNSoffTemperature(const float nsOffTemp) {	tsoff = nsOffTemp;	}
+	void SetNSoffTemp(const float nsOffTemp) {	tsoff = nsOffTemp;	}
 	const FrontEndParameters& CalculateParameters();
-	const FrontEndParameters& GetFrontEndParameters() const {	return frontEndParam;	}
+	void SaveFrontEndParam(const TimeData & timeData);
+	const FrontEndParameters& GetFrontEndParam() const {	return frontEndParam;	}
 	FreqValueSet GetENRcorr() const {	return corrENR;		}
-	float GetNSoffTemperature() const {	return tsoff;	}
+	float GetNSoffTemp() const {	return tsoff;	}
 };
 
 
@@ -217,7 +231,8 @@ public:
 	~DataLogger();
 	void SetSweep(const FreqValueSet& swp);
 	void SetAntennaData(float position, const std::string& polarization) {	antPosition=position; antPolarization=polarization;	}
-	bool SaveData();
+	void SaveData();
+	//void SentDataToRemote()
 };
 
 #endif /* SWEEPPROCESSING_H_ */
