@@ -20,8 +20,8 @@ void CurveAdjuster::BuildLines(const FreqValueSet & curve)
 		auxLine.slope = 0.0;
 		auxLine.y_intercept = *itValue;
 		lines.push_back(auxLine);
-		itFreq++; itValue++;
 	}
+	itFreq++; itValue++;
 
 	for( ; itFreq!=curve.frequencies.end(); itFreq++, itValue++)
 	{
@@ -57,7 +57,7 @@ const FreqValueSet & CurveAdjuster::AdjustCurve(const FreqValueSet & curve)
 
 		//Generating the frequency points for the current band (the last point is generated later)
 		float deltaFreq = (itBand->stopFreq - itBand->startFreq) / (itBand->samplePoints - 1);
-		for(float f = itBand->startFreq; f < itBand->stopFreq; f += deltaFreq)
+		for(float f = itBand->startFreq; !approximatelyEqual(f, itBand->stopFreq); f += deltaFreq)
 		{
 			if(f > itLine->f_max)
 				++itLine;

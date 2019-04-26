@@ -117,4 +117,10 @@ struct BandParameters
 	unsigned int samplePoints; //Number of samples points. The value determined by the Spectran device (default value) or the forced value.
 	unsigned int detector; //”rms”(0) or “min/max”(1)
 };
+
+//Functions intended to compare floating-point numbers
+bool approximatelyEqual(float a, float b);
+bool approximatelyEqual(std::vector<float> vectorA, std::vector<float> vectorB);
+
+
 #endif /* RFIMS_CART_H_ */

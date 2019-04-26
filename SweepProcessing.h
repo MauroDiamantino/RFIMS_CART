@@ -134,8 +134,8 @@ public:
 	/////////Class Interface//////////
 	FrontEndCalibrator(CurveAdjuster & adj);
 	FrontEndCalibrator(CurveAdjuster & adj, std::vector<BandParameters> & bandsParam);
-	void LoadENR();
 	void SetBandsParameters(const std::vector<BandParameters> & bandsParam) {	 bandsParameters = bandsParam;	}
+	void LoadENR();
 #ifdef RASPBERRY_PI
 	//void SwitchToNS() { digitalWrite(piPins.NOISE_SOURCE, LOW); digitalWrite(piPins.SWITCH, SWITCH_TO_NS);	}
 	void StartCalibration()

@@ -64,12 +64,14 @@ void FrontEndCalibrator::LoadENR()
 		//Extracting the ENR and frequency values
 		FreqValueSet enr("enr");
 		float frequency, enrValue;
-		char delimiter, newLineChar;
+		char delimiter;
 		do
 		{
-			ifs >> frequency >> delimiter >> enrValue >> newLineChar;
+			ifs >> frequency >> delimiter >> enrValue;
+			ifs.get();
 			enr.frequencies.push_back( frequency*1e6 );
 			enr.values.push_back( pow(10.0, enrValue/10.0) );
+			ifs.peek();
 		}while( !ifs.eof() );
 
 		//Correcting the ENR values
@@ -148,7 +150,7 @@ void FrontEndCalibrator::SaveFrontEndParam(const TimeData & timeData)
 		boost::filesystem::create_directory(filePath);
 
 	std::string filename("noisefigure");
-	filename = timeData.date() + ".txt";
+	filename += timeData.date() + ".csv";
 	filePath /= filename;
 	std::ofstream ofs( filePath.string() );
 
@@ -164,7 +166,7 @@ void FrontEndCalibrator::SaveFrontEndParam(const TimeData & timeData)
 
 	ofs.close();
 
-	filename = "gain" + timeData.date() + ".txt";
+	filename = "gain" + timeData.date() + ".csv";
 	filePath.remove_filename();
 	filePath /= filename;
 	ofs.open( filePath.string() );

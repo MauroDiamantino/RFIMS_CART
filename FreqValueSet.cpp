@@ -23,7 +23,7 @@ FreqValueSet::FreqValueSet(const FreqValueSet& freqValueSet)
 
 void FreqValueSet::PushBack(const FreqValueSet& freqValueSet)
 {
-	if( !frequencies.empty() && frequencies.back()==freqValueSet.frequencies.front() )
+	if( !frequencies.empty() && approximatelyEqual(frequencies.back(), freqValueSet.frequencies.front()) )
 	{
 		frequencies.pop_back();
 		values.pop_back();
@@ -47,7 +47,7 @@ const FreqValueSet& FreqValueSet::operator=(const FreqValueSet & freqSet)
 //! The overloading of the += operator.
 const FreqValueSet& FreqValueSet::operator+=(const FreqValueSet& rhs)
 {
-	if(rhs.frequencies != frequencies)
+	if( !approximatelyEqual(rhs.frequencies, frequencies) )
 	{
 		CustomException exc("A sum could not be performed because the frequencies do not match");
 		throw(exc);
@@ -88,7 +88,7 @@ FreqValueSet operator-(const FreqValueSet & argument)
 
 FreqValueSet operator+(const FreqValueSet & lhs, const FreqValueSet & rhs)
 {
-	if(lhs.frequencies != rhs.frequencies)
+	if( !approximatelyEqual(lhs.frequencies, rhs.frequencies) )
 	{
 		CustomException exc("A sum could not be performed because the frequencies do not match");
 		throw(exc);
@@ -142,7 +142,7 @@ FreqValueSet operator-(const float lhs, const FreqValueSet & rhs) {	return( lhs 
 
 FreqValueSet operator*(const FreqValueSet & lhs, const FreqValueSet & rhs)
 {
-	if(lhs.frequencies != rhs.frequencies)
+	if( !approximatelyEqual(lhs.frequencies, rhs.frequencies) )
 	{
 		CustomException exc("A multiplication could not be performed because the frequencies do not match.");
 		throw(exc);
@@ -191,7 +191,7 @@ FreqValueSet operator*(const FreqValueSet & lhs, const float rhs){	return (rhs *
 
 FreqValueSet operator/(const FreqValueSet & lhs, const FreqValueSet & rhs)
 {
-	if(lhs.frequencies != rhs.frequencies)
+	if( !approximatelyEqual(lhs.frequencies, rhs.frequencies) )
 	{
 		CustomException exc("A division could not be performed because the frequencies do not match");
 		throw(exc);
