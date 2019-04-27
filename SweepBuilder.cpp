@@ -9,13 +9,6 @@
 
 /////////////////////////Definitions of SweepBuilder class' methods///////////////////////
 
-//! The SweepBuilder class's constructor
-SweepBuilder::SweepBuilder(SpectranInterface & interf) : interface(interf)
-{
-	sweep.type = "sweep";
-	sweep.index = 0;
-}
-
 //! A method which build the definite sweep object, which is of type *FreqValueSet* (struct), from the partial sweep which is map container.
 void SweepBuilder::BuildSweep()
 {
@@ -69,7 +62,6 @@ const FreqValueSet& SweepBuilder::CaptureSweep(BandParameters & bandParam)
 
 	cout << "\t\tFrecuencia\t\tPotencia" << endl;
 	cout.setf(std::ios::fixed, std::ios::floatfield);
-	cout.precision(3);
 
 	usleep(300000);
 
@@ -101,7 +93,7 @@ const FreqValueSet& SweepBuilder::CaptureSweep(BandParameters & bandParam)
 
 		frequency=swReply.GetFrequency();
 		/////////
-		cout << "\t\t" << std::setw(8) << frequency/1e6 << " MHz";
+		cout << "\t\t" << std::setprecision(3) << frequency/1e6 << " MHz";
 		//////////
 		if( frequency<bandParam.startFreq || frequency>bandParam.stopFreq )
 		{
@@ -130,7 +122,7 @@ const FreqValueSet& SweepBuilder::CaptureSweep(BandParameters & bandParam)
 
 		power=swReply.GetValue();
 		///////////
-		cout << "\t\t" << power << " dBm" << endl;
+		cout << "\t\t" << std::setprecision(1) << power << " dBm" << endl;
 		//////////
 		mapReply = partialSweep.insert( SweepMap::value_type(frequency, power) );
 		flagSweepReady = !mapReply.second;

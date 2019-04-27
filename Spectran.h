@@ -325,7 +325,8 @@ class SweepBuilder
 	void SoundNewSweep();
 public:
 	/////////Class' interface/////////
-	SweepBuilder(SpectranInterface & interf);
+	//! The SweepBuilder class's constructor
+	SweepBuilder(SpectranInterface & interf) : interface(interf) {}
 	const FreqValueSet& CaptureSweep(BandParameters& bandParam);
 	const FreqValueSet& GetSweep() const {	return sweep;	}
 };

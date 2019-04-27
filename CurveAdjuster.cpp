@@ -44,11 +44,16 @@ void CurveAdjuster::BuildLines(const FreqValueSet & curve)
 
 const FreqValueSet & CurveAdjuster::AdjustCurve(const FreqValueSet & curve)
 {
+	const float TOLERANCE = 5e3;
 	BuildLines(curve);
 
 	adjCurve.Clear();
 
 	auto itLine=lines.begin();
+	//The first linear function, taking into account the bands parameters, is found
+	while( bandsParameters.front().startFreq >= itLine->f_max )
+		++itLine;
+
 	for(auto itBand=bandsParameters.begin(); itBand!=bandsParameters.end(); itBand++)
 	{
 		//Checking if the current band is enabled. If not, the iterator is incremented up to find an enabled band.
@@ -57,7 +62,7 @@ const FreqValueSet & CurveAdjuster::AdjustCurve(const FreqValueSet & curve)
 
 		//Generating the frequency points for the current band (the last point is generated later)
 		float deltaFreq = (itBand->stopFreq - itBand->startFreq) / (itBand->samplePoints - 1);
-		for(float f = itBand->startFreq; !approximatelyEqual(f, itBand->stopFreq); f += deltaFreq)
+		for(float f = itBand->startFreq; f < (itBand->stopFreq-TOLERANCE); f += deltaFreq)
 		{
 			if(f > itLine->f_max)
 				++itLine;

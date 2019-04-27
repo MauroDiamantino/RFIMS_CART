@@ -98,6 +98,8 @@ struct FreqValueSet
 	friend FreqValueSet operator*(const float lhs, const FreqValueSet & rhs); //defined in FreqValueSet.cpp
 	friend FreqValueSet operator*(const FreqValueSet & lhs, const float rhs);
 	friend FreqValueSet operator/(const FreqValueSet & lhs, const FreqValueSet & rhs); //defined in FreqValueSet.cpp
+	friend FreqValueSet operator/(const float lhs, const FreqValueSet & rhs); //defined in FreqValueSet.cpp
+	friend FreqValueSet operator/(const FreqValueSet & lhs, const float rhs); //defined in FreqValueSet.cpp
 	friend FreqValueSet log10(const FreqValueSet & argument); //decimal logarithm, defined in FreqValueSet.cpp
 	friend FreqValueSet pow(const FreqValueSet & base, const float exponent); //exponentiation, defined in FreqValueSet.cpp
 	friend FreqValueSet pow(const float base, const FreqValueSet & exponent); //exponentiation, defined in FreqValueSet.cpp

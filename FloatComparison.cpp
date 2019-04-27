@@ -16,8 +16,8 @@
  * between a and b is less than ABS_EPSILON, or within REL_EPSILON percent of the larger of a and b.
  */
 
-const float ABS_EPSILON = 1e-12;
-const float REL_EPSILON = 1e-5;
+const float ABS_EPSILON = 1e-5;
+const float REL_EPSILON = 2e-5;
 
 bool approximatelyEqual(float a, float b)
 {

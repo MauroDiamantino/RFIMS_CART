@@ -19,6 +19,7 @@ DataLogger::DataLogger()
 	}
 						
 	ofs.exceptions( std::ofstream::failbit | std::ofstream::badbit );
+	ofs.setf(std::ios::fixed, std::ios::floatfield);
 }
 
 DataLogger::~DataLogger()
@@ -61,7 +62,7 @@ void DataLogger::SaveData()
 			//Writing header with frequency values
 			ofs << "Timestamp,Azimuthal Angle,Polarization,";
 			for(auto& f : sweep.frequencies)
-				ofs << std::setprecision(6) << (f/1e6) << ',';
+				ofs << std::setprecision(3) << (f/1e6) << ',';
 			ofs << "\r\n";
 		}
 		else
@@ -84,7 +85,7 @@ void DataLogger::SaveData()
 		std::string aux = sweep.timeData.timestamp();
 		ofs << sweep.timeData.timestamp() << ',' << std::setprecision(4) << antPosition << ',' << antPolarization << ',';
 		for(auto& p : sweep.values)
-			ofs << std::setprecision(5) << p << ',';
+			ofs << std::setprecision(1) << p << ',';
 		ofs << "\r\n";
 		
 		ofs.close();

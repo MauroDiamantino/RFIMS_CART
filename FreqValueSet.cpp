@@ -47,7 +47,12 @@ const FreqValueSet& FreqValueSet::operator=(const FreqValueSet & freqSet)
 //! The overloading of the += operator.
 const FreqValueSet& FreqValueSet::operator+=(const FreqValueSet& rhs)
 {
-	if( !approximatelyEqual(rhs.frequencies, frequencies) )
+//	if( !approximatelyEqual(rhs.frequencies, frequencies) )
+//	{
+//		CustomException exc("A sum could not be performed because the frequencies do not match");
+//		throw(exc);
+//	}
+	if( rhs.frequencies.size() != frequencies.size() )
 	{
 		CustomException exc("A sum could not be performed because the frequencies do not match");
 		throw(exc);
@@ -88,7 +93,12 @@ FreqValueSet operator-(const FreqValueSet & argument)
 
 FreqValueSet operator+(const FreqValueSet & lhs, const FreqValueSet & rhs)
 {
-	if( !approximatelyEqual(lhs.frequencies, rhs.frequencies) )
+//	if( !approximatelyEqual(lhs.frequencies, rhs.frequencies) )
+//	{
+//		CustomException exc("A sum could not be performed because the frequencies do not match");
+//		throw(exc);
+//	}
+	if( lhs.frequencies.size() != rhs.frequencies.size() )
 	{
 		CustomException exc("A sum could not be performed because the frequencies do not match");
 		throw(exc);
@@ -142,7 +152,12 @@ FreqValueSet operator-(const float lhs, const FreqValueSet & rhs) {	return( lhs 
 
 FreqValueSet operator*(const FreqValueSet & lhs, const FreqValueSet & rhs)
 {
-	if( !approximatelyEqual(lhs.frequencies, rhs.frequencies) )
+//	if( !approximatelyEqual(lhs.frequencies, rhs.frequencies) )
+//	{
+//		CustomException exc("A multiplication could not be performed because the frequencies do not match.");
+//		throw(exc);
+//	}
+	if( lhs.frequencies.size() != rhs.frequencies.size() )
 	{
 		CustomException exc("A multiplication could not be performed because the frequencies do not match.");
 		throw(exc);
@@ -191,7 +206,12 @@ FreqValueSet operator*(const FreqValueSet & lhs, const float rhs){	return (rhs *
 
 FreqValueSet operator/(const FreqValueSet & lhs, const FreqValueSet & rhs)
 {
-	if( !approximatelyEqual(lhs.frequencies, rhs.frequencies) )
+//	if( !approximatelyEqual(lhs.frequencies, rhs.frequencies) )
+//	{
+//		CustomException exc("A division could not be performed because the frequencies do not match");
+//		throw(exc);
+//	}
+	if( lhs.frequencies.size() != rhs.frequencies.size() )
 	{
 		CustomException exc("A division could not be performed because the frequencies do not match");
 		throw(exc);
@@ -210,6 +230,38 @@ FreqValueSet operator/(const FreqValueSet & lhs, const FreqValueSet & rhs)
 	auto it2=rhs.values.begin();
 	for( ; it1!=lhs.values.end(); it1++, it2++)
 		result.values.push_back( *it1 / *it2 );
+
+	result.type = lhs.type;
+	result.index = lhs.index;
+	result.timeData = lhs.timeData;
+	result.frequencies = lhs.frequencies;
+
+	return result;
+}
+
+FreqValueSet operator/(const float lhs, const FreqValueSet & rhs)
+{
+	FreqValueSet result;
+	result.values.reserve( rhs.values.size() );
+
+	for(auto& value : rhs.values)
+		result.values.push_back( lhs/value );
+
+	result.type = rhs.type;
+	result.index = rhs.index;
+	result.timeData = rhs.timeData;
+	result.frequencies = rhs.frequencies;
+
+	return result;
+}
+
+FreqValueSet operator/(const FreqValueSet & lhs, const float rhs)
+{
+	FreqValueSet result;
+	result.values.reserve( lhs.values.size() );
+
+	for(auto& value : lhs.values)
+		result.values.push_back( value/rhs );
 
 	result.type = lhs.type;
 	result.index = lhs.index;

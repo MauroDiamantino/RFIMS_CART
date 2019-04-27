@@ -118,7 +118,6 @@ void SpectranInterface::Initialize()
 	bool flagSuccess=false;
 
 	Command command(Command::VERIFY);
-
 	do
 	{
 		//Sending a LOGOUT command to make sure the device will reply correctly to the VERIFY commands
@@ -133,7 +132,8 @@ void SpectranInterface::Initialize()
 				reply.Clear();
 				reply.PrepareTo(Reply::VERIFY);
 				Read(reply);
-				flagSuccess=true;
+				if( reply.IsRight() )
+					flagSuccess=true;
 			}
 			catch (std::exception& exc)
 			{
@@ -312,8 +312,9 @@ void SpectranInterface::DisableSweep()
 	Command comm(Command::SETSTPVAR, SpecVariable::USBMEAS, 0.0);
 	Reply reply;
 	unsigned int errorCounter=0;
+	bool flagSuccess=false;
 
-	for(unsigned int i=0; i<3; i++)
+	do
 	{
 		try
 		{
@@ -326,6 +327,7 @@ void SpectranInterface::DisableSweep()
 				CustomException exc("The reply to the command to disable the sending of measurements via USB was wrong.");
 				throw(exc);
 			}
+			flagSuccess=true;
 		}
 		catch(CustomException & exc)
 		{
@@ -342,7 +344,7 @@ void SpectranInterface::DisableSweep()
 				throw;
 			}
 		}
-	}
+	}while(flagSuccess==false && errorCounter<2);
 
 	Purge();
 	usleep(500000);

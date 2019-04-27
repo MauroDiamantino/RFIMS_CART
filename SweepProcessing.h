@@ -35,8 +35,7 @@ class CurveAdjuster
 	void BuildLines(const FreqValueSet& curve);
 public:
 	///////Class interface/////////
-	CurveAdjuster() {}
-	CurveAdjuster(const std::vector<BandParameters> & bandsParam) : bandsParameters(bandsParam) {}
+	CurveAdjuster() : adjCurve("", 0) {}
 	void SetBandsParameters(const std::vector<BandParameters> & bandsParam) {	bandsParameters=bandsParam;	}
 	const FreqValueSet& AdjustCurve(const FreqValueSet & curve);
 	const FreqValueSet& GetAdjustedCurve() const {	return adjCurve;	}
@@ -120,16 +119,17 @@ class FrontEndCalibrator
 	const float BOLTZMANN_CONST = 1.3806488e-23; // J/°K
 	//Variables
 	time_t enrFileLastWriteTime;
-	FreqValueSet corrENR;
+	FreqValueSet correctENR;
 	float tsoff;
-	FreqValueSet sweepNSoff, sweepNSon;
+	//FreqValueSet sweepNSoff, sweepNSon;
+	FreqValueSet powerNSoff, powerNSon; //Power values in Watts
 	FreqValueSet noiseTempNSoff, noiseTempNSon;
 	std::vector<BandParameters> bandsParameters;
 	bool flagNSon;
 	FrontEndParameters frontEndParam;
 	CurveAdjuster & adjuster;
 	///////Private Methods///////
-	void CalculateOutNoiseTemps();
+	//void CalculateOutNoiseTemps();
 public:
 	/////////Class Interface//////////
 	FrontEndCalibrator(CurveAdjuster & adj);
@@ -159,7 +159,7 @@ public:
 	const FrontEndParameters& CalculateParameters();
 	void SaveFrontEndParam(const TimeData & timeData);
 	const FrontEndParameters& GetFrontEndParam() const {	return frontEndParam;	}
-	FreqValueSet GetENRcorr() const {	return corrENR;		}
+	FreqValueSet GetENRcorr() const {	return correctENR;		}
 	float GetNSoffTemp() const {	return tsoff;	}
 };
 

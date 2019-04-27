@@ -52,6 +52,9 @@ int main()
 		cout << "\nIniciando el proceso de calibracion del front end" << endl;
 		frontCalibrator.StartCalibration();
 
+		cout << "Apague el generador de ruido, conmute el switch para que el mismo se conecte a la entrada y presione una tecla para continuar..." << endl;
+		WaitForKey();
+
 		RFPloter rfPloter;
 
 		FreqValueSet wholeSweep;
@@ -78,6 +81,16 @@ int main()
 		frontCalibrator.SetSweep( wholeSweep );
 
 		rfPloter.Plot(wholeSweep, "lines", "Sweep NS off");
+
+		cout << "Cargando los parametros de las bandas (ya con valores correctos de numero de muestras) en el FrontEndCalibrator y CurveAdjuster" << endl;
+		std::vector<BandParameters> bandsParameters;
+		bandsParameters = specConfigurator.GetBandsParameters();
+		adjuster.SetBandsParameters(bandsParameters);
+		frontCalibrator.SetBandsParameters(bandsParameters);
+
+		cout << "Cargando los valores del parametero ENR del generador de ruido" << endl;
+		frontCalibrator.LoadENR();
+
 		frontCalibrator.TurnOnNS();
 
 		cout << "\nAlimente el generador de ruido y presione una tecla para continuar..." << endl;
@@ -108,39 +121,30 @@ int main()
 
 		rfPloter.Plot(wholeSweep, "lines", "Sweep NS on");
 
-		cout << "\nApague el generador de ruido y presione una tecla para continuar..." << endl;
+		cout << "\nApague el generador de ruido, conmute el switch y presione una tecla para continuar..." << endl;
 		WaitForKey();
-
-		cout << "Cargando los parametros de las bandas (ya con valores correctos de numero de muestras) en el FrontEndCalibrator y CurveAdjuster" << endl;
-		std::vector<BandParameters> bandsParameters;
-		bandsParameters = specConfigurator.GetBandsParameters();
-		adjuster.SetBandsParameters(bandsParameters);
-		frontCalibrator.SetBandsParameters(bandsParameters);
-
-		cout << "Cargando los valores del parametero ENR del generador de ruido" << endl;
-		frontCalibrator.LoadENR();
 
 		frontCalibrator.EndCalibration();
 
 		FrontEndParameters frontEndParam = frontCalibrator.CalculateParameters();
 
 		TimeData timeData;
-		timeData.year=2019; timeData.month=4; timeData.day=25;
-		timeData.hour=19; timeData.minute=0; timeData.second=0;
+		timeData.year=2019; timeData.month=4; timeData.day=27;
+		timeData.hour=18; timeData.minute=0; timeData.second=0;
 		frontCalibrator.SaveFrontEndParam(timeData);
 
 		Gnuplot gainPloter, nfPloter;
 		gainPloter.set_style("lines"); nfPloter.set_style("lines");
 
-		gainPloter.plot_xy(frontEndParam.frequency, frontEndParam.gain_dB, "Ganancia");
 		gainPloter.set_title("Ganancia total del front end");
 		gainPloter.set_xlabel("Frecuencia (Hz)");
 		gainPloter.set_ylabel("Ganancia (dB)");
+		gainPloter.plot_xy(frontEndParam.frequency, frontEndParam.gain_dB, "Ganancia");
 
-		nfPloter.plot_xy(frontEndParam.frequency, frontEndParam.noiseFigure, "Figura de ruido");
 		nfPloter.set_title("Figura de ruido total del front end");
 		nfPloter.set_xlabel("Frecuencia (Hz)");
 		nfPloter.set_ylabel("Figura de ruido (dB)");
+		nfPloter.plot_xy(frontEndParam.frequency, frontEndParam.noiseFigure, "Figura de ruido");
 
 		SweepCalibrator sweepCalibrator;
 		FreqValueSet totalGain("gain");
@@ -170,14 +174,14 @@ int main()
 
 		FreqValueSet calSweep = sweepCalibrator.CalibrateSweep(wholeSweep);
 
-		rfPloter.Plot(calSweep, "lines", "Calibrated sweep NS on");
+		rfPloter.Plot(calSweep, "lines", "Calibrated sweep 50ohm RF load");
 
 		cout << "\nPresione una tecla para terminar..." << endl;
 		WaitForKey();
 	}
 	catch(std::exception & exc)
 	{
-		cerr << "\Error: " << exc.what() << endl;
+		cerr << "\nError: " << exc.what() << endl;
 		exit(EXIT_FAILURE);
 	}
 
