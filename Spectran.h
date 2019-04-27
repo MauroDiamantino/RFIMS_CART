@@ -24,7 +24,6 @@
 #include <ftd2xx.h>
 #include <map>
 #include <boost/bimap.hpp> //Bidirectional container
-#include <cmath>
 
 ///////////Other header files/////////////
 #include "RFIMS_CART.h"

@@ -17,6 +17,9 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/filesystem.hpp>
 #include <cmath>
+#include <fstream>
+#include <unistd.h>
+#include <cstdint>
 #ifdef RASPBERRY_PI
 #include <wiringPi.h>
 #endif
