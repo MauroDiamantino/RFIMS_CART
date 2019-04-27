@@ -9,6 +9,7 @@
 
 AntennaPositioner::AntennaPositioner()
 {
+#ifdef RASPBERRY_PI
 	//Initializing the Wiring Pi library
 	wiringPiSetup();
 
@@ -21,11 +22,12 @@ AntennaPositioner::AntennaPositioner()
 	pullUpDnControl(PIN_SW_POLARIZATION, PUD_UP);
 
 	//Setting the initial values
+	digitalWrite(PIN_LED_AZIMUTHAL, LOW);
+	digitalWrite(PIN_LED_POLARIZACION, LOW);
+#endif
 	azimuthAngle=0.0;
 	polarization=PolarizationType::UNKNOWN;
 	positionIndex=255;
-	digitalWrite(PIN_LED_AZIMUTHAL, LOW);
-	digitalWrite(PIN_LED_POLARIZACION, LOW);
 }
 
 bool AntennaPositioner::Initialize()
@@ -35,9 +37,11 @@ bool AntennaPositioner::Initialize()
 
 bool AntennaPositioner::NextAzimPosition()
 {
+#ifdef RASPBERRY_PI
 	digitalWrite(PIN_LED_AZIMUTHAL, HIGH);
 	while( digitalRead(PIN_SW_AZIMUTHAL)==HIGH );
 	digitalWrite(PIN_LED_AZIMUTHAL, LOW);
+#endif
 	if( ++positionIndex >= NUM_OF_POSITIONS )
 	{
 		positionIndex=0;
@@ -52,9 +56,11 @@ bool AntennaPositioner::NextAzimPosition()
 
 bool AntennaPositioner::ChangePolarization()
 {
+#ifdef RASPBERRY_PI
 	digitalWrite(PIN_LED_POLARIZACION, HIGH);
 	while( digitalRead(PIN_SW_POLARIZATION)==HIGH );
 	digitalWrite(PIN_LED_POLARIZACION, LOW);
+#endif
 	polarization = polarization==PolarizationType::HORIZONTAL ? PolarizationType::VERTICAL : PolarizationType::HORIZONTAL;
 	return true;
 }
