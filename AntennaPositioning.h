@@ -26,7 +26,6 @@
 #include <nmea/gprmc.h> //parser of GPRMC messages
 #include <nmea/gpgga.h> //parser of GPGGA messages
 #include <ftd2xx.h> //FTDI library
-#include <cmath> //atan2, M_PI
 #include <dirent.h> //To get filenames
 
 //! A structure intended to save the the tri-axial values of the 3D sensors which are integrated in the GPS receiver.
@@ -125,10 +124,15 @@ class AntennaPositioner
 	enum PolarizationType : char { HORIZONTAL, VERTICAL, UNKNOWN };
 	/////////Attributes//////////
 	//Constants
-	const std::uint8_t PIN_LED_AZIMUTHAL = 10;
-	const std::uint8_t PIN_SW_AZIMUTHAL = 11;
-	const std::uint8_t PIN_LED_POLARIZACION = 12;
-	const std::uint8_t PIN_SW_POLARIZATION = 13;
+	struct
+	{
+		const int LED_INIT_POS = 8;
+		const int BUTTON_INIT_POS = 9;
+		const int LED_NEXT_POS = 10;
+		const int BUTTON_NEXT_POS = 11;
+		const int LED_POLARIZ = 12;
+		const int BUTTON_POLARIZ = 13;
+	} piPins;
 	const std::uint8_t NUM_OF_POSITIONS = 8;
 	const std::uint8_t ROTATION_ANGLE = 360/NUM_OF_POSITIONS;
 	//Variables
@@ -146,6 +150,5 @@ public:
 	unsigned int GetNumOfPositions() {	return NUM_OF_POSITIONS;	}
 	bool IsLastPosition() {	return ( positionIndex >= (NUM_OF_POSITIONS-1) );	}
 };
-
 
 #endif /* ANTENNAPOSITIONING_H_ */
