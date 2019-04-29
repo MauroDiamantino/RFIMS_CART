@@ -62,13 +62,14 @@ const FreqValueSet & CurveAdjuster::AdjustCurve(const FreqValueSet & curve)
 
 		//Generating the frequency points for the current band (the last point is generated later)
 		float deltaFreq = (itBand->stopFreq - itBand->startFreq) / (itBand->samplePoints - 1);
-		for(float f = itBand->startFreq; f < (itBand->stopFreq-TOLERANCE); f += deltaFreq)
+		float freq = itBand->startFreq;
+		for( ; freq < (itBand->stopFreq-TOLERANCE); freq += deltaFreq)
 		{
-			if(f > itLine->f_max)
+			if(freq > itLine->f_max)
 				++itLine;
 
-			adjCurve.frequencies.push_back(f);
-			adjCurve.values.push_back( itLine->Evaluate(f) );
+			adjCurve.frequencies.push_back(freq);
+			adjCurve.values.push_back( itLine->Evaluate(freq) );
 		}
 
 		//Checking if there is a next band, and if it is true, it is checked if its Fstart matches the Fstop of the

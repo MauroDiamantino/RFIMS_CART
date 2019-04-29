@@ -100,13 +100,13 @@ FreqValueSet operator+(const FreqValueSet & lhs, const FreqValueSet & rhs)
 //	}
 	if( lhs.frequencies.size() != rhs.frequencies.size() )
 	{
-		CustomException exc("A sum could not be performed because the frequencies do not match");
+		CustomException exc("A sum (or subtraction) could not be performed because the frequencies do not match");
 		throw(exc);
 	}
 
 	if( lhs.frequencies.size()!=lhs.values.size() && rhs.frequencies.size()!=rhs.values.size() )
 	{
-		CustomException exc("A sum could not be performed because one (or both) \"values\" vector has a different size with respect to the \"frequencies\" vector.");
+		CustomException exc("A sum (or subtraction) could not be performed because one (or both) \"values\" vector has a different size with respect to the \"frequencies\" vector.");
 		throw(exc);
 	}
 
@@ -159,13 +159,13 @@ FreqValueSet operator*(const FreqValueSet & lhs, const FreqValueSet & rhs)
 //	}
 	if( lhs.frequencies.size() != rhs.frequencies.size() )
 	{
-		CustomException exc("A multiplication could not be performed because the frequencies do not match.");
+		CustomException exc("A multiplication (or division) could not be performed because the frequencies do not match.");
 		throw(exc);
 	}
 
 	if( lhs.frequencies.size()!=lhs.values.size() && rhs.frequencies.size()!=rhs.values.size() )
 	{
-		CustomException exc("A multiplication could not be performed because one (or both) \"values\" vector has a different size with respect to the \"frequencies\" vector.");
+		CustomException exc("A multiplication (or division) could not be performed because one (or both) \"values\" vector has a different size with respect to the \"frequencies\" vector.");
 		throw(exc);
 	}
 
@@ -255,21 +255,7 @@ FreqValueSet operator/(const float lhs, const FreqValueSet & rhs)
 	return result;
 }
 
-FreqValueSet operator/(const FreqValueSet & lhs, const float rhs)
-{
-	FreqValueSet result;
-	result.values.reserve( lhs.values.size() );
-
-	for(auto& value : lhs.values)
-		result.values.push_back( value/rhs );
-
-	result.type = lhs.type;
-	result.index = lhs.index;
-	result.timeData = lhs.timeData;
-	result.frequencies = lhs.frequencies;
-
-	return result;
-}
+FreqValueSet operator/(const FreqValueSet & lhs, const float rhs) { 	return( lhs * (1/rhs) );	}
 
 FreqValueSet log10(const FreqValueSet & argument) //decimal logarithm
 {

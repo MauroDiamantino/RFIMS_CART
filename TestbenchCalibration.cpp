@@ -7,10 +7,7 @@
 
 #include "Spectran.h"
 #include "SweepProcessing.h"
-
-#ifdef RASPBERRY_PI
-const unsigned int BUTTON = 10;
-#endif
+#include <boost/timer/timer.hpp>
 
 void WaitForKey()
 {
@@ -21,6 +18,9 @@ void WaitForKey()
 
 int main()
 {
+	boost::timer::cpu_timer timer;
+	timer.stop();
+
 	cout << "\t\tTestbench de la calibracion del front end" << endl;
 
 	try
@@ -154,6 +154,7 @@ int main()
 
 		wholeSweep.Clear();
 
+		timer.start();
 		//Capturando los barridos de cada una de las bandas que componen el barrido completo
 		for(unsigned int i=0; i < specConfigurator.GetNumOfBands(); i++)
 		{
@@ -171,6 +172,9 @@ int main()
 			cout << "Agregando el barrido de la banda frecuencial actual al final del barrido completo" << endl;
 			wholeSweep.PushBack(currFreqBand);
 		}
+		timer.stop();
+		cout << "\nEl tiempo consumido por la captura del ultimo barrido fue:" << endl;
+		cout << timer.format(1) << endl;
 
 		FreqValueSet calSweep = sweepCalibrator.CalibrateSweep(wholeSweep);
 
