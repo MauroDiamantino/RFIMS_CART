@@ -128,6 +128,7 @@ class FrontEndCalibrator
 	bool flagNSon;
 	FrontEndParameters frontEndParam;
 	CurveAdjuster & adjuster;
+	bool flagCalStarted;
 	///////Private Methods///////
 	//void CalculateOutNoiseTemps();
 public:
@@ -150,9 +151,9 @@ public:
 		flagNSon = false;
 	}
 #else
-	void StartCalibration() {	flagNSon = false;	}
+	void StartCalibration() {	flagNSon = false; flagCalStarted=true;	}
 	void TurnOnNS() {	flagNSon = true;	}
-	void EndCalibration() {		flagNSon = false;	}
+	void EndCalibration() {		flagNSon = false; flagCalStarted=false;	}
 #endif
 	void SetSweep(const FreqValueSet & sweep);
 	void SetNSoffTemp(const float nsOffTemp) {	tsoff = nsOffTemp;	}
@@ -161,6 +162,8 @@ public:
 	const FrontEndParameters& GetFrontEndParam() const {	return frontEndParam;	}
 	FreqValueSet GetENRcorr() const {	return correctENR;		}
 	float GetNSoffTemp() const {	return tsoff;	}
+	bool IsCalibStarted() const {	return flagCalStarted;		}
+	bool IsNoiseSourceOn() const {	return flagNSon;	}
 };
 
 

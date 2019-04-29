@@ -17,6 +17,7 @@ FrontEndCalibrator::FrontEndCalibrator(CurveAdjuster & adj) : correctENR("enr"),
 	digitalWrite(piPins.SWITCH, SWITCH_TO_ANTENNA);
 #endif
 	flagNSon = false;
+	flagCalStarted = false;
 }
 
 FrontEndCalibrator::FrontEndCalibrator(CurveAdjuster & adj, std::vector<BandParameters> & bandsParam) : correctENR("enr"),
@@ -30,6 +31,7 @@ FrontEndCalibrator::FrontEndCalibrator(CurveAdjuster & adj, std::vector<BandPara
 	digitalWrite(piPins.SWITCH, SWITCH_TO_ANTENNA);
 #endif
 	flagNSon = false;
+	flagCalStarted = false;
 }
 
 void FrontEndCalibrator::LoadENR()

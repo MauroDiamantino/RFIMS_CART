@@ -7,13 +7,6 @@
 
 #include "AntennaPositioning.h"
 
-void WaitForKey()
-{
-    cin.clear();
-    cin.ignore(std::cin.rdbuf()->in_avail());
-    cin.get();
-}
-
 AntennaPositioner::AntennaPositioner()
 {
 #ifdef RASPBERRY_PI
@@ -37,13 +30,13 @@ AntennaPositioner::AntennaPositioner()
 	digitalWrite(piPins.LED_POLARIZ, LOW);
 #endif
 	azimuthAngle=0.0;
-	polarization=UNKNOWN;
+	polarization=Polarization::UNKNOWN;
 	positionIndex=255;
 }
 
 bool AntennaPositioner::Initialize()
 {
-	cout << "Rotate antenna to the initial position, make sure the polarization is horizontal and press the button to continue.." << endl;
+	cout << "\nRotate antenna to the initial position, make sure the polarization is horizontal and press the button to continue.." << endl;
 #ifdef RASPBERRY_PI
 	digitalWrite(piPins.LED_INIT_POS, HIGH);
 	while( digitalRead(piPins.BUTTON_INIT_POS)==HIGH );
@@ -51,7 +44,7 @@ bool AntennaPositioner::Initialize()
 #endif
 	cout << "Enter the initial azimuth angle: ";
 	cin >> azimuthAngle;
-	polarization=HORIZONTAL;
+	polarization=Polarization::HORIZONTAL;
 	positionIndex=0;
 
 	return true;
@@ -62,7 +55,7 @@ bool AntennaPositioner::NextAzimPosition()
 	if( ++positionIndex >= NUM_OF_POSITIONS )
 	{
 		positionIndex=0;
-		cout << "Rotate antenna to the initial position, make sure the polarization is horizontal and press the button to continue.." << endl;
+		cout << "\nRotate antenna to the initial position, make sure the polarization is horizontal and press the button to continue.." << endl;
 #ifdef RASPBERRY_PI
 		digitalWrite(piPins.LED_INIT_POS, HIGH);
 		while( digitalRead(piPins.BUTTON_INIT_POS)==HIGH );
@@ -71,7 +64,7 @@ bool AntennaPositioner::NextAzimPosition()
 	}
 	else
 	{
-		cout << "Rotate the antenna 45° counterclockwise and press the button to continue..." << endl;
+		cout << "\nRotate the antenna 45° counterclockwise and press the button to continue..." << endl;
 #ifdef RASPBERRY_PI
 		digitalWrite(PIN_LED_AZIMUTHAL, HIGH);
 		while( digitalRead(PIN_SW_AZIMUTHAL)==HIGH );
@@ -87,13 +80,13 @@ bool AntennaPositioner::NextAzimPosition()
 
 bool AntennaPositioner::ChangePolarization()
 {
-	cout << "Change the antenna polarization and press the button to continue..." << endl;
+	cout << "\nChange the antenna polarization and press the button to continue..." << endl;
 #ifdef RASPBERRY_PI
 	digitalWrite(piPins.LED_POLARIZ, HIGH);
 	while( digitalRead(piPins.BUTTON_POLARIZ)==HIGH );
 	digitalWrite(piPins.LED_POLARIZ, LOW);
 #endif
-	polarization = (polarization==HORIZONTAL ? VERTICAL : HORIZONTAL);
+	polarization = (polarization==Polarization::HORIZONTAL ? Polarization::VERTICAL : Polarization::HORIZONTAL);
 	return true;
 }
 
@@ -101,11 +94,11 @@ std::string AntennaPositioner::GetPolarization()
 {
 	switch(polarization)
 	{
-	case PolarizationType::HORIZONTAL:
+	case Polarization::HORIZONTAL:
 		return "horizontal";
-	case PolarizationType::VERTICAL:
+	case Polarization::VERTICAL:
 		return "vertical";
-	case PolarizationType::UNKNOWN:
+	case Polarization::UNKNOWN:
 	default:
 		return "unknown";
 	}

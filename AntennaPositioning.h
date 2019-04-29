@@ -116,12 +116,12 @@ public:
 	bool IsConnected() const {	return flagConnected;	}
 };
 
+enum Polarization : char { HORIZONTAL, VERTICAL, UNKNOWN };
 
 //!The aim of this class is to drive the antenna positioning
 class AntennaPositioner
 {
-	/////////Class types//////////
-	enum PolarizationType : char { HORIZONTAL, VERTICAL, UNKNOWN };
+	enum Polarization : char { HORIZONTAL, VERTICAL, UNKNOWN };
 	/////////Attributes//////////
 	//Constants
 	struct
@@ -137,7 +137,7 @@ class AntennaPositioner
 	const std::uint8_t ROTATION_ANGLE = 360/NUM_OF_POSITIONS;
 	//Variables
 	float azimuthAngle;
-	PolarizationType polarization;
+	Polarization polarization;
 	std::uint8_t positionIndex;
 public:
 	AntennaPositioner();
