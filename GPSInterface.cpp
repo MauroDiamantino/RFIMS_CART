@@ -144,7 +144,7 @@ GPSInterface::GPSInterface()
 	sensorFile << "Timestamp,Gyroscope.x,Gyroscope.y,Gyroscope.z,Compass.x,Compass.y,Compass.z,Accelerometer.x,Accelerometer.y,Accelerometer.z,yaw,pitch,roll\n";
 
 	Purge();
-	sleep(1);
+	usleep(300000);
 }
 
 
@@ -674,6 +674,7 @@ void GPSInterface::Initialize()
 	}while( numOfSatellites < MIN_NUM_OF_SATELLITES );
 
 	Purge();
+	usleep(300000);
 
 	flagConnected=true;
 }
@@ -778,6 +779,6 @@ void GPSInterface::DisableStreaming()
 		throw;
 	}
 
-	usleep(50000);
 	Purge();
+	usleep(30000);
 }

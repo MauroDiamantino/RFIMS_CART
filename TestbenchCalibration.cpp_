@@ -74,7 +74,10 @@ int main()
 			cout << "La captura de un barrido finalizo" << endl;
 
 			cout << "Agregando el barrido de la banda frecuencial actual al final del barrido completo" << endl;
-			wholeSweep.PushBack(currFreqBand);
+			if( wholeSweep.PushBack(currFreqBand) )
+				currBandParam.samplePoints--;
+
+			specConfigurator.SetCurrBandParameters(currBandParam);
 		}
 
 		cout << "\nFinalizo la captura de un barrido con NS apagado. Sera cargado en el calibrador del front end." << endl;

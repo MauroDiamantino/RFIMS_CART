@@ -7,12 +7,11 @@
 
 #include "AntennaPositioning.h"
 
-AntennaPositioner::AntennaPositioner()
+void WaitForKey();
+
+AntennaPositioner::AntennaPositioner(GPSInterface & gpsInterf) : gpsInterface(gpsInterf)
 {
 #ifdef RASPBERRY_PI
-	//Initializing the Wiring Pi library
-	wiringPiSetup();
-
 	//Setting the Raspberry Pi pins
 	pinMode(piPins.LED_INIT_POS, OUTPUT);
 	pinMode(piPins.BUTTON_INIT_POS, INPUT);
@@ -41,9 +40,13 @@ bool AntennaPositioner::Initialize()
 	digitalWrite(piPins.LED_INIT_POS, HIGH);
 	while( digitalRead(piPins.BUTTON_INIT_POS)==HIGH );
 	digitalWrite(piPins.LED_INIT_POS, LOW);
+#else
+	WaitForKey();
 #endif
 	cout << "Enter the initial azimuth angle: ";
 	cin >> azimuthAngle;
+	cin.get();
+	//cout << endl;
 	polarization=Polarization::HORIZONTAL;
 	positionIndex=0;
 
@@ -60,15 +63,19 @@ bool AntennaPositioner::NextAzimPosition()
 		digitalWrite(piPins.LED_INIT_POS, HIGH);
 		while( digitalRead(piPins.BUTTON_INIT_POS)==HIGH );
 		digitalWrite(piPins.LED_INIT_POS, LOW);
+#else
+		WaitForKey();
 #endif
 	}
 	else
 	{
 		cout << "\nRotate the antenna 45° counterclockwise and press the button to continue..." << endl;
 #ifdef RASPBERRY_PI
-		digitalWrite(PIN_LED_AZIMUTHAL, HIGH);
-		while( digitalRead(PIN_SW_AZIMUTHAL)==HIGH );
-		digitalWrite(PIN_LED_AZIMUTHAL, LOW);
+		digitalWrite(piPins.LED_NEXT_POS, HIGH);
+		while( digitalRead(piPins.BUTTON_NEXT_POS)==HIGH );
+		digitalWrite(piPins.LED_NEXT_POS, LOW);
+#else
+		WaitForKey();
 #endif
 	}
 
@@ -80,17 +87,50 @@ bool AntennaPositioner::NextAzimPosition()
 
 bool AntennaPositioner::ChangePolarization()
 {
-	cout << "\nChange the antenna polarization and press the button to continue..." << endl;
-#ifdef RASPBERRY_PI
-	digitalWrite(piPins.LED_POLARIZ, HIGH);
-	while( digitalRead(piPins.BUTTON_POLARIZ)==HIGH );
-	digitalWrite(piPins.LED_POLARIZ, LOW);
-#endif
-	polarization = (polarization==Polarization::HORIZONTAL ? Polarization::VERTICAL : Polarization::HORIZONTAL);
+	double absRoll;
+	bool flagSuccess=false;
+	do
+	{
+		cout << "\nChange the antenna polarization and press the button to continue..." << endl;
+	#ifdef RASPBERRY_PI
+		digitalWrite(piPins.LED_POLARIZ, HIGH);
+		while( digitalRead(piPins.BUTTON_POLARIZ)==HIGH );
+		digitalWrite(piPins.LED_POLARIZ, LOW);
+	#else
+		WaitForKey();
+	#endif
+		gpsInterface.ReadOneDataSet();
+		absRoll = abs( gpsInterface.GetRoll() );
+		if( polarization==Polarization::HORIZONTAL )
+		{
+			if( 80.0 < absRoll && absRoll < 100.0 )
+			{
+				flagSuccess=true;
+				polarization = Polarization::VERTICAL;
+			}
+			else
+			{
+				cout << "\nWarning: The antenna polarization was not changed" << endl;
+			}
+		}
+		else
+		{
+			if( absRoll < 10.0 )
+			{
+				flagSuccess = true;
+				polarization = Polarization::HORIZONTAL;
+			}
+			else
+			{
+				cout << "\nWarning: The antenna polarization was not changed" << endl;
+			}
+		}
+	}while(!flagSuccess);
+
 	return true;
 }
 
-std::string AntennaPositioner::GetPolarization()
+std::string AntennaPositioner::GetPolarizationString()
 {
 	switch(polarization)
 	{

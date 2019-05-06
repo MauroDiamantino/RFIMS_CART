@@ -9,7 +9,7 @@
 
 /////////////////////////Definitions of SweepBuilder class' methods///////////////////////
 
-//! A method which build the definite sweep object, which is of type *FreqValueSet* (struct), from the partial sweep which is map container.
+//! A method which build the definite sweep object, which is of type *FreqValues* (struct), from the partial sweep which is map container.
 void SweepBuilder::BuildSweep()
 {
 	sweep.Clear();
@@ -44,7 +44,7 @@ void SweepBuilder::SoundNewSweep()
 
 
 //! The aim of this method is to capture one sweep from the Spectran Interface and return it.
-const FreqValueSet& SweepBuilder::CaptureSweep(BandParameters & bandParam)
+const Sweep& SweepBuilder::CaptureSweep(BandParameters & bandParam)
 {
 	bool flagSweepReady=false;
 	SweepReply swReply;

@@ -8,6 +8,8 @@
 #ifndef RFIMS_CART_H_
 #define RFIMS_CART_H_
 
+//#define RASPBERRY_PI
+
 #include <iostream> //cout, cin
 #include <exception>
 #include <vector>
@@ -48,10 +50,7 @@ struct TimeData
 	unsigned int hour;
 	unsigned int minute;
 	unsigned int second;
-	TimeData()
-	{
-		year=month=day=hour=minute=second=0;
-	}
+	TimeData() {	year=month=day=hour=minute=second=0;	}
 	TimeData(const TimeData& timeData) {	*this=timeData;		}
 	std::string date() const
 	{
@@ -67,7 +66,7 @@ struct TimeData
 		oss << std::setw(2) << hour << ':' << std::setw(2) << minute << ':' << std::setw(2) << second;
 		return oss.str();
 	}
-	std::string timestamp() const {	return ( date() + 'T' + time() );	}
+	std::string timestamp() const {		return ( date() + 'T' + time() );	}
 	const TimeData& operator=(const TimeData& anotherTimeData)
 	{
 		year=anotherTimeData.year; month=anotherTimeData.month; day=anotherTimeData.day;
@@ -76,36 +75,56 @@ struct TimeData
 	}
 };
 
-struct FreqValueSet
+struct FreqValues
 {
 	std::string type; //!< ”sweep”, “frequency response”, “calibration curve”, “threshold curve” or “rfi x”, where 'x' is a positive integer number
-	unsigned int index; //!< A positive integer number associated with a detected RFI
 	std::vector<float> values; //!< RF power (dBm) or gain (dB or dBi)
 	std::vector<float> frequencies; //!< Frequency values in Hz.
 	TimeData timeData; //!< Timestamp with the following format: DD-MM-YYYYTHH:MM:SS (where the word T separates the date and time)
-	FreqValueSet(const std::string& typ="sweep", unsigned int ind=0) : type(typ), index(ind) {}
-	FreqValueSet(const FreqValueSet& freqValueSet);
-	void PushBack(const FreqValueSet& freqValueSet);
-	void Clear() { values.clear(); frequencies.clear();	}
+	FreqValues(const std::string& typ="sweep") : type(typ) {}
+	FreqValues(const FreqValues& freqValues) {	*this=freqValues;	}
+	virtual ~FreqValues() {}
+	bool PushBack(const FreqValues& FreqValues);
+	virtual void Clear();
 	bool Empty() const {	return values.empty();		}
-	const FreqValueSet& operator=(const FreqValueSet & freqValueSet);
-	const FreqValueSet& operator+=(const FreqValueSet& rhs);
-	friend FreqValueSet operator-(const FreqValueSet& argument);
-	friend FreqValueSet operator+(const FreqValueSet & lhs, const FreqValueSet & rhs); //defined in FreqValueSet.cpp
-	friend FreqValueSet operator+(const FreqValueSet & lhs, const float rhs); //defined in FreqValueSet.cpp
-	friend FreqValueSet operator+(const float lhs, const FreqValueSet & rhs);
-	friend FreqValueSet operator-(const FreqValueSet & lhs, const FreqValueSet & rhs);
-	friend FreqValueSet operator-(const FreqValueSet & lhs, const float rhs);
-	friend FreqValueSet operator-(const float lhs, const FreqValueSet & rhs);
-	friend FreqValueSet operator*(const FreqValueSet & lhs, const FreqValueSet & rhs); //defined in FreqValueSet.cpp
-	friend FreqValueSet operator*(const float lhs, const FreqValueSet & rhs); //defined in FreqValueSet.cpp
-	friend FreqValueSet operator*(const FreqValueSet & lhs, const float rhs);
-	friend FreqValueSet operator/(const FreqValueSet & lhs, const FreqValueSet & rhs); //defined in FreqValueSet.cpp
-	friend FreqValueSet operator/(const float lhs, const FreqValueSet & rhs); //defined in FreqValueSet.cpp
-	friend FreqValueSet operator/(const FreqValueSet & lhs, const float rhs); //defined in FreqValueSet.cpp
-	friend FreqValueSet log10(const FreqValueSet & argument); //decimal logarithm, defined in FreqValueSet.cpp
-	friend FreqValueSet pow(const FreqValueSet & base, const float exponent); //exponentiation, defined in FreqValueSet.cpp
-	friend FreqValueSet pow(const float base, const FreqValueSet & exponent); //exponentiation, defined in FreqValueSet.cpp
+	const FreqValues& operator=(const FreqValues & freqValues);
+	const FreqValues& operator+=(const FreqValues& rhs);
+	friend FreqValues operator-(const FreqValues& argument);
+	friend FreqValues operator+(const FreqValues & lhs, const FreqValues & rhs); //defined in FreqValues.cpp
+	friend FreqValues operator+(const FreqValues & lhs, const std::vector<float> & rhs);
+	friend FreqValues operator+(const std::vector<float> & lhs, const FreqValues & rhs);
+	friend FreqValues operator+(const FreqValues & lhs, const float rhs); //defined in FreqValues.cpp
+	friend FreqValues operator+(const float lhs, const FreqValues & rhs);
+	friend FreqValues operator-(const FreqValues & lhs, const FreqValues & rhs);
+	friend FreqValues operator-(const FreqValues & lhs, const float rhs);
+	friend FreqValues operator-(const float lhs, const FreqValues & rhs);
+	friend FreqValues operator*(const FreqValues & lhs, const FreqValues & rhs); //defined in FreqValues.cpp
+	friend FreqValues operator*(const float lhs, const FreqValues & rhs); //defined in FreqValues.cpp
+	friend FreqValues operator*(const FreqValues & lhs, const float rhs);
+	friend FreqValues operator/(const FreqValues & lhs, const FreqValues & rhs); //defined in FreqValues.cpp
+	friend FreqValues operator/(const float lhs, const FreqValues & rhs); //defined in FreqValues.cpp
+	friend FreqValues operator/(const FreqValues & lhs, const float rhs); //defined in FreqValues.cpp
+	friend FreqValues log10(const FreqValues & argument); //decimal logarithm, defined in FreqValues.cpp
+	friend FreqValues pow(const FreqValues & base, const float exponent); //exponentiation, defined in FreqValues.cpp
+	friend FreqValues pow(const float base, const FreqValues & exponent); //exponentiation, defined in FreqValues.cpp
+};
+
+struct Sweep : public FreqValues
+{
+	float azimuthAngle;
+	std::string polarization;
+	Sweep() : FreqValues("sweep") {	azimuthAngle=0; }
+	void Clear() {	FreqValues::Clear(); azimuthAngle=0; polarization.clear();	}
+	const Sweep & operator=(const Sweep & freqValues)
+	{
+		FreqValues::operator=(freqValues);
+		azimuthAngle = freqValues.azimuthAngle;
+		polarization = freqValues.polarization;
+		return *this;
+	}
+	friend Sweep operator+(const Sweep & lhs, const Sweep & rhs);
+	friend Sweep operator+(const Sweep & lhs, const std::vector<float> & rhs);
+	friend Sweep operator+(const std::vector<float> & lhs, const Sweep & rhs);
 };
 
 struct BandParameters
@@ -116,9 +135,8 @@ struct BandParameters
 	float rbw; //resolution bandwidth
 	float vbw; //video bandwidth
 	unsigned long int sweepTime;
-	bool flagDefaultSamplePoints; //It determines if the sample points number must be configured with next
-								//parameter or if it is left with its default value which is determined
-								//by the Spectran device.
+	bool flagDefaultSamplePoints; //It determines if the sample points number must be configured with next parameter or
+								//if it is left with its default value which is determined by the Spectran device.
 	unsigned int samplePoints; //Number of samples points. The value determined by the Spectran device (default value) or the forced value.
 	unsigned int detector; //”rms”(0) or “min/max”(1)
 };
@@ -126,6 +144,5 @@ struct BandParameters
 //Functions intended to compare floating-point numbers
 bool approximatelyEqual(float a, float b);
 bool approximatelyEqual(std::vector<float> vectorA, std::vector<float> vectorB);
-
 
 #endif /* RFIMS_CART_H_ */

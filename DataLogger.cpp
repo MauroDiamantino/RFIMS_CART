@@ -3,8 +3,7 @@
 DataLogger::DataLogger()
 {
 	sweepIndex=10000; //To make sure this variable will be set to zero the first time the method SaveData() is called
-	antPosition=0;
-	
+
 	if( !boost::filesystem::exists(MEASUREMENTS_PATH) )
 	{
 		try
@@ -28,16 +27,12 @@ DataLogger::~DataLogger()
 	ofs.close();
 }
 
-
-void DataLogger::SetSweep(const FreqValueSet & swp)
+void DataLogger::SaveData(const Sweep & swp)
 {
 	sweep=swp;
 	if(++sweepIndex >= 2*NUM_OF_POSITIONS) //2 polarizations multiplied by NUM_OF_POSITIONS azimuthal positions
 		sweepIndex=0;
-}
 
-void DataLogger::SaveData()
-{
 	//The data are saved only if a sweep has been loaded
 	if( !sweep.Empty() )
 	{
@@ -83,7 +78,8 @@ void DataLogger::SaveData()
 		
 		//Writing sweep's power values
 		std::string aux = sweep.timeData.timestamp();
-		ofs << sweep.timeData.timestamp() << ',' << std::setprecision(4) << antPosition << ',' << antPolarization << ',';
+		ofs << sweep.timeData.timestamp() << ',' << std::setprecision(4) << sweep.azimuthAngle << ',';
+		ofs << sweep.polarization << ',';
 		for(auto& p : sweep.values)
 			ofs << std::setprecision(1) << p << ',';
 		ofs << "\r\n";

@@ -13,6 +13,8 @@ FrontEndCalibrator::FrontEndCalibrator(CurveAdjuster & adj) : correctENR("enr"),
 	enrFileLastWriteTime = -100;
 	tsoff = REF_TEMPERATURE;
 #ifdef RASPBERRY_PI
+	pinMode(piPins.NOISE_SOURCE, OUTPUT);
+	pinMode(piPins.SWITCH, OUTPUT);
 	digitalWrite(piPins.NOISE_SOURCE, LOW);
 	digitalWrite(piPins.SWITCH, SWITCH_TO_ANTENNA);
 #endif
@@ -56,7 +58,7 @@ void FrontEndCalibrator::LoadENR()
 		deviceName = line.substr(devNamePos, line.size()-devNamePos);
 		boost::algorithm::to_lower(deviceName);
 
-		FreqValueSet enr("enr");
+		FreqValues enr("enr");
 		float freqGHz, enrValuedB;
 		char delimiter;
 
@@ -95,7 +97,7 @@ void FrontEndCalibrator::LoadENR()
 	}
 }
 
-void FrontEndCalibrator::SetSweep(const FreqValueSet & sweep)
+void FrontEndCalibrator::SetSweep(const FreqValues & sweep)
 {
 	if(flagNSon)
 		powerNSon = pow(10.0, sweep/10.0 ) * 1e-3; //The power values are converted from dBm to Watts
@@ -129,8 +131,8 @@ const FrontEndParameters& FrontEndCalibrator::CalculateParameters()
 	if( powerNSon.Empty() || powerNSoff.Empty() )
 		throw( CustomException("The Front End calibrator cannot calculate parameters because one sweep (or both) is lacking.") );
 
-	FreqValueSet tson("noise temperature"), yFactor("y-factor"), frontEndNoiseTemp("noise temperature");
-	FreqValueSet frontEndNoiseFigure("noise figure"), frontEndGaindB("gain_dB");
+	FreqValues tson("noise temperature"), yFactor("y-factor"), frontEndNoiseTemp("noise temperature");
+	FreqValues frontEndNoiseFigure("noise figure"), frontEndGaindB("gain_dB");
 
 	tson = (REF_TEMPERATURE * correctENR) + tsoff;
 	yFactor = powerNSon / powerNSoff;
@@ -173,7 +175,7 @@ void FrontEndCalibrator::SaveFrontEndParam(const TimeData & timeData)
 	if( !boost::filesystem::exists(filePath) )
 		boost::filesystem::create_directory(filePath);
 
-	std::string filename("noisefigure");
+	std::string filename("noisefigure_");
 	filename += timeData.date() + ".csv";
 	filePath /= filename;
 	std::ofstream ofs( filePath.string() );
@@ -191,7 +193,7 @@ void FrontEndCalibrator::SaveFrontEndParam(const TimeData & timeData)
 
 	ofs.close();
 
-	filename = "gain" + timeData.date() + ".csv";
+	filename = "gain_" + timeData.date() + ".csv";
 	filePath.remove_filename();
 	filePath /= filename;
 	ofs.open( filePath.string() );
@@ -207,4 +209,19 @@ void FrontEndCalibrator::SaveFrontEndParam(const TimeData & timeData)
 	ofs << "\r\n";
 
 	ofs.close();
+}
+
+const Sweep& FrontEndCalibrator::CalibrateSweep(const Sweep& uncalSweep)
+{
+	try
+	{
+		calSweep = uncalSweep + frontEndParam.gain_dB;
+	}
+	catch(CustomException & exc)
+	{
+		CustomException exc1("A sweep could not be calibrated: ");
+		exc1.Append( exc.what() );
+		throw exc1;
+	}
+	return(calSweep);
 }

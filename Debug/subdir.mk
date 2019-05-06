@@ -9,7 +9,7 @@ CPP_SRCS += \
 ../CurveAdjuster.cpp \
 ../DataLogger.cpp \
 ../FloatComparison.cpp \
-../FreqValueSet.cpp \
+../FreqValues.cpp \
 ../FrontEndCalibrator.cpp \
 ../GPSInterface.cpp \
 ../Reply.cpp \
@@ -25,7 +25,7 @@ OBJS += \
 ./CurveAdjuster.o \
 ./DataLogger.o \
 ./FloatComparison.o \
-./FreqValueSet.o \
+./FreqValues.o \
 ./FrontEndCalibrator.o \
 ./GPSInterface.o \
 ./Reply.o \
@@ -41,7 +41,7 @@ CPP_DEPS += \
 ./CurveAdjuster.d \
 ./DataLogger.d \
 ./FloatComparison.d \
-./FreqValueSet.d \
+./FreqValues.d \
 ./FrontEndCalibrator.d \
 ./GPSInterface.d \
 ./Reply.d \

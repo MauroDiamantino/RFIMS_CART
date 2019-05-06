@@ -47,6 +47,7 @@ typedef struct
 	double longitude;
 } GPSCoordinates;
 
+
 ///////////////////////Classes//////////////////////////
 
 //!It is intended to establish the communication with the Aaronia GPS receiver, to request and capture messages from this and extract useful data from messages
@@ -62,7 +63,11 @@ class GPSInterface
 	const unsigned int GYRO_FILTERFREQ = 4;
 	const unsigned int GYRO_FILTERDIV = 1;
 	const unsigned int DATARATE = 20; //T = 50 mS
+#ifdef RASPBERRY_PI
+	const std::string SENSORS_FILES_PATH = "/home/pi/RFIMS-CART/gps/";
+#else
 	const std::string SENSORS_FILES_PATH = "/home/new-mauro/RFIMS-CART/gps/";
+#endif
 	const unsigned int MIN_NUM_OF_SATELLITES = 1;
 	//Variables
 	FT_HANDLE ftHandle;
@@ -121,31 +126,33 @@ enum Polarization : char { HORIZONTAL, VERTICAL, UNKNOWN };
 //!The aim of this class is to drive the antenna positioning
 class AntennaPositioner
 {
-	enum Polarization : char { HORIZONTAL, VERTICAL, UNKNOWN };
+	//enum Polarization : char { HORIZONTAL, VERTICAL, UNKNOWN };
 	/////////Attributes//////////
 	//Constants
 	struct
 	{
-		const int LED_INIT_POS = 8;
-		const int BUTTON_INIT_POS = 9;
-		const int LED_NEXT_POS = 10;
-		const int BUTTON_NEXT_POS = 11;
-		const int LED_POLARIZ = 12;
-		const int BUTTON_POLARIZ = 13;
+		const int LED_INIT_POS = 1;
+		const int BUTTON_INIT_POS = 2;
+		const int LED_NEXT_POS = 3;
+		const int BUTTON_NEXT_POS = 4;
+		const int LED_POLARIZ = 5;
+		const int BUTTON_POLARIZ = 6;
 	} piPins;
 	const std::uint8_t NUM_OF_POSITIONS = 8;
 	const std::uint8_t ROTATION_ANGLE = 360/NUM_OF_POSITIONS;
 	//Variables
+	GPSInterface & gpsInterface;
 	float azimuthAngle;
 	Polarization polarization;
 	std::uint8_t positionIndex;
 public:
-	AntennaPositioner();
+	AntennaPositioner(GPSInterface & gpsInterf);
 	bool Initialize();
 	bool NextAzimPosition();
 	bool ChangePolarization();
 	float GetAzimPosition() {	return azimuthAngle;	}
-	std::string GetPolarization();
+	std::string GetPolarizationString();
+	Polarization GetPolarization() {	return polarization;	}
 	unsigned int GetPositionIndex()	{	return positionIndex;	}
 	unsigned int GetNumOfPositions() {	return NUM_OF_POSITIONS;	}
 	bool IsLastPosition() {	return ( positionIndex >= (NUM_OF_POSITIONS-1) );	}

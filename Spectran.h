@@ -311,14 +311,14 @@ public:
 	bool IsLastBand() const {	return ( bandIndex>=bandsParam.size() );	}
 };
 
-//! The aim of class *SweepBuilder* is to build the complete sweep from the individual sweep points which are deliverd by the Spectran Interface
+//! The aim of class *SweepBuilder* is to build the complete sweep from the individual sweep points which are delivered by the Spectran Interface
 class SweepBuilder
 {
 	//////////Attributes////////////
 	SpectranInterface & interface;
 	typedef std::map<float,float> SweepMap;
 	SweepMap partialSweep;
-	FreqValueSet sweep;
+	Sweep sweep;
 	////////////Private methods/////////
 	void BuildSweep();
 	void SoundNewSweep();
@@ -326,8 +326,8 @@ public:
 	/////////Class' interface/////////
 	//! The SweepBuilder class's constructor
 	SweepBuilder(SpectranInterface & interf) : interface(interf) {}
-	const FreqValueSet& CaptureSweep(BandParameters& bandParam);
-	const FreqValueSet& GetSweep() const {	return sweep;	}
+	const Sweep& CaptureSweep(BandParameters& bandParam);
+	const Sweep& GetSweep() const {	return sweep;	}
 };
 
 #endif /* SPECTRAN_H_ */

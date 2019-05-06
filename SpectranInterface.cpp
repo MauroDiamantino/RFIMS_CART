@@ -137,7 +137,7 @@ void SpectranInterface::Initialize()
 			}
 			catch (std::exception& exc)
 			{
-				cerr << "Warning: one of the two commands VERIFY to initialize the communication failed." << endl;
+				//cerr << "Warning: one of the two commands VERIFY to initialize the communication failed." << endl;
 				errorCounter++;
 			}
 		}while(flagSuccess==false && errorCounter<2); //Just one error is accepted
@@ -331,7 +331,7 @@ void SpectranInterface::DisableSweep()
 		}
 		catch(CustomException & exc)
 		{
-			cerr << "Warning: one of the commands to disable the sending of measurements via USB failed." << endl;
+			//cerr << "Warning: one of the commands to disable the sending of measurements via USB failed." << endl;
 
 			if(++errorCounter < 3)
 			{
