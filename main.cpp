@@ -10,12 +10,7 @@
 #include "AntennaPositioning.h"
 #include <boost/timer/timer.hpp>
 
-void WaitForKey()
-{
-    cin.clear();
-    cin.ignore(std::cin.rdbuf()->in_avail());
-    cin.get();
-}
+void WaitForKey();
 
 int main()
 {
@@ -48,10 +43,9 @@ int main()
 		CurveAdjuster curveAdjuster;
 		FrontEndCalibrator frontEndCalibrator(curveAdjuster);
 		DataLogger dataLogger;
-		//RFPloter sweepPloter[16], calPloter;
+		//RFPloter sweepPloter[12], calPloter;
 		GPSInterface gpsInterface;
 		AntennaPositioner antPositioner(gpsInterface);
-		//Gnuplot gainPloter("lines"), nfPloter("lines");
 
 		cout << "\nInitializing communication with Aaronia Spectran device..." << endl;
 		specInterface.Initialize();
@@ -90,8 +84,6 @@ int main()
 		Sweep wholeSweep;
 		while(!flagEndMeasCycle)
 		{
-			//Capturing the sweeps related to each one of the frequency bands, which in conjunction form a whole sweep
-
 			wholeSweep.Clear();
 
 			//The timestamp of each sweep is taking at the beginning
@@ -102,6 +94,8 @@ int main()
 #ifdef RASPBERR_PI
 			digitalWrite(piPins.LED_SWEEP_CAPTURE, HIGH);
 #endif
+
+			//Capturing the sweeps related to each one of the frequency bands, which in conjunction form a whole sweep
 			for(unsigned int i=0; i < specConfigurator.GetNumOfBands(); i++)
 			{
 				BandParameters currBandParam;
@@ -124,6 +118,7 @@ int main()
 #ifdef RASPBERRY_PI
 			digitalWrite(piPins.LED_SWEEP_CAPTURE, LOW);
 #endif
+			specInterface.SoundNewSweep();
 			cout << "\nThe capturing of a whole sweep (1 GHz to 8 GHz) finished" << endl;
 			
 			//Transferring the bands parameters to the objects which need them
@@ -165,11 +160,11 @@ int main()
 #ifdef RASPBERRY_PI
 					digitalWrite(piPins.LED_SWEEP_PROCESS, HIGH);
 #endif
-					FrontEndParameters frontEndParam = frontEndCalibrator.CalculateParameters();
+					frontEndCalibrator.EstimateParameters();
 
-					FreqValues totalGain("gain");
-					totalGain.frequencies = frontEndParam.frequency;
-					totalGain.values = frontEndParam.gain_dB;
+//					FreqValues totalGain("gain");
+//					totalGain.frequencies = frontEndParam.frequency;
+//					totalGain.values = frontEndParam.gain_dB;
 
 					//FreqValues calSweepNSoff = frontEndCalibrator.CalibrateSweep( frontEndCalibrator.GetSweepNSoff() );
 					//calPloter.Plot(calSweepNSoff, "lines", "Calibrated sweep with NS off (50ohm load)");

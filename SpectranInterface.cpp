@@ -453,3 +453,23 @@ void SpectranInterface::SoundLogOut()
 		cerr << "There was a failure with the command to produce the beep which sound in the logout failed." << endl;
 	}
 }
+
+void SpectranInterface::SoundNewSweep()
+{
+	Command comm(Command::SETSTPVAR, SpecVariable::STDTONE, 100.0);
+	Reply reply(Reply::SETSTPVAR);
+	try
+	{
+		Write(comm);
+		Read(reply);
+		if(reply.IsRight()!=true)
+		{
+			CustomException exc("The reply to the command to make the sound which indicates a new sweep was wrong.");
+			throw(exc);
+		}
+	}
+	catch(CustomException & exc)
+	{
+		cerr << "Warning: " << exc.what() << endl;
+	}
+}

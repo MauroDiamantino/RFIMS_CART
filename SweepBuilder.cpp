@@ -21,26 +21,26 @@ void SweepBuilder::BuildSweep()
 	}
 }
 
-void SweepBuilder::SoundNewSweep()
-{
-	Command comm(Command::SETSTPVAR, SpecVariable::STDTONE, 100.0);
-	Reply reply(Reply::SETSTPVAR);
-	try
-	{
-		interface.Write(comm);
-		interface.Read(reply);
-		if(reply.IsRight()!=true)
-		{
-			CustomException exc("The reply to the command to make the sound which indicates the start of a new sweep was wrong.");
-			throw(exc);
-		}
-	}
-	catch(CustomException & exc)
-	{
-		cerr << "Warning: " << exc.what() << endl;
-		cerr << "The sound to show that a new sweep will be captured could not be made." << endl;
-	}
-}
+//void SweepBuilder::SoundNewSweep()
+//{
+//	Command comm(Command::SETSTPVAR, SpecVariable::STDTONE, 100.0);
+//	Reply reply(Reply::SETSTPVAR);
+//	try
+//	{
+//		interface.Write(comm);
+//		interface.Read(reply);
+//		if(reply.IsRight()!=true)
+//		{
+//			CustomException exc("The reply to the command to make the sound which indicates the start of a new sweep was wrong.");
+//			throw(exc);
+//		}
+//	}
+//	catch(CustomException & exc)
+//	{
+//		cerr << "Warning: " << exc.what() << endl;
+//		cerr << "The sound to show that a new sweep will be captured could not be made." << endl;
+//	}
+//}
 
 
 //! The aim of this method is to capture one sweep from the Spectran Interface and return it.
@@ -54,7 +54,7 @@ const Sweep& SweepBuilder::CaptureSweep(BandParameters & bandParam)
 	unsigned int errorTimeCount=0, errorFreqCount=0;
 	unsigned long samplesCount=0;
 
-	SoundNewSweep();
+	//SoundNewSweep();
 
 	interface.ResetSweep();
 
@@ -99,7 +99,7 @@ const Sweep& SweepBuilder::CaptureSweep(BandParameters & bandParam)
 		{
 			if(++errorFreqCount < 3)
 			{
-				cerr << "Warning: a out-of-range frequency value was captured, the current sweep will be reset and the sweep capture will start again." << endl;
+				cerr << "\nWarning: a out-of-range frequency value was captured, the current sweep will be reset and the sweep capture will start again." << endl;
 
 				interface.DisableSweep();
 

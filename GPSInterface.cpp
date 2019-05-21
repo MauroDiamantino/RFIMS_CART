@@ -333,7 +333,10 @@ void GPSInterface::ConfigureVariable(const std::string& variable, unsigned int v
 inline void GPSInterface::CalculateCardanAngles()
 {
 	yaw = atan2(compassData.y, compassData.x) * 180.0/M_PI;
-	//yaw += (yaw<0 ? 360.0 : 0.0);
+	if(yaw<0)
+		yaw += 360.0; //!< To convert the yaw angle range from -180° - 180° to 0° - 360°
+	if( (yaw+=180.0)>=360.0 )
+		yaw -= 360.0;
 	pitch = -atan2( accelData.y, sqrt(pow(accelData.x,2) + pow(accelData.z,2)) ) * 180.0/M_PI;
 	roll = atan2( -accelData.x, (accelData.z<0 ? -1 : 1) * sqrt(pow(accelData.y,2) + pow(accelData.z,2)) ) * 180.0/M_PI;
 }

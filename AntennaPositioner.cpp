@@ -7,7 +7,12 @@
 
 #include "AntennaPositioning.h"
 
-void WaitForKey();
+void WaitForKey()
+{
+    cin.clear();
+    cin.ignore(std::cin.rdbuf()->in_avail());
+    cin.get();
+}
 
 AntennaPositioner::AntennaPositioner(GPSInterface & gpsInterf) : gpsInterface(gpsInterf)
 {

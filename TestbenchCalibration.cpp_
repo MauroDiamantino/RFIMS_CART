@@ -9,15 +9,14 @@
 #include "SweepProcessing.h"
 #include <boost/timer/timer.hpp>
 
-void WaitForKey()
-{
-    cin.clear();
-    cin.ignore(std::cin.rdbuf()->in_avail());
-    cin.get();
-}
+void WaitForKey();
 
 int main()
 {
+#ifdef RASPBERRY_PI
+	wiringPiSetup();
+#endif
+
 	boost::timer::cpu_timer timer;
 	timer.stop();
 
@@ -29,7 +28,8 @@ int main()
 		SpectranConfigurator specConfigurator(specInterface);
 		SweepBuilder sweepBuilder(specInterface);
 		CurveAdjuster adjuster;
-		FrontEndCalibrator frontCalibrator(adjuster);
+		FrontEndCalibrator calibrator(adjuster);
+		RFPloter rfPloter;
 
 		cout << "\nIniciando la comunicacion con el dispositivo Spectran HF-60105 V4 X" << endl;
 		specInterface.Initialize();
@@ -50,20 +50,18 @@ int main()
 		cout << "Los parametros de las bandas fueron cargados exitosamente" << endl;
 
 		cout << "\nIniciando el proceso de calibracion del front end" << endl;
-		frontCalibrator.StartCalibration();
-
+		calibrator.StartCalibration();
 		cout << "Apague el generador de ruido, conmute el switch para que el mismo se conecte a la entrada y presione una tecla para continuar..." << endl;
 		WaitForKey();
 
-		RFPloter rfPloter;
-
-		FreqValueSet wholeSweep;
+		Sweep wholeSweep;
 
 		//Capturando los barridos de cada una de las bandas que componen el barrido completo
+		timer.start();
 		for(unsigned int i=0; i < specConfigurator.GetNumOfBands(); i++)
 		{
 			BandParameters currBandParam;
-			FreqValueSet currFreqBand;
+			Sweep currFreqBand;
 
 			cout << "\nSe inicia el proceso de captura de un nuevo barrido, correspondiente a la banda frecuencial N° " << i+1 << endl;
 			cout << "Configurando el dispositivo Spectran con los parametros de la siguiente banda frecuencial" << endl;
@@ -79,23 +77,24 @@ int main()
 
 			specConfigurator.SetCurrBandParameters(currBandParam);
 		}
-
 		cout << "\nFinalizo la captura de un barrido con NS apagado. Sera cargado en el calibrador del front end." << endl;
-		frontCalibrator.SetSweep( wholeSweep );
+		calibrator.SetSweep( wholeSweep );
+		
+		timer.stop();
+		cout << "\nEl tiempo consumido por la captura del ultimo barrido fue:" << endl;
+		cout << timer.format(1) << endl;
 
 		rfPloter.Plot(wholeSweep, "lines", "Sweep NS off");
 
 		cout << "Cargando los parametros de las bandas (ya con valores correctos de numero de muestras) en el FrontEndCalibrator y CurveAdjuster" << endl;
-		std::vector<BandParameters> bandsParameters;
-		bandsParameters = specConfigurator.GetBandsParameters();
+		auto bandsParameters = specConfigurator.GetBandsParameters();
 		adjuster.SetBandsParameters(bandsParameters);
-		frontCalibrator.SetBandsParameters(bandsParameters);
+		calibrator.SetBandsParameters(bandsParameters);
 
 		cout << "Cargando los valores del parametero ENR del generador de ruido" << endl;
-		frontCalibrator.LoadENR();
+		calibrator.LoadENR();
 
-		frontCalibrator.TurnOnNS();
-
+		calibrator.TurnOnNS();
 		cout << "\nAlimente el generador de ruido y presione una tecla para continuar..." << endl;
 		WaitForKey();
 
@@ -105,7 +104,7 @@ int main()
 		for(unsigned int i=0; i < specConfigurator.GetNumOfBands(); i++)
 		{
 			BandParameters currBandParam;
-			FreqValueSet currFreqBand;
+			FreqValues currFreqBand;
 
 			cout << "\nSe inicia el proceso de captura de un nuevo barrido, correspondiente a la banda frecuencial N° " << i+1 << endl;
 			cout << "Configurando el dispositivo Spectran con los parametros de la siguiente banda frecuencial" << endl;
@@ -120,40 +119,28 @@ int main()
 		}
 
 		cout << "\nFinalizo la captura de un barrido con NS on. Sera cargado en el calibrador del front end." << endl;
-		frontCalibrator.SetSweep( wholeSweep );
+		calibrator.SetSweep( wholeSweep );
 
 		rfPloter.Plot(wholeSweep, "lines", "Sweep NS on");
 
+		calibrator.EndCalibration();
 		cout << "\nApague el generador de ruido, conmute el switch y presione una tecla para continuar..." << endl;
 		WaitForKey();
 
-		frontCalibrator.EndCalibration();
+		calibrator.EstimateParameters();
 
-		FrontEndParameters frontEndParam = frontCalibrator.CalculateParameters();
+		Sweep sweepNSoff = calibrator.GetSweepNSoff();
+		Sweep calSweepNSoff = calibrator.CalibrateSweep(sweepNSoff);
+		rfPloter.Plot(calSweepNSoff, "lines", "Calibrated sweep NS off");
 
 		TimeData timeData;
-		timeData.year=2019; timeData.month=4; timeData.day=27;
+		timeData.year=2019; timeData.month=5; timeData.day=20;
 		timeData.hour=18; timeData.minute=0; timeData.second=0;
-		frontCalibrator.SaveFrontEndParam(timeData);
+		calibrator.SaveFrontEndParam(timeData);
 
-		Gnuplot gainPloter, nfPloter;
-		gainPloter.set_style("lines"); nfPloter.set_style("lines");
-
-		gainPloter.set_title("Ganancia total del front end");
-		gainPloter.set_xlabel("Frecuencia (Hz)");
-		gainPloter.set_ylabel("Ganancia (dB)");
-		gainPloter.plot_xy(frontEndParam.frequency, frontEndParam.gain_dB, "Ganancia");
-
-		nfPloter.set_title("Figura de ruido total del front end");
-		nfPloter.set_xlabel("Frecuencia (Hz)");
-		nfPloter.set_ylabel("Figura de ruido (dB)");
-		nfPloter.plot_xy(frontEndParam.frequency, frontEndParam.noiseFigure, "Figura de ruido");
-
-		SweepCalibrator sweepCalibrator;
-		FreqValueSet totalGain("gain");
-		totalGain.frequencies = frontEndParam.frequency;
-		totalGain.values = frontEndParam.gain_dB;
-		sweepCalibrator.BuildCalCurve(totalGain);
+		RFPloter gainPloter, nfPloter;
+		gainPloter.Plot(calibrator.GetGain(), "lines", "Ganancia total del front end");
+		nfPloter.Plot(calibrator.GetNoiseFigure(), "lines", "Figura de ruido total del front end");
 
 		wholeSweep.Clear();
 
@@ -162,7 +149,7 @@ int main()
 		for(unsigned int i=0; i < specConfigurator.GetNumOfBands(); i++)
 		{
 			BandParameters currBandParam;
-			FreqValueSet currFreqBand;
+			FreqValues currFreqBand;
 
 			cout << "\nSe inicia el proceso de captura de un nuevo barrido, correspondiente a la banda frecuencial N° " << i+1 << endl;
 			cout << "Configurando el dispositivo Spectran con los parametros de la siguiente banda frecuencial" << endl;
@@ -179,9 +166,7 @@ int main()
 		cout << "\nEl tiempo consumido por la captura del ultimo barrido fue:" << endl;
 		cout << timer.format(1) << endl;
 
-		FreqValueSet calSweep = sweepCalibrator.CalibrateSweep(wholeSweep);
-
-		rfPloter.Plot(calSweep, "lines", "Calibrated sweep 50ohm RF load");
+		Sweep calSweep = calibrator.CalibrateSweep(wholeSweep);
 
 		cout << "\nPresione una tecla para terminar..." << endl;
 		WaitForKey();

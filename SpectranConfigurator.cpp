@@ -282,8 +282,9 @@ bool SpectranConfigurator::LoadBandsParameters()
 				iss >> bandParam.startFreq;
 				if(bandParam.startFreq<1e6 || bandParam.startFreq>9.4e9)
 				{
-					std::string str = "The given value to configure variable " + paramName + " is out of range.";
-					CustomException exc(str);
+					std::ostringstream oss;
+					oss << "The given value, " << bandParam.startFreq << ", to configure parameter Fstart is out of range.";
+					CustomException exc( oss.str() );
 					throw(exc);
 				}
 			}
@@ -293,8 +294,9 @@ bool SpectranConfigurator::LoadBandsParameters()
 				iss >> bandParam.stopFreq;
 				if(bandParam.stopFreq<1e6 || bandParam.stopFreq>9.4e9)
 				{
-					std::string str = "The given value to configure variable " + paramName + " is out of range.";
-					CustomException exc(str);
+					std::ostringstream oss;
+					oss << "The given value, " << bandParam.stopFreq << ", to configure parameter Fstop is out of range.";
+					CustomException exc( oss.str() );
 					throw(exc);
 				}
 			}
@@ -312,10 +314,11 @@ bool SpectranConfigurator::LoadBandsParameters()
 					if(bandParam.rbw!=3e6 && bandParam.rbw!=1e6 && bandParam.rbw!=300e3 && bandParam.rbw!=100e3 &&
 							bandParam.rbw!=30e3 && bandParam.rbw!=10e3 && bandParam.rbw!=3e3 && bandParam.rbw!=1e3 &&
 							bandParam.rbw!=120e3 && bandParam.rbw!=9e3 && bandParam.rbw!=200.0 && bandParam.rbw!=5e6 &&
-							bandParam.rbw!=200e3 && bandParam.rbw!=1.5e6)
+							bandParam.rbw!=200e3 && bandParam.rbw!=1.5e6 && bandParam.rbw!=50e6)
 					{
-						std::string str = "The given value to configure variable " + paramName + " is invalid.";
-						CustomException exc(str);
+						std::ostringstream oss;
+						oss << "The given value, " << bandParam.rbw << ", to configure parameter RBW is invalid.";
+						CustomException exc( oss.str() );
 						throw(exc);
 					}
 				}
@@ -334,10 +337,11 @@ bool SpectranConfigurator::LoadBandsParameters()
 					if(bandParam.vbw!=3e6 && bandParam.vbw!=1e6 && bandParam.vbw!=300e3 && bandParam.vbw!=100e3 &&
 							bandParam.vbw!=30e3 && bandParam.vbw!=10e3 && bandParam.vbw!=3e3 && bandParam.vbw!=1e3 &&
 							bandParam.vbw!=120e3 && bandParam.vbw!=9e3 && bandParam.vbw!=200.0 && bandParam.vbw!=5e6 &&
-							bandParam.vbw!=200e3 && bandParam.vbw!=1.5e6)
+							bandParam.vbw!=200e3 && bandParam.vbw!=1.5e6 && bandParam.vbw!=50e6)
 					{
-						std::string str = "The given value to configure variable " + paramName + " is invalid.";
-						CustomException exc(str);
+						std::ostringstream oss;
+						oss << "The given value, " << bandParam.vbw << ", to configure parameter VBW is invalid.";
+						CustomException exc( oss.str() );
 						throw(exc);
 					}
 				}
@@ -348,8 +352,9 @@ bool SpectranConfigurator::LoadBandsParameters()
 				iss >> bandParam.sweepTime;
 				if(bandParam.sweepTime<10 || bandParam.sweepTime>600000)
 				{
-					std::string str = "The given value to configure variable " + paramName + " is invalid.";
-					CustomException exc(str);
+					std::ostringstream oss;
+					oss << "The given value, " << bandParam.sweepTime << ", to configure parameter Sweep Time is invalid.";
+					CustomException exc( oss.str() );
 					throw(exc);
 				}
 			}
@@ -377,7 +382,7 @@ bool SpectranConfigurator::LoadBandsParameters()
 				}
 				else
 				{
-					std::string str = "The given value to configure variable " + paramName + " is invalid.";
+					std::string str = "The given value, " + valueString + ", to configure parameter Detector is invalid.";
 					CustomException exc(str);
 					throw(exc);
 				}
@@ -490,8 +495,9 @@ void SpectranConfigurator::CheckVariable(SpecVariable variable, float value)
 		}
 		else if( reply.GetValue()!=value )
 		{
-			std::string str = "The reply to the command to get the current value of the \"" + reply.GetVariableNameString() + "\" stated a different value with respect to the one which was used to configure it.";
-			CustomException exc(str);
+			std::ostringstream oss;
+			oss << "The reply to the command to get the current value of the \"" + reply.GetVariableNameString() + "\" stated the value " << reply.GetValue() << " which is different to the one which was used to configure it, " << value << '.';
+			CustomException exc( oss.str() );
 			throw(exc);
 		}
 	}
@@ -519,8 +525,9 @@ void SpectranConfigurator::CheckFreqVariable(SpecVariable variable, float value)
 		}
 		else if( reply.GetValue()<(0.9*value) || reply.GetValue()>(1.1*value) )
 		{
-			std::string str = "The reply to the command to get the current value of the \"" + reply.GetVariableNameString() + "\" stated a different value with respect to the one which was used to configure it.";
-			CustomException exc(str);
+			std::ostringstream oss;
+			oss << "The reply to the command to get the current value of the \"" + reply.GetVariableNameString() + "\" stated the value " << reply.GetValue() << " which is different to the one which was used to configure it, " << value << '.';
+			CustomException exc( oss.str() );
 			throw(exc);
 		}
 	}
@@ -580,8 +587,7 @@ void SpectranConfigurator::InitialConfiguration()
  */
 BandParameters SpectranConfigurator::ConfigureNextBand()
 {
-	do
-	{
+	do{
 		if( ++bandIndex >= bandsParam.size() )
 			bandIndex=0;
 	}while(bandsParam[bandIndex].flagEnable==false); //Checking if the current band is enabled
@@ -599,7 +605,7 @@ BandParameters SpectranConfigurator::ConfigureNextBand()
 	CheckVariable( SpecVariable::RESBANDW, bandsParam[bandIndex].rbw );
 
 	SetVariable( SpecVariable::SWEEPTIME, float(bandsParam[bandIndex].sweepTime) );
-	CheckVariable( SpecVariable::SWEEPTIME, float(bandsParam[bandIndex].sweepTime) );
+	//CheckVariable( SpecVariable::SWEEPTIME, float(bandsParam[bandIndex].sweepTime) );
 
 	if(!bandsParam[bandIndex].flagDefaultSamplePoints)
 		SetVariable( SpecVariable::SWPFRQPTS, float(bandsParam[bandIndex].samplePoints) );

@@ -43,61 +43,14 @@ public:
 	const FreqValues& GetAdjustedCurve() const {	return adjCurve;	}
 };
 
-////!The aim of this class is to calibrate the sweeps taking into account the total gain curve of the RF front end.
-//class SweepCalibrator
+//struct FrontEndParameters
 //{
-//	////////Attributes///////////
-//	//Constants
-//#ifdef RASPBERRY_PI
-//	const boost::filesystem::path FILES_PATH = "/home/pi/RFIMS_CART/calibration/";
-//#else
-//	const boost::filesystem::path FILES_PATH = "/home/new-mauro/RFIMS_CART/calibration/";
-//#endif
-//	//Variables
-//	//CurveAdjuster & adjuster;
-//	//FreqValues totalGain;
-//	FreqValues calCurve;
-//	FreqValues calSweep;
-//public:
-//	///////Class' interface/////////
-//	//SweepCalibrator(CurveAdjuster & adj) : adjuster(adj) {}
-//	//void SetTotalGainCurve(const FreqValues& totGain) {	totalGain=totGain;	}
-//	void BuildCalCurve(const FreqValues& totalGain)
-//	{
-//		if( !totalGain.Empty() )
-//		{
-//			calCurve = -totalGain;
-//			//ajuste de la curva
-//		}
-//		else
-//			throw( CustomException("The total gain curve is empty.") );
-//	}
-//	const FreqValues& CalibrateSweep(const FreqValues& uncalSweep)
-//	{
-//		try
-//		{
-//			calSweep = uncalSweep + calCurve;
-//		}
-//		catch(CustomException & exc)
-//		{
-//			CustomException exc1("A sweep could not be calibrated: ");
-//			exc1.Append( exc.what() );
-//			throw exc1;
-//		}
-//		return(calSweep);
-//	}
-//	const FreqValues& GetCalSweep() const {	return calSweep;	}
-//	const FreqValues& GetCalCurve() const {	return calCurve;	}
+//	std::vector<float> gain_dB;
+//	std::vector<float> noiseTemperature;
+//	std::vector<float> noiseFigure;
+//	std::vector<float> frequency;
+//	std::string timestamp;
 //};
-
-struct FrontEndParameters
-{
-	std::vector<float> gain_dB;
-	std::vector<float> noiseTemperature;
-	std::vector<float> noiseFigure;
-	std::vector<float> frequency;
-	std::string timestamp;
-};
 
 //! The aim of this class is to calculate the total gain and total noise figure curves versus frequency of the RF front end
 class FrontEndCalibrator
@@ -122,22 +75,23 @@ class FrontEndCalibrator
 	time_t enrFileLastWriteTime;
 	FreqValues correctENR;
 	float tsoff;
-	//FreqValues sweepNSoff, sweepNSon;
 	FreqValues powerNSoff, powerNSon; //Power values in Watts
 	FreqValues noiseTempNSoff, noiseTempNSon;
 	std::vector<BandParameters> bandsParameters;
 	bool flagNSon;
-	FrontEndParameters frontEndParam;
+	//FrontEndParameters frontEndParam;
+	FreqValues gain, noiseTemperature, noiseFigure;
 	CurveAdjuster & adjuster;
 	bool flagCalStarted;
 	Sweep calSweep;
+	FreqValues rbwCurve;
 	///////Private Methods///////
 	//void CalculateOutNoiseTemps();
 public:
 	/////////Class Interface//////////
 	FrontEndCalibrator(CurveAdjuster & adj);
 	FrontEndCalibrator(CurveAdjuster & adj, std::vector<BandParameters> & bandsParam);
-	void SetBandsParameters(const std::vector<BandParameters> & bandsParam) {	 bandsParameters = bandsParam;	}
+	void SetBandsParameters(const std::vector<BandParameters> & bandsParam) {	bandsParameters = bandsParam;	}
 	void LoadENR();
 #ifdef RASPBERRY_PI
 	//void SwitchToNS() { digitalWrite(piPins.NOISE_SOURCE, LOW); digitalWrite(piPins.SWITCH, SWITCH_TO_NS);	}
@@ -162,9 +116,13 @@ public:
 #endif
 	void SetSweep(const FreqValues & sweep);
 	void SetNSoffTemp(const float nsOffTemp) {	tsoff = nsOffTemp;	}
-	const FrontEndParameters& CalculateParameters();
+	//const FrontEndParameters& CalculateParameters();
+	void EstimateParameters();
 	void SaveFrontEndParam(const TimeData & timeData);
-	const FrontEndParameters& GetFrontEndParam() const {	return frontEndParam;	}
+	//const FrontEndParameters& GetFrontEndParam() const {	return frontEndParam;	}
+	const FreqValues & GetGain() const {	return gain;	}
+	const FreqValues & GetNoiseTemp() const {	return noiseTemperature;	}
+	const FreqValues & GetNoiseFigure() const {		return noiseFigure;		}
 	FreqValues GetENRcorr() const {	return correctENR;		}
 	float GetNSoffTemp() const {	return tsoff;	}
 	const FreqValues & GetSweepNSoff() {	return powerNSoff;	}
@@ -180,17 +138,18 @@ public:
 class RFPloter
 {
 	Gnuplot ploter;
+	std::string title;
 	void ConfigureGraph()
 	{
-		ploter.unset_grid(); ploter.set_legend("inside"); ploter.set_legend("right");
+		ploter.unset_grid(); ploter.set_legend("inside"); ploter.set_legend("right"); ploter.set_title(title);
 		ploter.set_legend("top"); ploter.set_legend("nobox"); ploter.set_xlabel("Frequency (Hz)");
 	}
 public:
-	RFPloter() {	ConfigureGraph();	}
+	RFPloter(std::string titl="") : title(titl) {	ConfigureGraph();	}
 	~RFPloter() {	ploter.remove_tmpfiles();	}
 	void Plot(const FreqValues & curve, std::string style, std::string name = "")
 	{
-		ploter.set_title(name); ploter.set_style(style);
+		ploter.set_style(style);
 		ploter.plot_xy(curve.frequencies, curve.values,  name);
 	}
 	void PlotSweep(const Sweep& sweep)

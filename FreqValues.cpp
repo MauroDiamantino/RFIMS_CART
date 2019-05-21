@@ -13,7 +13,7 @@ void FreqValues::Clear()
 {
 	values.clear();
 	frequencies.clear();
-	timeData.year = timeData.month = timeData.day = timeData.hour = timeData.minute = timeData.second = 0;
+	timeData.Clear();
 }
 
 bool FreqValues::PushBack(const FreqValues& freqValues)
@@ -33,7 +33,7 @@ bool FreqValues::PushBack(const FreqValues& freqValues)
 //! The overloading of the assignment operator.
 const FreqValues& FreqValues::operator=(const FreqValues & freqValues)
 {
-	type = freqValues.type;
+//	type = freqValues.type;
 	values = freqValues.values;
 	frequencies = freqValues.frequencies;
 	timeData = freqValues.timeData;
@@ -70,7 +70,7 @@ const FreqValues& FreqValues::operator+=(const FreqValues& rhs)
 }
 
 
-/////////////////////////Friends functions/////////////////////////////////////
+/////////////////////////FreqValues struct's friends functions/////////////////////////////////////
 
 FreqValues operator-(const FreqValues & argument)
 {
@@ -148,7 +148,7 @@ FreqValues operator+(const float lhs, const FreqValues & rhs) {	return (rhs + lh
 
 FreqValues operator-(const FreqValues & lhs, const FreqValues & rhs) { return( lhs + (-rhs) );	}
 
-FreqValues operator-(const FreqValues & lhs, const float rhs) {	return( lhs + (-rhs) );	}
+FreqValues operator-(const FreqValues & lhs, const float rhs) {	return( lhs + (-rhs) );		}
 
 FreqValues operator-(const float lhs, const FreqValues & rhs) {	return( lhs + (-rhs) );		}
 
@@ -300,7 +300,28 @@ FreqValues pow(const float base, const FreqValues & exponent)
 	return result;
 }
 
-//////////////Sweep structure's friend methods////////////////
+/////////////////////////Definitions of Sweep struct's methods////////////////////
+const Sweep & Sweep::operator=(const Sweep & sweep)
+{
+//	type=sweep.type;
+	azimuthAngle=sweep.azimuthAngle;
+	polarization=sweep.polarization;
+	timeData=sweep.timeData;
+	frequencies=sweep.frequencies;
+	values=sweep.values;
+
+	return *this;
+}
+
+////////////////////////Sweep structure's friend methods///////////////////////////
+
+Sweep operator-(const Sweep & argument)
+{
+	Sweep result = (Sweep) operator-((FreqValues&) argument);
+	result.azimuthAngle = argument.azimuthAngle;
+	result.polarization = argument.polarization;
+	return result;
+}
 
 Sweep operator+(const Sweep & lhs, const Sweep & rhs)
 {
@@ -348,9 +369,94 @@ Sweep operator+(const Sweep & lhs, const std::vector<float> & rhs)
 
 	Sweep rhs_aux;
 	rhs_aux.values = rhs;
+	rhs_aux.frequencies = lhs.frequencies;
 
 	Sweep result = lhs + rhs_aux;
 	return result;
 }
 
 Sweep operator+(const std::vector<float> & lhs, const Sweep & rhs) {	return( rhs + lhs );	}
+
+Sweep operator+(const Sweep & lhs, const FreqValues & rhs) {	return( lhs + (Sweep)rhs );		}
+
+Sweep operator+(const FreqValues & lhs, const Sweep & rhs) {	return( (Sweep)lhs + rhs );		}
+
+Sweep operator-(const Sweep & lhs, const Sweep & rhs) {		return( lhs + (-rhs) );		}
+
+Sweep operator-(const Sweep & lhs, const std::vector<float> & rhs) {	return( lhs + (-rhs) );		}
+
+Sweep operator-(const std::vector<float> & lhs, const Sweep & rhs) {	return( lhs + (-rhs) );		}
+
+Sweep operator-(const Sweep & lhs, const FreqValues & rhs) {	return( lhs - (Sweep)rhs );		}
+
+Sweep operator-(const FreqValues & lhs, const Sweep & rhs) {	return( (Sweep)lhs - rhs );		}
+
+Sweep operator*(const Sweep & lhs, const Sweep & rhs)
+{
+	Sweep result = (Sweep) ( (FreqValues&)lhs * (FreqValues&)rhs );
+	result.azimuthAngle=lhs.azimuthAngle;
+	result.polarization=lhs.polarization;
+	return result;
+}
+
+Sweep operator*(const float lhs, const Sweep & rhs)
+{
+	Sweep result = (Sweep) ( lhs * (FreqValues)rhs );
+	result.azimuthAngle=rhs.azimuthAngle;
+	result.polarization=rhs.polarization;
+	return result;
+}
+
+Sweep operator*(const Sweep & lhs, const float rhs) {	return( rhs * lhs );	}
+
+Sweep operator/(const Sweep & lhs, const Sweep & rhs)
+{
+	Sweep result = (Sweep) ( (FreqValues)lhs / (FreqValues)rhs );
+	result.azimuthAngle=lhs.azimuthAngle;
+	result.polarization=lhs.polarization;
+	return result;
+}
+
+Sweep operator/(const float lhs, const Sweep & rhs)
+{
+	Sweep result = (Sweep) ( lhs / (FreqValues)rhs );
+	result.azimuthAngle=rhs.azimuthAngle;
+	result.polarization=rhs.polarization;
+	return result;
+}
+
+Sweep operator/(const Sweep & lhs, const float rhs) {	return( lhs * (1/rhs) );	}
+
+Sweep log10(const Sweep & argument)
+{
+	Sweep result = (Sweep) log10( (FreqValues)argument );
+	result.azimuthAngle=argument.azimuthAngle;
+	result.polarization=argument.polarization;
+	return result;
+}
+
+Sweep pow(const Sweep & base, const float exponent)
+{
+	Sweep result = (Sweep) pow((FreqValues&)base, exponent);
+	result.azimuthAngle = base.azimuthAngle;
+	result.polarization = base.polarization;
+	return result;
+}
+
+Sweep pow(const float base, const Sweep & exponent)
+{
+	Sweep result = (Sweep) pow(base, (FreqValues&)exponent);
+	result.azimuthAngle = exponent.azimuthAngle;
+	result.polarization = exponent.polarization;
+	return result;
+}
+
+///////////////////Other functions/////////////////////
+
+std::vector<float> operator-(const std::vector<float> & vect)
+{
+	std::vector<float> result;
+	for(auto& value : vect)
+		result.push_back( -value );
+	return result;
+}

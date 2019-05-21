@@ -253,6 +253,7 @@ public:
 	std::string GetDevDescription() const {	return DEVICE_DESCRIPTION;	}
 	bool IsLogged() const {	return flagLogIn;	}
 	bool IsSweepEnabled() const {	return flagSweepsEnabled;	}
+	void SoundNewSweep();
 };
 
 //! The class *SpectranConfigurator* is intended to manage the process of configuring the Aaronia Spectran device.
@@ -321,7 +322,7 @@ class SweepBuilder
 	Sweep sweep;
 	////////////Private methods/////////
 	void BuildSweep();
-	void SoundNewSweep();
+	//void SoundNewSweep();
 public:
 	/////////Class' interface/////////
 	//! The SweepBuilder class's constructor
