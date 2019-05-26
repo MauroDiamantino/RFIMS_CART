@@ -1,6 +1,5 @@
-SpectranInterface.d: ../SpectranInterface.cpp ../Spectran.h \
- ../RFIMS_CART.h
+SpectranInterface.d: ../SpectranInterface.cpp ../Spectran.h ../Basics.h
 
 ../Spectran.h:
 
-../RFIMS_CART.h:
+../Basics.h:

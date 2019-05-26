@@ -5,10 +5,10 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../AntennaPositioner.cpp \
+../Basics.cpp \
 ../Command.cpp \
 ../CurveAdjuster.cpp \
 ../DataLogger.cpp \
-../FloatComparison.cpp \
 ../FreqValues.cpp \
 ../FrontEndCalibrator.cpp \
 ../GPSInterface.cpp \
@@ -21,10 +21,10 @@ CPP_SRCS += \
 
 OBJS += \
 ./AntennaPositioner.o \
+./Basics.o \
 ./Command.o \
 ./CurveAdjuster.o \
 ./DataLogger.o \
-./FloatComparison.o \
 ./FreqValues.o \
 ./FrontEndCalibrator.o \
 ./GPSInterface.o \
@@ -37,10 +37,10 @@ OBJS += \
 
 CPP_DEPS += \
 ./AntennaPositioner.d \
+./Basics.d \
 ./Command.d \
 ./CurveAdjuster.d \
 ./DataLogger.d \
-./FloatComparison.d \
 ./FreqValues.d \
 ./FrontEndCalibrator.d \
 ./GPSInterface.d \
@@ -56,7 +56,7 @@ CPP_DEPS += \
 %.o: ../%.cpp
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C++ Compiler'
-	g++ -I/usr/local/include -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	g++ -std=c++11 -I/usr/local/include -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

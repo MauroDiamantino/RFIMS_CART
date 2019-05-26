@@ -8,7 +8,7 @@
 #ifndef SWEEPPROCESSING_H_
 #define SWEEPPROCESSING_H_
 
-#include "RFIMS_CART.h"
+#include "Basics.h"
 #include "gnuplot_i.hpp" //A C++ interface to gnuplot
 
 class CurveAdjuster
@@ -18,8 +18,10 @@ class CurveAdjuster
 	{
 		float slope;
 		float y_intercept;
-		float f_min, f_max;
-		float Evaluate(float freqValue)
+		//float f_min, f_max;
+		std::uint_least64_t f_min, f_max;
+		//float Evaluate(float freqValue)
+		float Evaluate(std::uint_least64_t freqValue)
 		{
 			if( f_min<=freqValue && freqValue<=f_max )
 				return( slope*freqValue + y_intercept );
@@ -37,6 +39,7 @@ class CurveAdjuster
 public:
 	///////Class interface/////////
 	CurveAdjuster() : adjCurve("") {}
+	~CurveAdjuster() {}
 	void SetBandsParameters(const std::vector<BandParameters> & bandsParam) {	bandsParameters=bandsParam;	}
 	void SetRefSweep(const Sweep & swp) {	refSweep = swp;		}
 	const FreqValues& AdjustCurve(const FreqValues & curve);
@@ -91,6 +94,7 @@ public:
 	/////////Class Interface//////////
 	FrontEndCalibrator(CurveAdjuster & adj);
 	FrontEndCalibrator(CurveAdjuster & adj, std::vector<BandParameters> & bandsParam);
+	~FrontEndCalibrator() {}
 	void SetBandsParameters(const std::vector<BandParameters> & bandsParam) {	bandsParameters = bandsParam;	}
 	void LoadENR();
 #ifdef RASPBERRY_PI
@@ -128,9 +132,15 @@ public:
 	const FreqValues & GetSweepNSoff() {	return powerNSoff;	}
 	const FreqValues & GetSweepNSon() {	return powerNSon;	}
 	bool IsCalibStarted() const {	return flagCalStarted;		}
-	bool IsNoiseSourceOn() const {	return flagNSon;	}
+	bool IsNoiseSourceOff() const {	return !flagNSon;	}
 	const Sweep& CalibrateSweep(const Sweep& uncalSweep);
 	const Sweep& GetCalSweep() {	return calSweep;	}
+	void LoadDefaultParameters();
+	bool AreParamEmpty() {	return( gain.Empty() || noiseTemperature.Empty() || noiseFigure.Empty() );	}
+	///////////////
+	void SetGain(const FreqValues & g) {	gain=g;		}
+	void SetNoiseTemp(const FreqValues & nt) {	noiseTemperature=nt;	}
+	void SetNoiseFigure(const FreqValues & nf) {	noiseFigure=nf;		}
 };
 
 

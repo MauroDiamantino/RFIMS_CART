@@ -15,22 +15,21 @@ SpectranInterface::SpectranInterface()
 	//The pair of values (VID,PID) of the Spectran HF-60105 V4 X are included in the list of possible values.
 	ftStatus=FT_SetVIDPID(VID, PID);
 
-	if (ftStatus!=FT_OK){
+	if (ftStatus!=FT_OK)
+	{
 		CustomException except("The Spectran Interface could not include the pair of values (PID,VID) of the Spectran device in the list of possible values.");
 		throw(except);
-
-	}else{
-
-		OpenAndSetUp();
-
 	}
+	else
+		OpenAndSetUp();
 }
 
 void SpectranInterface::OpenAndSetUp()
 {
 	ftStatus=FT_OpenEx((PVOID)DEVICE_DESCRIPTION.c_str(), FT_OPEN_BY_DESCRIPTION, &ftHandle);
 
-	if (ftStatus!=FT_OK){
+	if (ftStatus!=FT_OK)
+	{
 		CustomException except;
 		switch(ftStatus)
 		{
@@ -46,10 +45,13 @@ void SpectranInterface::OpenAndSetUp()
 			except.SetMessage( oss.str() );
 			throw(except);
 		}
-	}else{
+	}
+	else
+	{
 		//////////////Setting up the FTDI IC///////////////
 		ftStatus=FT_SetTimeouts(ftHandle, USB_RD_TIMEOUT_MS, USB_WR_TIMEOUT_MS);
-		if (ftStatus!=FT_OK){
+		if (ftStatus!=FT_OK)
+		{
 			CustomException except("The read and write timeouts could not be set up.");
 			throw(except);
 		}
@@ -97,6 +99,7 @@ SpectranInterface::~SpectranInterface()
 {
 	try
 	{
+		cout << "\nClosing the communication with the Spectran device." << endl;
 		LogOut();
 	}
 	catch(std::exception & exc)
@@ -120,8 +123,17 @@ void SpectranInterface::Initialize()
 	Command command(Command::VERIFY);
 	do
 	{
-		//Sending a LOGOUT command to make sure the device will reply correctly to the VERIFY commands
-		LogOut();
+//		//Sending many commands to disable the transmission of sweeps and a LOGOUT command to make sure
+//		//the device will reply correctly to the VERIFY commands
+//		try
+//		{
+//			DisableSweep();
+//			LogOut();
+//		}
+//		catch(CustomException & exc)
+//		{
+//			cerr << "Warning: there were errors when the Spectran interface tried to send commands to disable the transmission of sweeps and a LOGOUT command at the beginning of initialization." << endl;
+//		}
 
 		//Sending of two VERIFY commands
 		do
@@ -144,8 +156,7 @@ void SpectranInterface::Initialize()
 
 		if(flagSuccess==false)
 		{
-			retryCounter++;
-			if(retryCounter<3) //Just three retry are accepted
+			if(++retryCounter<3) //Just three retry are accepted
 			{
 				cerr << "Warning: Two commands VERIFY failed but the Spectran interface will reset the device and try again." << endl;
 				//Turn off the device then turn it back on
@@ -158,11 +169,10 @@ void SpectranInterface::Initialize()
 		}
 	}while(flagSuccess==false);
 
-
-	//Disabling the transmission of measurements from the spectrum analyzer. Two commands are sent.
+	//It is tried to disable again the transmission of measurements from the spectrum analyzer.
 	DisableSweep();
 
-	//Setting the speaker volume
+	//Setting the speaker volume to its default value.
 	command.Clear();
 	command.SetAs(Command::SETSTPVAR, SpecVariable::SPKVOLUME, DEFAULT_SPK_VOLUME);
 	try
@@ -174,15 +184,12 @@ void SpectranInterface::Initialize()
 	}
 	catch (std::exception& exc)
 	{
-		CustomException except("There was an error when the Spectran interface tried to set up the speaker volume.");
-		throw(except);
+		cerr << "Warning: There was an error when the Spectran interface tried to set up the speaker volume to its default value, " << DEFAULT_SPK_VOLUME << '.' << endl;
 	}
 
-	if (reply.IsRight()!=true){
-		std::ostringstream oss;
-		oss << "The Spectran Interface tried to set the speaker volume to " << DEFAULT_SPK_VOLUME << " but the reply was not right.";
-		CustomException except( oss.str() );
-		throw(except);
+	if (reply.IsRight()!=true)
+	{
+		cerr << "Warning: The Spectran Interface tried to set the speaker volume to its default value, " << DEFAULT_SPK_VOLUME << ", but the reply was not right.";
 	}
 
 	flagLogIn=true; //To remember the session has been started
@@ -190,7 +197,16 @@ void SpectranInterface::Initialize()
 	SoundLogIn(); //To state that the communication was initialized
 
 	//The input and output buffers are purged
-	Purge();
+	try
+	{
+		Purge();
+	}
+	catch(CustomException & exc)
+	{
+		CustomException exc1("Error at initialization: ");
+		exc1.Append( exc.what() );
+		throw(exc1);
+	}
 }
 
 inline void SpectranInterface::Write(const Command& command)
@@ -333,7 +349,7 @@ void SpectranInterface::DisableSweep()
 		{
 			//cerr << "Warning: one of the commands to disable the sending of measurements via USB failed." << endl;
 
-			if(++errorCounter < 3)
+			if(++errorCounter < 4)
 			{
 				Purge();
 				usleep(500000);
@@ -344,7 +360,7 @@ void SpectranInterface::DisableSweep()
 				throw;
 			}
 		}
-	}while(flagSuccess==false && errorCounter<2);
+	}while(flagSuccess==false);
 
 	Purge();
 	usleep(500000);

@@ -9,14 +9,59 @@
 #include "SweepProcessing.h"
 #include <boost/timer/timer.hpp>
 
-void WaitForKey();
+class SignalHandler
+{
+public:
+	void SetupSignalHandler(SpectranInterface * specInterfPt, SpectranConfigurator * specConfiguratorPt,
+			SweepBuilder * sweepBuilderPt, CurveAdjuster * adjusterPt, FrontEndCalibrator * calibratorPt)
+	{
+		specInterfPtr=specInterfPt;
+		specConfiguratorPtr=specConfiguratorPt;
+		sweepBuilderPtr=sweepBuilderPt;
+		adjusterPtr=adjusterPt;
+		calibratorPtr=calibratorPt;
+
+		if( signal(int(SIGINT), (__sighandler_t) SignalHandler::ExitSignalHandler)==SIG_ERR )
+		{
+			CustomException exc("The SIGINT signal handler could not be set.");
+			throw(exc);
+		}
+
+		if( signal(int(SIGTERM),  (__sighandler_t) SignalHandler::ExitSignalHandler)==SIG_ERR )
+		{
+			CustomException exc("The SIGTERM signal handler could not be set.");
+			throw(exc);
+		}
+	}
+	//Static methods and objects
+	static SpectranInterface * specInterfPtr;
+	static SpectranConfigurator * specConfiguratorPtr;
+	static SweepBuilder * sweepBuilderPtr;
+	static CurveAdjuster * adjusterPtr;
+	static FrontEndCalibrator * calibratorPtr;
+	static void ExitSignalHandler(int signum)
+	{
+		cout << "\nA signal which terminates the program was captured. Signal number: " << signum << endl;
+		specInterfPtr->~SpectranInterface();
+		specConfiguratorPtr->~SpectranConfigurator();
+		sweepBuilderPtr->~SweepBuilder();
+		adjusterPtr->~CurveAdjuster();
+		calibratorPtr->~FrontEndCalibrator();
+		exit(signum);
+	}
+};
+//Global variables which are used by the SignalHandler class
+SpectranInterface * SignalHandler::specInterfPtr;
+SpectranConfigurator * SignalHandler::specConfiguratorPtr;
+SweepBuilder * SignalHandler::sweepBuilderPtr;
+CurveAdjuster * SignalHandler::adjusterPtr;
+FrontEndCalibrator * SignalHandler::calibratorPtr;
 
 int main()
 {
 #ifdef RASPBERRY_PI
 	wiringPiSetup();
 #endif
-
 	boost::timer::cpu_timer timer;
 	timer.stop();
 
@@ -24,12 +69,17 @@ int main()
 
 	try
 	{
+		//Instantiation of objects
 		SpectranInterface specInterface;
 		SpectranConfigurator specConfigurator(specInterface);
 		SweepBuilder sweepBuilder(specInterface);
 		CurveAdjuster adjuster;
 		FrontEndCalibrator calibrator(adjuster);
-		RFPloter rfPloter;
+		RFPloter rfPloter, gainPloter, nfPloter;
+
+		//Setting of pointers to objects which are used by SignalHandler class
+		SignalHandler sigHandler;
+		sigHandler.SetupSignalHandler(&specInterface, &specConfigurator, &sweepBuilder, &adjuster, &calibrator);
 
 		cout << "\nIniciando la comunicacion con el dispositivo Spectran HF-60105 V4 X" << endl;
 		specInterface.Initialize();
@@ -89,6 +139,7 @@ int main()
 		cout << "Cargando los parametros de las bandas (ya con valores correctos de numero de muestras) en el FrontEndCalibrator y CurveAdjuster" << endl;
 		auto bandsParameters = specConfigurator.GetBandsParameters();
 		adjuster.SetBandsParameters(bandsParameters);
+		adjuster.SetRefSweep(wholeSweep);
 		calibrator.SetBandsParameters(bandsParameters);
 
 		cout << "Cargando los valores del parametero ENR del generador de ruido" << endl;
@@ -101,6 +152,7 @@ int main()
 		wholeSweep.Clear();
 
 		//Capturando los barridos de cada una de las bandas que componen el barrido completo
+		timer.start();
 		for(unsigned int i=0; i < specConfigurator.GetNumOfBands(); i++)
 		{
 			BandParameters currBandParam;
@@ -117,9 +169,12 @@ int main()
 			cout << "Agregando el barrido de la banda frecuencial actual al final del barrido completo" << endl;
 			wholeSweep.PushBack(currFreqBand);
 		}
-
 		cout << "\nFinalizo la captura de un barrido con NS on. Sera cargado en el calibrador del front end." << endl;
 		calibrator.SetSweep( wholeSweep );
+
+		timer.stop();
+		cout << "\nEl tiempo consumido por la captura del ultimo barrido fue:" << endl;
+		cout << timer.format(1) << endl;
 
 		rfPloter.Plot(wholeSweep, "lines", "Sweep NS on");
 
@@ -138,7 +193,6 @@ int main()
 		timeData.hour=18; timeData.minute=0; timeData.second=0;
 		calibrator.SaveFrontEndParam(timeData);
 
-		RFPloter gainPloter, nfPloter;
 		gainPloter.Plot(calibrator.GetGain(), "lines", "Ganancia total del front end");
 		nfPloter.Plot(calibrator.GetNoiseFigure(), "lines", "Figura de ruido total del front end");
 

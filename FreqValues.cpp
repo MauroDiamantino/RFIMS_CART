@@ -5,7 +5,7 @@
  *      Author: new-mauro
  */
 
-#include "RFIMS_CART.h"
+#include "Basics.h"
 
 /////////////////////////Definitions of FreqValues struct's methods////////////////////
 
@@ -19,7 +19,8 @@ void FreqValues::Clear()
 bool FreqValues::PushBack(const FreqValues& freqValues)
 {
 	bool flagPopBack=false;
-	if( !frequencies.empty() && approximatelyEqual(frequencies.back(), freqValues.frequencies.front()) )
+	//if( !frequencies.empty() && approximatelyEqual(frequencies.back(), freqValues.frequencies.front()) )
+	if( !frequencies.empty() && frequencies.back()==freqValues.frequencies.front() )
 	{
 		frequencies.pop_back();
 		values.pop_back();
@@ -44,16 +45,16 @@ const FreqValues& FreqValues::operator=(const FreqValues & freqValues)
 //! The overloading of the += operator.
 const FreqValues& FreqValues::operator+=(const FreqValues& rhs)
 {
-//	if( !approximatelyEqual(rhs.frequencies, frequencies) )
-//	{
-//		CustomException exc("A sum could not be performed because the frequencies do not match");
-//		throw(exc);
-//	}
-	if( rhs.frequencies.size() != frequencies.size() )
+	if( rhs.frequencies!=frequencies )
 	{
 		CustomException exc("A sum could not be performed because the frequencies do not match");
 		throw(exc);
 	}
+//	if( rhs.frequencies.size() != frequencies.size() )
+//	{
+//		CustomException exc("A sum could not be performed because the frequencies do not match");
+//		throw(exc);
+//	}
 
 	if( frequencies.size()!=values.size() && rhs.frequencies.size()!=rhs.values.size() )
 	{
@@ -96,16 +97,16 @@ FreqValues operator-(const FreqValues & argument)
  */
 FreqValues operator+(const FreqValues & lhs, const FreqValues & rhs)
 {
-//	if( !approximatelyEqual(lhs.frequencies, rhs.frequencies) )
-//	{
-//		CustomException exc("A sum could not be performed because the frequencies do not match");
-//		throw(exc);
-//	}
-	if( lhs.frequencies.size() != rhs.frequencies.size() )
+	if( lhs.frequencies!=rhs.frequencies )
 	{
-		CustomException exc("A sum (or subtraction) could not be performed because the frequencies do not match");
+		CustomException exc("A sum could not be performed because the frequencies do not match");
 		throw(exc);
 	}
+//	if( lhs.frequencies.size() != rhs.frequencies.size() )
+//	{
+//		CustomException exc("A sum (or subtraction) could not be performed because the frequencies do not match");
+//		throw(exc);
+//	}
 
 	if( lhs.frequencies.size()!=lhs.values.size() && rhs.frequencies.size()!=rhs.values.size() )
 	{
@@ -154,16 +155,16 @@ FreqValues operator-(const float lhs, const FreqValues & rhs) {	return( lhs + (-
 
 FreqValues operator*(const FreqValues & lhs, const FreqValues & rhs)
 {
-//	if( !approximatelyEqual(lhs.frequencies, rhs.frequencies) )
-//	{
-//		CustomException exc("A multiplication could not be performed because the frequencies do not match.");
-//		throw(exc);
-//	}
-	if( lhs.frequencies.size() != rhs.frequencies.size() )
+	if( lhs.frequencies!=rhs.frequencies )
 	{
-		CustomException exc("A multiplication (or division) could not be performed because the frequencies do not match.");
+		CustomException exc("A multiplication could not be performed because the frequencies do not match.");
 		throw(exc);
 	}
+//	if( lhs.frequencies.size() != rhs.frequencies.size() )
+//	{
+//		CustomException exc("A multiplication (or division) could not be performed because the frequencies do not match.");
+//		throw(exc);
+//	}
 
 	if( lhs.frequencies.size()!=lhs.values.size() && rhs.frequencies.size()!=rhs.values.size() )
 	{
@@ -206,16 +207,16 @@ FreqValues operator*(const FreqValues & lhs, const float rhs){	return (rhs * lhs
 
 FreqValues operator/(const FreqValues & lhs, const FreqValues & rhs)
 {
-//	if( !approximatelyEqual(lhs.frequencies, rhs.frequencies) )
-//	{
-//		CustomException exc("A division could not be performed because the frequencies do not match");
-//		throw(exc);
-//	}
-	if( lhs.frequencies.size() != rhs.frequencies.size() )
+	if( lhs.frequencies!=rhs.frequencies )
 	{
 		CustomException exc("A division could not be performed because the frequencies do not match");
 		throw(exc);
 	}
+//	if( lhs.frequencies.size() != rhs.frequencies.size() )
+//	{
+//		CustomException exc("A division could not be performed because the frequencies do not match");
+//		throw(exc);
+//	}
 
 	if( lhs.frequencies.size()!=lhs.values.size() && rhs.frequencies.size()!=rhs.values.size() )
 	{
@@ -325,16 +326,16 @@ Sweep operator-(const Sweep & argument)
 
 Sweep operator+(const Sweep & lhs, const Sweep & rhs)
 {
-//	if( !approximatelyEqual(lhs.frequencies, rhs.frequencies) )
-//	{
-//		CustomException exc("A sum could not be performed because the frequencies do not match");
-//		throw(exc);
-//	}
-	if( lhs.frequencies.size() != rhs.frequencies.size() )
+	if( lhs.frequencies!=rhs.frequencies )
 	{
-		CustomException exc("A sum (or subtraction) could not be performed because the frequencies do not match");
+		CustomException exc("A sum could not be performed because the frequencies do not match");
 		throw(exc);
 	}
+//	if( lhs.frequencies.size() != rhs.frequencies.size() )
+//	{
+//		CustomException exc("A sum (or subtraction) could not be performed because the frequencies do not match");
+//		throw(exc);
+//	}
 
 	if( lhs.frequencies.size()!=lhs.values.size() && rhs.frequencies.size()!=rhs.values.size() )
 	{
@@ -379,7 +380,7 @@ Sweep operator+(const std::vector<float> & lhs, const Sweep & rhs) {	return( rhs
 
 Sweep operator+(const Sweep & lhs, const FreqValues & rhs) {	return( lhs + (Sweep)rhs );		}
 
-Sweep operator+(const FreqValues & lhs, const Sweep & rhs) {	return( (Sweep)lhs + rhs );		}
+//Sweep operator+(const FreqValues & lhs, const Sweep & rhs) {	return( (Sweep)lhs + rhs );		}
 
 Sweep operator-(const Sweep & lhs, const Sweep & rhs) {		return( lhs + (-rhs) );		}
 
@@ -389,7 +390,7 @@ Sweep operator-(const std::vector<float> & lhs, const Sweep & rhs) {	return( lhs
 
 Sweep operator-(const Sweep & lhs, const FreqValues & rhs) {	return( lhs - (Sweep)rhs );		}
 
-Sweep operator-(const FreqValues & lhs, const Sweep & rhs) {	return( (Sweep)lhs - rhs );		}
+//Sweep operator-(const FreqValues & lhs, const Sweep & rhs) {	return( (Sweep)lhs - rhs );		}
 
 Sweep operator*(const Sweep & lhs, const Sweep & rhs)
 {
@@ -448,15 +449,5 @@ Sweep pow(const float base, const Sweep & exponent)
 	Sweep result = (Sweep) pow(base, (FreqValues&)exponent);
 	result.azimuthAngle = exponent.azimuthAngle;
 	result.polarization = exponent.polarization;
-	return result;
-}
-
-///////////////////Other functions/////////////////////
-
-std::vector<float> operator-(const std::vector<float> & vect)
-{
-	std::vector<float> result;
-	for(auto& value : vect)
-		result.push_back( -value );
 	return result;
 }

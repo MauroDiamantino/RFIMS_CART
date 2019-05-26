@@ -26,7 +26,7 @@
 #include <boost/bimap.hpp> //Bidirectional container
 
 ///////////Other header files/////////////
-#include "RFIMS_CART.h"
+#include "Basics.h"
 
 //////////////User-defined global types///////////
 //! An enumeration which contains the names of all the environment variables of the Spectran HF-60105 V4 X spectrum analyzer.
@@ -189,7 +189,8 @@ public:
 class SweepReply : public Reply {
 	////////////Attributes/////////////
 	unsigned int timestamp;
-	float frequency;
+	std::uint_least64_t frequency;
+	//float frequency;
 	float minValue;
 	float maxValue;
 public:
@@ -200,7 +201,8 @@ public:
 	void PrepareTo(ReplyType type, SpecVariable variable=SpecVariable::UNINITIALIZED) {}
 	void InsertBytes(std::uint8_t * b);
 	unsigned int GetTimestamp() const {	return timestamp;	};
-	float GetFrequency() const {	return frequency;	};
+	//float GetFrequency() const {	return frequency;	};
+	std::uint_least64_t GetFrequency() const {	return frequency;	};
 	float GetMinValue() const {	return minValue;	};
 	float GetMaxValue() const {	return maxValue;	};
 	void Clear();
@@ -291,9 +293,9 @@ private:
 	FixedParameters fixedParam;
 	time_t lastWriteTimes[2];
 	//////////Private methods//////////////
-	void SetVariable(SpecVariable variable, float value);
-	void CheckVariable(SpecVariable variable, float value);
-	void CheckFreqVariable(SpecVariable variable, float value);
+	void SetVariable(const SpecVariable variable, const float value);
+	void CheckEqual(const SpecVariable variable, const float value);
+	void CheckApproxEqual(const SpecVariable variable, float & value);
 public:
 	/////////////////Class' interface//////////////
 	SpectranConfigurator(SpectranInterface& interf);
@@ -317,7 +319,8 @@ class SweepBuilder
 {
 	//////////Attributes////////////
 	SpectranInterface & interface;
-	typedef std::map<float,float> SweepMap;
+	//typedef std::map<float,float> SweepMap;
+	typedef std::map<std::uint_least64_t,float> SweepMap;
 	SweepMap partialSweep;
 	Sweep sweep;
 	////////////Private methods/////////
@@ -327,6 +330,7 @@ public:
 	/////////Class' interface/////////
 	//! The SweepBuilder class's constructor
 	SweepBuilder(SpectranInterface & interf) : interface(interf) {}
+	~SweepBuilder() {}
 	const Sweep& CaptureSweep(BandParameters& bandParam);
 	const Sweep& GetSweep() const {	return sweep;	}
 };

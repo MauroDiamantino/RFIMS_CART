@@ -7,13 +7,6 @@
 
 #include "AntennaPositioning.h"
 
-void WaitForKey()
-{
-    cin.clear();
-    cin.ignore(std::cin.rdbuf()->in_avail());
-    cin.get();
-}
-
 AntennaPositioner::AntennaPositioner(GPSInterface & gpsInterf) : gpsInterface(gpsInterf)
 {
 #ifdef RASPBERRY_PI
@@ -105,7 +98,7 @@ bool AntennaPositioner::ChangePolarization()
 		WaitForKey();
 	#endif
 		gpsInterface.ReadOneDataSet();
-		absRoll = abs( gpsInterface.GetRoll() );
+		absRoll = fabs( gpsInterface.GetRoll() );
 		if( polarization==Polarization::HORIZONTAL )
 		{
 			if( 80.0 < absRoll && absRoll < 100.0 )

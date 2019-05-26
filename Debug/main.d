@@ -1,9 +1,11 @@
-main.d: ../main.cpp ../Spectran.h ../RFIMS_CART.h ../SweepProcessing.h \
- ../gnuplot_i.hpp ../AntennaPositioning.h
+main.d: ../main.cpp ../TopLevel.h ../Spectran.h ../Basics.h \
+ ../SweepProcessing.h ../gnuplot_i.hpp ../AntennaPositioning.h
+
+../TopLevel.h:
 
 ../Spectran.h:
 
-../RFIMS_CART.h:
+../Basics.h:
 
 ../SweepProcessing.h:
 

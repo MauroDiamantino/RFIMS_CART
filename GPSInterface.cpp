@@ -646,6 +646,7 @@ void GPSInterface::Initialize()
 	ConfigureVariable(variable, DATARATE);
 
 	//The loop where is waited the GPS receiver has established communication with a minimum number of satellites
+	cout << "Waiting for the GPS receiver to get connected with at least " << MIN_NUM_OF_SATELLITES << " satellites..." << endl;
 	do
 	{
 		sleep(1); //1s
@@ -655,9 +656,7 @@ void GPSInterface::Initialize()
 		{
 			Write(command);
 			for(unsigned int i=0; i<7; i++)
-			{
 				Read(dataReplies[i]);
-			}
 		}
 		catch(CustomException& exc)
 		{

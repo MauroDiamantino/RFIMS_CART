@@ -322,7 +322,8 @@ const Reply& Reply::operator =(const Reply& anotherReply)
 SweepReply::SweepReply() : Reply(Reply::AMPFREQDAT)
 {
 	timestamp=0;
-	frequency=0.0;
+	//frequency=0.0;
+	frequency=0;
 	minValue=0.0;
 	maxValue=0.0;
 }
@@ -357,7 +358,8 @@ void SweepReply::InsertBytes(std::uint8_t * data)
 	unsIntBytes.bytes[1]=bytes.at(6);
 	unsIntBytes.bytes[2]=bytes.at(7);
 	unsIntBytes.bytes[3]=bytes.at(8);
-	frequency=float(unsIntBytes.intValue)*10.0;
+	//frequency=float(unsIntBytes.intValue)*10.0;
+	frequency = ( (std::uint_least64_t) unsIntBytes.intValue )*10;
 
 	/*! Min power extraction: this value is received as a 4-bytes floating point value, measured in dBm. */
 	floatBytes.bytes[0]=bytes.at(9);
@@ -379,7 +381,8 @@ void SweepReply::Clear()
 	bytes.clear();
 	value=0.0;
 	timestamp=0.0;
-	frequency=0.0;
+	//frequency=0.0;
+	frequency=0;
 	minValue=0.0;
 	maxValue=0.0;
 }

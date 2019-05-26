@@ -1,3 +1,3 @@
-FreqValues.d: ../FreqValues.cpp ../RFIMS_CART.h
+FreqValues.d: ../FreqValues.cpp ../Basics.h
 
-../RFIMS_CART.h:
+../Basics.h:

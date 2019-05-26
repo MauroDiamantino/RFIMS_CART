@@ -5,30 +5,74 @@
  *      Author: new-mauro
  */
 
-#include "Spectran.h"
-#include "SweepProcessing.h"
-#include "AntennaPositioning.h"
+#include "TopLevel.h"
 #include <boost/timer/timer.hpp>
 
-void WaitForKey();
+//! Global variables which are used by the SignalHandler class
+SpectranInterface * SignalHandler::specInterfPtr;
+SpectranConfigurator * SignalHandler::specConfiguratorPtr;
+SweepBuilder * SignalHandler::sweepBuilderPtr;
+CurveAdjuster * SignalHandler::adjusterPtr;
+FrontEndCalibrator * SignalHandler::calibratorPtr;
+DataLogger * SignalHandler::dataLoggerPtr;
+RFPloter * SignalHandler::sweepPloterPtr;
+RFPloter * SignalHandler::gainPloterPtr;
+RFPloter * SignalHandler::nfPloterPtr;
+AntennaPositioner * SignalHandler::antPositionerPtr;
 
-int main()
+int main(int argc, char * argv[])
 {
 	struct
 	{
 		const int LED_SWEEP_CAPTURE = 9;
 		const int LED_SWEEP_PROCESS = 10;
 	} piPins;
-	
 	boost::timer::cpu_timer timer;
 	bool flagBandsParamReloaded=false;
 	bool flagEndMeasCycle = false;
+	bool flagCalEnabled=true, flagPlot=false, flagRFI=false, flagInfIterations=true;
+	unsigned int numOfIter=0;
+	bool flagStartCal=true;
 
 	cout << "\n\t\t\t\tRF Interference Monitoring System (RFIMS)" << endl;
 	cout << "\t\t\t\tChina-Argentina Radio Telescope (CART)\n" << endl;
 
+	//Checking of the program's arguments
+	if(argc>1)
+	{
+		unsigned int argc_aux=argc;
+		std::vector<std::string> argVector;
+		for(unsigned int i=0; i<(argc_aux-1); i++)
+			argVector.push_back( argv[i] );
+
+		unsigned int i=1;
+		while( i<argc_aux && argVector[i]!="--no-frontend-cal" )	i++;
+		if(i<argc_aux)	flagCalEnabled=false;
+
+		i=1;
+		while( i<argc_aux && argVector[i]!="--plot" )	i++;
+		if(i<argc_aux)	flagPlot=true;
+
+		i=1;
+		while( i<argc_aux && argVector[i]!="--detect-rfi" )	i++;
+		if(i<argc_aux)	flagRFI=true;
+
+		i=1;
+		size_t equalSignPos=0;
+		while( i<argc_aux && ( equalSignPos=argVector[i].find("--iter=") )==std::string::npos )	i++;
+		if(i<argc_aux)
+		{
+			flagInfIterations=false;
+			std::istringstream iss;
+			std::string numString = argVector[i].substr( equalSignPos+1, (argVector[i].size()-equalSignPos-1) );
+			iss.str(numString);
+			iss >> numOfIter;
+		}
+	}
+
 	try
 	{
+		///////////////////////Instantiations & Initializations//////////////////////////////////
 #ifdef RASPBERRY_PI
 		//Initializing the Wiring Pi library
 		wiringPiSetup();
@@ -43,18 +87,24 @@ int main()
 		CurveAdjuster curveAdjuster;
 		FrontEndCalibrator frontEndCalibrator(curveAdjuster);
 		DataLogger dataLogger;
-		//RFPloter sweepPloter[12], calPloter;
+		RFPloter sweepPloter;
+		RFPloter gainPloter, nfPloter;
 		GPSInterface gpsInterface;
 		AntennaPositioner antPositioner(gpsInterface);
+
+		//Setting of pointers to objects which are used by SignalHandler class
+		SignalHandler sigHandler;
+		sigHandler.SetupSignalHandler(&specInterface, &specConfigurator, &sweepBuilder, &curveAdjuster,
+				&frontEndCalibrator, &dataLogger, &sweepPloter, &gainPloter, &nfPloter, &antPositioner);
 
 		cout << "\nInitializing communication with Aaronia Spectran device..." << endl;
 		specInterface.Initialize();
 		cout << "The communication was established successfully" << endl;
 
 		//Initializing the communication with the GPS receiver
-		cout << "\nInitializing the communication with the GPS receiver..." << endl;
+		cout << "\nInitializing the GPS receiver..." << endl;
 		gpsInterface.Initialize();
-		cout << "The communication was established successfully" << endl;
+		cout << "The device was initialize successfully" << endl;
 
 		//Loading the Spectran parameters
 		cout << "\nLoading the Spectran's configuration parameters from the corresponding files" << endl;
@@ -74,21 +124,34 @@ int main()
 		//Putting the antenna in the initial position and polarization
 		antPositioner.Initialize();
 
-		//Front-end calibration
-		cout << "\nStarting the front end calibration" << endl;
-		frontEndCalibrator.StartCalibration();
-		cout << "\nTurn off the noise source, switch the input to this one and press Enter to continue..." << endl;
-		WaitForKey();
+		//////////////////////////////////General Loop///////////////////////////////////
 
-		//unsigned int i=0;
-		Sweep wholeSweep;
 		while(!flagEndMeasCycle)
 		{
-			wholeSweep.Clear();
+			Sweep uncalSweep;
 
-			//The timestamp of each sweep is taking at the beginning
+			if(flagCalEnabled)
+			{
+				if(flagStartCal)
+				{
+					cout << "\nStarting the front end calibration" << endl;
+					frontEndCalibrator.StartCalibration();
+					cout << "\nTurn off the noise source, switch the input to this one and press Enter to continue..." << endl;
+					WaitForKey();
+					flagStartCal=false;
+				}
+			}
+			else
+			{
+				if( frontEndCalibrator.AreParamEmpty() )
+					frontEndCalibrator.LoadDefaultParameters();
+			}
+
+			//The timestamp of each sweep is taking at the beginning. Also the antenna position data are saved in the Sweep object.
 			gpsInterface.ReadOneDataSet();
-			wholeSweep.timeData = gpsInterface.GetTimeData();
+			uncalSweep.timeData = gpsInterface.GetTimeData();
+			uncalSweep.azimuthAngle = antPositioner.GetAzimPosition();
+			uncalSweep.polarization = antPositioner.GetPolarizationString();
 
 			cout << "\nStarting the capturing of a whole sweep" << endl;
 #ifdef RASPBERR_PI
@@ -101,15 +164,15 @@ int main()
 				BandParameters currBandParam;
 				FreqValues currFreqBand;
 
-				cout << "\nFrequency band N° " << i+1 << endl;
 				currBandParam = specConfigurator.ConfigureNextBand();
+				cout << "\nFrequency band N° " << i+1 << endl;
 				cout << "Fstart=" << (currBandParam.startFreq/1e6) << " MHz, Fstop=" << (currBandParam.stopFreq/1e6) << " MHz, ";
 				cout << "RBW=" << (currBandParam.rbw/1e3) << " KHz, Sweep time=" << currBandParam.sweepTime << " ms" << endl;
 
 				currFreqBand = sweepBuilder.CaptureSweep(currBandParam);
 
-				bool flagLastPointRemoved = wholeSweep.PushBack(currFreqBand);
-				if( flagLastPointRemoved && flagBandsParamReloaded )
+				bool flagLastPointRemoved = uncalSweep.PushBack(currFreqBand);
+				if( flagBandsParamReloaded && flagLastPointRemoved )
 					currBandParam.samplePoints--;
 				
 				if(flagBandsParamReloaded)
@@ -119,121 +182,133 @@ int main()
 			digitalWrite(piPins.LED_SWEEP_CAPTURE, LOW);
 #endif
 			specInterface.SoundNewSweep();
-			cout << "\nThe capturing of a whole sweep (1 GHz to 8 GHz) finished" << endl;
+			cout << "\nThe capturing of a whole sweep finished" << endl;
 			
 			//Transferring the bands parameters to the objects which need them
 			if(flagBandsParamReloaded)
 			{
 				//The bands parameters are given to the objects after a sweep was captured to make sure the exact number of samples is known
 				cout << "\nThe bands parameters are transferred to the objects now that the number of samples is exactly known" << endl;
-				std::vector<BandParameters> bandsParameters;
-				bandsParameters = specConfigurator.GetBandsParameters();
+				auto bandsParameters = specConfigurator.GetBandsParameters();
 				curveAdjuster.SetBandsParameters(bandsParameters);
-				curveAdjuster.SetRefSweep(wholeSweep);
+				curveAdjuster.SetRefSweep(uncalSweep);
 				frontEndCalibrator.SetBandsParameters(bandsParameters);
 				frontEndCalibrator.LoadENR();
 
 				flagBandsParamReloaded=false;
 			}
 
-			////////Sweep processing///////////
+			/////////////////////Sweep processing//////////////////////
+
 			if( frontEndCalibrator.IsCalibStarted() )
 			{
-				////////////Front End Calibration/////////////
-				frontEndCalibrator.SetSweep(wholeSweep);
+				/////////////////////Front-end calibration: estimating its parameters, gain and noise figure///////////////////////
 
-				if( !frontEndCalibrator.IsNoiseSourceOn() )
+				try
 				{
-					//calPloter.Plot(wholeSweep, "lines", "Sweep with noise source off");
-					frontEndCalibrator.TurnOnNS();
-					cout << "\nTurn on the noise source and press Enter to continue..." << endl;
-					WaitForKey();
+					frontEndCalibrator.SetSweep(uncalSweep);
+
+					if( frontEndCalibrator.IsNoiseSourceOff() )
+					{
+						//if(flagPlot)
+							//calPloter.Plot(uncalSweep, "lines", "Sweep with noise source off");
+						frontEndCalibrator.TurnOnNS();
+						cout << "\nTurn on the noise source and press Enter to continue..." << endl;
+						WaitForKey();
+					}
+					else
+					{
+						frontEndCalibrator.EndCalibration();
+						cout << "\nTurn off the noise source, switch the input to the antenna and press Enter to continue..." << endl;
+						WaitForKey();
+
+#ifdef RASPBERRY_PI
+						digitalWrite(piPins.LED_SWEEP_PROCESS, HIGH);
+#endif
+						frontEndCalibrator.EstimateParameters();
+
+						TimeData timeData = gpsInterface.GetTimeData();
+						frontEndCalibrator.SaveFrontEndParam(timeData);
+
+						if(flagPlot)
+						{
+							//calPloter.Plot(uncalSweep, "lines", "Sweep with noise source on");
+							//FreqValues calSweepNSoff = frontEndCalibrator.CalibrateSweep( frontEndCalibrator.GetSweepNSoff() );
+							//calPloter.Plot(calSweepNSoff, "lines", "Calibrated sweep with NS off (50ohm load)");
+
+							gainPloter.Clear();
+							gainPloter.Plot( frontEndCalibrator.GetGain(), "lines", "Total receiver gain");
+
+							nfPloter.Clear();
+							nfPloter.Plot( frontEndCalibrator.GetNoiseFigure(), "lines", "Total receiver noise figure");
+						}
+#ifdef RASPBERRY_PI
+						digitalWrite(piPins.LED_SWEEP_PROCESS, LOW);
+#endif
+					}
 				}
-				else
+				catch(std::exception & exc)
 				{
-					//calPloter.Plot(wholeSweep, "lines", "Sweep with noise source on");
-					frontEndCalibrator.EndCalibration();
-					//frontEndCalibrator.TurnOffNS();
-					cout << "\nTurn off the noise source, switch the input to the antenna and press Enter to continue..." << endl;
-					WaitForKey();
-
-#ifdef RASPBERRY_PI
-					digitalWrite(piPins.LED_SWEEP_PROCESS, HIGH);
-#endif
-					frontEndCalibrator.EstimateParameters();
-
-//					FreqValues totalGain("gain");
-//					totalGain.frequencies = frontEndParam.frequency;
-//					totalGain.values = frontEndParam.gain_dB;
-
-					//FreqValues calSweepNSoff = frontEndCalibrator.CalibrateSweep( frontEndCalibrator.GetSweepNSoff() );
-					//calPloter.Plot(calSweepNSoff, "lines", "Calibrated sweep with NS off (50ohm load)");
-
-					TimeData timeData = gpsInterface.GetTimeData();
-					frontEndCalibrator.SaveFrontEndParam(timeData);
-
-//					gainPloter.set_title("Ganancia total del front end");
-//					gainPloter.set_xlabel("Frecuencia (Hz)");
-//					gainPloter.set_ylabel("Ganancia (dB)");
-//					gainPloter.plot_xy(frontEndParam.frequency, frontEndParam.gain_dB, "Ganancia");
-//
-//					nfPloter.set_title("Figura de ruido total del front end");
-//					nfPloter.set_xlabel("Frecuencia (Hz)");
-//					nfPloter.set_ylabel("Figura de ruido (dB)");
-//					nfPloter.plot_xy(frontEndParam.frequency, frontEndParam.noiseFigure, "Figura de ruido");
-#ifdef RASPBERRY_PI
-					digitalWrite(piPins.LED_SWEEP_PROCESS, LOW);
-#endif
-
+					cerr << "\nWarning: error during front end calibration: " << exc.what() << '.' << endl;
+					if( frontEndCalibrator.AreParamEmpty() )
+					{
+						cerr << "The default front end parameters will be loaded." << endl;
+						frontEndCalibrator.LoadDefaultParameters();
+					}
+					else
+						cerr << "The last estimated front end parameters will be used." << endl;
 				}
 			}
 			else
 			{
-				///////////Sweeps captured with the antenna connected to the input////////////
+				///////////////Sweeps captured with the antenna connected to the input////////////
 
 #ifdef RASPBERRY_PI
 				digitalWrite(piPins.LED_SWEEP_PROCESS, HIGH);
 #endif
 
 				//Sweep calibration, taking into account the total gain curve
-				Sweep calSweep = frontEndCalibrator.CalibrateSweep(wholeSweep);
+				Sweep calSweep = frontEndCalibrator.CalibrateSweep(uncalSweep);
 
-				//Ploting the actual sweep
-				//sweepPloter[i++].PlotSweep(calSweep);
+				if(flagPlot)
+				{
+					//Ploting the actual sweep
+					sweepPloter.Clear();
+					sweepPloter.PlotSweep(calSweep);
+				}
 
-				//Transferring the ready-to-save sweep and the antenna position data to the data
-				//logger in order to this component saves the data in memory
-				calSweep.azimuthAngle = antPositioner.GetAzimPosition();
-				calSweep.polarization = antPositioner.GetPolarizationString();
+				//Transferring the ready-to-save sweep to the data logger in order to this component saves the data in memory
 				dataLogger.SaveData(calSweep);
 
 #ifdef RASPBERRY_PI
 				digitalWrite(piPins.LED_SWEEP_PROCESS, LOW);
 #endif
 
-				Polarization currPolarization = antPositioner.GetPolarization();
-				if( antPositioner.IsLastPosition() && currPolarization==Polarization::VERTICAL)
-					flagEndMeasCycle = true;
-				else
-				{
-					antPositioner.ChangePolarization();
-					if( antPositioner.GetPolarization()==Polarization::HORIZONTAL)
-						antPositioner.NextAzimPosition();
 
-					cout << "\nThe new antenna position is: Azimutal=" << antPositioner.GetAzimPosition();
-					cout << ", Polarization=" << antPositioner.GetPolarizationString() << endl;
+				if( antPositioner.IsLastPosition() && antPositioner.GetPolarization()==Polarization::VERTICAL)
+				{
+					if( !flagInfIterations && --numOfIter==0 )
+						flagEndMeasCycle = true;
+					else
+						flagStartCal = true;
 				}
+
+				antPositioner.ChangePolarization();
+				if( antPositioner.GetPolarization()==Polarization::HORIZONTAL)
+					antPositioner.NextAzimPosition();
+
+				cout << "\nThe new antenna position is: Azimutal=" << antPositioner.GetAzimPosition();
+				cout << ", Polarization=" << antPositioner.GetPolarizationString() << endl;
 			}
 		}
+		////////////////////End Loop/////////////////////
 
-		cout << "\nThe measurement cycle finished" << endl;
+		cout << "\nThe sweeps capturing process finished." << endl;
 		timer.stop();
 		boost::timer::cpu_times times = timer.elapsed();
 
 		double hours = double(times.wall)/(1e9*3600.0);
 		cout << "\nThe elapsed time since the beginning is: " << hours << " hours" << endl;
-		cout << "\nPress Enter to terminate the program..." << endl;
-		WaitForKey();
 	}
 	catch(CustomException & exc)
 	{

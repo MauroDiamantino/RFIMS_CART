@@ -70,7 +70,8 @@ void FrontEndCalibrator::LoadENR()
 			//No comment was found so a line with frequency and power values was extracted
 			std::istringstream iss(line);
 			iss >> freqGHz >> delimiter >> enrValuedB;
-			enr.frequencies.push_back( freqGHz*1e9 );
+			//enr.frequencies.push_back( freqGHz*1e9 );
+			enr.frequencies.push_back( (std::uint_least64_t) (freqGHz*1e9) );
 			enr.values.push_back( pow(10.0, enrValuedB/10.0) );
 		}
 
@@ -79,7 +80,8 @@ void FrontEndCalibrator::LoadENR()
 		{
 			ifs >> freqGHz >> delimiter >> enrValuedB;
 			ifs.get();
-			enr.frequencies.push_back( freqGHz*1e9 );
+			//enr.frequencies.push_back( freqGHz*1e9 );
+			enr.frequencies.push_back( (std::uint_least64_t) (freqGHz*1e9) );
 			enr.values.push_back( pow(10.0, enrValuedB/10.0) );
 			ifs.peek();
 		}while( !ifs.eof() );
@@ -161,7 +163,7 @@ void FrontEndCalibrator::EstimateParameters()
 	noiseTemperature = (tson - tsoff * yFactor) / (yFactor - 1.0);
 	noiseFigure = 10.0*log10( 1.0 + noiseTemperature / REF_TEMPERATURE );
 
-	//Building the rbw values curve
+	//Building the curve with rbw values vs frequency
 	auto itBand = bandsParameters.begin();
 	for(auto itFreq = powerNSoff.frequencies.begin(); itFreq!=powerNSoff.frequencies.end(); itFreq++)
 	{
@@ -173,7 +175,7 @@ void FrontEndCalibrator::EstimateParameters()
 	rbwCurve.timeData=powerNSoff.timeData;
 
 	//Calculating the front end's gain curve
-	gain = 0.5/(BOLTZMANN_CONST * rbwCurve) * ( (powerNSoff)/(tsoff + noiseTemperature) + (powerNSon)/(tson + noiseTemperature) );
+	gain = 0.5/(BOLTZMANN_CONST * rbwCurve) * ( powerNSoff/(tsoff + noiseTemperature) + powerNSon/(tson + noiseTemperature) );
 }
 
 void FrontEndCalibrator::SaveFrontEndParam(const TimeData & timeData)
@@ -191,11 +193,12 @@ void FrontEndCalibrator::SaveFrontEndParam(const TimeData & timeData)
 
 	//Saving the noise figure data
 	ofs << "Timestamp";
-	for(auto& freq : noiseFigure.frequencies)
-		ofs << ',' << std::setprecision(3) << (freq/1e6);
+	for(const auto& freq : noiseFigure.frequencies)
+		//ofs << ',' << std::setprecision(4) << (freq/1e6);
+		ofs << ',' << std::setprecision(4) << double(freq)/1e6;
 	ofs << "\r\n";
 	ofs << timeData.timestamp();
-	for(auto& nf : noiseFigure.values)
+	for(const auto& nf : noiseFigure.values)
 		ofs << ',' << std::setprecision(1) << nf;
 	ofs << "\r\n";
 
@@ -208,11 +211,12 @@ void FrontEndCalibrator::SaveFrontEndParam(const TimeData & timeData)
 
 	//Saving the gain data
 	ofs << "Timestamp";
-	for(auto& freq : gain.frequencies)
-		ofs << ',' << std::setprecision(3) << (freq/1e6);
+	for(const auto& freq : gain.frequencies)
+		//ofs << ',' << std::setprecision(4) << (freq/1e6);
+		ofs << ',' << std::setprecision(4) << double(freq)/1e6;
 	ofs << "\r\n";
 	ofs << timeData.timestamp();
-	for(auto& g : gain.values)
+	for(const auto& g : gain.values)
 		ofs << ',' << std::setprecision(1) << g;
 	ofs << "\r\n";
 
@@ -280,4 +284,66 @@ const Sweep& FrontEndCalibrator::CalibrateSweep(const Sweep& powerOut)
 	}
 
 	return(calSweep);
+}
+
+void FrontEndCalibrator::LoadDefaultParameters()
+{
+	boost::filesystem::path pathGain(FILES_PATH), pathNoiseFig(FILES_PATH);
+	pathGain /= "frontendparam";
+	pathGain /= "gain_default.csv";
+	pathNoiseFig /= "frontendparam";
+	pathNoiseFig /= "noisefigure_default.csv";
+
+	if( boost::filesystem::exists(pathGain) && boost::filesystem::exists(pathNoiseFig) )
+	{
+		gain.Clear();
+		noiseFigure.Clear();
+
+		float freqMHz,gainValue, noiseFigValue;
+		char aux;
+		std::ifstream ifs( pathGain.string() );
+
+		//Exctracting the frequency values gain curve
+		while( ifs.get()!=',' );
+		while( ifs.peek()!='\r' )
+		{
+			ifs >> freqMHz;
+			gain.frequencies.push_back( std::uint_least64_t(freqMHz*1e6) );
+		}
+
+		//Extracting the gain values
+		while( ifs.get()!=',' );
+		while( ifs.peek()!='\r' )
+		{
+			ifs >> gainValue;
+			gain.values.push_back(gainValue);
+		}
+
+		ifs.close();
+
+		ifs.open( pathNoiseFig.string() );
+
+		//Exctracting the frequency values of noise figure curve
+		while( ifs.get()!=',' );
+		while( ifs.peek()!='\r' )
+		{
+			ifs >> freqMHz;
+			noiseFigure.frequencies.push_back( std::uint_least64_t(freqMHz*1e6) );
+		}
+
+		//Extracting the noiseFigure values
+		while( ifs.get()!=',' );
+		while( ifs.peek()!='\r' )
+		{
+			ifs >> noiseFigValue;
+			noiseFigure.values.push_back(noiseFigValue);
+		}
+
+		ifs.close();
+	}
+	else
+	{
+		CustomException exc("At least one of the files with the default front end parameters were not found.");
+		throw(exc);
+	}
 }

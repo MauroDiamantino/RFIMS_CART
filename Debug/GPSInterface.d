@@ -1,6 +1,5 @@
-GPSInterface.d: ../GPSInterface.cpp ../AntennaPositioning.h \
- ../RFIMS_CART.h
+GPSInterface.d: ../GPSInterface.cpp ../AntennaPositioning.h ../Basics.h
 
 ../AntennaPositioning.h:
 
-../RFIMS_CART.h:
+../Basics.h:

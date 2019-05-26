@@ -413,14 +413,14 @@ bool SpectranConfigurator::LoadBandsParameters()
 						{
 							//Last sub-band
 							subBandParam.stopFreq = bandParam.stopFreq;
-							subBandParam.sweepTime = bandParam.sweepTime * (1 - (numOfSubBands-1) / spansRatio);
+							subBandParam.sweepTime = bandParam.sweepTime * ( 1 - (numOfSubBands-1) / spansRatio );
 							flagLastSubBand=true;
 						}
 						else
 							subBandParam.sweepTime = bandParam.sweepTime / spansRatio;
 
 						if(flagLastSubBand)
-							subBandParam.samplePoints = bandParam.samplePoints * (1 - (numOfSubBands-1) / spansRatio);
+							subBandParam.samplePoints = bandParam.samplePoints * ( 1 - (numOfSubBands-1) / spansRatio );
 						else
 							subBandParam.samplePoints = bandParam.samplePoints / spansRatio;
 
@@ -454,7 +454,7 @@ bool SpectranConfigurator::LoadBandsParameters()
 	return false;
 }
 
-void SpectranConfigurator::SetVariable(SpecVariable variable, float value)
+void SpectranConfigurator::SetVariable(const SpecVariable variable, const float value)
 {
 	//Setting up the variable
 	Command comm(Command::SETSTPVAR, variable, value);
@@ -478,7 +478,7 @@ void SpectranConfigurator::SetVariable(SpecVariable variable, float value)
 }
 
 
-void SpectranConfigurator::CheckVariable(SpecVariable variable, float value)
+void SpectranConfigurator::CheckEqual(const SpecVariable variable, const float value)
 {
 	//Checking the variable's current value
 	Command comm(Command::GETSTPVAR, variable);
@@ -508,7 +508,7 @@ void SpectranConfigurator::CheckVariable(SpecVariable variable, float value)
 	}
 }
 
-void SpectranConfigurator::CheckFreqVariable(SpecVariable variable, float value)
+void SpectranConfigurator::CheckApproxEqual(const SpecVariable variable, float & value)
 {
 	//Checking the variable's current value
 	Command comm(Command::GETSTPVAR, variable);
@@ -530,6 +530,8 @@ void SpectranConfigurator::CheckFreqVariable(SpecVariable variable, float value)
 			CustomException exc( oss.str() );
 			throw(exc);
 		}
+
+		value = reply.GetValue();
 	}
 	catch(CustomException & exc)
 	{
@@ -546,37 +548,37 @@ void SpectranConfigurator::CheckFreqVariable(SpecVariable variable, float value)
 void SpectranConfigurator::InitialConfiguration()
 {
 	SetVariable( SpecVariable::ATTENFAC, float(fixedParam.attenFactor) );
-	CheckVariable( SpecVariable::ATTENFAC, float(fixedParam.attenFactor) );
+	CheckEqual( SpecVariable::ATTENFAC, float(fixedParam.attenFactor) );
 
 	SetVariable( SpecVariable::DISPUNIT, float(fixedParam.displayUnit) );
-	CheckVariable( SpecVariable::DISPUNIT, float(fixedParam.displayUnit) );
+	CheckEqual( SpecVariable::DISPUNIT, float(fixedParam.displayUnit) );
 
 	SetVariable( SpecVariable::DEMODMODE, float(fixedParam.demodMode) );
-	CheckVariable( SpecVariable::DEMODMODE, float(fixedParam.demodMode) );
+	CheckEqual( SpecVariable::DEMODMODE, float(fixedParam.demodMode) );
 
 	SetVariable( SpecVariable::ANTTYPE, float(fixedParam.antennaType) );
-	CheckVariable( SpecVariable::ANTTYPE, float(fixedParam.antennaType) );
+	CheckEqual( SpecVariable::ANTTYPE, float(fixedParam.antennaType) );
 
 	SetVariable( SpecVariable::CABLETYPE, float(fixedParam.cableType) );
-	CheckVariable( SpecVariable::CABLETYPE, float(fixedParam.cableType) );
+	CheckEqual( SpecVariable::CABLETYPE, float(fixedParam.cableType) );
 
 	SetVariable( SpecVariable::RECVCONF, float(fixedParam.recvConf) );
-	CheckVariable( SpecVariable::RECVCONF, float(fixedParam.recvConf) );
+	CheckEqual( SpecVariable::RECVCONF, float(fixedParam.recvConf) );
 
 	SetVariable( SpecVariable::PREAMPEN, float(fixedParam.internPreamp) );
-	CheckVariable( SpecVariable::PREAMPEN, float(fixedParam.internPreamp) );
+	CheckEqual( SpecVariable::PREAMPEN, float(fixedParam.internPreamp) );
 
 	SetVariable( SpecVariable::SWPDLYACC, float(fixedParam.sweepDelayAcc) );
-	CheckVariable( SpecVariable::SWPDLYACC, float(fixedParam.sweepDelayAcc) );
+	CheckEqual( SpecVariable::SWPDLYACC, float(fixedParam.sweepDelayAcc) );
 
 	SetVariable( SpecVariable::LEVELTONE, float(fixedParam.peakLevelAudioTone) );
-	CheckVariable( SpecVariable::LEVELTONE, float(fixedParam.peakLevelAudioTone) );
+	CheckEqual( SpecVariable::LEVELTONE, float(fixedParam.peakLevelAudioTone) );
 
 	SetVariable( SpecVariable::BACKBBEN, float(fixedParam.backBBDetector) );
-	CheckVariable( SpecVariable::BACKBBEN, float(fixedParam.backBBDetector) );
+	CheckEqual( SpecVariable::BACKBBEN, float(fixedParam.backBBDetector) );
 
 	SetVariable( SpecVariable::SPKVOLUME, fixedParam.speakerVol );
-	CheckVariable( SpecVariable::SPKVOLUME, fixedParam.speakerVol );
+	CheckApproxEqual( SpecVariable::SPKVOLUME, fixedParam.speakerVol );
 }
 
 //! The aim of this method is to configure the spectrum analyzer with parameters of the next frequency band.
@@ -593,27 +595,71 @@ BandParameters SpectranConfigurator::ConfigureNextBand()
 	}while(bandsParam[bandIndex].flagEnable==false); //Checking if the current band is enabled
 
 	SetVariable( SpecVariable::STARTFREQ, bandsParam[bandIndex].startFreq );
-	CheckFreqVariable( SpecVariable::STARTFREQ, bandsParam[bandIndex].startFreq );
+	CheckApproxEqual( SpecVariable::STARTFREQ, bandsParam[bandIndex].startFreq );
 
 	SetVariable( SpecVariable::STOPFREQ, bandsParam[bandIndex].stopFreq );
-	CheckFreqVariable( SpecVariable::STOPFREQ, bandsParam[bandIndex].stopFreq );
+	CheckApproxEqual( SpecVariable::STOPFREQ, bandsParam[bandIndex].stopFreq );
 
 	SetVariable( SpecVariable::RESBANDW, bandsParam[bandIndex].rbw );
-	CheckVariable( SpecVariable::RESBANDW, bandsParam[bandIndex].rbw );
+	CheckEqual( SpecVariable::RESBANDW, bandsParam[bandIndex].rbw );
 
 	SetVariable( SpecVariable::VIDBANDW, bandsParam[bandIndex].vbw );
-	CheckVariable( SpecVariable::RESBANDW, bandsParam[bandIndex].rbw );
+	CheckEqual( SpecVariable::RESBANDW, bandsParam[bandIndex].rbw );
 
 	SetVariable( SpecVariable::SWEEPTIME, float(bandsParam[bandIndex].sweepTime) );
-	//CheckVariable( SpecVariable::SWEEPTIME, float(bandsParam[bandIndex].sweepTime) );
+	try
+	{
+		CheckEqual( SpecVariable::SWEEPTIME, float(bandsParam[bandIndex].sweepTime) );
+	}
+	catch(CustomException & exc)
+	{
+		std::string str( exc.what() );
+		if( str.find("different") )
+		{
+			Command comm(Command::GETSTPVAR, SpecVariable::SWEEPTIME);
+			Reply reply(Reply::GETSTPVAR, SpecVariable::SWEEPTIME);
+			try
+			{
+				interface.Write(comm);
+				interface.Read(reply);
+				if( !reply.IsRight() )
+				{
+					CustomException exc("The reply to the command to get the current value of the \"sweep time\" was wrong.");
+					throw(exc);
+				}
+				if( bandsParam[bandIndex].sweepTime > (unsigned int) reply.GetValue() )
+				{
+					std::ostringstream oss;
+					oss << "The sweep time value which was taken by the spectrum analyzer, " << reply.GetValue() << "ms, is lesser than the original one, " << bandsParam[bandIndex].sweepTime << "ms.";
+					CustomException exc( oss.str() );
+					throw(exc);
+				}
+				bandsParam[bandIndex].sweepTime = (unsigned int) reply.GetValue();
+			}
+			catch(CustomException & exc)
+			{
+				std::string str = "The assignment of the actual sweep time value which was taken by the spectrum analyzer to the internal variable failed: ";
+				str += exc.what();
+				CustomException exc1(str);
+				throw exc1;
+			}
+			cerr << "\nWarning: The band N " << bandIndex << " (Fstart=" << bandsParam[bandIndex].startFreq << ", Fstop=";
+			cerr << bandsParam[bandIndex].stopFreq << ") will have the sweep time " << bandsParam[bandIndex].sweepTime;
+			cerr << "ms which is bigger than original one";
+		}
+		else
+		{
+			throw;
+		}
+	}
 
-	if(!bandsParam[bandIndex].flagDefaultSamplePoints)
-		SetVariable( SpecVariable::SWPFRQPTS, float(bandsParam[bandIndex].samplePoints) );
+	if(bandsParam[bandIndex].flagDefaultSamplePoints)
+		SetVariable( SpecVariable::SWPFRQPTS, 1.0 ); //dummy setting to make sure that the spectrum analyzer has taken the default number of samples
 	else
-		SetVariable( SpecVariable::SWPFRQPTS, 1.0 );
+		SetVariable( SpecVariable::SWPFRQPTS, float(bandsParam[bandIndex].samplePoints) );
 
 	SetVariable( SpecVariable::DETMODE, float(bandsParam[bandIndex].detector) );
-	CheckVariable( SpecVariable::DETMODE, float(bandsParam[bandIndex].detector) );
+	CheckEqual( SpecVariable::DETMODE, float(bandsParam[bandIndex].detector) );
 
 	return bandsParam[bandIndex];
 }

@@ -48,24 +48,26 @@ const Sweep& SweepBuilder::CaptureSweep(BandParameters & bandParam)
 {
 	bool flagSweepReady=false;
 	SweepReply swReply;
-	float frequency, power;
+	float power;
+	//float frequency;
+	std::uint_least64_t frequency;
 	std::pair< SweepMap::iterator, bool> mapReply;
 	__useconds_t deltaTime = 1000*(bandParam.sweepTime/bandParam.samplePoints); //theoretical time interval between sweep points
 	unsigned int errorTimeCount=0, errorFreqCount=0;
 	unsigned long samplesCount=0;
 
-	//SoundNewSweep();
-
 	interface.ResetSweep();
 
 	partialSweep.clear();
 
-	cout << "\t\tFrecuencia\t\tPotencia" << endl;
-	cout.setf(std::ios::fixed, std::ios::floatfield);
+//	cout << "\t\tFrecuencia\t\tPotencia" << endl;
+//	cout.setf(std::ios::fixed, std::ios::floatfield);
 
 	usleep(300000);
 
 	interface.EnableSweep();
+
+	cout << "Capturing a sweep..." << endl;
 
 	while (flagSweepReady==false)
 	{
@@ -93,9 +95,9 @@ const Sweep& SweepBuilder::CaptureSweep(BandParameters & bandParam)
 
 		frequency=swReply.GetFrequency();
 		/////////
-		cout << "\t\t" << std::setprecision(3) << frequency/1e6 << " MHz";
+//		cout << "\t\t" << std::setprecision(3) << frequency/1e6 << " MHz";
 		//////////
-		if( frequency<bandParam.startFreq || frequency>bandParam.stopFreq )
+		if( frequency<(0.95*bandParam.startFreq) || frequency>(1.05*bandParam.stopFreq) )
 		{
 			if(++errorFreqCount < 3)
 			{
@@ -106,7 +108,7 @@ const Sweep& SweepBuilder::CaptureSweep(BandParameters & bandParam)
 				interface.ResetSweep();
 
 				partialSweep.clear();
-				usleep(500000);
+				usleep(300000);
 
 				interface.EnableSweep();
 
@@ -122,7 +124,7 @@ const Sweep& SweepBuilder::CaptureSweep(BandParameters & bandParam)
 
 		power=swReply.GetValue();
 		///////////
-		cout << "\t\t" << std::setprecision(1) << power << " dBm" << endl;
+//		cout << "\t\t" << std::setprecision(1) << power << " dBm" << endl;
 		//////////
 		mapReply = partialSweep.insert( SweepMap::value_type(frequency, power) );
 		flagSweepReady = !mapReply.second;

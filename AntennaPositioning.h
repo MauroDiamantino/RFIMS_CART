@@ -20,13 +20,12 @@
 #ifndef ANTENNAPOSITIONING_H_
 #define ANTENNAPOSITIONING_H_
 
-#include "RFIMS_CART.h"
-
 #include <nmea.h> //Library libnmea
 #include <nmea/gprmc.h> //parser of GPRMC messages
 #include <nmea/gpgga.h> //parser of GPGGA messages
 #include <ftd2xx.h> //FTDI library
 #include <dirent.h> //To get filenames
+#include "Basics.h"
 
 //! A structure intended to save the the tri-axial values of the 3D sensors which are integrated in the GPS receiver.
 typedef struct
@@ -68,7 +67,7 @@ class GPSInterface
 #else
 	const std::string SENSORS_FILES_PATH = "/home/new-mauro/RFIMS-CART/gps/";
 #endif
-	const unsigned int MIN_NUM_OF_SATELLITES = 1;
+	const unsigned int MIN_NUM_OF_SATELLITES = 3;
 	//Variables
 	FT_HANDLE ftHandle;
 	FT_STATUS ftStatus;

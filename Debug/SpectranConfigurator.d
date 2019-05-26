@@ -1,6 +1,6 @@
 SpectranConfigurator.d: ../SpectranConfigurator.cpp ../Spectran.h \
- ../RFIMS_CART.h
+ ../Basics.h
 
 ../Spectran.h:
 
-../RFIMS_CART.h:
+../Basics.h:

@@ -1,5 +1,5 @@
-Reply.d: ../Reply.cpp ../Spectran.h ../RFIMS_CART.h
+Reply.d: ../Reply.cpp ../Spectran.h ../Basics.h
 
 ../Spectran.h:
 
-../RFIMS_CART.h:
+../Basics.h:

@@ -1,5 +1,5 @@
-Command.d: ../Command.cpp ../Spectran.h ../RFIMS_CART.h
+Command.d: ../Command.cpp ../Spectran.h ../Basics.h
 
 ../Spectran.h:
 
-../RFIMS_CART.h:
+../Basics.h:
