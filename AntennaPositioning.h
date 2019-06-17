@@ -62,11 +62,7 @@ class GPSInterface
 	const unsigned int GYRO_FILTERFREQ = 4;
 	const unsigned int GYRO_FILTERDIV = 1;
 	const unsigned int DATARATE = 20; //T = 50 mS
-#ifdef RASPBERRY_PI
-	const std::string SENSORS_FILES_PATH = "/home/pi/RFIMS-CART/gps/";
-#else
-	const std::string SENSORS_FILES_PATH = "/home/new-mauro/RFIMS-CART/gps/";
-#endif
+	const std::string SENSORS_FILES_PATH = BASE_PATH + "/gps/";
 	const unsigned int MIN_NUM_OF_SATELLITES = 3;
 	//Variables
 	FT_HANDLE ftHandle;
@@ -86,14 +82,14 @@ class GPSInterface
 	float pressure; //measured in hPa
 	float presElevation; //over sea level, measured in meters (m) and based on pressure.
 	///////Private Methods//////////
-	inline void Write(const std::string& command);
-	inline void Read(std::string& reply, unsigned int numOfBytes=0);
-	inline bool ControlChecksum(const std::string& reply);
-	void ConfigureVariable(const std::string& variable, unsigned int value);
-	inline void CalculateCardanAngles();
-	unsigned int FindAndCheckDataReply(const std::vector<std::string>& replies, const std::string& replyType, char sensor='\0');
-	inline void SaveSensorsData();
-	void ProcessDataReplies(std::vector<std::string>& replies);
+	void Write(const std::string& command);
+	void Read(std::string& reply, const unsigned int numOfBytes=0);
+	bool ControlChecksum(const std::string& reply);
+	void ConfigureVariable(const std::string& variable, const unsigned int value);
+	void CalculateCardanAngles();
+	unsigned int FindAndCheckDataReply(const std::vector<std::string>& replies, const std::string& replyType, const char sensor='\0');
+	void SaveSensorsData();
+	void ProcessDataReplies(const std::vector<std::string>& replies);
 public:
 	///////Class Interface//////////
 	GPSInterface();
@@ -105,13 +101,13 @@ public:
 	//void CaptureStreamData();
 	void DisableStreaming();
 	void Purge();
-	TimeData GetTimeData() const {	return timeData;	}
-	GPSCoordinates GetCoordinates() const {	return coordinates;	}
+	const TimeData & GetTimeData() const {	return timeData;	}
+	const GPSCoordinates & GetCoordinates() const {	return coordinates;	}
 	unsigned int GetNumOfSatellites() const {	return numOfSatellites;	}
 	float GetGPSElevation() const {	return gpsElevation;	}
-	Data3D GetGyroData() const {	return gyroData;	}
-	Data3D GetCompassData() const {	return compassData;	}
-	Data3D GetAccelerData() const {	return accelData;	}
+	const Data3D & GetGyroData() const {	return gyroData;	}
+	const Data3D & GetCompassData() const {	return compassData;	}
+	const Data3D & GetAccelerData() const {	return accelData;	}
 	float GetPressure() const {	return pressure;	}
 	float GetPressureElevation() const {	return presElevation;	}
 	double GetYaw() const {		return yaw;		}
@@ -120,25 +116,16 @@ public:
 	bool IsConnected() const {	return flagConnected;	}
 };
 
+
 enum Polarization : char { HORIZONTAL, VERTICAL, UNKNOWN };
 
 //!The aim of this class is to drive the antenna positioning
 class AntennaPositioner
 {
-	//enum Polarization : char { HORIZONTAL, VERTICAL, UNKNOWN };
 	/////////Attributes//////////
 	//Constants
-	struct
-	{
-		const int LED_INIT_POS = 1;
-		const int BUTTON_INIT_POS = 2;
-		const int LED_NEXT_POS = 3;
-		const int BUTTON_NEXT_POS = 4;
-		const int LED_POLARIZ = 5;
-		const int BUTTON_POLARIZ = 6;
-	} piPins;
-	const std::uint8_t NUM_OF_POSITIONS = 8;
-	const std::uint8_t ROTATION_ANGLE = 360/NUM_OF_POSITIONS;
+	const std::uint8_t NUM_OF_POSITIONS = 6;
+	const double ROTATION_ANGLE = 360.0/NUM_OF_POSITIONS;
 	//Variables
 	GPSInterface & gpsInterface;
 	float azimuthAngle;
@@ -146,15 +133,16 @@ class AntennaPositioner
 	std::uint8_t positionIndex;
 public:
 	AntennaPositioner(GPSInterface & gpsInterf);
+	~AntennaPositioner() {}
 	bool Initialize();
 	bool NextAzimPosition();
 	bool ChangePolarization();
-	float GetAzimPosition() {	return azimuthAngle;	}
-	std::string GetPolarizationString();
-	Polarization GetPolarization() {	return polarization;	}
-	unsigned int GetPositionIndex()	{	return positionIndex;	}
-	unsigned int GetNumOfPositions() {	return NUM_OF_POSITIONS;	}
-	bool IsLastPosition() {	return ( positionIndex >= (NUM_OF_POSITIONS-1) );	}
+	float GetAzimPosition() const {		return azimuthAngle;	}
+	std::string GetPolarizationString() const;
+	Polarization GetPolarization() const {	return polarization;	}
+	unsigned int GetPositionIndex() const	{	return positionIndex;	}
+	unsigned int GetNumOfPositions() const {	return NUM_OF_POSITIONS;	}
+	bool IsLastPosition() const {	return ( positionIndex >= (NUM_OF_POSITIONS-1) );	}
 };
 
 #endif /* ANTENNAPOSITIONING_H_ */

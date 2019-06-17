@@ -70,6 +70,14 @@ const FreqValues& FreqValues::operator+=(const FreqValues& rhs)
 	return *this;
 }
 
+float FreqValues::MeanValue() const
+{
+	float sum=0;
+	for(const float & value : values)
+		sum += value;
+
+	return( sum/values.size() );
+}
 
 /////////////////////////FreqValues struct's friends functions/////////////////////////////////////
 
@@ -380,7 +388,15 @@ Sweep operator+(const std::vector<float> & lhs, const Sweep & rhs) {	return( rhs
 
 Sweep operator+(const Sweep & lhs, const FreqValues & rhs) {	return( lhs + (Sweep)rhs );		}
 
-//Sweep operator+(const FreqValues & lhs, const Sweep & rhs) {	return( (Sweep)lhs + rhs );		}
+Sweep operator+(const Sweep & lhs, const float rhs)
+{
+	Sweep result = (Sweep) ( (FreqValues) lhs + rhs);
+	result.azimuthAngle = lhs.azimuthAngle;
+	result.polarization = lhs.polarization;
+	return result;
+}
+
+Sweep operator+(const float lhs, const Sweep & rhs) {	return( rhs + lhs );	}
 
 Sweep operator-(const Sweep & lhs, const Sweep & rhs) {		return( lhs + (-rhs) );		}
 
@@ -389,8 +405,6 @@ Sweep operator-(const Sweep & lhs, const std::vector<float> & rhs) {	return( lhs
 Sweep operator-(const std::vector<float> & lhs, const Sweep & rhs) {	return( lhs + (-rhs) );		}
 
 Sweep operator-(const Sweep & lhs, const FreqValues & rhs) {	return( lhs - (Sweep)rhs );		}
-
-//Sweep operator-(const FreqValues & lhs, const Sweep & rhs) {	return( (Sweep)lhs - rhs );		}
 
 Sweep operator*(const Sweep & lhs, const Sweep & rhs)
 {

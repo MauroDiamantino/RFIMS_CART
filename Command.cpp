@@ -27,7 +27,7 @@ Command::Command()
  * variable name (GETSTPVAR and SETSTPVAR commands) and its value (just SETSTPVAR command). If it used providing just
  * the first parameter, then the method `SetAs` should be used to set command type, variable name and value.
  */
-Command::Command(CommandType type, SpecVariable variable, float val)
+Command::Command(const CommandType type, const SpecVariable variable, const float val)
 {
 	commandType=type;
 	variableName=variable;
@@ -110,7 +110,7 @@ void Command::FillBytesVector()
 }
 
 //! This method is intended to provide to the object the enough data so this could configure itself to be ready to be sent.
-void Command::SetAs(CommandType commType, SpecVariable variable, float val)
+void Command::SetAs(const CommandType commType, const SpecVariable variable, const float val)
 {
 	commandType=commType;
 	variableName=variable;
@@ -119,7 +119,7 @@ void Command::SetAs(CommandType commType, SpecVariable variable, float val)
 }
 
 //! This method is intended to set the command's parameters, so it should be used when the command type has already been set.
-void Command::SetParameters(SpecVariable variable, float val)
+void Command::SetParameters(const SpecVariable variable, const float val)
 {
 	variableName=variable;
 	value=val;

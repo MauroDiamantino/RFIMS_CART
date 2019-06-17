@@ -9,19 +9,32 @@
 #define BASICS_H_
 
 //#define RASPBERRY_PI
+#define DEBUG
 
-#include <iostream> //cout, cin
+//! The must-have library which allows to use the objects `std::cout` and `std::cin` among a lot of other things.
+#include <iostream>
+//! It is included to use base class `std::exception`. A specific class, called CustomException, is derived from that base class to manage the exceptions.
 #include <exception>
+//! It is included to use the famous container `std::vector`.
 #include <vector>
+//! This library is included to make use of the famous container `std::string`.
 #include <string>
-#include <sstream> //ostringstream, istringstream
+//! It is included to state the classes `std::ostringstream` and `std::istringstream` are being used, but it is unnecessary if the *iostream* library has already bee included.
+#include <sstream>
+//! *iomanip* is a library which allows to use parametric manipulators to modify the way things (like numbers) are plotted with `std::cout`, `std::cerr`, etc.
 #include <iomanip>
+//! This library is included to make use the function `boost::algorithm::to_lower()` to convert upper-case characters to lower-case ones.
 #include <boost/algorithm/string.hpp>
+//! This library allows to use several functions and classes to perform tasks related to the filesystem such as creating a new file, see a directory's content, remove a file, etc.
 #include <boost/filesystem.hpp>
+//! A library which allows to perform task related with dates, such as getting the date of 30 days ago from the current date. Classes `boost::gregorian::date()` and `boost::gregorian::date_duration()` are used.
+#include <boost/date_time/gregorian/gregorian.hpp>
+
 #include <cmath>
 #include <fstream>
 #include <unistd.h>
 #include <cstdint>
+#include <cstdlib>
 #ifdef RASPBERRY_PI
 #include <wiringPi.h>
 #endif
@@ -30,6 +43,15 @@ using std::cout;
 using std::cerr;
 using std::cin;
 using std::endl;
+
+#ifdef RASBPERRY_PI
+const std::string BASE_PATH = "/home/pi/RFIMS-CART";
+#else
+const std::string BASE_PATH = "/home/new-mauro/RFIMS-CART";
+#endif
+
+
+////////////////////////////GLOBAL CLASSES AND STRUCTURES//////////////////////
 
 //!Class CustomException derived from standard class exception.
 class CustomException : public std::exception
@@ -52,28 +74,19 @@ struct TimeData
 	unsigned int second;
 	TimeData() {	Clear();	}
 	TimeData(const TimeData& timeData) {	operator=(timeData);	}
-	std::string date() const
-	{
-		std::ostringstream oss;
-		oss.fill('0'); oss.setf(std::ios::right, std::ios::adjustfield);
-		oss << std::setw(2) << day << '-' << std::setw(2) << month << '-' << year;
-		return oss.str();
-	}
-	std::string time() const
-	{
-		std::ostringstream oss;
-		oss.fill('0'); oss.setf(std::ios::right, std::ios::adjustfield);
-		oss << std::setw(2) << hour << ':' << std::setw(2) << minute << ':' << std::setw(2) << second;
-		return oss.str();
-	}
-	std::string timestamp() const {		return ( date() + 'T' + time() );	}
-	const TimeData& operator=(const TimeData& anotherTimeData)
-	{
-		year=anotherTimeData.year; month=anotherTimeData.month; day=anotherTimeData.day;
-		hour=anotherTimeData.hour; minute=anotherTimeData.minute; second=anotherTimeData.second;
-		return *this;
-	}
+	std::string GetDate() const;
+	std::string GetTime() const;
+	std::string GetTimestamp() const {		return ( GetDate() + 'T' + GetTime() );		}
+	void SetDate(const std::string & date);
+	void SetTime(const std::string & time);
+	void SetTimestamp(const std::string & timestamp);
+	void TurnBackDays(const unsigned int days);
+	const TimeData& operator=(const TimeData& anotherTimeData);
 	void Clear() {	year=month=day=hour=minute=second=0;	}
+	////////Friends functions//////////
+	friend bool operator<(const TimeData & lhs, const TimeData & rhs); //defined in TimeData.cpp
+	friend bool operator>(const TimeData & lhs, const TimeData & rhs); //defined in TimeData.cpp
+	friend bool operator==(const TimeData & lhs, const TimeData & rhs); //defined in TimeData.cpp
 };
 
 struct FreqValues
@@ -91,6 +104,8 @@ struct FreqValues
 	bool Empty() const {	return values.empty();	}
 	const FreqValues& operator=(const FreqValues & freqValues);
 	const FreqValues& operator+=(const FreqValues& rhs);
+	float MeanValue() const;
+	////////Friends functions///////
 	friend FreqValues operator-(const FreqValues& argument); //defined in FreqValues.cpp
 	friend FreqValues operator+(const FreqValues & lhs, const FreqValues & rhs); //defined in FreqValues.cpp
 	friend FreqValues operator+(const FreqValues & lhs, const float rhs); //defined in FreqValues.cpp
@@ -123,6 +138,8 @@ struct Sweep : public FreqValues
 	friend Sweep operator+(const Sweep & lhs, const std::vector<float> & rhs); //defined in FreqValues.cpp
 	friend Sweep operator+(const std::vector<float> & lhs, const Sweep & rhs); //defined in FreqValues.cpp
 	friend Sweep operator+(const Sweep & lhs, const FreqValues & rhs); //defined in FreqValues.cpp
+	friend Sweep operator+(const Sweep & lhs, const float rhs); //defined in FreqValues.cpp
+	friend Sweep operator+(const float lhs, const Sweep & rhs); //defined in FreqValues.cpp
 	//friend Sweep operator+(const FreqValues & lhs, const Sweep & rhs); //defined in FreqValues.cpp
 	friend Sweep operator-(const Sweep & lhs, const Sweep & rhs); //defined in FreqValues.cpp
 	friend Sweep operator-(const Sweep & lhs, const std::vector<float> & rhs); //defined in FreqValues.cpp
@@ -140,8 +157,29 @@ struct Sweep : public FreqValues
 	friend Sweep pow(const float base, const Sweep & exponent); //exponentiation, defined in FreqValues.cpp
 };
 
+struct RFI : public FreqValues
+{
+	//! Enumeration which contains the sources of harmful RF interference levels (aka thresholds): the ITU recommendation RA.769-2, SKA protocol Mode 1, SKA protocol Mode 2.
+	enum ThresholdsNorm {ITU_RA769, SKA_MODE1, SKA_MODE2};
+	float azimuthAngle;
+	std::string polarization;
+	unsigned int numOfRFIBands;
+	ThresholdsNorm threshNorm;
+	RFI() : FreqValues("rfi") { azimuthAngle=0.0; numOfRFIBands=0; threshNorm=ThresholdsNorm::SKA_MODE1;	}
+	RFI(const RFI & rfi) {	operator=(rfi);		}
+	void Clear() { 	FreqValues::Clear(); azimuthAngle=0.0; numOfRFIBands=0; polarization.clear();	}
+	const RFI & operator=(const RFI & anotherRFI)
+	{
+		azimuthAngle=anotherRFI.azimuthAngle; polarization=anotherRFI.polarization;
+		numOfRFIBands=anotherRFI.numOfRFIBands; threshNorm=anotherRFI.threshNorm;
+		frequencies=anotherRFI.frequencies; timeData=anotherRFI.timeData; values=anotherRFI.values;
+		return *this;
+	}
+};
+
 struct BandParameters
 {
+	unsigned int bandNumber;
 	bool flagEnable; //!< This parameter determines if the band is used or not.
 	float startFreq; //!< Fstart in Hz.
 	float stopFreq; //!< Fstop in Hz.
@@ -153,12 +191,59 @@ struct BandParameters
 	unsigned int detector; //!< Display detector: ”RMS” takes the sample as the root mean square of the values present in the bucket, or “Min/Max” takes two samples as the minimum and maximum peaks.
 };
 
+#ifdef RASPBERRY_PI
+struct
+{
+	const unsigned int SWITCH = 8; //!< This pin is initialized as an input with the pull-up resistor (2K) enabled, so the RF switch output will start connected to the noise source.
+	const unsigned int NOISE_SOURCE = 13; //!< This pin is initialized as an input with the pull-down resistor enabled, so the noise source will start turned off.
+	const unsigned int LNAS = 12;  //!< This pin is initialized as an input with the pull-down resistor enabled, so the LNAs will start turned off.
+	const unsigned int SPECTRAN = 14; //!< This pin is initialized as an input with the pull-down resistor enabled, so the Spectran device will start turned off.
+	const unsigned int LED_SWEEP_CAPTURE = 9;
+	const unsigned int LED_SWEEP_PROCESS = 10;
+	const unsigned int LED_INIT_POS = 1;
+	const unsigned int BUTTON_INIT_POS = 2;
+	const unsigned int LED_NEXT_POS = 3;
+	const unsigned int BUTTON_NEXT_POS = 4;
+	const unsigned int LED_POLARIZ = 5;
+	const unsigned int BUTTON_POLARIZ = 6;
+}piPins;
+const int SWITCH_TO_NS = HIGH; //!< The noise source output must be connected to switch's J2 connector
+const int SWITCH_TO_ANTENNA = LOW; //!< The antenna must be connected to switch's J1 connector
+#endif
+
+///////////////////////END OF GLOBAL CLASSES AND STRUCTURES//////////////////
+
+
+///////////////////////GLOBAL FUNCTIONS//////////////////////
+
 //Functions intended to compare floating-point numbers
 bool approximatelyEqual(float a, float b);
 bool approximatelyEqual(std::vector<float> vectorA, std::vector<float> vectorB);
 
-std::vector<float> operator-(const std::vector<float> & vect); //defined in FreqValues.cpp
+std::vector<float> operator-(const std::vector<float> & vect); //defined in Basics.cpp
 
 void WaitForKey();
+
+void InitializeGPIO();
+
+void TurnOnFrontEnd();
+void TurnOffFrontEnd();
+
+void PrintHelp();
+bool ProcessMainArguments(int argc, char * argv[]);
+
+//////////////////////END OF GLOBAL FUNCTIONS//////////////////
+
+
+/////////////////////////GLOBAL VARIABLES///////////////////////
+
+//! Flags which are defined by the software arguments and which indicates the way the software must behave
+extern bool flagCalEnabled, flagPlot, flagInfiniteLoop, flagRFI;
+//! A variable which saves the number of measurements cycles which left to be done. It is used when the user wishes a finite number of measurements cycles.
+extern unsigned int numOfMeasCycles;
+//! A variable which saves the norm which defines the harmful RF interference levels: ska-mode1, ska-mode2, itu-ra769
+extern RFI::ThresholdsNorm rfiNorm;
+
+//////////////////////////END OF GLOBAL VARIABLES///////////////
 
 #endif /* BASICS_H_ */

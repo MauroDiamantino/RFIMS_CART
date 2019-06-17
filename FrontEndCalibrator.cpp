@@ -7,38 +7,66 @@
 
 #include "SweepProcessing.h"
 
-FrontEndCalibrator::FrontEndCalibrator(CurveAdjuster & adj) : correctENR("enr"), powerNSoff("sweep"), powerNSon("sweep"),
-		noiseTempNSoff("noise temperature"), noiseTempNSon("noise temperature"), adjuster(adj), rbwCurve("rbw values curve")
+FrontEndCalibrator::FrontEndCalibrator(CurveAdjuster & adj) : adjuster(adj), correctENR("enr"), powerNSoff("sweep"),
+		powerNSon("sweep"), powerNSoff_w("sweep"), powerNSon_w("sweep"), noiseTempNSoff("noise temperature"),
+		noiseTempNSon("noise temperature"), gain("gain"), noiseTemperature("noise temperature"),
+		noiseFigure("noise figure"), rbwCurve("rbw values curve"),
+		auxRFPloter("Sweeps captured with a 50 ohm load at the input")
 {
 	enrFileLastWriteTime = -100;
 	tsoff = REF_TEMPERATURE;
-#ifdef RASPBERRY_PI
-	pinMode(piPins.NOISE_SOURCE, OUTPUT);
-	pinMode(piPins.SWITCH, OUTPUT);
-	digitalWrite(piPins.NOISE_SOURCE, LOW);
-	digitalWrite(piPins.SWITCH, SWITCH_TO_ANTENNA);
-#endif
 	flagNSon = false;
 	flagCalStarted = false;
 }
 
-FrontEndCalibrator::FrontEndCalibrator(CurveAdjuster & adj, std::vector<BandParameters> & bandsParam) : correctENR("enr"),
-		powerNSoff("sweep"), powerNSon("sweep"), noiseTempNSoff("noise temperature"), noiseTempNSon("noise temperature"),
-		 bandsParameters(bandsParam), adjuster(adj), rbwCurve("rbw values curve")
+FrontEndCalibrator::FrontEndCalibrator(CurveAdjuster & adj, const std::vector<BandParameters> & bandsParam) :
+		adjuster(adj), correctENR("enr"), powerNSoff("sweep"), powerNSon("sweep"), powerNSoff_w("sweep"),
+		powerNSon_w("sweep"), noiseTempNSoff("noise temperature"), noiseTempNSon("noise temperature"),
+		bandsParameters(bandsParam), gain("gain"), noiseTemperature("noise temperature"), noiseFigure("noise figure"),
+		rbwCurve("rbw values curve"), auxRFPloter("Sweeps captured with a 50 ohm load at the input")
 {
 	enrFileLastWriteTime = -100;
 	tsoff = REF_TEMPERATURE;
-#ifdef RASPBERRY_PI
-	digitalWrite(piPins.NOISE_SOURCE, LOW);
-	digitalWrite(piPins.SWITCH, SWITCH_TO_ANTENNA);
-#endif
 	flagNSon = false;
 	flagCalStarted = false;
+}
+
+//! This method build a curve with RBW values versus frequency.
+/*! The aim of the RBW curve is to simplify the syntax of the equations which are used in the methods
+ * `FrontEndCalibrator :: EstimateParameters ()` and `FrontEndCalibrator :: CalibrateSweep ()`.
+ * Firstly, the RBW curve is loaded with two points for each frequency band: one point with the RBW value
+ * of that band and the start frequency (Fstart) and the other point with the same RBW value and the stop
+ * frequency (Fstop). Then, the RBW curve is adjusted (interpolated) using the CurveAdjuster object and,
+ * because the way the first values ​​were loaded, the end RBW curve will be formed by steps, i.e. all the
+ * frequencies which corresponds to the same band will have the same RBW value.
+ */
+void FrontEndCalibrator::BuildRBWCurve()
+{
+	const float deltaFreq=100e3; //This delta frequency is summed to the start frequencies to avoid the discontinuity
+
+	//Building the curve with RBW values vs frequency
+	rbwCurve.Clear();
+	for(auto itBand = bandsParameters.begin() ; itBand != bandsParameters.end(); itBand++)
+	{
+		rbwCurve.frequencies.push_back(itBand->startFreq + deltaFreq);
+		rbwCurve.values.push_back(itBand->rbw);
+
+		rbwCurve.frequencies.push_back(itBand->stopFreq);
+		rbwCurve.values.push_back(itBand->rbw);
+	}
+
+	rbwCurve = adjuster.AdjustCurve(rbwCurve);
+}
+
+void FrontEndCalibrator::SetBandsParameters(const std::vector<BandParameters> & bandsParam)
+{
+	bandsParameters = bandsParam;
+	BuildRBWCurve();
 }
 
 void FrontEndCalibrator::LoadENR()
 {
-	boost::filesystem::path pathAndFilename(FILES_PATH);
+	boost::filesystem::path pathAndFilename(CAL_FILES_PATH);
 	pathAndFilename /= "enr.txt";
 
 	if( enrFileLastWriteTime < boost::filesystem::last_write_time(pathAndFilename) )
@@ -102,9 +130,15 @@ void FrontEndCalibrator::LoadENR()
 void FrontEndCalibrator::SetSweep(const FreqValues & sweep)
 {
 	if(flagNSon)
-		powerNSon = pow(10.0, sweep/10.0 ) * 1e-3; //The power values are converted from dBm to Watts
+	{
+		powerNSon = sweep;
+		powerNSon_w = pow(10.0, sweep/10.0 ) * 1e-3; //The power values are converted from dBm to Watts
+	}
 	else
-		powerNSoff = pow(10.0, sweep/10.0 ) * 1e-3; //The power values are converted from dBm to Watts
+	{
+		powerNSoff = sweep;
+		powerNSoff_w = pow(10.0, sweep/10.0 ) * 1e-3; //The power values are converted from dBm to Watts
+	}
 }
 
 //const FrontEndParameters& FrontEndCalibrator::EstimateParameters()
@@ -152,94 +186,58 @@ void FrontEndCalibrator::SetSweep(const FreqValues & sweep)
 
 void FrontEndCalibrator::EstimateParameters()
 {
-	if( powerNSon.Empty() || powerNSoff.Empty() )
+	if( powerNSon_w.Empty() || powerNSoff_w.Empty() )
 		throw( CustomException("The Front End calibrator cannot calculate parameters because one sweep (or both) is lacking.") );
 
-	FreqValues tson("noise temperature"), yFactor("y-factor");
+	FreqValues tson("noise temperature"), yFactor("y-factor"), gainPowersRatio("gain");
 
 	//Calculating the front end's noise figure curve
 	tson = (REF_TEMPERATURE * correctENR) + tsoff;
-	yFactor = powerNSon / powerNSoff;
-	noiseTemperature = (tson - tsoff * yFactor) / (yFactor - 1.0);
+	yFactor = powerNSon_w / powerNSoff_w;
+	noiseTemperature = (-(tsoff * yFactor) + tson) / (yFactor - 1.0);
 	noiseFigure = 10.0*log10( 1.0 + noiseTemperature / REF_TEMPERATURE );
+	float meanNoiseFig = noiseFigure.MeanValue();
+	if( 0.5 > meanNoiseFig || meanNoiseFig > 20.0 )
+		throw( CustomException("A ridiculous mean noise figure was got during estimation.") );
 
-	//Building the curve with rbw values vs frequency
-	auto itBand = bandsParameters.begin();
-	for(auto itFreq = powerNSoff.frequencies.begin(); itFreq!=powerNSoff.frequencies.end(); itFreq++)
-	{
-		if( *itFreq > itBand->stopFreq )
-			itBand++;
-		rbwCurve.values.push_back( itBand->rbw );
-	}
-	rbwCurve.frequencies=powerNSoff.frequencies;
-	rbwCurve.timeData=powerNSoff.timeData;
+//	//Building the curve with rbw values vs frequency
+//	auto itBand = bandsParameters.begin();
+//	for(auto itFreq = powerNSoff_w.frequencies.begin(); itFreq!=powerNSoff_w.frequencies.end(); itFreq++)
+//	{
+//		if( *itFreq > itBand->stopFreq )
+//			if( ++itBand==bandsParameters.end() )
+//				--itBand;
+//
+//		rbwCurve.values.push_back( itBand->rbw );
+//	}
+//	rbwCurve.frequencies=powerNSoff_w.frequencies;
+//	rbwCurve.timeData=powerNSoff_w.timeData;
 
 	//Calculating the front end's gain curve
-	gain = 0.5/(BOLTZMANN_CONST * rbwCurve) * ( powerNSoff/(tsoff + noiseTemperature) + powerNSon/(tson + noiseTemperature) );
-}
-
-void FrontEndCalibrator::SaveFrontEndParam(const TimeData & timeData)
-{
-	boost::filesystem::path filePath(FILES_PATH);
-	filePath /= "frontendparam";
-	if( !boost::filesystem::exists(filePath) )
-		boost::filesystem::create_directory(filePath);
-
-	std::string filename("noisefigure_");
-	filename += timeData.date() + ".csv";
-	filePath /= filename;
-	std::ofstream ofs( filePath.string() );
-	ofs.setf(std::ios::fixed, std::ios::floatfield);
-
-	//Saving the noise figure data
-	ofs << "Timestamp";
-	for(const auto& freq : noiseFigure.frequencies)
-		//ofs << ',' << std::setprecision(4) << (freq/1e6);
-		ofs << ',' << std::setprecision(4) << double(freq)/1e6;
-	ofs << "\r\n";
-	ofs << timeData.timestamp();
-	for(const auto& nf : noiseFigure.values)
-		ofs << ',' << std::setprecision(1) << nf;
-	ofs << "\r\n";
-
-	ofs.close();
-
-	filename = "gain_" + timeData.date() + ".csv";
-	filePath.remove_filename();
-	filePath /= filename;
-	ofs.open( filePath.string() );
-
-	//Saving the gain data
-	ofs << "Timestamp";
-	for(const auto& freq : gain.frequencies)
-		//ofs << ',' << std::setprecision(4) << (freq/1e6);
-		ofs << ',' << std::setprecision(4) << double(freq)/1e6;
-	ofs << "\r\n";
-	ofs << timeData.timestamp();
-	for(const auto& g : gain.values)
-		ofs << ',' << std::setprecision(1) << g;
-	ofs << "\r\n";
-
-	ofs.close();
+	gainPowersRatio = 0.5/(BOLTZMANN_CONST * rbwCurve) * ( powerNSoff_w/(tsoff + noiseTemperature) + powerNSon_w/(tson + noiseTemperature) );
+	gain = 10.0*log10(gainPowersRatio);
+	float meanGain = gain.MeanValue();
+	if( 10.0 > meanGain || meanGain > 200.0 )
+		throw( CustomException("A ridiculous mean gain was got during estimation.") );
 }
 
 const Sweep& FrontEndCalibrator::CalibrateSweep(const Sweep& powerOut)
 {
-	///////
-	RFPloter rfPloter("Sweeps captured with a 50 ohm load at the input");
-	rfPloter.Plot(powerOut, "lines", "Uncalibrated sweep");
-	/////////
-	Sweep powerInEff, powerInEff_mw;
-	Sweep powerIn, powerIn_mw;
+#ifdef DEBUG
+	auxRFPloter.Clear();
+	auxRFPloter.Plot(powerOut, "lines", "Uncalibrated sweep");
+#endif
+	Sweep powerInEff, powerInEff_w;
+	Sweep powerIn, powerIn_w;
 	try
 	{
 		//Calculating the effective input power (Pin_eff) which contains the antenna power and the internal noise
 		//generated in the receiver
-		powerInEff = powerOut + gain;
-		/////////
-		rfPloter.Plot(powerInEff, "lines", "Effective input power (Pant + Nreceiver)");
-		/////////
-		powerInEff_mw = pow(10.0, powerInEff/10.0);
+		powerInEff = powerOut - gain;
+#ifdef DEBUG
+		auxRFPloter.Plot(powerInEff, "lines", "Effective input power (Pant + Nreceiver)");
+#endif
+		powerInEff_w = pow(10.0, powerInEff/10.0) * 1e-3; //The power values are converted from dBm to Watts
 
 		//Calculating the input power (Pin) which represents only the antenna power, without the receiver noise
 //		auto itPowerInEff = powerInEff.values.begin();
@@ -263,15 +261,14 @@ const Sweep& FrontEndCalibrator::CalibrateSweep(const Sweep& powerOut)
 //		powerIn_mw.polarization = powerInEff.polarization;
 //		powerIn_mw.timeData = powerInEff.timeData;
 
-		//////////////
-		powerIn_mw = powerInEff_mw - BOLTZMANN_CONST * rbwCurve * noiseTemperature;
-		//////////////
+		powerIn_w = powerInEff_w - BOLTZMANN_CONST * rbwCurve * noiseTemperature;
 
-		//Converting the input power to dBm
-		powerIn = 10.0*log10(powerIn_mw);
-		////////
-		rfPloter.Plot(powerIn, "lines", "Input power (Pant)");
-		////////
+		//Converting the input power from Watts to dBm
+		powerIn = 10.0*log10(powerIn_w) + 30.0;
+
+#ifdef DEBUG
+		auxRFPloter.Plot(powerIn, "lines", "Input power (Pant)");
+#endif
 
 		//The input power is saved as the calibrated sweep
 		calSweep = powerIn;
@@ -288,7 +285,7 @@ const Sweep& FrontEndCalibrator::CalibrateSweep(const Sweep& powerOut)
 
 void FrontEndCalibrator::LoadDefaultParameters()
 {
-	boost::filesystem::path pathGain(FILES_PATH), pathNoiseFig(FILES_PATH);
+	boost::filesystem::path pathGain(CAL_FILES_PATH), pathNoiseFig(CAL_FILES_PATH);
 	pathGain /= "frontendparam";
 	pathGain /= "gain_default.csv";
 	pathNoiseFig /= "frontendparam";
@@ -296,28 +293,29 @@ void FrontEndCalibrator::LoadDefaultParameters()
 
 	if( boost::filesystem::exists(pathGain) && boost::filesystem::exists(pathNoiseFig) )
 	{
-		gain.Clear();
-		noiseFigure.Clear();
-
-		float freqMHz,gainValue, noiseFigValue;
-		char aux;
+		FreqValues defaultGain("gain"), defaultNoiseFig("noise figure");
+		float freqMHz, gainValue, noiseFigValue;
+		char delimiter=',', aux;
 		std::ifstream ifs( pathGain.string() );
+
+		ifs.exceptions( std::ifstream::badbit );
 
 		//Exctracting the frequency values gain curve
 		while( ifs.get()!=',' );
-		while( ifs.peek()!='\r' )
+		do
 		{
-			ifs >> freqMHz;
-			gain.frequencies.push_back( std::uint_least64_t(freqMHz*1e6) );
-		}
+			ifs >> freqMHz >> delimiter;
+			defaultGain.frequencies.push_back( std::uint_least64_t(freqMHz)*1000000 );
+		}while( delimiter==',' );
 
 		//Extracting the gain values
 		while( ifs.get()!=',' );
-		while( ifs.peek()!='\r' )
+		do
 		{
-			ifs >> gainValue;
-			gain.values.push_back(gainValue);
-		}
+			ifs >> gainValue >> delimiter;
+			defaultGain.values.push_back(gainValue);
+			aux = ifs.peek();
+		}while( delimiter==',' && !ifs.eof() && aux!='\r' && aux!='\n' );
 
 		ifs.close();
 
@@ -325,21 +323,32 @@ void FrontEndCalibrator::LoadDefaultParameters()
 
 		//Exctracting the frequency values of noise figure curve
 		while( ifs.get()!=',' );
-		while( ifs.peek()!='\r' )
+		do
 		{
-			ifs >> freqMHz;
-			noiseFigure.frequencies.push_back( std::uint_least64_t(freqMHz*1e6) );
-		}
+			ifs >> freqMHz >> delimiter;
+			defaultNoiseFig.frequencies.push_back( std::uint_least64_t(freqMHz*1e6) );
+		}while( delimiter==',' );
 
 		//Extracting the noiseFigure values
 		while( ifs.get()!=',' );
-		while( ifs.peek()!='\r' )
+		do
 		{
-			ifs >> noiseFigValue;
-			noiseFigure.values.push_back(noiseFigValue);
-		}
+			ifs >> noiseFigValue >> delimiter;
+			defaultNoiseFig.values.push_back(noiseFigValue);
+			aux=ifs.peek();
+		}while( delimiter==',' && !ifs.eof() && aux!='\r' && aux!='\n' );
 
 		ifs.close();
+
+		gain.Clear();
+		noiseFigure.Clear();
+
+		gain = adjuster.AdjustCurve(defaultGain);
+		noiseFigure = adjuster.AdjustCurve(defaultNoiseFig);
+
+		FreqValues noiseFactor("noise factor");
+		noiseFactor = pow(10.0, noiseFigure/10.0);
+		noiseTemperature = (noiseFactor - 1.0) * REF_TEMPERATURE;
 	}
 	else
 	{

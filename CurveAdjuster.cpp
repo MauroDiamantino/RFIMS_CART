@@ -103,7 +103,10 @@ const FreqValues & CurveAdjuster::AdjustCurve(const FreqValues & curve)
 
 	for(auto & freq : refSweep.frequencies)
 	{
-		if(freq > itLine->f_max)
+//		if(freq > itLine->f_max)
+//			if( ++itLine==lines.end() )
+//				itLine--;
+		while(freq > itLine->f_max)
 			++itLine;
 
 		adjCurve.frequencies.push_back(freq);

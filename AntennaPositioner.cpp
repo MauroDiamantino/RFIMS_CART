@@ -41,10 +41,33 @@ bool AntennaPositioner::Initialize()
 #else
 	WaitForKey();
 #endif
-	cout << "Enter the initial azimuth angle: ";
-	cin >> azimuthAngle;
-	cin.get();
-	//cout << endl;
+
+//	cout << "Enter the initial azimuth angle: ";
+//	cin >> azimuthAngle;
+//	cin.get();
+	bool flagSuccess=false;
+	unsigned int numOfErrors=0;
+	do
+	{
+		try
+		{
+			gpsInterface.ReadOneDataSet();
+			azimuthAngle = gpsInterface.GetYaw();
+			flagSuccess = true;
+		}
+		catch(CustomException & exc)
+		{
+			if(++numOfErrors < 3)
+				cerr << "Warning: an error occurred when it was tried to read the initial azimuth angle: " << exc.what() << endl;
+			else
+			{
+				CustomException exc2("The initial azimuth angle could not be read: ");
+				exc2.Append( exc.what() );
+				throw(exc2);
+			}
+		}
+	}while(!flagSuccess);
+
 	polarization=Polarization::HORIZONTAL;
 	positionIndex=0;
 
@@ -56,7 +79,7 @@ bool AntennaPositioner::NextAzimPosition()
 	if( ++positionIndex >= NUM_OF_POSITIONS )
 	{
 		positionIndex=0;
-		cout << "\nRotate antenna to the initial position, make sure the polarization is horizontal and press the button to continue.." << endl;
+		cout << "Rotate antenna to the initial position, make sure the polarization is horizontal and press the button to continue.." << endl;
 #ifdef RASPBERRY_PI
 		digitalWrite(piPins.LED_INIT_POS, HIGH);
 		while( digitalRead(piPins.BUTTON_INIT_POS)==HIGH );
@@ -67,7 +90,7 @@ bool AntennaPositioner::NextAzimPosition()
 	}
 	else
 	{
-		cout << "\nRotate the antenna 45° counterclockwise and press the button to continue..." << endl;
+		cout << "Rotate the antenna " << ROTATION_ANGLE << "° clockwise and press the button to continue..." << endl;
 #ifdef RASPBERRY_PI
 		digitalWrite(piPins.LED_NEXT_POS, HIGH);
 		while( digitalRead(piPins.BUTTON_NEXT_POS)==HIGH );
@@ -89,7 +112,7 @@ bool AntennaPositioner::ChangePolarization()
 	bool flagSuccess=false;
 	do
 	{
-		cout << "\nChange the antenna polarization and press the button to continue..." << endl;
+		cout << "Change the antenna polarization and press the button to continue..." << endl;
 	#ifdef RASPBERRY_PI
 		digitalWrite(piPins.LED_POLARIZ, HIGH);
 		while( digitalRead(piPins.BUTTON_POLARIZ)==HIGH );
@@ -97,38 +120,53 @@ bool AntennaPositioner::ChangePolarization()
 	#else
 		WaitForKey();
 	#endif
-		gpsInterface.ReadOneDataSet();
-		absRoll = fabs( gpsInterface.GetRoll() );
-		if( polarization==Polarization::HORIZONTAL )
+
+		bool flagSuccessRead=false;
+		unsigned int numOfErrors=0;
+		do
 		{
-			if( 80.0 < absRoll && absRoll < 100.0 )
+			try
 			{
-				flagSuccess=true;
-				polarization = Polarization::VERTICAL;
+				gpsInterface.ReadOneDataSet();
+				absRoll = fabs( gpsInterface.GetRoll() );
+				if( polarization==Polarization::HORIZONTAL )
+					if( 80.0 < absRoll && absRoll < 100.0 )
+					{
+						flagSuccess=true;
+						polarization = Polarization::VERTICAL;
+					}
+					else
+						cout << "\nWarning: The antenna polarization was not changed" << endl;
+				else
+					if( absRoll < 10.0 )
+					{
+						flagSuccess = true;
+						polarization = Polarization::HORIZONTAL;
+					}
+					else
+						cout << "\nWarning: The antenna polarization was not changed" << endl;
+
+				flagSuccessRead=true;
 			}
-			else
+			catch(CustomException & exc)
 			{
-				cout << "\nWarning: The antenna polarization was not changed" << endl;
+				if(++numOfErrors < 3)
+					cerr << "Warning: an error occurred when it was tried to read the roll angle: " << exc.what() << endl;
+				else
+				{
+					CustomException exc2("The roll angle could not be read: ");
+					exc2.Append( exc.what() );
+					throw(exc2);
+				}
 			}
-		}
-		else
-		{
-			if( absRoll < 10.0 )
-			{
-				flagSuccess = true;
-				polarization = Polarization::HORIZONTAL;
-			}
-			else
-			{
-				cout << "\nWarning: The antenna polarization was not changed" << endl;
-			}
-		}
+		}while(!flagSuccessRead);
+
 	}while(!flagSuccess);
 
 	return true;
 }
 
-std::string AntennaPositioner::GetPolarizationString()
+std::string AntennaPositioner::GetPolarizationString() const
 {
 	switch(polarization)
 	{

@@ -5,49 +5,55 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../AntennaPositioner.cpp \
+../Basics.cpp \
 ../Command.cpp \
 ../CurveAdjuster.cpp \
 ../DataLogger.cpp \
-../FloatComparison.cpp \
 ../FreqValues.cpp \
 ../FrontEndCalibrator.cpp \
 ../GPSInterface.cpp \
+../RFIDetector.cpp \
 ../Reply.cpp \
 ../SpectranConfigurator.cpp \
 ../SpectranInterface.cpp \
 ../SweepBuilder.cpp \
+../TimeData.cpp \
 ../gnuplot_i.cpp \
 ../main.cpp 
 
 OBJS += \
 ./AntennaPositioner.o \
+./Basics.o \
 ./Command.o \
 ./CurveAdjuster.o \
 ./DataLogger.o \
-./FloatComparison.o \
 ./FreqValues.o \
 ./FrontEndCalibrator.o \
 ./GPSInterface.o \
+./RFIDetector.o \
 ./Reply.o \
 ./SpectranConfigurator.o \
 ./SpectranInterface.o \
 ./SweepBuilder.o \
+./TimeData.o \
 ./gnuplot_i.o \
 ./main.o 
 
 CPP_DEPS += \
 ./AntennaPositioner.d \
+./Basics.d \
 ./Command.d \
 ./CurveAdjuster.d \
 ./DataLogger.d \
-./FloatComparison.d \
 ./FreqValues.d \
 ./FrontEndCalibrator.d \
 ./GPSInterface.d \
+./RFIDetector.d \
 ./Reply.d \
 ./SpectranConfigurator.d \
 ./SpectranInterface.d \
 ./SweepBuilder.d \
+./TimeData.d \
 ./gnuplot_i.d \
 ./main.d 
 

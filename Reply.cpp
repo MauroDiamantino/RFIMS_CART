@@ -19,7 +19,7 @@ Reply::Reply()
 }
 
 //! A constructor which allows to set the reply type.
-Reply::Reply(ReplyType type, SpecVariable variable)
+Reply::Reply(const ReplyType type, const SpecVariable variable)
 {
 	replyType=type;
 	variableName=variable;
@@ -70,14 +70,14 @@ void Reply::PrepareReply()
  * private method `PrepareReply()`. The variable name must be set for the GETSTPVAR replies, for other cases it
  * is not important.
  */
-void Reply::PrepareTo(ReplyType type, SpecVariable variable)
+void Reply::PrepareTo(const ReplyType type, const SpecVariable variable)
 {
 	replyType=type;
 	variableName=variable;
 	PrepareReply();
 }
 
-void Reply::FillBytesVector(std::uint8_t * data)
+void Reply::FillBytesVector(const std::uint8_t * data)
 {
 	bytes.insert(bytes.begin(), data, data+numOfWaitedBytes);
 }
@@ -85,7 +85,7 @@ void Reply::FillBytesVector(std::uint8_t * data)
 //! The bytes vector must be inserted in the Reply object with this method to extract the reply data then.
 /*! The reply object must have been prepared before inserting the bytes vector.
  */
-void Reply::InsertBytes(std::uint8_t* data)
+void Reply::InsertBytes(const std::uint8_t* data)
 {
 	FloatToBytes floatBytes;
 
@@ -328,12 +328,7 @@ SweepReply::SweepReply() : Reply(Reply::AMPFREQDAT)
 	maxValue=0.0;
 }
 
-SweepReply::SweepReply(std::uint8_t* bytesPtr) : Reply(Reply::AMPFREQDAT)
-{
-	SweepReply::InsertBytes(bytesPtr);
-}
-
-void SweepReply::InsertBytes(std::uint8_t * data)
+void SweepReply::InsertBytes(const std::uint8_t * data)
 {
 	union UnIntToBytes{
 		unsigned int intValue;

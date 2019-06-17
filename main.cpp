@@ -8,84 +8,69 @@
 #include "TopLevel.h"
 #include <boost/timer/timer.hpp>
 
+
+/////////////////////////Global variables///////////////////////
 //! Global variables which are used by the SignalHandler class
 SpectranInterface * SignalHandler::specInterfPtr;
 SpectranConfigurator * SignalHandler::specConfiguratorPtr;
 SweepBuilder * SignalHandler::sweepBuilderPtr;
 CurveAdjuster * SignalHandler::adjusterPtr;
 FrontEndCalibrator * SignalHandler::calibratorPtr;
+RFIDetector * SignalHandler::rfiDetectorPtr;
 DataLogger * SignalHandler::dataLoggerPtr;
+GPSInterface * SignalHandler::gpsInterfacePtr;
+AntennaPositioner * SignalHandler::antPositionerPtr;
 RFPloter * SignalHandler::sweepPloterPtr;
 RFPloter * SignalHandler::gainPloterPtr;
 RFPloter * SignalHandler::nfPloterPtr;
-AntennaPositioner * SignalHandler::antPositionerPtr;
+//! Flags which are defined by the software arguments and which indicates the way the software must behave
+bool flagCalEnabled=true, flagPlot=false, flagInfiniteLoop=true, flagRFI=false;
+//! A variable which saves the number of measurements cycles which left to be done. It is used when the user wishes a finite number of measurements cycles.
+unsigned int numOfMeasCycles=0;
+//! A variable which saves the norm which defines the harmful RF interference levels: ska-mode1, ska-mode2, itu-ra769
+RFI::ThresholdsNorm rfiNorm = RFI::SKA_MODE1;
 
+
+///////////////////////////////MAIN FUNCTION///////////////////////////////
+//! Main function.
 int main(int argc, char * argv[])
 {
-	struct
-	{
-		const int LED_SWEEP_CAPTURE = 9;
-		const int LED_SWEEP_PROCESS = 10;
-	} piPins;
-	boost::timer::cpu_timer timer;
+	///////////Local variables/////////////
+	//! A flag which states if the bands parameters have been loaded by first time or they have been reloaded
 	bool flagBandsParamReloaded=false;
-	bool flagEndMeasCycle = false;
-	bool flagCalEnabled=true, flagPlot=false, flagRFI=false, flagInfIterations=true;
-	unsigned int numOfIter=0;
-	bool flagStartCal=true;
+	//! A flag which states the beginning of a new measurement cycle, and so the need to realize a new front end calibration, to move the antenna to the initial position, etc.
+	bool flagNewMeasCycle=true;
+	//! A flag which is used when the user executes the software to realize a finite number of iterations (measurement cycles), to states the requested measurements cycles have already been done.
+	bool flagEndIterations = false;
+	//! A timer which is used to measure the execution time when the number of iterations is finite.
+	boost::timer::cpu_timer timer;
+
+	//Checking of the program's arguments
+	if( !ProcessMainArguments(argc, argv) )
+		std::exit(EXIT_FAILURE);
 
 	cout << "\n\t\t\t\tRF Interference Monitoring System (RFIMS)" << endl;
 	cout << "\t\t\t\tChina-Argentina Radio Telescope (CART)\n" << endl;
 
-	//Checking of the program's arguments
-	if(argc>1)
-	{
-		unsigned int argc_aux=argc;
-		std::vector<std::string> argVector;
-		for(unsigned int i=0; i<(argc_aux-1); i++)
-			argVector.push_back( argv[i] );
+	//Initializing the GPIO pins
+	InitializeGPIO();
 
-		unsigned int i=1;
-		while( i<argc_aux && argVector[i]!="--no-frontend-cal" )	i++;
-		if(i<argc_aux)	flagCalEnabled=false;
+	TurnOnFrontEnd();
 
-		i=1;
-		while( i<argc_aux && argVector[i]!="--plot" )	i++;
-		if(i<argc_aux)	flagPlot=true;
-
-		i=1;
-		while( i<argc_aux && argVector[i]!="--detect-rfi" )	i++;
-		if(i<argc_aux)	flagRFI=true;
-
-		i=1;
-		size_t equalSignPos=0;
-		while( i<argc_aux && ( equalSignPos=argVector[i].find("--iter=") )==std::string::npos )	i++;
-		if(i<argc_aux)
-		{
-			flagInfIterations=false;
-			std::istringstream iss;
-			std::string numString = argVector[i].substr( equalSignPos+1, (argVector[i].size()-equalSignPos-1) );
-			iss.str(numString);
-			iss >> numOfIter;
-		}
-	}
+	if(!flagInfiniteLoop)
+		//Starting timer
+		timer.start();
 
 	try
 	{
-		///////////////////////Instantiations & Initializations//////////////////////////////////
-#ifdef RASPBERRY_PI
-		//Initializing the Wiring Pi library
-		wiringPiSetup();
-		pinMode(piPins.LED_SWEEP_CAPTURE, OUTPUT);
-		pinMode(piPins.LED_SWEEP_PROCESS, OUTPUT);
-		digitalWrite(piPins.LED_SWEEP_CAPTURE, LOW);
-		digitalWrite(piPins.LED_SWEEP_PROCESS, LOW);
-#endif
+		//////////////////////////////////////INITIALIZATIONS//////////////////////////////////////////
+
 		SpectranInterface specInterface;
 		SpectranConfigurator specConfigurator(specInterface);
 		SweepBuilder sweepBuilder(specInterface);
 		CurveAdjuster curveAdjuster;
 		FrontEndCalibrator frontEndCalibrator(curveAdjuster);
+		RFIDetector rfiDetector(curveAdjuster);
 		DataLogger dataLogger;
 		RFPloter sweepPloter;
 		RFPloter gainPloter, nfPloter;
@@ -95,69 +80,98 @@ int main(int argc, char * argv[])
 		//Setting of pointers to objects which are used by SignalHandler class
 		SignalHandler sigHandler;
 		sigHandler.SetupSignalHandler(&specInterface, &specConfigurator, &sweepBuilder, &curveAdjuster,
-				&frontEndCalibrator, &dataLogger, &sweepPloter, &gainPloter, &nfPloter, &antPositioner);
+				&frontEndCalibrator, &rfiDetector, &dataLogger, &gpsInterface, &antPositioner,
+				&sweepPloter, &gainPloter, &nfPloter);
 
-		cout << "\nInitializing communication with Aaronia Spectran device..." << endl;
+		//Initializing the spectrum analyzer
+		cout << "\nInitializing the spectrum analyzer Aaronia Spectran HF-60105 V4 X..." << endl;
 		specInterface.Initialize();
-		cout << "The communication was established successfully" << endl;
+		cout << "The spectrum analyzer was initialized successfully" << endl;
 
-		//Initializing the communication with the GPS receiver
-		cout << "\nInitializing the GPS receiver..." << endl;
+		//Initializing the GPS receiver
+		cout << "\nInitializing the Aaronia GPS receiver..." << endl;
 		gpsInterface.Initialize();
-		cout << "The device was initialize successfully" << endl;
-
-		//Loading the Spectran parameters
-		cout << "\nLoading the Spectran's configuration parameters from the corresponding files" << endl;
-		cout << "Loading the fixed parameters..." << endl;
-		if( specConfigurator.LoadFixedParameters() )
-		{
-			//If the fixed parameters were loaded for the first time or they were reloaded, the initial configuration will be repeated
-			cout << "The fixed parameters were loaded by first time or they were reloaded so the Spectran initial configuration will be done" << endl;
-			specConfigurator.InitialConfiguration();
-			cout << "The initial configuration was carried out successfully" << endl;
-		}
-
-		cout << "Loading the frequency bands' parameters..." << endl;
-		flagBandsParamReloaded = specConfigurator.LoadBandsParameters();
-		cout << "The frequency bands' parameters were loaded successfully" << endl;
+		cout << "The GPS receiver was initialize successfully" << endl;
 
 		//Putting the antenna in the initial position and polarization
 		antPositioner.Initialize();
+		cout << "The initial azimuth angle is " << antPositioner.GetAzimPosition() << "° N" << endl;
 
-		//////////////////////////////////General Loop///////////////////////////////////
+		//////////////////////////////////END OF THE INITIALIZATION///////////////////////////////////////
 
-		while(!flagEndMeasCycle)
+
+		////////////////////////////////////////GENERAL LOOP////////////////////////////////////////////
+
+		while(flagInfiniteLoop || !flagEndIterations)
 		{
 			Sweep uncalSweep;
 
-			if(flagCalEnabled)
+			if(flagNewMeasCycle)
 			{
-				if(flagStartCal)
+				////////////////////////LOADING OF THE SPECTRAN'S PARAMETERS//////////////////////////
+				//Loading by first time or reloading the Spectran parameters
+				cout << "\nLoading the Spectran's configuration parameters from the corresponding files" << endl;
+				//Loading the fixed parameters
+				cout << "Loading the fixed parameters..." << endl;
+				if( specConfigurator.LoadFixedParameters() )
 				{
-					cout << "\nStarting the front end calibration" << endl;
-					frontEndCalibrator.StartCalibration();
-					cout << "\nTurn off the noise source, switch the input to this one and press Enter to continue..." << endl;
-					WaitForKey();
-					flagStartCal=false;
+					//If the fixed parameters were loaded for the first time or they were reloaded, the initial configuration will be repeated
+					cout << "The fixed parameters were loaded by first time or they were reloaded so the Spectran initial configuration will be done" << endl;
+					specConfigurator.InitialConfiguration();
+					cout << "The initial configuration was carried out successfully" << endl;
 				}
-			}
-			else
-			{
-				if( frontEndCalibrator.AreParamEmpty() )
-					frontEndCalibrator.LoadDefaultParameters();
+
+				//Loading the frequency bands parameters
+				cout << "Loading the frequency bands' parameters..." << endl;
+				flagBandsParamReloaded = specConfigurator.LoadBandsParameters();
+				cout << "The frequency bands' parameters were loaded successfully" << endl;
+				//////////////////////END OF THE LOADING OF THE SPECTRAN'S PARAMETERS////////////////
 			}
 
-			//The timestamp of each sweep is taking at the beginning. Also the antenna position data are saved in the Sweep object.
-			gpsInterface.ReadOneDataSet();
-			uncalSweep.timeData = gpsInterface.GetTimeData();
-			uncalSweep.azimuthAngle = antPositioner.GetAzimPosition();
-			uncalSweep.polarization = antPositioner.GetPolarizationString();
+			//Determining if the front end calibration must be done or not
+			if(flagCalEnabled && flagNewMeasCycle)
+			{
+				//The front end calibration is enabled and a new measurement cycle is starting
+				cout << "\nStarting the front end calibration" << endl;
+				frontEndCalibrator.StartCalibration();
+				cout << "\nTurn off the noise source, switch the input to this one and press Enter to continue..." << endl;
+				WaitForKey();
+			}
+
+			//This flag is pulled down here because it is just not needed from here to down.
+			flagNewMeasCycle=false;
+
+			/////////////////////////////GETTING ANTENNA POSITIONS AND TIME DATA///////////////////////////
+			//The timestamp of each sweep is taking at the beginning. Also, the antenna position data are
+			//saved in the Sweep object here.
+			bool flagSuccess=false;
+			unsigned int numOfErrors=0;
+			do
+			{
+				try
+				{
+					gpsInterface.ReadOneDataSet();
+					uncalSweep.timeData = gpsInterface.GetTimeData();
+					uncalSweep.azimuthAngle = antPositioner.GetAzimPosition();
+					uncalSweep.polarization = antPositioner.GetPolarizationString();
+				}
+				catch(CustomException & exc)
+				{
+					if( ++numOfErrors < 3)
+						cerr << "\nWarning: reading of time data and antenna position failed: " << exc.what() << endl;
+					else
+						throw( CustomException("The reading of time data and antenna position failed three times") );
+				}
+			}while(!flagSuccess);
+			//////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+			///////////////////////////////////CAPTURE LOOP OF A WHOLE SWEEP////////////////////////////////////
 
 			cout << "\nStarting the capturing of a whole sweep" << endl;
 #ifdef RASPBERR_PI
 			digitalWrite(piPins.LED_SWEEP_CAPTURE, HIGH);
 #endif
-
 			//Capturing the sweeps related to each one of the frequency bands, which in conjunction form a whole sweep
 			for(unsigned int i=0; i < specConfigurator.GetNumOfBands(); i++)
 			{
@@ -178,70 +192,103 @@ int main(int argc, char * argv[])
 				if(flagBandsParamReloaded)
 					specConfigurator.SetCurrBandParameters(currBandParam);
 			}
+
 #ifdef RASPBERRY_PI
 			digitalWrite(piPins.LED_SWEEP_CAPTURE, LOW);
 #endif
 			specInterface.SoundNewSweep();
 			cout << "\nThe capturing of a whole sweep finished" << endl;
-			
-			//Transferring the bands parameters to the objects which need them
+
+			////////////////////////////END OF THE CAPTURE LOOP OF A WHOLE SWEEP////////////////////////////////
+
+
+			//////////////TRANSFERRING OF THE NEW FREQ BANDS PARAMETERS AND (RE)LOADING OF OTHER PARAMETERS///////////////
+
 			if(flagBandsParamReloaded)
 			{
-				//The bands parameters are given to the objects after a sweep was captured to make sure the exact number of samples is known
-				cout << "\nThe bands parameters are transferred to the objects now that the number of samples is exactly known" << endl;
+				//The bands parameters are given to the objects which need them after a sweep was captured to make sure the
+				//exact number of samples is known. The parameters which must be adjusted taking into account the bands
+				//parameters are reloaded and readjusted each time the bands parameters are changed.
+				cout << "\nThe bands parameters changed so these will be transferred to the objects which use them" << endl;
 				auto bandsParameters = specConfigurator.GetBandsParameters();
 				curveAdjuster.SetBandsParameters(bandsParameters);
 				curveAdjuster.SetRefSweep(uncalSweep);
 				frontEndCalibrator.SetBandsParameters(bandsParameters);
+				cout << "The ENR values curve will be (re)loaded" << endl;
 				frontEndCalibrator.LoadENR();
-
-				flagBandsParamReloaded=false;
+				if(flagRFI)
+				{
+					cout << "The RFI harmful levels curve will be (re)loaded" << endl;
+					rfiDetector.SetBandsParameters(bandsParameters);
+					rfiDetector.LoadThreshCurve(rfiNorm);
+				}
+				//Saving the bands parameters in a CSV file
+				dataLogger.SaveBandsParamAsCSV(bandsParameters);
+				if(!flagCalEnabled)
+				{
+					cout << "\nThe front end calibration is not enabled so the default front end parameters will be loaded..." << endl;
+					frontEndCalibrator.LoadDefaultParameters();
+					cout << "The default front end parameters were loaded successfully" << endl;
+					if(flagPlot)
+						try
+						{
+							gainPloter.Clear();
+							gainPloter.Plot( frontEndCalibrator.GetGain(), "lines", "Total receiver gain");
+							nfPloter.Clear();
+							nfPloter.Plot( frontEndCalibrator.GetNoiseFigure(), "lines", "Total receiver noise figure");
+						}
+						catch(std::exception & exc)
+						{
+							cerr << "\nWarning: " << exc.what() << endl;
+						}
+				}
 			}
+			//////////////////////////////END OF TRANSFERRING OF THE BANDS PARAMETERS//////////////////////////////
 
-			/////////////////////Sweep processing//////////////////////
+
+			/////////////////////////////////SWEEP PROCESSING/////////////////////////////////////
 
 			if( frontEndCalibrator.IsCalibStarted() )
 			{
-				/////////////////////Front-end calibration: estimating its parameters, gain and noise figure///////////////////////
+				/////////////////////////////FRONT END CALIBRATION////////////////////////////////////
 
+				//Estimating the front end parameters, gain and noise figure curves versus frequency////////////////////
 				try
 				{
 					frontEndCalibrator.SetSweep(uncalSweep);
 
 					if( frontEndCalibrator.IsNoiseSourceOff() )
 					{
-						//if(flagPlot)
-							//calPloter.Plot(uncalSweep, "lines", "Sweep with noise source off");
+						////////Noise source off////////////
 						frontEndCalibrator.TurnOnNS();
 						cout << "\nTurn on the noise source and press Enter to continue..." << endl;
 						WaitForKey();
 					}
 					else
 					{
+						///////Noise source on/////////////
 						frontEndCalibrator.EndCalibration();
 						cout << "\nTurn off the noise source, switch the input to the antenna and press Enter to continue..." << endl;
 						WaitForKey();
-
 #ifdef RASPBERRY_PI
 						digitalWrite(piPins.LED_SWEEP_PROCESS, HIGH);
 #endif
 						frontEndCalibrator.EstimateParameters();
 
-						TimeData timeData = gpsInterface.GetTimeData();
-						frontEndCalibrator.SaveFrontEndParam(timeData);
+						dataLogger.SaveFrontEndParam( frontEndCalibrator.GetGain(), frontEndCalibrator.GetNoiseFigure() );
 
 						if(flagPlot)
-						{
-							//calPloter.Plot(uncalSweep, "lines", "Sweep with noise source on");
-							//FreqValues calSweepNSoff = frontEndCalibrator.CalibrateSweep( frontEndCalibrator.GetSweepNSoff() );
-							//calPloter.Plot(calSweepNSoff, "lines", "Calibrated sweep with NS off (50ohm load)");
-
-							gainPloter.Clear();
-							gainPloter.Plot( frontEndCalibrator.GetGain(), "lines", "Total receiver gain");
-
-							nfPloter.Clear();
-							nfPloter.Plot( frontEndCalibrator.GetNoiseFigure(), "lines", "Total receiver noise figure");
-						}
+							try
+							{
+								gainPloter.Clear();
+								gainPloter.Plot( frontEndCalibrator.GetGain(), "lines", "Total receiver gain");
+								nfPloter.Clear();
+								nfPloter.Plot( frontEndCalibrator.GetNoiseFigure(), "lines", "Total receiver noise figure");
+							}
+							catch(std::exception & exc)
+							{
+								cerr << "\nWarning: " << exc.what() << endl;
+							}
 #ifdef RASPBERRY_PI
 						digitalWrite(piPins.LED_SWEEP_PROCESS, LOW);
 #endif
@@ -250,71 +297,133 @@ int main(int argc, char * argv[])
 				catch(std::exception & exc)
 				{
 					cerr << "\nWarning: error during front end calibration: " << exc.what() << '.' << endl;
-					if( frontEndCalibrator.AreParamEmpty() )
+
+					frontEndCalibrator.EndCalibration();
+
+					if( frontEndCalibrator.AreParamEmpty() || flagBandsParamReloaded )
 					{
-						cerr << "The default front end parameters will be loaded." << endl;
+						cout << "The default front end parameters will be loaded." << endl;
 						frontEndCalibrator.LoadDefaultParameters();
 					}
 					else
-						cerr << "The last estimated front end parameters will be used." << endl;
+						cout << "The last estimated front end parameters will be used." << endl;
 				}
+				///////////////////////////END OF THE FRONT END CALIBRATION////////////////////////////////
 			}
 			else
 			{
-				///////////////Sweeps captured with the antenna connected to the input////////////
+				///////////////////////////////////NORMAL PROCESSING///////////////////////////////////////
+
+				//Processing of sweeps which were captured with the antenna connected to the input////////////
 
 #ifdef RASPBERRY_PI
 				digitalWrite(piPins.LED_SWEEP_PROCESS, HIGH);
 #endif
 
-				//Sweep calibration, taking into account the total gain curve
-				Sweep calSweep = frontEndCalibrator.CalibrateSweep(uncalSweep);
+				flagBandsParamReloaded=false;
 
-				if(flagPlot)
+				//Sweep calibration, taking into account the total gain curve
+				cout << "\nThe captured sweep is being calibrated" << endl;
+				Sweep calSweep = frontEndCalibrator.CalibrateSweep(uncalSweep);
+				cout << "The sweep calibration finished" << endl;
+
+				if(flagRFI)
 				{
-					//Ploting the actual sweep
-					sweepPloter.Clear();
-					sweepPloter.PlotSweep(calSweep);
+					//Detecting RFI
+					cout << "\nThe RFI which is present in the current calibrated sweep is being detected" << endl;
+					rfiDetector.DetectRFI(calSweep);
+					if(rfiDetector.GetNumOfRFIBands()==0)
+						cout << "No RFI was detected" << endl;
+					else
+						cout << "It was detected RFI. " << rfiDetector.GetNumOfRFIBands() << "RFI bands were detected" << endl;
 				}
 
+				if(flagPlot)
+					try
+					{
+						//Ploting the current sweep and the detected RFI
+						cout << "\nThe calibrated sweep will be plotted" << endl;
+						sweepPloter.Clear();
+						sweepPloter.PlotSweep(calSweep);
+						if(flagRFI && rfiDetector.GetNumOfRFIBands()!=0)
+						{
+							cout << "The detected RFI will be plotted" << endl;
+							sweepPloter.PlotRFI( rfiDetector.GetRFI() );
+						}
+					}
+					catch(std::exception & exc)
+					{
+						cerr << "\nWarnign: " << exc.what();
+					}
+
 				//Transferring the ready-to-save sweep to the data logger in order to this component saves the data in memory
-				dataLogger.SaveData(calSweep);
+				dataLogger.SaveSweep(calSweep);
 
 #ifdef RASPBERRY_PI
 				digitalWrite(piPins.LED_SWEEP_PROCESS, LOW);
 #endif
+				////////////////////////////////END OF NORMAL PROCESSING///////////////////////////////////
 
 
+				/////////////////////////////////ANTENNA POSITIONING////////////////////////////////////////
+
+				//Checking if the current measurement cycle has finished and if the software should or not starts a new one.
 				if( antPositioner.IsLastPosition() && antPositioner.GetPolarization()==Polarization::VERTICAL)
 				{
-					if( !flagInfIterations && --numOfIter==0 )
-						flagEndMeasCycle = true;
+					if( !flagInfiniteLoop && --numOfMeasCycles==0 )
+					{
+						cout << "\nThe requested number of measurements cycles have been realized" << endl;
+						flagEndIterations = true;
+					}
 					else
-						flagStartCal = true;
+						flagNewMeasCycle = true;
+
+					cout << "\nDeleting old files and compressing data files to be uploaded" << endl;
+					dataLogger.DeleteOldFiles();
+					dataLogger.CompressLastFiles();
 				}
 
+				//Changing the antenna position
+				cout << "\nThe antenna position will be changed" << endl;
 				antPositioner.ChangePolarization();
 				if( antPositioner.GetPolarization()==Polarization::HORIZONTAL)
 					antPositioner.NextAzimPosition();
 
-				cout << "\nThe new antenna position is: Azimutal=" << antPositioner.GetAzimPosition();
+				cout << "The new antenna position is: Azimuth=" << antPositioner.GetAzimPosition();
 				cout << ", Polarization=" << antPositioner.GetPolarizationString() << endl;
+
+				////////////////////////////END OF THE ANTENNA POSITIONING/////////////////////////////////////
+
+				//Trying to upload data
+				try
+				{
+					dataLogger.UploadData();
+				}
+				catch(std::exception & exc)
+				{
+					cerr << "\nWarning: " << exc.what() << endl;
+				}
 			}
 		}
-		////////////////////End Loop/////////////////////
+		//////////////////////////////////END OF THE GENERAL LOOP////////////////////////////////////
 
 		cout << "\nThe sweeps capturing process finished." << endl;
+
+		//Showing the elapsed time since the beginning
 		timer.stop();
 		boost::timer::cpu_times times = timer.elapsed();
-
 		double hours = double(times.wall)/(1e9*3600.0);
 		cout << "\nThe elapsed time since the beginning is: " << hours << " hours" << endl;
 	}
 	catch(CustomException & exc)
 	{
+		TurnOffFrontEnd();
 		cerr << "\nError: " << exc.what() << endl;
-		exit(EXIT_FAILURE);
+		std::exit(EXIT_FAILURE);
 	}
+
+	TurnOffFrontEnd();
 
 	return 0;
 }
+////////////////////////////END OF MAIN FUNCTION/////////////////////////////////

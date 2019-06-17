@@ -1,0 +1,74 @@
+/*
+ * TestbenchRFIDetector.cpp
+ *
+ *  Created on: 02/06/2019
+ *      Author: new-mauro
+ */
+
+#include "SweepProcessing.h"
+
+int main()
+{
+	CurveAdjuster adjuster;
+	RFIDetector rfiDetector(adjuster);
+
+	Sweep sweep;
+	sweep.azimuthAngle=10.0;
+	sweep.polarization="horizontal";
+	for(auto i=0; i<=100; i++)
+	{
+		sweep.frequencies.push_back( 900e6 + 50e6*i/100 );
+		sweep.values.push_back( -220.0 );
+	}
+	sweep.values[50]=-120.0;
+
+	adjuster.SetRefSweep(sweep);
+
+	std::vector<BandParameters> bandsParameters;
+	BandParameters oneBandParam;
+
+	oneBandParam.detector=0;
+	oneBandParam.flagDefaultSamplePoints=true;
+	oneBandParam.flagEnable=true;
+	oneBandParam.rbw=1e6;
+	oneBandParam.samplePoints=0;
+	oneBandParam.startFreq=900e6;
+	oneBandParam.stopFreq=925e6;
+	oneBandParam.sweepTime=1000;
+	oneBandParam.vbw=1e6;
+	bandsParameters.push_back(oneBandParam);
+
+	oneBandParam.detector=0;
+	oneBandParam.flagDefaultSamplePoints=true;
+	oneBandParam.flagEnable=true;
+	oneBandParam.rbw=1e6;
+	oneBandParam.samplePoints=0;
+	oneBandParam.startFreq=925e6;
+	oneBandParam.stopFreq=950e6;
+	oneBandParam.sweepTime=1000;
+	oneBandParam.vbw=1e6;
+	bandsParameters.push_back(oneBandParam);
+
+	adjuster.SetBandsParameters(bandsParameters);
+	rfiDetector.SetThreshNorm(RFI::ITU_RA769);
+	rfiDetector.SetBandsParameters(bandsParameters);
+
+	rfiDetector.LoadThreshCurve();
+
+	RFI detectedRFI;
+	detectedRFI = rfiDetector.DetectRFI(sweep);
+
+	RFPloter rfPloter;
+
+	rfPloter.PlotSweep(sweep);
+	rfPloter.PlotRFI(detectedRFI);
+
+	cout << "\nPresione una tecla para continuar..." << endl;
+	WaitForKey();
+	rfPloter.Clear();
+
+	cout << "\nPresione una tecla para terminar..." << endl;
+	WaitForKey();
+
+	return 0;
+}

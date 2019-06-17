@@ -80,3 +80,199 @@ std::vector<float> operator-(const std::vector<float> & vect)
 	return result;
 }
 
+void InitializeGPIO()
+{
+#ifdef RASPBERRY_PI
+	//Initializing the Wiring Pi library
+	wiringPiSetup();
+
+	pinMode(piPins.NOISE_SOURCE, OUTPUT);
+	digitalWrite(piPins.NOISE_SOURCE, LOW);
+
+	pinMode(piPins.SWITCH, OUTPUT);
+	digitalWrite(piPins.SWITCH, SWITCH_TO_NS);
+
+	pinMode(piPins.LNAS, OUTPUT);
+	digitalWrite(piPins.LNAS, LOW);
+
+	pinMode(piPins.SPECTRAN, OUTPUT);
+	digitalWrite(piPins.SPECTRAN, LOW);
+
+	pinMode(piPins.LED_SWEEP_CAPTURE, OUTPUT);
+	digitalWrite(piPins.LED_SWEEP_CAPTURE, LOW);
+
+	pinMode(piPins.LED_SWEEP_PROCESS, OUTPUT);
+	digitalWrite(piPins.LED_SWEEP_PROCESS, LOW);
+
+	pinMode(piPins.LED_INIT_POS, OUTPUT);
+	digitalWrite(piPins.LED_INIT_POS, LOW);
+
+	pinMode(piPins.BUTTON_INIT_POS, INPUT);
+	pullUpDnControl(piPins.BUTTON_INIT_POS, PUD_UP);
+
+	pinMode(piPins.LED_NEXT_POS, OUTPUT);
+	digitalWrite(piPins.LED_NEXT_POS, LOW);
+
+	pinMode(piPins.BUTTON_NEXT_POS, INPUT);
+	pullUpDnControl(piPins.BUTTON_NEXT_POS, PUD_UP);
+
+	pinMode(piPins.LED_POLARIZ, OUTPUT);
+	digitalWrite(piPins.LED_POLARIZ, LOW);
+
+	pinMode(piPins.BUTTON_POLARIZ, INPUT);
+	pullUpDnControl(piPins.BUTTON_POLARIZ, PUD_UP);
+
+#endif
+}
+
+void TurnOnFrontEnd()
+{
+#ifdef RASPBERRY_PI
+	digitalWrite(piPins.SPECTRAN, HIGH);
+	sleep(5);
+	digitalWrite(piPins.LNAS, HIGH);
+	usleep(100000);
+	digitalWrite(piPins.SWITCH, SWITCH_TO_ANTENNA);
+#endif
+}
+
+void TurnOffFrontEnd()
+{
+#ifdef RASBPERRY_PI
+	digitalWrite(piPins.NOISE_SOURCE, LOW);
+	digitalWrite(piPins.SWITCH, SWITCH_TO_NS);
+	usleep(100000);
+	digitalWrite(piPins.LNAS, LOW);
+	sleep(1);
+	digitalWrite(piPins.SPECTRAN, LOW);
+#endif
+}
+
+void PrintHelp()
+{
+	cout << "Usage: rfmis-cart [--plot] [--no-frontend-cal] [--rfi={ska-mode1,ska-mode2,itu-ra769}] [--num-meas-cycles='number'] [--help | -h]" << endl;
+	cout << "\nThis software was designed to capture RF power measurements from a spectrum analyzer Aaronia Spectran V4, using an antenna" << endl;
+	cout << "which could be rotated to point the horizon in different azimuth angles and whose polarization could be changed between" << endl;
+	cout << "horizontal and vertical. A sweep from 1 GHz (or maybe less) to 9.4 GHz is captured in each antenna position and then it is processed" << endl;
+	cout << "to identify RF interference (RFI), it is saved into memory, it is plotted with the identified RFI and finally the measurements are sent" << endl;
+	cout << "to a remote server. The software's arguments can be put in any order." << endl;
+	cout << "\nThe arguments' descriptions are presented in the following:" << endl;
+	cout << "\t--plot\t\t\t\t\tEnable the plotting of the different RF data which are got by the software." << endl;
+	cout << "\t\t\t\t\t\t  If it is not given no plot is produced." << endl;
+	cout << "\t--no-frontend-cal\t\t\tDisable the front end calibration, i.e. the estimation of the front end's parameters," << endl;
+	cout <<	"\t\t\t\t\t\t  total gain and total noise figure, using a noise generator. Instead of that," << endl;
+	cout << "\t\t\t\t\t\t  default front end's parameters curves are used to calibrated the sweeps." << endl;
+	cout << "\t\t\t\t\t\t  If it is not given the front end calibration is performed normally," << endl;
+	cout << "\t\t\t\t\t\t  turning the noise generator on and off." << endl;
+	cout << "\t--rfi={ska-mode1,ska-mode2,itu-ra769}\tEnable the identifying of RF interference (RFI). The user has to provide the norm (or protocol)" << endl;
+	cout << "\t\t\t\t\t\t  which must be taken into account to define the harmful levels of RFI: The SKA protocol Mode 1," << endl;
+	cout << "\t\t\t\t\t\t  The SKA protocol Mode 2 or the ITU's recommendation RA.769-2. If it is not given the RFI" << endl;
+	cout << "\t\t\t\t\t\t  identifying is not performed." << endl;
+	cout << "\t--num-meas-cycles='number'\t\tDetermine the number of measurements cycles which must be performed. A measurement cycle is" << endl;
+	cout << "\t\t\t\t\t\t  formed by all the sweeps which are captured while the antenna goes over the 360° of azimuth" << endl;
+	cout << "\t\t\t\t\t\t  angle. If it is not given the measurement cycles are performed indefinitely." << endl;
+	cout << "\t-h, --help\t\t\t\tShow this help and finish there." << endl;
+}
+
+bool ProcessMainArguments(int argc, char * argv[])
+{
+	if(argc>1)
+	{
+		unsigned int argc_aux=argc;
+		std::list<std::string> argList;
+		for(unsigned int i=1; i<argc_aux; i++)
+			argList.push_back( argv[i] );
+
+		//Searching the argument --help
+		auto argIter = argList.cbegin();
+		while( argIter!=argList.cend() && *argIter!="--help" )	argIter++;
+		if( argIter!=argList.cend() )
+		{
+			//The argument was found
+			PrintHelp();
+			return false;
+		}
+
+		//Searching the argument -h
+		argIter = argList.cbegin();
+		while( argIter!=argList.cend() && *argIter!="-h" )	argIter++;
+		if( argIter!=argList.cend() )
+		{
+			//The argument was found
+			PrintHelp();
+			return false;
+		}
+
+		//Searching the argument --no-frontend-cal
+		argIter = argList.cbegin();
+		while( argIter!=argList.cend() && *argIter!="--no-frontend-cal" )	argIter++;
+		if( argIter!=argList.cend() )
+		{
+			//The argument was found
+			flagCalEnabled=false;
+			argList.erase(argIter);
+		}
+
+		//Searching the argument --plot
+		argIter = argList.cbegin();
+		while( argIter!=argList.cend() && *argIter!="--plot" )	argIter++;
+		if( argIter!=argList.cend() )
+		{
+			//The argument was found
+			flagPlot=true;
+			argList.erase(argIter);
+		}
+
+		//Searching the argument --rfi=xxxxx
+		argIter = argList.cbegin();
+		size_t equalSignPos=0;
+		while( argIter!=argList.cend() && argIter->find("--rfi=")==std::string::npos )	argIter++;
+		if( argIter!=argList.cend() )
+		{
+			//The argument was found
+			flagRFI=true;
+			equalSignPos = argIter->find('=');
+			std::string rfiNormStr = argIter->substr(equalSignPos+1);
+			if( rfiNormStr=="ska-mode1" )
+				rfiNorm = RFI::SKA_MODE1;
+			else if( rfiNormStr=="ska-mode2" )
+				rfiNorm = RFI::SKA_MODE2;
+			else if( rfiNormStr=="itu-ra769" )
+				rfiNorm = RFI::ITU_RA769;
+			else
+			{
+				cout << "rfims-cart: unrecognized argument '" << *argIter << '\'' << endl;
+				cout << "Usage: rfmis-cart [--plot] [--no-frontend-cal] [--rfi={ska-mode1,ska-mode2,itu-ra769}] [--num-meas-cycles='number'] [--help | -h]" << endl;
+				return false;
+			}
+
+			argList.erase(argIter);
+		}
+
+		//Searching the argument --num-meas-cycles=xxxx
+		argIter = argList.cbegin();
+		while( argIter!=argList.cend() && argIter->find("--num-meas-cycles=")==std::string::npos )	argIter++;
+		if( argIter!=argList.cend() )
+		{
+			//The argument was found
+			flagInfiniteLoop=false;
+			equalSignPos = argIter->find('=');
+			std::istringstream iss;
+			std::string numString = argIter->substr(equalSignPos+1);
+			iss.str(numString);
+			iss >> numOfMeasCycles;
+			argList.erase(argIter);
+		}
+
+		if(!argList.empty())
+		{
+			cout << "rfims-cart: the following arguments were not recognized:";
+			for(argIter = argList.cbegin(); argIter != argList.cend(); argIter++)
+				cout << " \'" << *argIter << '\'';
+			cout << endl;
+			cout << "Usage: rfmis-cart [--plot] [--no-frontend-cal] [--rfi={ska-mode1,ska-mode2,itu-ra769}] [--num-meas-cycles='number'] [--help | -h]" << endl;
+			return false;
+		}
+	}
+	return true;
+}

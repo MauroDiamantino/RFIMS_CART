@@ -154,7 +154,8 @@ GPSInterface::GPSInterface()
  */
 GPSInterface::~GPSInterface()
 {
-	cout << "\nDestroying the GPS interface" << endl;
+	cout << "Closing the communication with the GPS interface." << endl;
+
 	//Disabling the data streaming
 	try
 	{
@@ -227,7 +228,7 @@ inline void GPSInterface::Write(const std::string& command)
  * (which represent a certain time interval). When the number of bytes is not given, i.e. the second parameter takes
  * the default value which is zero, the method will just wait a fixed interval time for the reply's bytes.
  */
-inline void GPSInterface::Read(std::string& reply, unsigned int numOfBytes)
+inline void GPSInterface::Read(std::string& reply, const unsigned int numOfBytes)
 {
 	DWORD receivedBytes;
 	char rxBuffer;
@@ -289,7 +290,7 @@ inline bool GPSInterface::ControlChecksum(const std::string& reply)
 }
 
 //! A method which is intended to configure a GPS receiver's variable
-void GPSInterface::ConfigureVariable(const std::string& variable, unsigned int value)
+void GPSInterface::ConfigureVariable(const std::string& variable, const unsigned int value)
 {
 	//Setting up a GPS receiver's variable
 	std::stringstream ss;
@@ -333,10 +334,13 @@ void GPSInterface::ConfigureVariable(const std::string& variable, unsigned int v
 inline void GPSInterface::CalculateCardanAngles()
 {
 	yaw = atan2(compassData.y, compassData.x) * 180.0/M_PI;
+
 	if(yaw<0)
 		yaw += 360.0; //!< To convert the yaw angle range from -180° - 180° to 0° - 360°
-	if( (yaw+=180.0)>=360.0 )
+
+	if( (yaw+=180.0) >= 360.0 )
 		yaw -= 360.0;
+
 	pitch = -atan2( accelData.y, sqrt(pow(accelData.x,2) + pow(accelData.z,2)) ) * 180.0/M_PI;
 	roll = atan2( -accelData.x, (accelData.z<0 ? -1 : 1) * sqrt(pow(accelData.y,2) + pow(accelData.z,2)) ) * 180.0/M_PI;
 }
@@ -345,7 +349,7 @@ inline void GPSInterface::CalculateCardanAngles()
 /*! Also, this method controls the checksum of the desired reply. The method throws exception when the checksum is wrong
  * and when the desired reply was not found.
  */
-unsigned int GPSInterface::FindAndCheckDataReply(const std::vector<std::string>& replies, const std::string& replyType, char sensor)
+unsigned int GPSInterface::FindAndCheckDataReply(const std::vector<std::string>& replies, const std::string& replyType, const char sensor)
 {
 	std::string header;
 	if(replyType=="PAAG")
@@ -391,14 +395,14 @@ void GPSInterface::SaveSensorsData()
 {
 	//Timestamp,Gyroscope.x,Gyroscope.y,Gyroscope.z,Compass.x,Compass.y,Compass.z,Accelerometer.x,Accelerometer.y,Accelerometer.z,yaw,pitch,roll\n
 
-	sensorFile << timeData.timestamp() << ',' << gyroData.x << ',' << gyroData.y << ',' << gyroData.z << ',';
+	sensorFile << timeData.GetTimestamp() << ',' << gyroData.x << ',' << gyroData.y << ',' << gyroData.z << ',';
 	sensorFile << compassData.x << ',' << compassData.y << ',' << compassData.z << ',';
 	sensorFile << accelData.x << ',' << accelData.y << ',' << accelData.z << ',';
 	sensorFile << yaw << ',' << pitch << ',' << roll << '\n';
 }
 
 //! The aim of this method is take the data replies (GPRMC, GPGGA and PAAG,DATA) and parse and extract the data from them.
-void GPSInterface::ProcessDataReplies(std::vector<std::string>& replies)
+void GPSInterface::ProcessDataReplies(const std::vector<std::string>& replies)
 {
 	nmea_s * data;
 	std::stringstream ss;
@@ -565,7 +569,6 @@ void GPSInterface::Initialize()
 	}
 
 	//Trying the communication with an ID command
-	cout << "Trying the communication with the Aaronia GPS Receiver with an ID command" << endl;
 	std::string command("$PAAG,ID\r\n");
 	std::string reply;
 	bool flagSuccess=false;
@@ -593,20 +596,21 @@ void GPSInterface::Initialize()
 			hardVersion = reply.substr(pos[0], pos[1]-pos[0]-1);
 			firmVersion = reply.substr(pos[1], pos[2]-pos[1]-1);
 			protocolVersion = reply.substr(pos[2], pos[3]-pos[2]-1);
-			cout << "The reply of the ID command was right:" << endl;
-			cout << "\tHardware version: " << hardVersion << endl;
-			cout << "\tFirmware version: " << firmVersion << endl;
-			cout << "\tProtocol version: " << protocolVersion << endl;
+			cout << "The GPS receiver replied correctly. Its features are:" << endl;
+			cout << "\tHardware version:" << hardVersion;
+			cout << "\tFirmware version:" << firmVersion;
+			cout << "\tProtocol version:" << protocolVersion << endl;
 
 			flagSuccess=true;
 		}
 		catch(CustomException& exc)
 		{
-			cerr << "Warning: one of the ID commands failed." << endl;
+			cerr << "Warning: one of the ID commands failed: " << exc.what() << endl;
 			if(++i >= 3)
 			{
-				exc.Append("\nThe ID commands failed.");
-				throw;
+				CustomException exc2("\nThe ID commands failed: ");
+				exc2.Append( exc.what() );
+				throw(exc2);
 			}
 		}
 	}

@@ -24,7 +24,7 @@ bool SpectranConfigurator::LoadFixedParameters()
 	std::string paramName, line;
 	char endChar;
 	size_t definitionEndPos, endCharPos, equalPos;
-	boost::filesystem::path pathAndFilename(FILES_PATH);
+	boost::filesystem::path pathAndFilename(SPEC_PARAM_PATH);
 	pathAndFilename /= "fixedparameters.txt";
 
 	//Checking if the fixed parameters have been modified
@@ -215,7 +215,7 @@ bool SpectranConfigurator::LoadBandsParameters()
 	std::string paramName, line;
 	char endChar;
 	size_t definitionEndPos, endCharPos, equalPos;
-	boost::filesystem::path pathAndFilename(FILES_PATH);
+	boost::filesystem::path pathAndFilename(SPEC_PARAM_PATH);
 	pathAndFilename /= "freqbands.txt";
 
 	if( lastWriteTimes[1] < boost::filesystem::last_write_time(pathAndFilename) )
@@ -224,7 +224,13 @@ bool SpectranConfigurator::LoadBandsParameters()
 		//Opening the files with the frequency bands's parameters and loading these ones
 		ifs.open( pathAndFilename.string() );
 
-		BandParameters bandParam = {false, 0.0, 0.0, 0.0, 0.0, 0, 0, 0};
+		//Extracting the parameters set's name and the possible following blank line
+		getline(ifs, line);
+		if( ifs.peek()=='\n' )
+			ifs.get();
+
+		//Loop of parameters extraction
+		BandParameters oneBandParam = {false, 0.0, 0.0, 0.0, 0.0, 0, 0, 0};
 		do
 		{
 			line.clear();
@@ -257,21 +263,24 @@ bool SpectranConfigurator::LoadBandsParameters()
 			boost::algorithm::to_lower(valueString);
 
 			if(paramName=="band index")
-			{}
+			{
+				std::istringstream iss(valueString);
+				iss >> oneBandParam.bandNumber;
+			}
 			else if(paramName=="enabled")
 			{
 				if(valueString=="y")
 				{
-					bandParam.flagEnable=true;
+					oneBandParam.flagEnable=true;
 				}
 				else if(valueString=="n")
 				{
-					bandParam.flagEnable=false;
+					oneBandParam.flagEnable=false;
 				}
 				else
 				{
 					std::ostringstream oss;
-					oss << "It is not clear if the band " << (bandsParam.size()+1) << " is enabled or not.";
+					oss << "It is not clear if the band " << oneBandParam.bandNumber << " is enabled or not.";
 					CustomException exc( oss.str() );
 					throw(exc);
 				}
@@ -279,11 +288,11 @@ bool SpectranConfigurator::LoadBandsParameters()
 			else if(paramName=="fstart")
 			{
 				std::istringstream iss(valueString);
-				iss >> bandParam.startFreq;
-				if(bandParam.startFreq<1e6 || bandParam.startFreq>9.4e9)
+				iss >> oneBandParam.startFreq;
+				if(oneBandParam.startFreq<1e6 || oneBandParam.startFreq>9.4e9)
 				{
 					std::ostringstream oss;
-					oss << "The given value, " << bandParam.startFreq << ", to configure parameter Fstart is out of range.";
+					oss << "The given value, " << oneBandParam.startFreq << ", to configure parameter Fstart is out of range.";
 					CustomException exc( oss.str() );
 					throw(exc);
 				}
@@ -291,11 +300,11 @@ bool SpectranConfigurator::LoadBandsParameters()
 			else if(paramName=="fstop")
 			{
 				std::istringstream iss(valueString);
-				iss >> bandParam.stopFreq;
-				if(bandParam.stopFreq<1e6 || bandParam.stopFreq>9.4e9)
+				iss >> oneBandParam.stopFreq;
+				if(oneBandParam.stopFreq<1e6 || oneBandParam.stopFreq>9.4e9)
 				{
 					std::ostringstream oss;
-					oss << "The given value, " << bandParam.stopFreq << ", to configure parameter Fstop is out of range.";
+					oss << "The given value, " << oneBandParam.stopFreq << ", to configure parameter Fstop is out of range.";
 					CustomException exc( oss.str() );
 					throw(exc);
 				}
@@ -304,20 +313,20 @@ bool SpectranConfigurator::LoadBandsParameters()
 			{
 				if(valueString=="full")
 				{
-					bandParam.rbw=50e6;
+					oneBandParam.rbw=50e6;
 				}
 				else
 				{
 					//The value is numerical
 					std::istringstream iss(valueString);
-					iss >> bandParam.rbw;
-					if(bandParam.rbw!=3e6 && bandParam.rbw!=1e6 && bandParam.rbw!=300e3 && bandParam.rbw!=100e3 &&
-							bandParam.rbw!=30e3 && bandParam.rbw!=10e3 && bandParam.rbw!=3e3 && bandParam.rbw!=1e3 &&
-							bandParam.rbw!=120e3 && bandParam.rbw!=9e3 && bandParam.rbw!=200.0 && bandParam.rbw!=5e6 &&
-							bandParam.rbw!=200e3 && bandParam.rbw!=1.5e6 && bandParam.rbw!=50e6)
+					iss >> oneBandParam.rbw;
+					if(oneBandParam.rbw!=3e6 && oneBandParam.rbw!=1e6 && oneBandParam.rbw!=300e3 && oneBandParam.rbw!=100e3 &&
+							oneBandParam.rbw!=30e3 && oneBandParam.rbw!=10e3 && oneBandParam.rbw!=3e3 && oneBandParam.rbw!=1e3 &&
+							oneBandParam.rbw!=120e3 && oneBandParam.rbw!=9e3 && oneBandParam.rbw!=200.0 && oneBandParam.rbw!=5e6 &&
+							oneBandParam.rbw!=200e3 && oneBandParam.rbw!=1.5e6 && oneBandParam.rbw!=50e6)
 					{
 						std::ostringstream oss;
-						oss << "The given value, " << bandParam.rbw << ", to configure parameter RBW is invalid.";
+						oss << "The given value, " << oneBandParam.rbw << ", to configure parameter RBW is invalid.";
 						CustomException exc( oss.str() );
 						throw(exc);
 					}
@@ -327,20 +336,20 @@ bool SpectranConfigurator::LoadBandsParameters()
 			{
 				if(valueString=="full")
 				{
-					bandParam.vbw=50e6;
+					oneBandParam.vbw=50e6;
 				}
 				else
 				{
 					//The value is numerical
 					std::istringstream iss(valueString);
-					iss >> bandParam.vbw;
-					if(bandParam.vbw!=3e6 && bandParam.vbw!=1e6 && bandParam.vbw!=300e3 && bandParam.vbw!=100e3 &&
-							bandParam.vbw!=30e3 && bandParam.vbw!=10e3 && bandParam.vbw!=3e3 && bandParam.vbw!=1e3 &&
-							bandParam.vbw!=120e3 && bandParam.vbw!=9e3 && bandParam.vbw!=200.0 && bandParam.vbw!=5e6 &&
-							bandParam.vbw!=200e3 && bandParam.vbw!=1.5e6 && bandParam.vbw!=50e6)
+					iss >> oneBandParam.vbw;
+					if(oneBandParam.vbw!=3e6 && oneBandParam.vbw!=1e6 && oneBandParam.vbw!=300e3 && oneBandParam.vbw!=100e3 &&
+							oneBandParam.vbw!=30e3 && oneBandParam.vbw!=10e3 && oneBandParam.vbw!=3e3 && oneBandParam.vbw!=1e3 &&
+							oneBandParam.vbw!=120e3 && oneBandParam.vbw!=9e3 && oneBandParam.vbw!=200.0 && oneBandParam.vbw!=5e6 &&
+							oneBandParam.vbw!=200e3 && oneBandParam.vbw!=1.5e6 && oneBandParam.vbw!=50e6)
 					{
 						std::ostringstream oss;
-						oss << "The given value, " << bandParam.vbw << ", to configure parameter VBW is invalid.";
+						oss << "The given value, " << oneBandParam.vbw << ", to configure parameter VBW is invalid.";
 						CustomException exc( oss.str() );
 						throw(exc);
 					}
@@ -349,11 +358,11 @@ bool SpectranConfigurator::LoadBandsParameters()
 			else if(paramName=="sweep time")
 			{
 				std::istringstream iss(valueString);
-				iss >> bandParam.sweepTime;
-				if(bandParam.sweepTime<10 || bandParam.sweepTime>600000)
+				iss >> oneBandParam.sweepTime;
+				if(oneBandParam.sweepTime<10 || oneBandParam.sweepTime>600000)
 				{
 					std::ostringstream oss;
-					oss << "The given value, " << bandParam.sweepTime << ", to configure parameter Sweep Time is invalid.";
+					oss << "The given value, " << oneBandParam.sweepTime << ", to configure parameter Sweep Time is invalid.";
 					CustomException exc( oss.str() );
 					throw(exc);
 				}
@@ -361,24 +370,24 @@ bool SpectranConfigurator::LoadBandsParameters()
 			else if(paramName=="sample points")
 			{
 				std::istringstream iss(valueString);
-				iss >> bandParam.samplePoints;
-				unsigned int defaultNumOfSamples = 2 * (unsigned int)(bandParam.stopFreq - bandParam.startFreq) / bandParam.rbw + 1;
+				iss >> oneBandParam.samplePoints;
+				unsigned int defaultNumOfSamples = 2 * (unsigned int)(oneBandParam.stopFreq - oneBandParam.startFreq) / oneBandParam.rbw + 1;
 				if(defaultNumOfSamples<51) defaultNumOfSamples=51;
-				if(bandParam.samplePoints < defaultNumOfSamples)
+				if(oneBandParam.samplePoints < defaultNumOfSamples)
 				{
-					bandParam.samplePoints = defaultNumOfSamples;
-					bandParam.flagDefaultSamplePoints=true;
+					oneBandParam.samplePoints = defaultNumOfSamples;
+					oneBandParam.flagDefaultSamplePoints=true;
 				}
 			}
 			else if(paramName=="detector")
 			{
 				if(valueString=="rms")
 				{
-					bandParam.detector=0;
+					oneBandParam.detector=0;
 				}
 				else if(valueString=="min/max")
 				{
-					bandParam.detector=1;
+					oneBandParam.detector=1;
 				}
 				else
 				{
@@ -397,32 +406,34 @@ bool SpectranConfigurator::LoadBandsParameters()
 			//Control if the definitions of one band finished
 			if(endChar==';')
 			{
-				float spansRatio = (bandParam.stopFreq - bandParam.startFreq) / 200e6;
+				bandsParamVector.push_back(oneBandParam);
+
+				float spansRatio = (oneBandParam.stopFreq - oneBandParam.startFreq) / 200e6;
 				unsigned int numOfSubBands = ceil(spansRatio);
 
 				if(numOfSubBands>1)
 				{
 					//If number of sub-bands is greater than 1 (span greater than 200MHz) the corresponding band is partitioned
-					BandParameters subBandParam = bandParam;
+					BandParameters subBandParam = oneBandParam;
 					bool flagLastSubBand=false;
 
 					for(unsigned int i=0; i<numOfSubBands; i++)
 					{
-						subBandParam.stopFreq = bandParam.startFreq + (i+1)*200e6;
-						if( subBandParam.stopFreq  > bandParam.stopFreq )
+						subBandParam.stopFreq = oneBandParam.startFreq + (i+1)*200e6;
+						if( subBandParam.stopFreq  > oneBandParam.stopFreq )
 						{
 							//Last sub-band
-							subBandParam.stopFreq = bandParam.stopFreq;
-							subBandParam.sweepTime = bandParam.sweepTime * ( 1 - (numOfSubBands-1) / spansRatio );
+							subBandParam.stopFreq = oneBandParam.stopFreq;
+							subBandParam.sweepTime = oneBandParam.sweepTime * ( 1 - (numOfSubBands-1) / spansRatio );
 							flagLastSubBand=true;
 						}
 						else
-							subBandParam.sweepTime = bandParam.sweepTime / spansRatio;
+							subBandParam.sweepTime = oneBandParam.sweepTime / spansRatio;
 
 						if(flagLastSubBand)
-							subBandParam.samplePoints = bandParam.samplePoints * ( 1 - (numOfSubBands-1) / spansRatio );
+							subBandParam.samplePoints = oneBandParam.samplePoints * ( 1 - (numOfSubBands-1) / spansRatio );
 						else
-							subBandParam.samplePoints = bandParam.samplePoints / spansRatio;
+							subBandParam.samplePoints = oneBandParam.samplePoints / spansRatio;
 
 						//Estimative calculation of the number of samples
 						unsigned int defaultNumOfSamples = 2.0 * (subBandParam.stopFreq - subBandParam.startFreq) / subBandParam.rbw + 1;
@@ -433,18 +444,19 @@ bool SpectranConfigurator::LoadBandsParameters()
 							subBandParam.flagDefaultSamplePoints=true;
 						}
 
-						bandsParam.push_back(subBandParam);
+						subBandsParamVector.push_back(subBandParam);
 						subBandParam.startFreq = subBandParam.stopFreq;
 					}
 				}
 				else
-					bandsParam.push_back(bandParam);
+					subBandsParamVector.push_back(oneBandParam);
 
-				bandParam = {false, 0.0, 0.0, 0.0, 0.0, 0, 0, 0};
+				oneBandParam = {false, 0.0, 0.0, 0.0, 0.0, 0, 0, 0};
 
 				if( ifs.peek()=='\n' )
 					ifs.get();
 			}
+
 		}while(ifs.eof()!=true);
 
 		ifs.close();
@@ -590,26 +602,26 @@ void SpectranConfigurator::InitialConfiguration()
 BandParameters SpectranConfigurator::ConfigureNextBand()
 {
 	do{
-		if( ++bandIndex >= bandsParam.size() )
+		if( ++bandIndex >= subBandsParamVector.size() )
 			bandIndex=0;
-	}while(bandsParam[bandIndex].flagEnable==false); //Checking if the current band is enabled
+	}while(subBandsParamVector[bandIndex].flagEnable==false); //Checking if the current band is enabled
 
-	SetVariable( SpecVariable::STARTFREQ, bandsParam[bandIndex].startFreq );
-	CheckApproxEqual( SpecVariable::STARTFREQ, bandsParam[bandIndex].startFreq );
+	SetVariable( SpecVariable::STARTFREQ, subBandsParamVector[bandIndex].startFreq );
+	CheckApproxEqual( SpecVariable::STARTFREQ, subBandsParamVector[bandIndex].startFreq );
 
-	SetVariable( SpecVariable::STOPFREQ, bandsParam[bandIndex].stopFreq );
-	CheckApproxEqual( SpecVariable::STOPFREQ, bandsParam[bandIndex].stopFreq );
+	SetVariable( SpecVariable::STOPFREQ, subBandsParamVector[bandIndex].stopFreq );
+	CheckApproxEqual( SpecVariable::STOPFREQ, subBandsParamVector[bandIndex].stopFreq );
 
-	SetVariable( SpecVariable::RESBANDW, bandsParam[bandIndex].rbw );
-	CheckEqual( SpecVariable::RESBANDW, bandsParam[bandIndex].rbw );
+	SetVariable( SpecVariable::RESBANDW, subBandsParamVector[bandIndex].rbw );
+	CheckEqual( SpecVariable::RESBANDW, subBandsParamVector[bandIndex].rbw );
 
-	SetVariable( SpecVariable::VIDBANDW, bandsParam[bandIndex].vbw );
-	CheckEqual( SpecVariable::RESBANDW, bandsParam[bandIndex].rbw );
+	SetVariable( SpecVariable::VIDBANDW, subBandsParamVector[bandIndex].vbw );
+	CheckEqual( SpecVariable::RESBANDW, subBandsParamVector[bandIndex].rbw );
 
-	SetVariable( SpecVariable::SWEEPTIME, float(bandsParam[bandIndex].sweepTime) );
+	SetVariable( SpecVariable::SWEEPTIME, float(subBandsParamVector[bandIndex].sweepTime) );
 	try
 	{
-		CheckEqual( SpecVariable::SWEEPTIME, float(bandsParam[bandIndex].sweepTime) );
+		CheckEqual( SpecVariable::SWEEPTIME, float(subBandsParamVector[bandIndex].sweepTime) );
 	}
 	catch(CustomException & exc)
 	{
@@ -627,14 +639,14 @@ BandParameters SpectranConfigurator::ConfigureNextBand()
 					CustomException exc("The reply to the command to get the current value of the \"sweep time\" was wrong.");
 					throw(exc);
 				}
-				if( bandsParam[bandIndex].sweepTime > (unsigned int) reply.GetValue() )
+				if( subBandsParamVector[bandIndex].sweepTime > (unsigned int) reply.GetValue() )
 				{
 					std::ostringstream oss;
-					oss << "The sweep time value which was taken by the spectrum analyzer, " << reply.GetValue() << "ms, is lesser than the original one, " << bandsParam[bandIndex].sweepTime << "ms.";
+					oss << "The sweep time value which was taken by the spectrum analyzer, " << reply.GetValue() << "ms, is lesser than the original one, " << subBandsParamVector[bandIndex].sweepTime << "ms.";
 					CustomException exc( oss.str() );
 					throw(exc);
 				}
-				bandsParam[bandIndex].sweepTime = (unsigned int) reply.GetValue();
+				subBandsParamVector[bandIndex].sweepTime = (unsigned int) reply.GetValue();
 			}
 			catch(CustomException & exc)
 			{
@@ -643,8 +655,8 @@ BandParameters SpectranConfigurator::ConfigureNextBand()
 				CustomException exc1(str);
 				throw exc1;
 			}
-			cerr << "\nWarning: The band N " << bandIndex << " (Fstart=" << bandsParam[bandIndex].startFreq << ", Fstop=";
-			cerr << bandsParam[bandIndex].stopFreq << ") will have the sweep time " << bandsParam[bandIndex].sweepTime;
+			cerr << "\nWarning: The band N " << bandIndex << " (Fstart=" << subBandsParamVector[bandIndex].startFreq << ", Fstop=";
+			cerr << subBandsParamVector[bandIndex].stopFreq << ") will have the sweep time " << subBandsParamVector[bandIndex].sweepTime;
 			cerr << "ms which is bigger than original one";
 		}
 		else
@@ -653,13 +665,13 @@ BandParameters SpectranConfigurator::ConfigureNextBand()
 		}
 	}
 
-	if(bandsParam[bandIndex].flagDefaultSamplePoints)
+	if(subBandsParamVector[bandIndex].flagDefaultSamplePoints)
 		SetVariable( SpecVariable::SWPFRQPTS, 1.0 ); //dummy setting to make sure that the spectrum analyzer has taken the default number of samples
 	else
-		SetVariable( SpecVariable::SWPFRQPTS, float(bandsParam[bandIndex].samplePoints) );
+		SetVariable( SpecVariable::SWPFRQPTS, float(subBandsParamVector[bandIndex].samplePoints) );
 
-	SetVariable( SpecVariable::DETMODE, float(bandsParam[bandIndex].detector) );
-	CheckEqual( SpecVariable::DETMODE, float(bandsParam[bandIndex].detector) );
+	SetVariable( SpecVariable::DETMODE, float(subBandsParamVector[bandIndex].detector) );
+	CheckEqual( SpecVariable::DETMODE, float(subBandsParamVector[bandIndex].detector) );
 
-	return bandsParam[bandIndex];
+	return subBandsParamVector[bandIndex];
 }

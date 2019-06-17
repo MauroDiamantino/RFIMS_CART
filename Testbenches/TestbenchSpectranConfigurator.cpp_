@@ -1,0 +1,20 @@
+/*
+ * TestbenchSpectranConfigurator.cpp
+ *
+ *  Created on: 07/06/2019
+ *      Author: new-mauro
+ */
+
+#include "Spectran.h"
+
+int main()
+{
+	SpectranInterface specInterf;
+	SpectranConfigurator specConf(specInterf);
+
+	specConf.LoadBandsParameters();
+
+	return 0;
+}
+
+

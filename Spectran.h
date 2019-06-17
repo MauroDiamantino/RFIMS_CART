@@ -97,10 +97,10 @@ private:
 public:
 	//////////Class interface//////////
 	Command();
-	Command(CommandType commType, SpecVariable variable=SpecVariable::UNINITIALIZED, float val=0.0);
+	Command(const CommandType commType, const SpecVariable variable=SpecVariable::UNINITIALIZED, const float val=0.0);
 	Command(const Command& anotherComm);
-	void SetAs(CommandType commType, SpecVariable variable=SpecVariable::UNINITIALIZED, float val=0.0);
-	void SetParameters(SpecVariable variable, float val=0.0);
+	void SetAs(const CommandType commType, const SpecVariable variable=SpecVariable::UNINITIALIZED, const float val=0.0);
+	void SetParameters(const SpecVariable variable, const float val=0.0);
 	//! A method to get the current command type.
 	CommandType GetCommandType() const {	return commandType;	}
 	std::string GetCommTypeString() const;
@@ -154,15 +154,15 @@ protected:
 	std::vector<std::uint8_t> bytes; //!< Bytes array (or vector) which has been received from a spectrum analyzer.
 	float value; //!< The value (as a float number) of the queried Spectran variable or a power value. It has sense with *GETSTPVAR* and *AMPFREQDAT* replies.
 	///////////Protected methods//////////////
-	void FillBytesVector(std::uint8_t * data);
+	void FillBytesVector(const std::uint8_t * data);
 public:
 	//////////Class interface///////////
 	Reply();
-	Reply(ReplyType type, SpecVariable variable=SpecVariable::UNINITIALIZED);
+	Reply(const ReplyType type, const SpecVariable variable=SpecVariable::UNINITIALIZED);
 	Reply(const Reply& anotherReply);
 	virtual ~Reply() {}
-	virtual void PrepareTo(ReplyType type, SpecVariable variable=SpecVariable::UNINITIALIZED);
-	virtual void InsertBytes(std::uint8_t * data);
+	virtual void PrepareTo(const ReplyType type, const SpecVariable variable=SpecVariable::UNINITIALIZED);
+	virtual void InsertBytes(const std::uint8_t * data);
 	//! A Get method which returns the reply type as the corresponding value of the class' internal enumerator.
 	ReplyType GetReplyType() const {	return replyType;	}
 	std::string GetReplyTypeString() const;
@@ -196,10 +196,10 @@ class SweepReply : public Reply {
 public:
 	///////////Class Interface//////////
 	SweepReply();
-	SweepReply(std::uint8_t * bytesPtr);
+	SweepReply(const std::uint8_t * bytesPtr) : Reply(Reply::AMPFREQDAT) {	SweepReply::InsertBytes(bytesPtr);	}
 	//~SweepReply() {}
-	void PrepareTo(ReplyType type, SpecVariable variable=SpecVariable::UNINITIALIZED) {}
-	void InsertBytes(std::uint8_t * b);
+	void PrepareTo(const ReplyType type, const SpecVariable variable=SpecVariable::UNINITIALIZED) {}
+	void InsertBytes(const std::uint8_t * data);
 	unsigned int GetTimestamp() const {	return timestamp;	};
 	//float GetFrequency() const {	return frequency;	};
 	std::uint_least64_t GetFrequency() const {	return frequency;	};
@@ -248,7 +248,8 @@ public:
 	void EnableSweep();
 	void DisableSweep();
 	void Purge();
-	void ResetDevice();
+	void SoftReset();
+	void HardReset();
 	void LogOut();
 	DWORD GetVID() const {	return VID;	}
 	DWORD GetPID() const { 	return PID;	}
@@ -257,6 +258,61 @@ public:
 	bool IsSweepEnabled() const {	return flagSweepsEnabled;	}
 	void SoundNewSweep();
 };
+//////////////////Inline SpectranInterace's methods/////////////////////
+inline void SpectranInterface::Write(const Command& command)
+{
+	DWORD writtenBytes;
+	unsigned int numOfBytes = command.GetNumOfBytes();
+	std::uint8_t txBuffer[numOfBytes];
+	const std::uint8_t * bytesPtr = command.GetBytesPointer();
+
+	for(unsigned int i=0; i<numOfBytes; i++){
+		txBuffer[i] = bytesPtr[i];
+	}
+
+	ftStatus=FT_Write(ftHandle, txBuffer, numOfBytes, &writtenBytes);
+	if (ftStatus!=FT_OK){
+		CustomException except("The Spectran Interface could not write a command, the function FT_Write() returned an error value.");
+		throw(except);
+	}else if (writtenBytes!=numOfBytes){
+		CustomException except("The Spectran Interface could not write a command correctly, not all bytes were written");
+		throw(except);
+	}
+}
+
+inline void SpectranInterface::Read(Reply& reply)
+{
+	DWORD receivedBytes;
+	unsigned int numOfBytes=reply.GetNumOfBytes();
+	std::uint8_t rxBuffer[numOfBytes];
+
+	unsigned int i=0;
+	unsigned int currNumOfBytes=0;
+	while ( currNumOfBytes<numOfBytes && i++<20 )
+	{
+		currNumOfBytes = Available();
+		usleep(70000);
+	}
+	if(i>=20)
+	{
+		CustomException exc("In a reading operation, the input bytes were waited too much time.");
+		throw(exc);
+	}
+
+//	usleep(200000);
+
+	ftStatus=FT_Read(ftHandle, rxBuffer, numOfBytes, &receivedBytes);
+	if (ftStatus!=FT_OK){
+		CustomException except("The Spectran interface could not read a Spectran reply, the function FT_Read returned an error value.");
+		throw(except);
+	}else if (receivedBytes!=numOfBytes){
+		CustomException except("The Spectran interface tried to read a Spectran reply but not all bytes were read.");
+		throw(except);
+	}
+	reply.InsertBytes(rxBuffer); //The received bytes are inserted in the given Reply object
+}
+//////////////////////////////////////////////////////////////////////////
+
 
 //! The class *SpectranConfigurator* is intended to manage the process of configuring the Aaronia Spectran device.
 class SpectranConfigurator
@@ -280,15 +336,12 @@ public:
 private:
 	///////////Attributes///////////////
 	//Constants
-#ifdef RASPBERRY_PI
-	const boost::filesystem::path FILES_PATH = "/home/pi/RFIMS-CART/parameters";
-#else
-	const boost::filesystem::path FILES_PATH = "/home/new-mauro/RFIMS-CART/parameters";
-#endif
+	const std::string SPEC_PARAM_PATH = BASE_PATH + "/parameters";
 	//Variables
 	std::ifstream ifs;
 	SpectranInterface & interface;
-	std::vector<BandParameters> bandsParam;
+	std::vector<BandParameters> bandsParamVector;
+	std::vector<BandParameters> subBandsParamVector;
 	unsigned int bandIndex;
 	FixedParameters fixedParam;
 	time_t lastWriteTimes[2];
@@ -298,20 +351,21 @@ private:
 	void CheckApproxEqual(const SpecVariable variable, float & value);
 public:
 	/////////////////Class' interface//////////////
-	SpectranConfigurator(SpectranInterface& interf);
+	SpectranConfigurator(SpectranInterface & interf);
 	//! The destructor of class SpectranConfigurator, which just makes sure the input file stream (ifs) is closed.
 	~SpectranConfigurator() {	ifs.close();	}
 	bool LoadFixedParameters();
 	bool LoadBandsParameters();
 	void InitialConfiguration();
 	BandParameters ConfigureNextBand();
-	void SetCurrBandParameters(const BandParameters & currBandParam) {	bandsParam[bandIndex]=currBandParam;	}
+	void SetCurrBandParameters(const BandParameters & currBandParam) {	subBandsParamVector[bandIndex]=currBandParam;	}
 	const FixedParameters& GetFixedParameters() const {	return fixedParam;	}
-	const std::vector<BandParameters>& GetBandsParameters() const {	return bandsParam;	}
-	const BandParameters& GetCurrBandParameters() const {	return bandsParam[bandIndex];	}
-	unsigned int GetNumOfBands() const {	return bandsParam.size();	}
+	const std::vector<BandParameters> & GetBandsParameters() const {	return bandsParamVector;	}
+	const std::vector<BandParameters> & GetSubBandsParameters() const {		return subBandsParamVector;		}
+	const BandParameters& GetCurrBandParameters() const {	return bandsParamVector[bandIndex];	}
+	unsigned int GetNumOfBands() const {	return subBandsParamVector.size();	}
 	unsigned int GetBandIndex() const {		return bandIndex;	}
-	bool IsLastBand() const {	return ( bandIndex>=bandsParam.size() );	}
+	bool IsLastBand() const {	return ( bandIndex>=bandsParamVector.size() );	}
 };
 
 //! The aim of class *SweepBuilder* is to build the complete sweep from the individual sweep points which are delivered by the Spectran Interface
@@ -325,7 +379,6 @@ class SweepBuilder
 	Sweep sweep;
 	////////////Private methods/////////
 	void BuildSweep();
-	//void SoundNewSweep();
 public:
 	/////////Class' interface/////////
 	//! The SweepBuilder class's constructor

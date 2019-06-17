@@ -14,6 +14,11 @@ SpectranConfigurator * SignalHandler::specConfiguratorPtr;
 SweepBuilder * SignalHandler::sweepBuilderPtr;
 CurveAdjuster * SignalHandler::adjusterPtr;
 FrontEndCalibrator * SignalHandler::calibratorPtr;
+DataLogger * SignalHandler::dataLoggerPtr;
+AntennaPositioner * SignalHandler::antPositionerPtr;
+RFPloter * SignalHandler::sweepPloterPtr;
+RFPloter * SignalHandler::gainPloterPtr;
+RFPloter * SignalHandler::nfPloterPtr;
 
 int main()
 {
@@ -31,7 +36,7 @@ int main()
 	SweepBuilder sweepBuilder(specInterface);
 	CurveAdjuster adjuster;
 	FrontEndCalibrator calibrator(adjuster);
-	RFPloter rfPloter, gainPloter, nfPloter;
+	RFPloter rfPloter, gainPloter, nfPloter, meanGainPloter, meanNFPloter;
 	bool flagOnce=false;
 	FreqValues gain[3], meanGain;
 	FreqValues noiseFigure[3], meanNoiseFig;
@@ -65,7 +70,7 @@ int main()
 	{
 		Sweep uncalSweep;
 
-		cout << "\nIniciando otro proceso de calibracion del front end" << endl;
+		cout << "\nIniciando el proceso de calibracion del front end N " << (i+1) << endl;
 		calibrator.StartCalibration();
 
 		//Capturando los barridos de cada una de las bandas que componen el barrido completo
@@ -78,15 +83,11 @@ int main()
 			cout << "\nSe inicia el proceso de captura de un nuevo barrido, correspondiente a la banda frecuencial N° " << i+1 << endl;
 			cout << "Configurando el dispositivo Spectran con los parametros de la siguiente banda frecuencial" << endl;
 			currBandParam = specConfigurator.ConfigureNextBand();
-			cout << "\nFrequency band N° " << i+1 << endl;
 			cout << "Fstart=" << (currBandParam.startFreq/1e6) << " MHz, Fstop=" << (currBandParam.stopFreq/1e6) << " MHz, ";
 			cout << "RBW=" << (currBandParam.rbw/1e3) << " KHz, Sweep time=" << currBandParam.sweepTime << " ms" << endl;
 
-			cout << "Capturando los puntos de un barrido" << endl;
 			currFreqBand = sweepBuilder.CaptureSweep(currBandParam);
-			cout << "La captura de un barrido finalizo" << endl;
 
-			cout << "Agregando el barrido de la banda frecuencial actual al final del barrido completo" << endl;
 			if( uncalSweep.PushBack(currFreqBand) )
 				currBandParam.samplePoints--;
 
@@ -129,15 +130,11 @@ int main()
 			cout << "\nSe inicia el proceso de captura de un nuevo barrido, correspondiente a la banda frecuencial N° " << i+1 << endl;
 			cout << "Configurando el dispositivo Spectran con los parametros de la siguiente banda frecuencial" << endl;
 			currBandParam = specConfigurator.ConfigureNextBand();
-			cout << "\nFrequency band N° " << i+1 << endl;
 			cout << "Fstart=" << (currBandParam.startFreq/1e6) << " MHz, Fstop=" << (currBandParam.stopFreq/1e6) << " MHz, ";
 			cout << "RBW=" << (currBandParam.rbw/1e3) << " KHz, Sweep time=" << currBandParam.sweepTime << " ms" << endl;
 
-			cout << "Capturando los puntos de un barrido" << endl;
 			currFreqBand = sweepBuilder.CaptureSweep(currBandParam);
-			cout << "La captura de un barrido finalizo" << endl;
 
-			cout << "Agregando el barrido de la banda frecuencial actual al final del barrido completo" << endl;
 			uncalSweep.PushBack(currFreqBand);
 		}
 		cout << "\nFinalizo la captura de un barrido con NS on. Sera cargado en el calibrador del front end." << endl;
@@ -161,6 +158,8 @@ int main()
 
 		if(!flagOnce)
 		{
+			gainPloter.Plot(gain[0], "lines", "One estimated gain curve");
+			nfPloter.Plot(noiseFigure[0], "lines", "One estimated noise figure curve");
 			Sweep sweepNSoff = calibrator.GetSweepNSoff();
 			Sweep calSweepNSoff = calibrator.CalibrateSweep(sweepNSoff);
 			rfPloter.Plot(calSweepNSoff, "lines", "Calibrated sweep NS off");
@@ -179,8 +178,8 @@ int main()
 	timeData.hour=12; timeData.minute=10; timeData.second=5;
 	calibrator.SaveFrontEndParam(timeData);
 
-	gainPloter.Plot(calibrator.GetGain(), "lines", "Ganancia total del front end");
-	nfPloter.Plot(calibrator.GetNoiseFigure(), "lines", "Figura de ruido total del front end");
+	meanGainPloter.Plot(calibrator.GetGain(), "lines", "Ganancia total del front end");
+	meanNFPloter.Plot(calibrator.GetNoiseFigure(), "lines", "Figura de ruido total del front end");
 
 	cout << "\nConmute el switch para capturar el ruido termico de una carga de 50ohm y presione una tecla para continuar..." << endl;
 	WaitForKey();
@@ -198,11 +197,8 @@ int main()
 		cout << "Configurando el dispositivo Spectran con los parametros de la siguiente banda frecuencial" << endl;
 		currBandParam = specConfigurator.ConfigureNextBand();
 
-		cout << "Capturando los puntos de un barrido" << endl;
 		currFreqBand = sweepBuilder.CaptureSweep(currBandParam);
-		cout << "La captura de un barrido finalizo" << endl;
 
-		cout << "Agregando el barrido de la banda frecuencial actual al final del barrido completo" << endl;
 		uncalSweep.PushBack(currFreqBand);
 	}
 	timer.stop();

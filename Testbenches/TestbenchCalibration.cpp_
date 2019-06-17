@@ -1,90 +1,235 @@
 /*
- * TestbenchCalibration.cpp
+ * main.cpp
  *
- *  Created on: 19/04/2019
+ *  Created on: 21/04/2019
  *      Author: new-mauro
  */
 
+#include "Spectran.h"
 #include "SweepProcessing.h"
+#include <boost/timer/timer.hpp>
 
-const uint8_t NUM_OF_SAMPLES = 11;
-const float RBW = 1e3;
-
-void WaitForKey()
+class SignalHandler
 {
-	cin.clear();
-	cin.ignore(std::cin.rdbuf()->in_avail());
-	cin.get();
-}
+public:
+	void SetupSignalHandler(SpectranInterface * specInterfPt, SpectranConfigurator * specConfiguratorPt,
+			SweepBuilder * sweepBuilderPt, CurveAdjuster * adjusterPt, FrontEndCalibrator * calibratorPt)
+	{
+		specInterfPtr=specInterfPt;
+		specConfiguratorPtr=specConfiguratorPt;
+		sweepBuilderPtr=sweepBuilderPt;
+		adjusterPtr=adjusterPt;
+		calibratorPtr=calibratorPt;
+
+		if( signal(int(SIGINT), (__sighandler_t) SignalHandler::ExitSignalHandler)==SIG_ERR )
+		{
+			CustomException exc("The SIGINT signal handler could not be set.");
+			throw(exc);
+		}
+
+		if( signal(int(SIGTERM),  (__sighandler_t) SignalHandler::ExitSignalHandler)==SIG_ERR )
+		{
+			CustomException exc("The SIGTERM signal handler could not be set.");
+			throw(exc);
+		}
+	}
+	//Static methods and objects
+	static SpectranInterface * specInterfPtr;
+	static SpectranConfigurator * specConfiguratorPtr;
+	static SweepBuilder * sweepBuilderPtr;
+	static CurveAdjuster * adjusterPtr;
+	static FrontEndCalibrator * calibratorPtr;
+	static void ExitSignalHandler(int signum)
+	{
+		cout << "\nA signal which terminates the program was captured. Signal number: " << signum << endl;
+		specInterfPtr->~SpectranInterface();
+		specConfiguratorPtr->~SpectranConfigurator();
+		sweepBuilderPtr->~SweepBuilder();
+		adjusterPtr->~CurveAdjuster();
+		calibratorPtr->~FrontEndCalibrator();
+		exit(signum);
+	}
+};
+//Global variables which are used by the SignalHandler class
+SpectranInterface * SignalHandler::specInterfPtr;
+SpectranConfigurator * SignalHandler::specConfiguratorPtr;
+SweepBuilder * SignalHandler::sweepBuilderPtr;
+CurveAdjuster * SignalHandler::adjusterPtr;
+FrontEndCalibrator * SignalHandler::calibratorPtr;
 
 int main()
 {
-	cout << "Testbench de las clases asociadas con la calibracion del front end y de los datos" << endl;
+#ifdef RASPBERRY_PI
+	wiringPiSetup();
+#endif
+	boost::timer::cpu_timer timer;
+	timer.stop();
 
-	BandParameters aux;
-	std::vector<BandParameters> bandsParam;
+	cout << "\t\tTestbench de la calibracion del front end" << endl;
 
-	aux.detector=0;
-	aux.flagDefaultSamplePoints=false;
-	aux.flagEnable=true;
-	aux.rbw=RBW;
-	aux.samplePoints=NUM_OF_SAMPLES;
-	aux.startFreq=900e6;
-	aux.stopFreq=1000e6;
-	aux.sweepTime=1000;
-	aux.vbw=3e3;
-	bandsParam.push_back(aux);
-
-	CurveAdjuster adjuster(bandsParam);
-	FrontEndCalibrator frontCalibrator(adjuster, bandsParam);
-
-	frontCalibrator.LoadENR();
-
-	frontCalibrator.StartCalibration();
-
-	FreqValueSet sweepNSoff("sweep"), sweepNSon("sweep");
-
-	sweepNSoff.frequencies.reserve(NUM_OF_SAMPLES);
-	sweepNSoff.values.reserve(NUM_OF_SAMPLES);
-	for(unsigned int i=0; i<NUM_OF_SAMPLES; i++)
+	try
 	{
-		sweepNSoff.frequencies.push_back( 900e6 + i*10e6 ); //MHz
+		//Instantiation of objects
+		SpectranInterface specInterface;
+		SpectranConfigurator specConfigurator(specInterface);
+		SweepBuilder sweepBuilder(specInterface);
+		CurveAdjuster adjuster;
+		FrontEndCalibrator calibrator(adjuster);
+		RFPloter rfPloter, gainPloter, nfPloter;
 
-		if( sweepNSoff.frequencies.back() <= 950e6 )
-			sweepNSoff.values.push_back(-133.98); //dBm
-		else
-			sweepNSoff.values.push_back(-135.98); //dBm
+		//Setting of pointers to objects which are used by SignalHandler class
+		SignalHandler sigHandler;
+		sigHandler.SetupSignalHandler(&specInterface, &specConfigurator, &sweepBuilder, &adjuster, &calibrator);
+
+		cout << "\nIniciando la comunicacion con el dispositivo Spectran HF-60105 V4 X" << endl;
+		specInterface.Initialize();
+		cout << "La sesion fue iniciada con exito" << endl;
+
+		//Cargando los parametros
+		cout << "\nCargando los parametros de configuracion del dispositivo Spectran desde los archivos correspondientes" << endl;
+		if( specConfigurator.LoadFixedParameters() )
+		{
+			//If the fixed parameters were loaded for the first time or they were reloaded, the initial configuration will be repeated
+			cout << "\nLos parametros fijos fueron cargados por primera vez o fueron recargados por lo que se efectuara la configuracion inicial" << endl;
+			specConfigurator.InitialConfiguration();
+			cout << "La configuracion inicial fue realizada con exito" << endl;
+		}
+
+		cout << "\nCargando los parametros de las bandas frecuenciales" << endl;
+		specConfigurator.LoadBandsParameters();
+		cout << "Los parametros de las bandas fueron cargados exitosamente" << endl;
+
+		cout << "\nIniciando el proceso de calibracion del front end" << endl;
+		calibrator.StartCalibration();
+		cout << "Apague el generador de ruido, conmute el switch para que el mismo se conecte a la entrada y presione una tecla para continuar..." << endl;
+		WaitForKey();
+
+		Sweep wholeSweep;
+
+		//Capturando los barridos de cada una de las bandas que componen el barrido completo
+		timer.start();
+		for(unsigned int i=0; i < specConfigurator.GetNumOfBands(); i++)
+		{
+			BandParameters currBandParam;
+			Sweep currFreqBand;
+
+			cout << "\nSe inicia el proceso de captura de un nuevo barrido, correspondiente a la banda frecuencial N° " << i+1 << endl;
+			cout << "Configurando el dispositivo Spectran con los parametros de la siguiente banda frecuencial" << endl;
+			currBandParam = specConfigurator.ConfigureNextBand();
+
+			cout << "Capturando los puntos de un barrido" << endl;
+			currFreqBand = sweepBuilder.CaptureSweep(currBandParam);
+			cout << "La captura de un barrido finalizo" << endl;
+
+			cout << "Agregando el barrido de la banda frecuencial actual al final del barrido completo" << endl;
+			if( wholeSweep.PushBack(currFreqBand) )
+				currBandParam.samplePoints--;
+
+			specConfigurator.SetCurrBandParameters(currBandParam);
+		}
+		cout << "\nFinalizo la captura de un barrido con NS apagado. Sera cargado en el calibrador del front end." << endl;
+		calibrator.SetSweep( wholeSweep );
+		
+		timer.stop();
+		cout << "\nEl tiempo consumido por la captura del ultimo barrido fue:" << endl;
+		cout << timer.format(1) << endl;
+
+		rfPloter.Plot(wholeSweep, "lines", "Sweep NS off");
+
+		cout << "Cargando los parametros de las bandas (ya con valores correctos de numero de muestras) en el FrontEndCalibrator y CurveAdjuster" << endl;
+		auto bandsParameters = specConfigurator.GetBandsParameters();
+		adjuster.SetBandsParameters(bandsParameters);
+		adjuster.SetRefSweep(wholeSweep);
+		calibrator.SetBandsParameters(bandsParameters);
+
+		cout << "Cargando los valores del parametero ENR del generador de ruido" << endl;
+		calibrator.LoadENR();
+
+		calibrator.TurnOnNS();
+		cout << "\nAlimente el generador de ruido y presione una tecla para continuar..." << endl;
+		WaitForKey();
+
+		wholeSweep.Clear();
+
+		//Capturando los barridos de cada una de las bandas que componen el barrido completo
+		timer.start();
+		for(unsigned int i=0; i < specConfigurator.GetNumOfBands(); i++)
+		{
+			BandParameters currBandParam;
+			FreqValues currFreqBand;
+
+			cout << "\nSe inicia el proceso de captura de un nuevo barrido, correspondiente a la banda frecuencial N° " << i+1 << endl;
+			cout << "Configurando el dispositivo Spectran con los parametros de la siguiente banda frecuencial" << endl;
+			currBandParam = specConfigurator.ConfigureNextBand();
+
+			cout << "Capturando los puntos de un barrido" << endl;
+			currFreqBand = sweepBuilder.CaptureSweep(currBandParam);
+			cout << "La captura de un barrido finalizo" << endl;
+
+			cout << "Agregando el barrido de la banda frecuencial actual al final del barrido completo" << endl;
+			wholeSweep.PushBack(currFreqBand);
+		}
+		cout << "\nFinalizo la captura de un barrido con NS on. Sera cargado en el calibrador del front end." << endl;
+		calibrator.SetSweep( wholeSweep );
+
+		timer.stop();
+		cout << "\nEl tiempo consumido por la captura del ultimo barrido fue:" << endl;
+		cout << timer.format(1) << endl;
+
+		rfPloter.Plot(wholeSweep, "lines", "Sweep NS on");
+
+		calibrator.EndCalibration();
+		cout << "\nApague el generador de ruido, conmute el switch y presione una tecla para continuar..." << endl;
+		WaitForKey();
+
+		calibrator.EstimateParameters();
+
+		Sweep sweepNSoff = calibrator.GetSweepNSoff();
+		Sweep calSweepNSoff = calibrator.CalibrateSweep(sweepNSoff);
+		rfPloter.Plot(calSweepNSoff, "lines", "Calibrated sweep NS off");
+
+		TimeData timeData;
+		timeData.year=2019; timeData.month=5; timeData.day=20;
+		timeData.hour=18; timeData.minute=0; timeData.second=0;
+		calibrator.SaveFrontEndParam(timeData);
+
+		gainPloter.Plot(calibrator.GetGain(), "lines", "Ganancia total del front end");
+		nfPloter.Plot(calibrator.GetNoiseFigure(), "lines", "Figura de ruido total del front end");
+
+		wholeSweep.Clear();
+
+		timer.start();
+		//Capturando los barridos de cada una de las bandas que componen el barrido completo
+		for(unsigned int i=0; i < specConfigurator.GetNumOfBands(); i++)
+		{
+			BandParameters currBandParam;
+			FreqValues currFreqBand;
+
+			cout << "\nSe inicia el proceso de captura de un nuevo barrido, correspondiente a la banda frecuencial N° " << i+1 << endl;
+			cout << "Configurando el dispositivo Spectran con los parametros de la siguiente banda frecuencial" << endl;
+			currBandParam = specConfigurator.ConfigureNextBand();
+
+			cout << "Capturando los puntos de un barrido" << endl;
+			currFreqBand = sweepBuilder.CaptureSweep(currBandParam);
+			cout << "La captura de un barrido finalizo" << endl;
+
+			cout << "Agregando el barrido de la banda frecuencial actual al final del barrido completo" << endl;
+			wholeSweep.PushBack(currFreqBand);
+		}
+		timer.stop();
+		cout << "\nEl tiempo consumido por la captura del ultimo barrido fue:" << endl;
+		cout << timer.format(1) << endl;
+
+		Sweep calSweep = calibrator.CalibrateSweep(wholeSweep);
+
+		cout << "\nPresione una tecla para terminar..." << endl;
+		WaitForKey();
 	}
-
-	frontCalibrator.SetSweep(sweepNSoff);
-	frontCalibrator.TurnOnNS();
-
-	sweepNSon.frequencies.reserve(NUM_OF_SAMPLES);
-	sweepNSon.values.reserve(NUM_OF_SAMPLES);
-	for(unsigned int i=0; i<NUM_OF_SAMPLES; i++)
+	catch(std::exception & exc)
 	{
-		sweepNSon.frequencies.push_back( 900e6 + i*10e6 );
-
-		if( sweepNSon.frequencies.back() <= 950e6 )
-			sweepNSon.values.push_back(-129.2); //dBm
-		else
-			sweepNSon.values.push_back(-131.2); //dBm
+		cerr << "\nError: " << exc.what() << endl;
+		exit(EXIT_FAILURE);
 	}
-
-	frontCalibrator.SetSweep(sweepNSon);
-	frontCalibrator.SetNSoffTemperature(290.0);
-
-	FrontEndParameters frontParameters = frontCalibrator.CalculateParameters();
-
-	frontCalibrator.EndCalibration();
-
-	Gnuplot ploter1, ploter2;
-
-	ploter1.plot_xy(frontParameters.frequency, frontParameters.noiseFigure, "Figura de ruido del front end(NF, dB)");
-	ploter2.plot_xy(frontParameters.frequency, frontParameters.gain_dB, "Ganancia del front end (G, dB)");
-
-	cout << "Presione una tecla para terminar..." << endl;
-	WaitForKey();
 
 	return 0;
 }

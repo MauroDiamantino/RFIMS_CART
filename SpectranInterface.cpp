@@ -97,9 +97,10 @@ void SpectranInterface::OpenAndSetUp()
 
 SpectranInterface::~SpectranInterface()
 {
+	cout << "Closing the communication with the Spectran device." << endl;
+
 	try
 	{
-		cout << "\nClosing the communication with the Spectran device." << endl;
 		LogOut();
 	}
 	catch(std::exception & exc)
@@ -109,9 +110,7 @@ SpectranInterface::~SpectranInterface()
 
 	ftStatus = FT_Close(ftHandle);
 	if(ftStatus!=FT_OK)
-	{
 		cerr << "Error: The communication with the Spectran device could not be closed." << endl;
-	}
 }
 
 void SpectranInterface::Initialize()
@@ -119,7 +118,6 @@ void SpectranInterface::Initialize()
 	Reply reply;
 	unsigned int errorCounter=0, retryCounter=0;
 	bool flagSuccess=false;
-
 	Command command(Command::VERIFY);
 	do
 	{
@@ -160,6 +158,7 @@ void SpectranInterface::Initialize()
 			{
 				cerr << "Warning: Two commands VERIFY failed but the Spectran interface will reset the device and try again." << endl;
 				//Turn off the device then turn it back on
+				HardReset();
 			}
 			else
 			{
@@ -207,59 +206,6 @@ void SpectranInterface::Initialize()
 		exc1.Append( exc.what() );
 		throw(exc1);
 	}
-}
-
-inline void SpectranInterface::Write(const Command& command)
-{
-	DWORD writtenBytes;
-	unsigned int numOfBytes = command.GetNumOfBytes();
-	std::uint8_t txBuffer[numOfBytes];
-	const std::uint8_t * bytesPtr = command.GetBytesPointer();
-
-	for(unsigned int i=0; i<numOfBytes; i++){
-		txBuffer[i] = bytesPtr[i];
-	}
-
-	ftStatus=FT_Write(ftHandle, txBuffer, numOfBytes, &writtenBytes);
-	if (ftStatus!=FT_OK){
-		CustomException except("The Spectran Interface could not write a command, the function FT_Write() returned an error value.");
-		throw(except);
-	}else if (writtenBytes!=numOfBytes){
-		CustomException except("The Spectran Interface could not write a command correctly, not all bytes were written");
-		throw(except);
-	}
-}
-
-inline void SpectranInterface::Read(Reply& reply)
-{
-	DWORD receivedBytes;
-	unsigned int numOfBytes=reply.GetNumOfBytes();
-	std::uint8_t rxBuffer[numOfBytes];
-
-	unsigned int i=0;
-	unsigned int currNumOfBytes=0;
-	while ( currNumOfBytes<numOfBytes && i++<20 )
-	{
-		currNumOfBytes = Available();
-		usleep(70000);
-	}
-	if(i>=20)
-	{
-		CustomException exc("In a reading operation, the input bytes were waited too much time.");
-		throw(exc);
-	}
-
-//	usleep(200000);
-
-	ftStatus=FT_Read(ftHandle, rxBuffer, numOfBytes, &receivedBytes);
-	if (ftStatus!=FT_OK){
-		CustomException except("The Spectran interface could not read a Spectran reply, the function FT_Read returned an error value.");
-		throw(except);
-	}else if (receivedBytes!=numOfBytes){
-		CustomException except("The Spectran interface tried to read a Spectran reply but not all bytes were read.");
-		throw(except);
-	}
-	reply.InsertBytes(rxBuffer); //The received bytes are inserted in the given Reply object
 }
 
 unsigned int SpectranInterface::Available()
@@ -382,19 +328,35 @@ void SpectranInterface::Purge()
 /*! First, a logout is performed, then the communication is restarted and finally the Spectran interface
  * initialize the communication again.
  */
-void SpectranInterface::ResetDevice()
+void SpectranInterface::SoftReset()
 {
 	LogOut();
 
 	ftStatus=FT_ResetDevice(ftHandle);
-	if(ftStatus!=FT_OK){
+	if(ftStatus!=FT_OK)
+	{
 		CustomException except("The USB device could not be restarted.");
 		throw(except);
 	}
 
 	sleep(3);
+}
 
-	Initialize();
+void SpectranInterface::HardReset()
+{
+	LogOut();
+
+	ftStatus = FT_Close(ftHandle);
+	if(ftStatus!=FT_OK)
+		cerr << "Error: The communication with the Spectran device could not be closed." << endl;
+
+	TurnOffFrontEnd();
+
+	sleep(10);
+
+	TurnOnFrontEnd();
+
+	OpenAndSetUp();
 }
 
 void SpectranInterface::LogOut()

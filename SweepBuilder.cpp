@@ -52,7 +52,7 @@ const Sweep& SweepBuilder::CaptureSweep(BandParameters & bandParam)
 	//float frequency;
 	std::uint_least64_t frequency;
 	std::pair< SweepMap::iterator, bool> mapReply;
-	__useconds_t deltaTime = 1000*(bandParam.sweepTime/bandParam.samplePoints); //theoretical time interval between sweep points
+//	__useconds_t deltaTime = 1000*(bandParam.sweepTime/bandParam.samplePoints); //theoretical time interval between sweep points
 	unsigned int errorTimeCount=0, errorFreqCount=0;
 	unsigned long samplesCount=0;
 
@@ -81,8 +81,8 @@ const Sweep& SweepBuilder::CaptureSweep(BandParameters & bandParam)
 			cerr << "Warning: " << exc.what() << endl;
 			if(++errorTimeCount < 3)
 			{
-				deltaTime *= 2;
-				cout << "The time interval (delta time) which is waited before capture a sweep point has been doubled. The new value is " << deltaTime << endl;
+//				deltaTime *= 2;
+//				cout << "The time interval (delta time) which is waited before capture a sweep point has been doubled. The new value is " << deltaTime << endl;
 				continue;
 			}
 			else

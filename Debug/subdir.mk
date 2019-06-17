@@ -12,10 +12,12 @@ CPP_SRCS += \
 ../FreqValues.cpp \
 ../FrontEndCalibrator.cpp \
 ../GPSInterface.cpp \
+../RFIDetector.cpp \
 ../Reply.cpp \
 ../SpectranConfigurator.cpp \
 ../SpectranInterface.cpp \
 ../SweepBuilder.cpp \
+../TimeData.cpp \
 ../gnuplot_i.cpp \
 ../main.cpp 
 
@@ -28,10 +30,12 @@ OBJS += \
 ./FreqValues.o \
 ./FrontEndCalibrator.o \
 ./GPSInterface.o \
+./RFIDetector.o \
 ./Reply.o \
 ./SpectranConfigurator.o \
 ./SpectranInterface.o \
 ./SweepBuilder.o \
+./TimeData.o \
 ./gnuplot_i.o \
 ./main.o 
 
@@ -44,10 +48,12 @@ CPP_DEPS += \
 ./FreqValues.d \
 ./FrontEndCalibrator.d \
 ./GPSInterface.d \
+./RFIDetector.d \
 ./Reply.d \
 ./SpectranConfigurator.d \
 ./SpectranInterface.d \
 ./SweepBuilder.d \
+./TimeData.d \
 ./gnuplot_i.d \
 ./main.d 
 
