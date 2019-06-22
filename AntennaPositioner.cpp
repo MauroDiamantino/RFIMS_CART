@@ -9,23 +9,6 @@
 
 AntennaPositioner::AntennaPositioner(GPSInterface & gpsInterf) : gpsInterface(gpsInterf)
 {
-#ifdef RASPBERRY_PI
-	//Setting the Raspberry Pi pins
-	pinMode(piPins.LED_INIT_POS, OUTPUT);
-	pinMode(piPins.BUTTON_INIT_POS, INPUT);
-	pullUpDnControl(piPins.BUTTON_INIT_POS, PUD_UP);
-	pinMode(piPins.LED_NEXT_POS, OUTPUT);
-	pinMode(piPins.BUTTON_NEXT_POS, INPUT);
-	pullUpDnControl(piPins.BUTTON_NEXT_POS, PUD_UP);
-	pinMode(piPins.LED_POLARIZ, OUTPUT);
-	pinMode(piPins.BUTTON_POLARIZ, INPUT);
-	pullUpDnControl(piPins.BUTTON_POLARIZ, PUD_UP);
-
-	//Setting the initial values
-	digitalWrite(piPins.LED_INIT_POS, LOW);
-	digitalWrite(piPins.LED_NEXT_POS, LOW);
-	digitalWrite(piPins.LED_POLARIZ, LOW);
-#endif
 	azimuthAngle=0.0;
 	polarization=Polarization::UNKNOWN;
 	positionIndex=255;
@@ -34,7 +17,8 @@ AntennaPositioner::AntennaPositioner(GPSInterface & gpsInterf) : gpsInterface(gp
 bool AntennaPositioner::Initialize()
 {
 	cout << "\nRotate antenna to the initial position, make sure the polarization is horizontal and press the button to continue.." << endl;
-#ifdef RASPBERRY_PI
+
+#ifdef BUTTON //implied that RASPBERRY_PI is defined
 	digitalWrite(piPins.LED_INIT_POS, HIGH);
 	while( digitalRead(piPins.BUTTON_INIT_POS)==HIGH );
 	digitalWrite(piPins.LED_INIT_POS, LOW);
@@ -42,9 +26,6 @@ bool AntennaPositioner::Initialize()
 	WaitForKey();
 #endif
 
-//	cout << "Enter the initial azimuth angle: ";
-//	cin >> azimuthAngle;
-//	cin.get();
 	bool flagSuccess=false;
 	unsigned int numOfErrors=0;
 	do
@@ -80,9 +61,9 @@ bool AntennaPositioner::NextAzimPosition()
 	{
 		positionIndex=0;
 		cout << "Rotate antenna to the initial position, make sure the polarization is horizontal and press the button to continue.." << endl;
-#ifdef RASPBERRY_PI
+#ifdef BUTTON //implied that RASPBERRY_PI is defined
 		digitalWrite(piPins.LED_INIT_POS, HIGH);
-		while( digitalRead(piPins.BUTTON_INIT_POS)==HIGH );
+		while( digitalRead(piPins.BUTTON_ENTER)==HIGH );
 		digitalWrite(piPins.LED_INIT_POS, LOW);
 #else
 		WaitForKey();
@@ -91,13 +72,13 @@ bool AntennaPositioner::NextAzimPosition()
 	else
 	{
 		cout << "Rotate the antenna " << ROTATION_ANGLE << "° clockwise and press the button to continue..." << endl;
-#ifdef RASPBERRY_PI
+	#ifdef BUTTON //implied that RASPBERRY_PI is defined
 		digitalWrite(piPins.LED_NEXT_POS, HIGH);
-		while( digitalRead(piPins.BUTTON_NEXT_POS)==HIGH );
+		while( digitalRead(piPins.BUTTON_ENTER)==HIGH );
 		digitalWrite(piPins.LED_NEXT_POS, LOW);
-#else
+	#else
 		WaitForKey();
-#endif
+	#endif
 	}
 
 	azimuthAngle+=45.0;
@@ -113,13 +94,13 @@ bool AntennaPositioner::ChangePolarization()
 	do
 	{
 		cout << "Change the antenna polarization and press the button to continue..." << endl;
-	#ifdef RASPBERRY_PI
+#ifdef BUTTON //implied that RASPBERRY_PI is defined
 		digitalWrite(piPins.LED_POLARIZ, HIGH);
-		while( digitalRead(piPins.BUTTON_POLARIZ)==HIGH );
+		while( digitalRead(piPins.BUTTON_ENTER)==HIGH );
 		digitalWrite(piPins.LED_POLARIZ, LOW);
-	#else
+#else
 		WaitForKey();
-	#endif
+#endif
 
 		bool flagSuccessRead=false;
 		unsigned int numOfErrors=0;

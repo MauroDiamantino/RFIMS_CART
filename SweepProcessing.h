@@ -157,22 +157,15 @@ public:
 	~FrontEndCalibrator() {}
 	void SetBandsParameters(const std::vector<BandParameters> & bandsParam);
 	void LoadENR();
-#ifdef RASPBERRY_PI
-	//void SwitchToNS() { digitalWrite(piPins.NOISE_SOURCE, LOW); digitalWrite(piPins.SWITCH, SWITCH_TO_NS);	}
-	void StartCalibration()
+	void StartCalibration();
+	void TurnOnNS();
+	void TurnOffNS()
 	{
-		digitalWrite(piPins.NOISE_SOURCE, LOW); digitalWrite(piPins.SWITCH, SWITCH_TO_NS);
-		flagNSon = false; flagCalStarted=true;
+	#ifdef RASPBERRY_PI
+			digitalWrite(piPins.NOISE_SOURCE, LOW); flagNSon = false;	}
+	#endif
 	}
-	void TurnOnNS() {	digitalWrite(piPins.NOISE_SOURCE, HIGH); flagNSon = true;	}
-	void TurnOffNS() {	digitalWrite(piPins.NOISE_SOURCE, LOW); flagNSon = false;	}
-	void EndCalibration() {	TurnOffNS(); digitalWrite(piPins.SWITCH, SWITCH_TO_ANTENNA); flagCalStarted=false;	}
-#else
-	void StartCalibration() {	flagNSon = false; flagCalStarted=true;	}
-	void TurnOnNS() {	flagNSon = true;	}
-	void TurnOffNS() {	flagNSon = false;	}
-	void EndCalibration() {		flagNSon = false; flagCalStarted=false;	}
-#endif
+	void EndCalibration();
 	void SetSweep(const FreqValues & sweep);
 	void SetNSoffTemp(const float nsOffTemp) {	tsoff = nsOffTemp;	}
 	void EstimateParameters();

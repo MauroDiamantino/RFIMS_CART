@@ -9,7 +9,10 @@
 #define BASICS_H_
 
 //#define RASPBERRY_PI
-#define DEBUG
+//#define DEBUG
+#ifdef RASPBERRY_PI
+	//#define BUTTON
+#endif
 
 //! The must-have library which allows to use the objects `std::cout` and `std::cin` among a lot of other things.
 #include <iostream>
@@ -44,7 +47,7 @@ using std::cerr;
 using std::cin;
 using std::endl;
 
-#ifdef RASBPERRY_PI
+#ifdef RASPBERRY_PI
 const std::string BASE_PATH = "/home/pi/RFIMS-CART";
 #else
 const std::string BASE_PATH = "/home/new-mauro/RFIMS-CART";
@@ -201,11 +204,9 @@ struct
 	const unsigned int LED_SWEEP_CAPTURE = 9;
 	const unsigned int LED_SWEEP_PROCESS = 10;
 	const unsigned int LED_INIT_POS = 1;
-	const unsigned int BUTTON_INIT_POS = 2;
 	const unsigned int LED_NEXT_POS = 3;
-	const unsigned int BUTTON_NEXT_POS = 4;
 	const unsigned int LED_POLARIZ = 5;
-	const unsigned int BUTTON_POLARIZ = 6;
+	const unsigned int BUTTON_ENTER = 2;
 }piPins;
 const int SWITCH_TO_NS = HIGH; //!< The noise source output must be connected to switch's J2 connector
 const int SWITCH_TO_ANTENNA = LOW; //!< The antenna must be connected to switch's J1 connector

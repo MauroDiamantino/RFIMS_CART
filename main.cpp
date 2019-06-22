@@ -64,7 +64,6 @@ int main(int argc, char * argv[])
 	try
 	{
 		//////////////////////////////////////INITIALIZATIONS//////////////////////////////////////////
-
 		SpectranInterface specInterface;
 		SpectranConfigurator specConfigurator(specInterface);
 		SweepBuilder sweepBuilder(specInterface);
@@ -96,12 +95,10 @@ int main(int argc, char * argv[])
 		//Putting the antenna in the initial position and polarization
 		antPositioner.Initialize();
 		cout << "The initial azimuth angle is " << antPositioner.GetAzimPosition() << "° N" << endl;
-
 		//////////////////////////////////END OF THE INITIALIZATION///////////////////////////////////////
 
 
 		////////////////////////////////////////GENERAL LOOP////////////////////////////////////////////
-
 		while(flagInfiniteLoop || !flagEndIterations)
 		{
 			Sweep uncalSweep;
@@ -134,8 +131,6 @@ int main(int argc, char * argv[])
 				//The front end calibration is enabled and a new measurement cycle is starting
 				cout << "\nStarting the front end calibration" << endl;
 				frontEndCalibrator.StartCalibration();
-				cout << "\nTurn off the noise source, switch the input to this one and press Enter to continue..." << endl;
-				WaitForKey();
 			}
 
 			//This flag is pulled down here because it is just not needed from here to down.
@@ -169,7 +164,7 @@ int main(int argc, char * argv[])
 			///////////////////////////////////CAPTURE LOOP OF A WHOLE SWEEP////////////////////////////////////
 
 			cout << "\nStarting the capturing of a whole sweep" << endl;
-#ifdef RASPBERR_PI
+#ifdef RASPBERRY_PI
 			digitalWrite(piPins.LED_SWEEP_CAPTURE, HIGH);
 #endif
 			//Capturing the sweeps related to each one of the frequency bands, which in conjunction form a whole sweep
@@ -258,18 +253,12 @@ int main(int argc, char * argv[])
 					frontEndCalibrator.SetSweep(uncalSweep);
 
 					if( frontEndCalibrator.IsNoiseSourceOff() )
-					{
 						////////Noise source off////////////
 						frontEndCalibrator.TurnOnNS();
-						cout << "\nTurn on the noise source and press Enter to continue..." << endl;
-						WaitForKey();
-					}
 					else
 					{
 						///////Noise source on/////////////
 						frontEndCalibrator.EndCalibration();
-						cout << "\nTurn off the noise source, switch the input to the antenna and press Enter to continue..." << endl;
-						WaitForKey();
 #ifdef RASPBERRY_PI
 						digitalWrite(piPins.LED_SWEEP_PROCESS, HIGH);
 #endif
@@ -341,7 +330,7 @@ int main(int argc, char * argv[])
 				if(flagPlot)
 					try
 					{
-						//Ploting the current sweep and the detected RFI
+						//Plotting the current sweep and the detected RFI
 						cout << "\nThe calibrated sweep will be plotted" << endl;
 						sweepPloter.Clear();
 						sweepPloter.PlotSweep(calSweep);

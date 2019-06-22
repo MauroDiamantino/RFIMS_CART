@@ -79,6 +79,13 @@ void SpectranInterface::OpenAndSetUp()
 			throw(exc);
 		}
 
+		ftStatus = FT_SetLatencyTimer(ftHandle, 2);
+		if(ftStatus!=FT_OK)
+		{
+			CustomException exc("The latency timer could not be set up to 2ms.");
+			throw(exc);
+		}
+
 		ftStatus = FT_SetChars(ftHandle, 0, 0, 0, 0);
 		if(ftStatus!=FT_OK)
 		{
@@ -162,7 +169,7 @@ void SpectranInterface::Initialize()
 			}
 			else
 			{
-				CustomException exc("The Spectran interface could not initiliaze the communicaiton with the Spectran device.");
+				CustomException exc("The Spectran interface could not initialize the communication with the Spectran device.");
 				throw(exc);
 			}
 		}

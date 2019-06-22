@@ -7,11 +7,18 @@
 
 #include "SweepProcessing.h"
 
+#ifdef DEBUG
 FrontEndCalibrator::FrontEndCalibrator(CurveAdjuster & adj) : adjuster(adj), correctENR("enr"), powerNSoff("sweep"),
 		powerNSon("sweep"), powerNSoff_w("sweep"), powerNSon_w("sweep"), noiseTempNSoff("noise temperature"),
 		noiseTempNSon("noise temperature"), gain("gain"), noiseTemperature("noise temperature"),
 		noiseFigure("noise figure"), rbwCurve("rbw values curve"),
 		auxRFPloter("Sweeps captured with a 50 ohm load at the input")
+#else
+FrontEndCalibrator::FrontEndCalibrator(CurveAdjuster & adj) : adjuster(adj), correctENR("enr"), powerNSoff("sweep"),
+		powerNSon("sweep"), powerNSoff_w("sweep"), powerNSon_w("sweep"), noiseTempNSoff("noise temperature"),
+		noiseTempNSon("noise temperature"), gain("gain"), noiseTemperature("noise temperature"),
+		noiseFigure("noise figure"), rbwCurve("rbw values curve")
+#endif
 {
 	enrFileLastWriteTime = -100;
 	tsoff = REF_TEMPERATURE;
@@ -19,11 +26,19 @@ FrontEndCalibrator::FrontEndCalibrator(CurveAdjuster & adj) : adjuster(adj), cor
 	flagCalStarted = false;
 }
 
+#ifdef DEBUG
 FrontEndCalibrator::FrontEndCalibrator(CurveAdjuster & adj, const std::vector<BandParameters> & bandsParam) :
 		adjuster(adj), correctENR("enr"), powerNSoff("sweep"), powerNSon("sweep"), powerNSoff_w("sweep"),
 		powerNSon_w("sweep"), noiseTempNSoff("noise temperature"), noiseTempNSon("noise temperature"),
 		bandsParameters(bandsParam), gain("gain"), noiseTemperature("noise temperature"), noiseFigure("noise figure"),
 		rbwCurve("rbw values curve"), auxRFPloter("Sweeps captured with a 50 ohm load at the input")
+#else
+FrontEndCalibrator::FrontEndCalibrator(CurveAdjuster & adj, const std::vector<BandParameters> & bandsParam) :
+		adjuster(adj), correctENR("enr"), powerNSoff("sweep"), powerNSon("sweep"), powerNSoff_w("sweep"),
+		powerNSon_w("sweep"), noiseTempNSoff("noise temperature"), noiseTempNSon("noise temperature"),
+		bandsParameters(bandsParam), gain("gain"), noiseTemperature("noise temperature"), noiseFigure("noise figure"),
+		rbwCurve("rbw values curve")
+#endif
 {
 	enrFileLastWriteTime = -100;
 	tsoff = REF_TEMPERATURE;
@@ -125,6 +140,69 @@ void FrontEndCalibrator::LoadENR()
 		//Adjusting the curve (interpolation, extrapolation and/or decimation)
 		correctENR = adjuster.AdjustCurve(correctENR);
 	}
+}
+
+void FrontEndCalibrator::StartCalibration()
+{
+#ifdef DEBUG
+{
+	cout << "Turn noise source off, switch the input to the noise source and ";
+	#ifdef BUTTON //implied that RASPBERRY_PI is defined
+		cout << "press the button to continue..." << endl;
+		while( digitalRead(piPins.BUTTON_ENTER)==HIGH );
+	#else
+		cout << "press enter to continue..." << endl;
+		WaitForKey();
+	#endif
+}
+#else
+{
+	#ifdef RASPBERRY_PI
+		digitalWrite(piPins.NOISE_SOURCE, LOW); digitalWrite(piPins.SWITCH, SWITCH_TO_NS);
+	#endif
+}
+#endif
+	flagNSon = false; flagCalStarted=true;
+}
+
+void FrontEndCalibrator::TurnOnNS()
+{
+#ifdef DEBUG
+	cout << "\nTurn on the noise source and ";
+	#ifdef BUTTON //implied that RASPBERRY_PI is defined
+		cout << "press the button to continue..." << endl;
+		while( digitalRead(piPins.BUTTON_ENTER)==HIGH );
+	#else
+		cout << "press Enter to continue..." << endl;
+		WaitForKey();
+	#endif
+#else
+	#ifdef RASPBERRY_PI
+		digitalWrite(piPins.NOISE_SOURCE, HIGH);
+	#endif
+#endif
+	flagNSon = true;
+}
+
+void FrontEndCalibrator::EndCalibration()
+{
+#ifdef DEBUG
+	cout << "\nTurn off the noise source, switch the input to the antenna and ";
+	#ifdef BUTTON //implied that RASPBERRY_PI is defined
+		cout << "press the button to continue..." << endl;
+		while( digitalRead(piPins.BUTTON_ENTER)==HIGH );
+	#else
+		cout << "press Enter to continue..." << endl;
+		WaitForKey();
+	#endif
+#else
+	TurnOffNS();
+	#ifdef RASPBERRY_PI
+		digitalWrite(piPins.SWITCH, SWITCH_TO_ANTENNA);
+	#endif
+#endif
+
+	flagCalStarted=false;
 }
 
 void FrontEndCalibrator::SetSweep(const FreqValues & sweep)

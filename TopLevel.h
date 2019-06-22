@@ -18,8 +18,8 @@ class SignalHandler
 public:
 	void SetupSignalHandler(SpectranInterface * specInterfPt, SpectranConfigurator * specConfiguratorPt,
 			SweepBuilder * sweepBuilderPt, CurveAdjuster * adjusterPt, FrontEndCalibrator * calibratorPt,
-			RFIDetector * rfiDetectorPt, DataLogger * dataLoggerPt, GPSInterface * gpsInterfacePt,
-			AntennaPositioner * antPositionerPt, RFPloter * sweepPloterPt=nullptr,
+			RFIDetector * rfiDetectorPt=nullptr, DataLogger * dataLoggerPt=nullptr, GPSInterface * gpsInterfacePt=nullptr,
+			AntennaPositioner * antPositionerPt=nullptr, RFPloter * sweepPloterPt=nullptr,
 			RFPloter * gainPloterPt=nullptr, RFPloter * nfPloterPt=nullptr )
 	{
 		specInterfPtr=specInterfPt;
@@ -60,6 +60,7 @@ public:
 	static RFPloter * sweepPloterPtr;
 	static RFPloter * gainPloterPtr;
 	static RFPloter * nfPloterPtr;
+
 	static void ExitSignalHandler(int signum)
 	{
 		cout << "A signal which terminates the program was captured. Signal number: " << signum << endl;
@@ -68,6 +69,8 @@ public:
 		sweepBuilderPtr->~SweepBuilder();
 		adjusterPtr->~CurveAdjuster();
 		calibratorPtr->~FrontEndCalibrator();
+		if(rfiDetectorPtr!=nullptr)
+			rfiDetectorPtr->~RFIDetector();
 		if(dataLoggerPtr!=nullptr)
 			dataLoggerPtr->~DataLogger();
 		if(gpsInterfacePtr!=nullptr)
