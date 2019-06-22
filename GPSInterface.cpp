@@ -58,7 +58,7 @@ GPSInterface::GPSInterface()
 		}
 	}
 
-	ftStatus=FT_SetTimeouts(ftHandle, RD_TIMEOUT_US, WR_TIMEOUT_US);
+	ftStatus=FT_SetTimeouts(ftHandle, RD_TIMEOUT_MS, WR_TIMEOUT_MS);
 	if(ftStatus!=FT_OK)
 	{
 		CustomException exc("The read and write timeouts could not be set up.");
@@ -335,11 +335,14 @@ inline void GPSInterface::CalculateCardanAngles()
 {
 	yaw = atan2(compassData.y, compassData.x) * 180.0/M_PI;
 
-	if(yaw<0)
-		yaw += 360.0; //!< To convert the yaw angle range from -180° - 180° to 0° - 360°
-
 	if( (yaw+=180.0) >= 360.0 )
 		yaw -= 360.0;
+
+//	if(yaw<0)
+//		yaw += 360.0; //!< To convert the yaw angle range from -180° - 180° to 0° - 360°
+//
+//	if( (yaw+=180.0) >= 360.0 )
+//		yaw -= 360.0;
 
 	pitch = -atan2( accelData.y, sqrt(pow(accelData.x,2) + pow(accelData.z,2)) ) * 180.0/M_PI;
 	roll = atan2( -accelData.x, (accelData.z<0 ? -1 : 1) * sqrt(pow(accelData.y,2) + pow(accelData.z,2)) ) * 180.0/M_PI;

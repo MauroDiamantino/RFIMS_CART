@@ -56,7 +56,6 @@ void SpectranInterface::OpenAndSetUp()
 			throw(except);
 		}
 
-		///////////////////Configuracion obtenida del Foro////////////////////////
 		ftStatus = FT_SetFlowControl(ftHandle, FT_FLOW_NONE, 0, 0);
 		if(ftStatus!=FT_OK)
 		{

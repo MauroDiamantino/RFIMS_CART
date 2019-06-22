@@ -56,7 +56,7 @@ class GPSInterface
 	//Constants
 	const DWORD VID = 0x0403, PID = 0xE8DB;
 	const std::string DEVICE_DESCRIPTION = "Aaronia GPS Logger A";
-	const DWORD RD_TIMEOUT_US = 50000, WR_TIMEOUT_US = 10000;
+	const DWORD RD_TIMEOUT_MS = 500, WR_TIMEOUT_MS = 1000;
 	const unsigned int READ_DELAY_US = 200000;
 	const unsigned int ACCRANGE = 2; //+-2g
 	const unsigned int GYRO_FILTERFREQ = 4;
