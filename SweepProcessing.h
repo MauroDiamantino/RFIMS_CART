@@ -162,7 +162,7 @@ public:
 	void TurnOffNS()
 	{
 	#ifdef RASPBERRY_PI
-			digitalWrite(piPins.NOISE_SOURCE, LOW); flagNSon = false;	}
+			digitalWrite(piPins.NOISE_SOURCE, LOW); flagNSon = false;
 	#endif
 	}
 	void EndCalibration();

@@ -6,8 +6,6 @@
  */
 
 #include "TopLevel.h"
-#include <boost/timer/timer.hpp>
-
 
 /////////////////////////Global variables///////////////////////
 //! Global variables which are used by the SignalHandler class
@@ -29,7 +27,8 @@ bool flagCalEnabled=true, flagPlot=false, flagInfiniteLoop=true, flagRFI=false;
 unsigned int numOfMeasCycles=0;
 //! A variable which saves the norm which defines the harmful RF interference levels: ska-mode1, ska-mode2, itu-ra769
 RFI::ThresholdsNorm rfiNorm = RFI::SKA_MODE1;
-
+//! A timer which is used to measure the execution time when the number of iterations is finite.
+boost::timer::cpu_timer timer;
 
 ///////////////////////////////MAIN FUNCTION///////////////////////////////
 //! Main function.
@@ -42,8 +41,6 @@ int main(int argc, char * argv[])
 	bool flagNewMeasCycle=true;
 	//! A flag which is used when the user executes the software to realize a finite number of iterations (measurement cycles), to states the requested measurements cycles have already been done.
 	bool flagEndIterations = false;
-	//! A timer which is used to measure the execution time when the number of iterations is finite.
-	boost::timer::cpu_timer timer;
 
 	//Checking of the program's arguments
 	if( !ProcessMainArguments(argc, argv) )
@@ -395,20 +392,38 @@ int main(int argc, char * argv[])
 			}
 		}
 		//////////////////////////////////END OF THE GENERAL LOOP////////////////////////////////////
-
-		cout << "\nThe sweeps capturing process finished." << endl;
-
-		//Showing the elapsed time since the beginning
-		timer.stop();
-		boost::timer::cpu_times times = timer.elapsed();
-		double hours = double(times.wall)/(1e9*3600.0);
-		cout << "\nThe elapsed time since the beginning is: " << hours << " hours" << endl;
 	}
 	catch(CustomException & exc)
 	{
-		TurnOffFrontEnd();
 		cerr << "\nError: " << exc.what() << endl;
+
+		if( !timer.is_stopped() )
+		{
+			//Showing the elapsed time since the beginning
+			timer.stop();
+			boost::timer::cpu_times times = timer.elapsed();
+			//double hours = double(times.wall)/(1e9*3600.0);
+			//cout << "\nThe elapsed time since the beginning is: " << hours << " hours" << endl;
+			boost::posix_time::time_duration td = boost::posix_time::microseconds(times.wall/1000);
+			cout << "\nThe elapsed time since the beginning is: " << boost::posix_time::to_simple_string(td) << endl;
+		}
+
+		TurnOffFrontEnd();
+
 		std::exit(EXIT_FAILURE);
+	}
+
+	cout << "\nThe sweeps capturing process finished." << endl;
+
+	if( !timer.is_stopped() )
+	{
+		//Showing the elapsed time since the beginning
+		timer.stop();
+		boost::timer::cpu_times times = timer.elapsed();
+		//double hours = double(times.wall)/(1e9*3600.0);
+		//cout << "\nThe elapsed time since the beginning is: " << hours << " hours" << endl;
+		boost::posix_time::time_duration td = boost::posix_time::microseconds(times.wall/1000);
+		cout << "\nThe elapsed time since the beginning is: " << boost::posix_time::to_simple_string(td) << endl;
 	}
 
 	TurnOffFrontEnd();

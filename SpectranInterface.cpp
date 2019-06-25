@@ -92,7 +92,7 @@ void SpectranInterface::OpenAndSetUp()
 			throw(exc);
 		}
 
-		ftStatus = FT_SetUSBParameters(ftHandle, 0x1000, 0x000);
+		ftStatus = FT_SetUSBParameters(ftHandle, 4096, 0);
 		if(ftStatus!=FT_OK)
 		{
 			CustomException exc("The USB request transfer size could not be set up.");

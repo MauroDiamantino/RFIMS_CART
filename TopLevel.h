@@ -12,6 +12,10 @@
 #include "SweepProcessing.h"
 #include "AntennaPositioning.h"
 #include <signal.h>
+#include <boost/timer/timer.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
+
+extern boost::timer::cpu_timer timer;
 
 class SignalHandler
 {
@@ -85,6 +89,17 @@ public:
 			nfPloterPtr->~RFPloter();
 
 		TurnOffFrontEnd();
+
+		if( !timer.is_stopped() )
+		{
+			//Showing the elapsed time since the beginning
+			timer.stop();
+			boost::timer::cpu_times times = timer.elapsed();
+			//double hours = double(times.wall)/(1e9*3600.0);
+			//cout << "\nThe elapsed time since the beginning is: " << hours << " hours" << endl;
+			boost::posix_time::time_duration td = boost::posix_time::microseconds(times.wall/1000);
+			cout << "\nThe elapsed time since the beginning is: " << boost::posix_time::to_simple_string(td) << endl;
+		}
 
 		std::exit(signum);
 	}

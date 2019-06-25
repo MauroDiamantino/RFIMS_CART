@@ -107,21 +107,14 @@ void InitializeGPIO()
 	pinMode(piPins.LED_INIT_POS, OUTPUT);
 	digitalWrite(piPins.LED_INIT_POS, LOW);
 
-	pinMode(piPins.BUTTON_INIT_POS, INPUT);
-	pullUpDnControl(piPins.BUTTON_INIT_POS, PUD_UP);
+	pinMode(piPins.BUTTON_ENTER, INPUT);
+	pullUpDnControl(piPins.BUTTON_ENTER, PUD_UP);
 
 	pinMode(piPins.LED_NEXT_POS, OUTPUT);
 	digitalWrite(piPins.LED_NEXT_POS, LOW);
 
-	pinMode(piPins.BUTTON_NEXT_POS, INPUT);
-	pullUpDnControl(piPins.BUTTON_NEXT_POS, PUD_UP);
-
 	pinMode(piPins.LED_POLARIZ, OUTPUT);
 	digitalWrite(piPins.LED_POLARIZ, LOW);
-
-	pinMode(piPins.BUTTON_POLARIZ, INPUT);
-	pullUpDnControl(piPins.BUTTON_POLARIZ, PUD_UP);
-
 #endif
 }
 
