@@ -21,16 +21,17 @@ SpectranConfigurator::SpectranConfigurator(SpectranInterface& interf) : interfac
  */
 bool SpectranConfigurator::LoadFixedParameters()
 {
-	std::string paramName, line;
-	char endChar;
-	size_t definitionEndPos, endCharPos, equalPos;
-	boost::filesystem::path pathAndFilename(SPEC_PARAM_PATH);
+	boost::filesystem::path pathAndFilename(SPECTRAN_PARAM_PATH);
 	pathAndFilename /= "fixedparameters.txt";
 
 	//Checking if the fixed parameters have been modified
 	if( lastWriteTimes[0] < boost::filesystem::last_write_time(pathAndFilename) )
 	{
 		lastWriteTimes[0] = boost::filesystem::last_write_time(pathAndFilename);
+
+		std::string paramName, line;
+		char endChar;
+		size_t definitionEndPos, endCharPos, equalPos;
 
 		//Opening the files with the fixed parameters and loading these ones
 		ifs.open( pathAndFilename.string() );
@@ -212,20 +213,27 @@ bool SpectranConfigurator::LoadFixedParameters()
 
 bool SpectranConfigurator::LoadBandsParameters()
 {
-	std::string paramName, line;
-	char endChar;
-	size_t definitionEndPos, endCharPos, equalPos;
-	boost::filesystem::path pathAndFilename(SPEC_PARAM_PATH);
+	boost::filesystem::path pathAndFilename(SPECTRAN_PARAM_PATH);
 	pathAndFilename /= "freqbands.txt";
+	std::string newParamSetName;
 
-	if( lastWriteTimes[1] < boost::filesystem::last_write_time(pathAndFilename) )
+	//Opening the files with the frequency bands's parameters
+	ifs.open( pathAndFilename.string() );
+
+	//Extracting the parameters set name
+	while( ifs.get() != '=' );
+	std::getline(ifs, newParamSetName);
+
+	if( newParamSetName!=paramSetName || lastWriteTimes[1] < boost::filesystem::last_write_time(pathAndFilename) )
 	{
+		paramSetName = newParamSetName;
 		lastWriteTimes[1] = boost::filesystem::last_write_time(pathAndFilename);
-		//Opening the files with the frequency bands's parameters and loading these ones
-		ifs.open( pathAndFilename.string() );
 
-		//Extracting the parameters set's name and the possible following blank line
-		getline(ifs, line);
+		std::string paramName, line;
+		char endChar;
+		size_t definitionEndPos, endCharPos, equalPos;
+
+		//Extracting the possible following blank line
 		if( ifs.peek()=='\n' )
 			ifs.get();
 
@@ -463,6 +471,7 @@ bool SpectranConfigurator::LoadBandsParameters()
 		return true;
 	}
 
+	ifs.close();
 	return false;
 }
 

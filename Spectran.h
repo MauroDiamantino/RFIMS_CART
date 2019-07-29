@@ -336,7 +336,7 @@ public:
 private:
 	///////////Attributes///////////////
 	//Constants
-	const std::string SPEC_PARAM_PATH = BASE_PATH + "/parameters";
+	const std::string SPECTRAN_PARAM_PATH = BASE_PATH + "/parameters";
 	//Variables
 	std::ifstream ifs;
 	SpectranInterface & interface;
@@ -345,6 +345,7 @@ private:
 	unsigned int bandIndex;
 	FixedParameters fixedParam;
 	time_t lastWriteTimes[2];
+	std::string paramSetName;
 	//////////Private methods//////////////
 	void SetVariable(const SpecVariable variable, const float value);
 	void CheckEqual(const SpecVariable variable, const float value);
