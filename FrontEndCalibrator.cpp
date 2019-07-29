@@ -219,48 +219,6 @@ void FrontEndCalibrator::SetSweep(const FreqValues & sweep)
 	}
 }
 
-//const FrontEndParameters& FrontEndCalibrator::EstimateParameters()
-//{
-//	if( powerNSon.Empty() || powerNSoff.Empty() )
-//		throw( CustomException("The Front End calibrator cannot calculate parameters because one sweep (or both) is lacking.") );
-//
-//	FreqValues tson("noise temperature"), yFactor("y-factor"), frontEndNoiseTemp("noise temperature");
-//	FreqValues frontEndNoiseFigure("noise figure"), frontEndGaindB("gain_dB");
-//
-//	//Calculating the front end's noise figure curve
-//	tson = (REF_TEMPERATURE * correctENR) + tsoff;
-//	yFactor = powerNSon / powerNSoff;
-//	frontEndNoiseTemp = (tson - tsoff * yFactor) / (yFactor - 1.0);
-//	frontEndNoiseFigure = 10.0*log10( 1.0 + frontEndNoiseTemp / REF_TEMPERATURE );
-//
-//	//Calculating the front end's gain curve
-//	auto itPowerNSoff = powerNSoff.values.begin();
-//	auto itPowerNSon = powerNSon.values.begin();
-//	auto itTson = tson.values.begin();
-//	auto itFENoiseTemp = frontEndNoiseTemp.values.begin();
-//	auto itBand = bandsParameters.begin();
-//	auto itFreq = powerNSoff.frequencies.begin();
-//	float gain;
-//
-//	for( ; itPowerNSoff!=powerNSoff.values.end(), itPowerNSon!= powerNSon.values.end(), itTson!=tson.values.end(),
-//		itFENoiseTemp!=frontEndNoiseTemp.values.end(), itBand!=bandsParameters.end(), itFreq!=powerNSoff.frequencies.end();
-//		itPowerNSoff++, itPowerNSon++, itTson++, itFENoiseTemp++, itFreq++)
-//	{
-//		if( *itFreq > itBand->stopFreq )
-//			itBand++;
-//
-//		gain = 0.5/(BOLTZMANN_CONST * itBand->rbw) * ( (*itPowerNSoff)/(tsoff + *itFENoiseTemp) + (*itPowerNSon)/(*itTson + *itFENoiseTemp) );
-//		frontEndGaindB.values.push_back( 10.0*log10(gain) );
-//	}
-//
-//	//Saving the estimated parameters in a structure
-//	frontEndParam.noiseTemperature = frontEndNoiseTemp.values;
-//	frontEndParam.noiseFigure = frontEndNoiseFigure.values;
-//	frontEndParam.gain_dB = frontEndGaindB.values;
-//	frontEndParam.frequency = frontEndNoiseTemp.frequencies;
-//
-//	return frontEndParam;
-//}
 
 void FrontEndCalibrator::EstimateParameters()
 {
@@ -274,28 +232,24 @@ void FrontEndCalibrator::EstimateParameters()
 	yFactor = powerNSon_w / powerNSoff_w;
 	noiseTemperature = (-(tsoff * yFactor) + tson) / (yFactor - 1.0);
 	noiseFigure = 10.0*log10( 1.0 + noiseTemperature / REF_TEMPERATURE );
+
+	//Checking the mean value of noise figure
 	float meanNoiseFig = noiseFigure.MeanValue();
 	if( 0.5 > meanNoiseFig || meanNoiseFig > 20.0 )
 		throw( CustomException("A ridiculous mean noise figure was got during estimation.") );
 
-//	//Building the curve with rbw values vs frequency
-//	auto itBand = bandsParameters.begin();
-//	for(auto itFreq = powerNSoff_w.frequencies.begin(); itFreq!=powerNSoff_w.frequencies.end(); itFreq++)
-//	{
-//		if( *itFreq > itBand->stopFreq )
-//			if( ++itBand==bandsParameters.end() )
-//				--itBand;
-//
-//		rbwCurve.values.push_back( itBand->rbw );
-//	}
-//	rbwCurve.frequencies=powerNSoff_w.frequencies;
-//	rbwCurve.timeData=powerNSoff_w.timeData;
+	//Correcting negative values of
+	for(auto nf : noiseFigure.values)
+		if(nf < 0)
+			nf = 3.5;
 
 	//Calculating the front end's gain curve
 	gainPowersRatio = 0.5/(BOLTZMANN_CONST * rbwCurve) * ( powerNSoff_w/(tsoff + noiseTemperature) + powerNSon_w/(tson + noiseTemperature) );
 	gain = 10.0*log10(gainPowersRatio);
 	float meanGain = gain.MeanValue();
-	if( 10.0 > meanGain || meanGain > 200.0 )
+
+	//Checking the mean value of gain
+	if( 10.0 > meanGain || meanGain > 100.0 )
 		throw( CustomException("A ridiculous mean gain was got during estimation.") );
 }
 
@@ -309,8 +263,8 @@ const Sweep& FrontEndCalibrator::CalibrateSweep(const Sweep& powerOut)
 	Sweep powerIn, powerIn_w;
 	try
 	{
-		//Calculating the effective input power (Pin_eff) which contains the antenna power and the internal noise
-		//generated in the receiver
+		//Calculating the effective input power (Pin_eff) which contains the antenna power and the
+		//internal noise generated in the receiver
 		powerInEff = powerOut - gain;
 #ifdef DEBUG
 		auxRFPloter.Plot(powerInEff, "lines", "Effective input power (Pant + Nreceiver)");
@@ -318,27 +272,6 @@ const Sweep& FrontEndCalibrator::CalibrateSweep(const Sweep& powerOut)
 		powerInEff_w = pow(10.0, powerInEff/10.0) * 1e-3; //The power values are converted from dBm to Watts
 
 		//Calculating the input power (Pin) which represents only the antenna power, without the receiver noise
-//		auto itPowerInEff = powerInEff.values.begin();
-//		auto itFrontEndTemp = frontEndParam.noiseTemperature.begin();
-//		auto itFreq = powerInEff_mw.frequencies.begin();
-//		auto itBand = bandsParameters.begin();
-//		float powerInValue_mw;
-//
-//		for( ; itPowerInEff!=powerInEff.values.end(), itFrontEndTemp!=frontEndParam.noiseTemperature.end(),
-//			itFreq!=powerInEff_mw.frequencies.end(), itBand!=bandsParameters.end(); itPowerInEff++,
-//			itFrontEndTemp++, itFreq++)
-//		{
-//			if( *itFreq > itBand->stopFreq )
-//				itBand++;
-//
-//			powerInValue_mw = *itPowerInEff - BOLTZMANN_CONST * itBand->rbw * *itFrontEndTemp;
-//			powerIn_mw.values.push_back(powerInValue_mw);
-//		}
-//		powerIn_mw.azimuthAngle = powerInEff.azimuthAngle;
-//		powerIn_mw.frequencies = powerInEff.frequencies;
-//		powerIn_mw.polarization = powerInEff.polarization;
-//		powerIn_mw.timeData = powerInEff.timeData;
-
 		powerIn_w = powerInEff_w - BOLTZMANN_CONST * rbwCurve * noiseTemperature;
 
 		//Converting the input power from Watts to dBm
