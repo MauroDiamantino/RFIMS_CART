@@ -366,7 +366,7 @@ int main(int argc, char * argv[])
 
 					cout << "\nDeleting old files and compressing data files to be uploaded" << endl;
 					dataLogger.DeleteOldFiles();
-					dataLogger.CompressLastFiles();
+					dataLogger.ArchiveAndCompress();
 				}
 
 				//Changing the antenna position
