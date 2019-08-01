@@ -298,14 +298,17 @@ void FrontEndCalibrator::LoadDefaultParameters()
 {
 	boost::filesystem::path pathGain(CAL_FILES_PATH), pathNoiseFig(CAL_FILES_PATH);
 	pathGain /= "frontendparam";
+	pathGain /= "default";
 	pathGain /= "gain_default.csv";
 	pathNoiseFig /= "frontendparam";
+	pathNoiseFig /= "default";
 	pathNoiseFig /= "noisefigure_default.csv";
 
 	if( boost::filesystem::exists(pathGain) && boost::filesystem::exists(pathNoiseFig) )
 	{
 		FreqValues defaultGain("gain"), defaultNoiseFig("noise figure");
-		float freqMHz, gainValue, noiseFigValue;
+		double freqMHz;
+		float gainValue, noiseFigValue;
 		char delimiter=',', aux;
 		std::ifstream ifs( pathGain.string() );
 
@@ -316,7 +319,7 @@ void FrontEndCalibrator::LoadDefaultParameters()
 		do
 		{
 			ifs >> freqMHz >> delimiter;
-			defaultGain.frequencies.push_back( std::uint_least64_t(freqMHz)*1000000 );
+			defaultGain.frequencies.push_back( std::uint_least64_t(freqMHz*1e6) );
 		}while( delimiter==',' );
 
 		//Extracting the gain values

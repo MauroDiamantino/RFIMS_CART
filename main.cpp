@@ -152,7 +152,7 @@ int main(int argc, char * argv[])
 					if( ++numOfErrors < 3)
 						cerr << "\nWarning: reading of time data and antenna position failed: " << exc.what() << endl;
 					else
-						throw( CustomException("The reading of time data and antenna position failed three times") );
+						throw( CustomException("The reading of time data and antenna position failed three times.") );
 				}
 			}while(!flagSuccess);
 			//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -313,15 +313,16 @@ int main(int argc, char * argv[])
 				Sweep calSweep = frontEndCalibrator.CalibrateSweep(uncalSweep);
 				cout << "The sweep calibration finished" << endl;
 
+				RFI detectedRFI;
 				if(flagRFI)
 				{
 					//Detecting RFI
 					cout << "\nThe RFI which is present in the current calibrated sweep is being detected" << endl;
-					rfiDetector.DetectRFI(calSweep);
-					if(rfiDetector.GetNumOfRFIBands()==0)
+					detectedRFI = rfiDetector.DetectRFI(calSweep);
+					if( rfiDetector.GetNumOfRFIBands()==0 )
 						cout << "No RFI was detected" << endl;
 					else
-						cout << "It was detected RFI" << endl;
+						cout << "It were detected " << rfiDetector.GetNumOfRFIBands() << " RFI bands." << endl;
 				}
 
 				if(flagPlot)
@@ -334,7 +335,7 @@ int main(int argc, char * argv[])
 						if(flagRFI && rfiDetector.GetNumOfRFIBands()!=0)
 						{
 							cout << "The detected RFI will be plotted" << endl;
-							sweepPloter.PlotRFI( rfiDetector.GetRFI() );
+							sweepPloter.PlotRFI(detectedRFI);
 						}
 					}
 					catch(std::exception & exc)
@@ -342,8 +343,10 @@ int main(int argc, char * argv[])
 						cerr << "\nWarning: " << exc.what();
 					}
 
-				//Transferring the ready-to-save sweep to the data logger in order to this component saves the data in memory
+				//Transferring the sweep and detected RFI to the data logger in order to this component saves the data in memory
 				dataLogger.SaveSweep(calSweep);
+				if(flagRFI)
+					dataLogger.SaveRFI(detectedRFI);
 
 #ifdef RASPBERRY_PI
 				digitalWrite(piPins.LED_SWEEP_PROCESS, LOW);
@@ -372,7 +375,7 @@ int main(int argc, char * argv[])
 				//Changing the antenna position
 				cout << "\nThe antenna position will be changed" << endl;
 				antPositioner.ChangePolarization();
-				if( antPositioner.GetPolarization()==Polarization::HORIZONTAL)
+				if( antPositioner.GetPolarization()==Polarization::HORIZONTAL )
 					antPositioner.NextAzimPosition();
 
 				cout << "The new antenna position is: Azimuth=" << antPositioner.GetAzimPosition();
