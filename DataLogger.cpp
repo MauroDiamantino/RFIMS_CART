@@ -5,6 +5,7 @@ DataLogger::DataLogger()
 	sweepIndex=10000; //To make sure this variable will be set to zero the first time the method SaveData() is called
 	flagNewBandsParam=false;
 	flagNewFrontEndParam=false;
+	flagStoredRFI=false;
 
 	try
 	{
@@ -26,6 +27,7 @@ DataLogger::DataLogger()
 
 	ofs.exceptions( std::ofstream::failbit | std::ofstream::badbit );
 	ofs.setf(std::ios::fixed, std::ios::floatfield);
+	ofs.setf( std::ios::dec | std::ios::left | std::ios::showpoint);
 
 	//It is controlled if the shell is available
 	if( system(nullptr)==0 )
@@ -35,6 +37,7 @@ DataLogger::DataLogger()
 DataLogger::~DataLogger()
 {
 	ofs.exceptions( std::ofstream::goodbit );
+	ofs.flush();
 	ofs.close();
 }
 
@@ -59,17 +62,17 @@ void DataLogger::SaveBandsParamAsCSV(const std::vector<BandParameters> & bandsPa
 		}
 
 		//Saving the header row
-		ofs << "Band Index,Enabling,Fstart(MHz),Fstop(MHz),RBW(Hz),VBW(Hz),Sweep Time,Sample Points,Detector\r\n";
+		ofs << "Band Index,Enabling,Fstart(MHz),Fstop(MHz),RBW(MHz),VBW(MHz),Sweep Time(ms),Sample Points,Detector\r\n";
 
 		//Saving the data of each frequency band
 		for(const BandParameters & oneBandParam : bandsParamVector)
 		{
 			ofs << oneBandParam.bandNumber << ',';
 			ofs << oneBandParam.flagEnable << ',';
-			ofs << std::setprecision(1) << (oneBandParam.startFreq)/1e6 << ','; //It is saved in MHz
-			ofs << std::setprecision(1) << (oneBandParam.stopFreq)/1e6 << ','; //It is saved in MHz
-			ofs << oneBandParam.rbw << ','; //It is saved in Hz
-			ofs << oneBandParam.vbw << ','; //It is saved in Hz
+			ofs << std::setprecision(2) << (oneBandParam.startFreq)/1e6 << ','; //It is saved in MHz
+			ofs << std::setprecision(2) << (oneBandParam.stopFreq)/1e6 << ','; //It is saved in MHz
+			ofs << std::setprecision(4) << (oneBandParam.rbw)/1e6 << ','; //It is saved in MHz
+			ofs << std::setprecision(4) << (oneBandParam.vbw)/1e6 << ','; //It is saved in MHz
 			ofs << oneBandParam.sweepTime << ','; //It is saved in ms
 			ofs << oneBandParam.samplePoints << ',';
 			if( oneBandParam.detector==0 )
@@ -79,6 +82,7 @@ void DataLogger::SaveBandsParamAsCSV(const std::vector<BandParameters> & bandsPa
 			ofs << "\r\n";
 		}
 
+		ofs.flush();
 		ofs.close();
 
 		flagNewBandsParam=true;
@@ -121,6 +125,7 @@ void DataLogger::SaveFrontEndParam(const FreqValues & gain, const FreqValues & n
 			ofs << ',' << std::setprecision(2) << nf;
 		ofs << "\r\n";
 
+		ofs.flush();
 		ofs.close();
 
 		filename = "gain_" + currMeasCycleDate + ".csv";
@@ -148,6 +153,7 @@ void DataLogger::SaveFrontEndParam(const FreqValues & gain, const FreqValues & n
 			ofs << ',' << std::setprecision(1) << g;
 		ofs << "\r\n";
 
+		ofs.flush();
 		ofs.close();
 
 		flagNewFrontEndParam=true;
@@ -188,9 +194,9 @@ void DataLogger::SaveSweep(const Sweep & sweep)
 			
 			//Writing header with frequency values
 			ofs << "Timestamp,Azimuthal Angle,Polarization";
-			for(const auto& f : sweep.frequencies)
-				//ofs << std::setprecision(4) << ',' << (f/1e6);
-				ofs << std::setprecision(4) << ',' << double(f)/1e6; //The frequency values are saved in MHz
+			for(const auto& freq : sweep.frequencies)
+				//ofs << std::setprecision(4) << ',' << (freq/1e6);
+				ofs << ',' << std::setprecision(4) << double(freq)/1e6; //The frequency values are saved in MHz
 			ofs << "\r\n";
 		}
 		else
@@ -210,20 +216,72 @@ void DataLogger::SaveSweep(const Sweep & sweep)
 			}
 		}
 		
-		//Writing sweep's power values
-		ofs << sweep.timeData.GetTimestamp() << ',' << std::setprecision(4) << sweep.azimuthAngle;
+		//Writing the extra data
+		ofs << sweep.timeData.GetTimestamp();
+		ofs << ',' << std::setprecision(1) << sweep.azimuthAngle;
 		ofs << ',' << sweep.polarization;
+
+		//Writing sweep's power values
 		for(const auto& power : sweep.values)
-			ofs << std::setprecision(1) << ',' << power; //The power values are saved in dBm with just one decimal digit
+			ofs << ',' << std::setprecision(1) << power; //The power values are saved in dBm with just one decimal digit
 		ofs << "\r\n";
 		
+		ofs.flush();
 		ofs.close();
 	}
 	else
 		throw( CustomException("The data logger was asked to save an empty sweep.") );
 }
 
-void DataLogger::CompressLastFiles()
+
+void DataLogger::SaveRFI(const RFI& rfi)
+{
+	if( !rfi.Empty() )
+	{
+		boost::filesystem::path filePath(MEASUREMENTS_PATH);
+
+		//Adding the folder's name to the path
+		filePath /= ("RFI_" + currMeasCycleDate); //This variable is controlled in SaveSweep() or SaveFrontEndParam()
+
+		if(sweepIndex==0) //This variables is controlled in SaveSweep()
+			//Creating a new folder to save there the RFI files corresponding to a new measurement cycle
+			boost::filesystem::create_directory(filePath);
+
+		//Adding the filename to the path
+		std::ostringstream oss;
+		oss << "RFI_" << (sweepIndex+1) << ".csv";
+		filePath /= oss.str();
+
+		ofs.open( filePath.string() );
+
+		//Writing the header with frequency values where the RFI was detected
+		ofs << "RFI Index,Timestamp,Azimuthal Angle,Polarization";
+		for(const auto& freq : rfi.frequencies)
+			ofs << ',' << std::setprecision(4) << double(freq)/1e6; //The frequency values are saved in MHz
+		ofs << "\r\n";
+
+		//Writing the extra data
+		ofs << (sweepIndex+1);
+		ofs << ',' << rfi.timeData.GetTimestamp();
+		ofs << ',' << std::setprecision(1) << rfi.azimuthAngle;
+		ofs << ',' << rfi.polarization;
+
+		//Writing the power values, in dBm
+		for(const auto& power : rfi.values)
+			ofs << ',' << std::setprecision(1) << power;
+		ofs << "\r\n";
+
+		ofs.flush();
+		ofs.close();
+
+		flagStoredRFI=true;
+	}
+	else
+		throw( CustomException("The data logger was asked to save an empty RFI structure.") );
+}
+
+
+void DataLogger::ArchiveAndCompress()
 {
 	///////////Copying data files to the uploads folder////////////
 	boost::filesystem::path destPath(UPLOADS_PATH);
@@ -243,21 +301,25 @@ void DataLogger::CompressLastFiles()
 	if(flagNewFrontEndParam)
 	{
 		gainFilename = "gain_" + currMeasCycleDate + ".csv";
+		gainFilePath /= gainFilename;
 		noiseFigFilename = "noisefigure_" + currMeasCycleDate + ".csv";
+		noiseFigFilePath /= noiseFigFilename;
 	}
 	else
 	{
 		gainFilename = "gain_default.csv";
+		gainFilePath /= "default";
+		gainFilePath /= gainFilename;
 		noiseFigFilename = "noisefigure_default.csv";
+		noiseFigFilePath /= "default";
+		noiseFigFilePath /= noiseFigFilename;
 	}
 
-	gainFilePath /= gainFilename;
 	if( boost::filesystem::exists(gainFilePath) )
 		boost::filesystem::copy_file(gainFilePath, (destPath / gainFilename), boost::filesystem::copy_option::overwrite_if_exists);
 	else
 		throw( CustomException("The gain file does not exist.") );
 
-	noiseFigFilePath /= noiseFigFilename;
 	if( boost::filesystem::exists(noiseFigFilePath) )
 		boost::filesystem::copy_file(noiseFigFilePath, (destPath / noiseFigFilename), boost::filesystem::copy_option::overwrite_if_exists);
 	else
@@ -272,55 +334,69 @@ void DataLogger::CompressLastFiles()
 		else
 			throw( CustomException("The bands parameters file (CSV) does not exist.") );
 	}
-	/////////////////////////////////////////////////////////////////////////////
 
-	///////////////////Archiving and compressing//////////////////////
-
-	//Calling the utility 'tar' to archive the data files
-	std::string archiveName = "rfims_data_" + currMeasCycleDate + ".tar";
-
-	std::string command("tar --create --file ");
-	command += UPLOADS_PATH + '/' + archiveName + ' ';
-	command += "--directory " + UPLOADS_PATH + "/ ";
-	command += sweepFilename;
-	if( system( command.c_str() ) < 0 )
-		throw( CustomException("The calling to the utility 'tar', using system(), to archive the data files failed.") );
-
-	command.clear();
-	command += "tar --append --file ";
-	command += UPLOADS_PATH + '/' + archiveName + ' ';
-	command += "--directory " + UPLOADS_PATH + "/ ";
-	command += gainFilename;
-	if( system( command.c_str() ) < 0 )
-		throw( CustomException("The calling to the utility 'tar', using system(), to archive the data files failed.") );
-
-	command.clear();
-	command += "tar --append --file ";
-	command += UPLOADS_PATH + '/' + archiveName + ' ';
-	command += "--directory " + UPLOADS_PATH + "/ ";
-	command += noiseFigFilename;
-	if( system( command.c_str() ) < 0 )
-		throw( CustomException("The calling to the utility 'tar', using system(), to archive the data files failed.") );
-
-	if(flagNewBandsParam)
+	std::string rfiFolderName = "RFI_" + currMeasCycleDate;
+	if(flagStoredRFI)
 	{
-		command.clear();
-		command += "tar --append --file ";
-		command += UPLOADS_PATH + '/' + archiveName + ' ';
-		command += "--directory " + UPLOADS_PATH + "/ ";
-		command += "freqbands.csv";
-		if( system( command.c_str() ) < 0 )
-			throw( CustomException("The calling to the utility 'tar', using system(), to archive the data files failed.") );
+		boost::filesystem::path rfiPath(MEASUREMENTS_PATH);
+		rfiPath /= rfiFolderName;
+		if( boost::filesystem::exists(rfiPath) && boost::filesystem::is_directory(rfiPath) )
+		{
+			auto destRFIFolderPath = destPath / rfiFolderName;
+			boost::filesystem::create_directory(destRFIFolderPath);
+			for(const boost::filesystem::directory_entry& rfiFile : boost::filesystem::directory_iterator(rfiPath))
+				boost::filesystem::copy_file(rfiFile.path(), (destRFIFolderPath / rfiFile.path().filename()), boost::filesystem::copy_option::overwrite_if_exists);
+		}
+		else
+			throw( CustomException("The folder with RFI files does not exist or there is an error in the path.") );
 	}
 
-	//Compressing with lzma
+	/////////////////////////////////////////////////////////////////////////////
+
+	///////////////////Archiving the files//////////////////////
+	std::string archiveName = "rfims_data_" + currMeasCycleDate + ".tar";
+
+	//If there is an archive file with the same name is removed
+	boost::filesystem::path archivePath(UPLOADS_PATH);
+	archivePath /= archiveName;
+	if( boost::filesystem::exists(archivePath) )
+		boost::filesystem::remove(archivePath);
+
+	//Building the command to call 'tar'
+	std::string command("tar --create");
+	command += " --file " + archivePath.string();
+	command += " --directory " + UPLOADS_PATH + '/';
+	command += ' ' + sweepFilename;
+	command += ' ' + gainFilename;
+	command += ' ' + noiseFigFilename;
+	if(flagNewBandsParam)
+		command += " freqbands.csv";
+	if(flagStoredRFI)
+		command += ' ' + rfiFolderName;
+
+	//Calling the utility 'tar'
+	if( system( command.c_str() ) < 0 )
+		throw( CustomException("The calling to the utility 'tar', using system(), to archive the data files failed.") );
+	//////////////////////////////////////////////////////////////
+
+	/////////////Compressing the archive with the utility 'lzma'/////////////////
+	std::string compArchiveName = archiveName + ".lzma";
+
+	//If there is a compressed archive file with the same name is removed
+	boost::filesystem::path compArchivePath(UPLOADS_PATH);
+	compArchivePath /= compArchiveName;
+	if( boost::filesystem::exists(compArchivePath) )
+		boost::filesystem::remove(compArchivePath);
+
+	//Building the command
 	command.clear();
 	command += "lzma --compress -9 --threads=0 ";
-	command += UPLOADS_PATH + '/' + archiveName;
+	command += archivePath.string();
+
+	//Calling the utility 'lzma'
 	if( system( command.c_str() ) < 0 )
 		throw( CustomException("The calling to the utility 'lzma', using system(), to compress the archive file failed.") );
-	archiveName += ".lzma";
-	////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////
 
 	////////Deleting the files which were copied to the uploads folder//////////
 	boost::filesystem::remove(UPLOADS_PATH + '/' + sweepFilename);
@@ -328,12 +404,15 @@ void DataLogger::CompressLastFiles()
 	boost::filesystem::remove(UPLOADS_PATH + '/' + noiseFigFilename);
 	if(flagNewBandsParam)
 		boost::filesystem::remove(UPLOADS_PATH + '/' + "freqbands.csv");
+	if(flagStoredRFI)
+		boost::filesystem::remove_all(UPLOADS_PATH + '/' + rfiFolderName);
 	//////////////////////////////////////////////////////////////////
 
-	filesToUpload.push(archiveName);
+	filesToUpload.push(compArchiveName);
 
 	flagNewFrontEndParam=false;
 	flagNewBandsParam=false;
+	flagStoredRFI=false;
 }
 
 void DataLogger::DeleteOldFiles() const
@@ -343,37 +422,40 @@ void DataLogger::DeleteOldFiles() const
 	oneMonthBackDate.SetDate(currMeasCycleDate);
 	oneMonthBackDate.TurnBackDays(30);
 
-	//Deleting old sweeps files
-	for( const auto & entry : boost::filesystem::directory_iterator(MEASUREMENTS_PATH) )
+	//Deleting old sweeps files and directories with old rfi files
+	for( const auto & dirEntry : boost::filesystem::directory_iterator(MEASUREMENTS_PATH) )
 	{
-		std::string filename = entry.path().filename().string();
-		size_t datePos = filename.find('_');
+		std::string dirEntryName = dirEntry.path().filename().string();
+		std::size_t datePos = dirEntryName.find('_');
 		if( datePos == std::string::npos )
-			cerr << "\nWarning: A file with a unexpected name was found." << endl;
+			cerr << "\nWarning: A file or directory with a unexpected name format was found in " << MEASUREMENTS_PATH << '.' << endl;
 		else
 		{
 			datePos++;
 			TimeData fileDate;
-			fileDate.SetDate( filename.substr(datePos, 10) );
+			fileDate.SetDate( dirEntryName.substr(datePos, 10) );
 			if( fileDate < oneMonthBackDate )
-				boost::filesystem::remove( entry.path() );
+				boost::filesystem::remove_all( dirEntry.path() );
 		}
 	}
 
 	//Deleting old front end parameters files
-	for( const auto & entry : boost::filesystem::directory_iterator(FRONT_END_PARAM_PATH) )
+	for( const auto & dirEntry : boost::filesystem::directory_iterator(FRONT_END_PARAM_PATH) )
 	{
-		std::string filename = entry.path().filename().string();
-		size_t datePos = filename.find('_');
-		if( datePos == std::string::npos )
-			cerr << "\nWarning: A file with a unexpected name was found." << endl;
-		else
+		std::string dirEntryName = dirEntry.path().filename().string();
+		if(dirEntryName != "default")
 		{
-			datePos++;
-			TimeData fileDate;
-			fileDate.SetDate( filename.substr(datePos, 10) );
-			if( fileDate < oneMonthBackDate )
-				boost::filesystem::remove( entry.path() );
+			size_t datePos = dirEntryName.find('_');
+			if( datePos == std::string::npos )
+				cerr << "\nWarning: A file with a unexpected name format was found in " << FRONT_END_PARAM_PATH << '.' << endl;
+			else
+			{
+				datePos++;
+				TimeData fileDate;
+				fileDate.SetDate( dirEntryName.substr(datePos, 10) );
+				if( fileDate < oneMonthBackDate )
+					boost::filesystem::remove( dirEntry.path() );
+			}
 		}
 	}
 }

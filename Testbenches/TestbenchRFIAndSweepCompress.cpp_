@@ -1,0 +1,109 @@
+/*
+ * TestbenchRFIDetector.cpp
+ *
+ *  Created on: 02/06/2019
+ *      Author: new-mauro
+ */
+
+#include "SweepProcessing.h"
+
+using namespace std;
+
+//! Flags which are defined by the software arguments and which indicates the way the software must behave
+bool flagCalEnabled=true, flagPlot=false, flagInfiniteLoop=true, flagRFI=false;
+//! A variable which saves the number of measurements cycles which left to be done. It is used when the user wishes a finite number of measurements cycles.
+unsigned int numOfMeasCycles=0;
+//! A variable which saves the norm which defines the harmful RF interference levels: ska-mode1, ska-mode2, itu-ra769
+RFI::ThresholdsNorm rfiNorm = RFI::SKA_MODE1;
+
+int main()
+{
+	try
+	{
+		CurveAdjuster adjuster;
+		RFIDetector rfiDetector(adjuster);
+		RFPloter rfPloter;
+		DataLogger dataLogger;
+
+		/////Generacion de un barrido ficticio////
+		Sweep sweep;
+		sweep.azimuthAngle = 10.0;
+		sweep.polarization = "horizontal";
+		sweep.timeData.day=31; sweep.timeData.month=7; sweep.timeData.year=2019;
+		//Se cargan valores bajos de potencia, -220 dBm, en el barrido junto con valores de frecuencia que van de 900 MHz a 950 MHz
+		for(auto i=0; i<=100; i++)
+		{
+			sweep.frequencies.push_back( 900e6 + 50e6*i/100 );
+			sweep.values.push_back( -220.0 );
+		}
+		//Se cambian 3 potencia por un valor mayor, -90 dBm
+		sweep.values[20] = -90.0;
+		sweep.values[50] = -90.0;
+		sweep.values[80] = -90.0;
+		/////////////////////////////////////////
+
+		//Carga del barrido ficticio como barrido de referencia
+		adjuster.SetRefSweep(sweep);
+
+		////////Generacion de parametros de configuracion acordes con el barrido////////////
+		std::vector<BandParameters> bandsParameters;
+		BandParameters oneBandParam;
+
+		oneBandParam.detector=0;
+		oneBandParam.flagDefaultSamplePoints=true;
+		oneBandParam.flagEnable=true;
+		oneBandParam.rbw=1e6;
+		oneBandParam.samplePoints=0;
+		oneBandParam.startFreq=900e6;
+		oneBandParam.stopFreq=925e6;
+		oneBandParam.sweepTime=1000;
+		oneBandParam.vbw=1e6;
+		bandsParameters.push_back(oneBandParam);
+
+		oneBandParam.detector=0;
+		oneBandParam.flagDefaultSamplePoints=true;
+		oneBandParam.flagEnable=true;
+		oneBandParam.rbw=1e6;
+		oneBandParam.samplePoints=0;
+		oneBandParam.startFreq=925e6;
+		oneBandParam.stopFreq=950e6;
+		oneBandParam.sweepTime=1000;
+		oneBandParam.vbw=1e6;
+		bandsParameters.push_back(oneBandParam);
+		////////////////////////////////////////////////////////////////////////////
+
+		adjuster.SetBandsParameters(bandsParameters);
+		rfiDetector.SetBandsParameters(bandsParameters);
+
+		rfiDetector.LoadThreshCurve(RFI::ITU_RA769_2_VLBI);
+
+		RFI detectedRFI = rfiDetector.DetectRFI(sweep);
+
+		cout << "\nEl barrido y la RFI detectada seran graficados" << endl;
+		rfPloter.PlotSweep(sweep);
+		rfPloter.PlotRFI(detectedRFI);
+
+		cout << "\nEl barrido, la RFI detectada y los parametros de las bandas seran almacenados en memoria" << endl;
+		dataLogger.SaveSweep(sweep);
+		dataLogger.SaveRFI(detectedRFI);
+		dataLogger.SaveBandsParamAsCSV(bandsParameters);
+		cout << "El almacenamiento de los datos en memoria se realizo con exito" << endl;
+
+		cout << "\nLos datos seran archivados, comprimidos y se almacenara el archivo en la carpeta /uploads" << endl;
+		dataLogger.CompressLastFiles();
+		cout << "Las operaciones de archivado y compresion finalizaron con exito" << endl;
+
+		cout << "\nLos archivos viejos seran eliminados" << endl;
+		dataLogger.DeleteOldFiles();
+		cout << "La operacion de borrado finalizo con exito" << endl;
+
+		cout << "\nPresione una tecla para terminar..." << endl;
+		WaitForKey();
+	}
+	catch(const std::exception & exc)
+	{
+		cerr << "\nError: " << exc.what() << endl;
+	}
+
+	return 0;
+}

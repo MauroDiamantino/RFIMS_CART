@@ -321,7 +321,7 @@ int main(int argc, char * argv[])
 					if(rfiDetector.GetNumOfRFIBands()==0)
 						cout << "No RFI was detected" << endl;
 					else
-						cout << "It was detected RFI. " << rfiDetector.GetNumOfRFIBands() << "RFI bands were detected" << endl;
+						cout << "It was detected RFI" << endl;
 				}
 
 				if(flagPlot)
@@ -339,7 +339,7 @@ int main(int argc, char * argv[])
 					}
 					catch(std::exception & exc)
 					{
-						cerr << "\nWarnign: " << exc.what();
+						cerr << "\nWarning: " << exc.what();
 					}
 
 				//Transferring the ready-to-save sweep to the data logger in order to this component saves the data in memory

@@ -17,8 +17,8 @@ void RFIDetector::LoadThreshCurve(const RFI::ThresholdsNorm thrNorm)
 
 	switch(rfi.threshNorm)
 	{
-	case RFI::ThresholdsNorm::ITU_RA769:
-		pathAndFilename /= "itu_ra769.txt";
+	case RFI::ThresholdsNorm::ITU_RA769_2_VLBI:
+		pathAndFilename /= "itu_ra769-2_vlbi.txt";
 		break;
 	case RFI::ThresholdsNorm::SKA_MODE1:
 		pathAndFilename /= "ska_mode1.txt";

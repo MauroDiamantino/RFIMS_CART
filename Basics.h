@@ -163,7 +163,7 @@ struct Sweep : public FreqValues
 struct RFI : public FreqValues
 {
 	//! Enumeration which contains the sources of harmful RF interference levels (aka thresholds): the ITU recommendation RA.769-2, SKA protocol Mode 1, SKA protocol Mode 2.
-	enum ThresholdsNorm {ITU_RA769, SKA_MODE1, SKA_MODE2};
+	enum ThresholdsNorm {ITU_RA769_2_VLBI, SKA_MODE1, SKA_MODE2};
 	float azimuthAngle;
 	std::string polarization;
 	unsigned int numOfRFIBands;

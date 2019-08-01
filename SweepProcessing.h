@@ -208,7 +208,6 @@ public:
 	/////////Class interface////////////
 	RFIDetector(CurveAdjuster & adj) : adjuster(adj), thresholdsCurve("threshold curve") { threshFileLastWriteTime=0; }
 	~RFIDetector() {}
-	void SetThreshNorm(const RFI::ThresholdsNorm thrNorm) {		rfi.threshNorm = thrNorm;	}
 	void SetBandsParameters(const std::vector<BandParameters> & bandsParam) {	bandsParameters=bandsParam;	}
 	void LoadThreshCurve(const RFI::ThresholdsNorm thrNorm);
 	const RFI & DetectRFI(const Sweep & sweep);
@@ -234,6 +233,7 @@ class DataLogger
 	std::string currMeasCycleDate;
 	bool flagNewBandsParam;
 	bool flagNewFrontEndParam;
+	bool flagStoredRFI;
 	std::queue<std::string> filesToUpload;
 public:
 	//////////Class interface///////////
@@ -242,7 +242,8 @@ public:
 	void SaveBandsParamAsCSV(const std::vector<BandParameters> & bandsParamVector);
 	void SaveFrontEndParam(const FreqValues & gain, const FreqValues & noiseFigure);
 	void SaveSweep(const Sweep& sweep);
-	void CompressLastFiles();
+	void SaveRFI(const RFI& rfi);
+	void ArchiveAndCompress();
 	void DeleteOldFiles() const;
 	void UploadData();
 };

@@ -157,7 +157,7 @@ void PrintHelp()
 	cout << "\t\t\t\t\t\t  default front end's parameters curves are used to calibrated the sweeps." << endl;
 	cout << "\t\t\t\t\t\t  If it is not given the front end calibration is performed normally," << endl;
 	cout << "\t\t\t\t\t\t  turning the noise generator on and off." << endl;
-	cout << "\t--rfi={ska-mode1,ska-mode2,itu-ra769}\tEnable the identifying of RF interference (RFI). The user has to provide the norm (or protocol)" << endl;
+	cout << "\t--rfi={ska-mode1,ska-mode2,itu-ra769-2-vlbi}\tEnable the identifying of RF interference (RFI). The user has to provide the norm (or protocol)" << endl;
 	cout << "\t\t\t\t\t\t  which must be taken into account to define the harmful levels of RFI: The SKA protocol Mode 1," << endl;
 	cout << "\t\t\t\t\t\t  The SKA protocol Mode 2 or the ITU's recommendation RA.769-2. If it is not given the RFI" << endl;
 	cout << "\t\t\t\t\t\t  identifying is not performed." << endl;
@@ -230,8 +230,8 @@ bool ProcessMainArguments(int argc, char * argv[])
 				rfiNorm = RFI::SKA_MODE1;
 			else if( rfiNormStr=="ska-mode2" )
 				rfiNorm = RFI::SKA_MODE2;
-			else if( rfiNormStr=="itu-ra769" )
-				rfiNorm = RFI::ITU_RA769;
+			else if( rfiNormStr=="itu-ra769-2-vlbi" )
+				rfiNorm = RFI::ITU_RA769_2_VLBI;
 			else
 			{
 				cout << "rfims-cart: unrecognized argument '" << *argIter << '\'' << endl;
