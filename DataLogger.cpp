@@ -1,11 +1,34 @@
 #include "SweepProcessing.h"
 
+////////////////////Friends functions////////////////////////
+
+void *UploadThreadFunc(void *arg)
+{
+	auto * dataLoggerPtr = (DataLogger*) arg;
+
+	try
+	{
+		dataLoggerPtr->ArchiveAndCompress();
+		dataLoggerPtr->UploadData();
+	}
+	catch(std::exception & exc)
+	{
+		strcpy( dataLoggerPtr->threadMsg, exc.what() );
+		pthread_exit( (void*)dataLoggerPtr->threadMsg );
+	}
+
+	return NULL;
+}
+
+//////////////////Class' methods////////////////////
+
 DataLogger::DataLogger()
 {
 	sweepIndex=10000; //To make sure this variable will be set to zero the first time the method SaveData() is called
 	flagNewBandsParam=false;
 	flagNewFrontEndParam=false;
 	flagStoredRFI=false;
+	uploadThread=0;
 
 	try
 	{
@@ -39,6 +62,18 @@ DataLogger::~DataLogger()
 	ofs.exceptions( std::ofstream::goodbit );
 	ofs.flush();
 	ofs.close();
+
+	void **retval = (void**) &sweepIndex; //The pointer to the return value of the thread is initialized with the direction
+											//of any variable to avoid this pointer to be equal to NULL
+
+	// if the thread finished
+	int retValueJoin = pthread_join(uploadThread, retval);
+	//Checking if the last operation finished wrongly or if the thread does not exist
+	if(retValueJoin!=0 && retValueJoin!=ESRCH)
+		cerr << "Error: The checking of finishing of the thread to upload data failed." << endl;
+	//Checking the value returned by the thread if that existed
+	if(retValueJoin==0 && retval!=NULL)
+		cerr << "Error: " << (char*) (*retval) << endl;
 }
 
 void DataLogger::SaveBandsParamAsCSV(const std::vector<BandParameters> & bandsParamVector)
@@ -462,20 +497,19 @@ void DataLogger::DeleteOldFiles() const
 
 void DataLogger::UploadData()
 {
-	int ret=0;
-	while( !filesToUpload.empty() && ret==0 )
+	int retValue=0, procRetValue=0;
+	while( !filesToUpload.empty() && retValue==0 )
 	{
 		std::string command("python3 /usr/local/client.py ");
 		command += UPLOADS_PATH + '/' + filesToUpload.front();
-		if( ( ret = system( command.c_str() ) ) < 0 )
+		if( ( retValue = system( command.c_str() ) ) < 0 )
 		{
 			std::ostringstream oss;
-			oss << "The calling to the utility client.py, using system(), to upload the data failed. ";
-			oss << filesToUpload.size() << " archive files remain to be uploaded.";
+			oss << "The calling to the utility client.py to upload the data failed.";
 			throw( CustomException( oss.str() ) );
 		}
 
-		if(ret==0)
+		if(retValue==0)
 		{
 			filesToUpload.pop();
 			if( filesToUpload.empty() )
@@ -483,10 +517,64 @@ void DataLogger::UploadData()
 		}
 		else
 		{
+			procRetValue = retValue >> 8;
 			std::ostringstream oss;
-			oss << "The utility client.py returned the following error message:  " << ret;
-			oss << ". " << filesToUpload.size() << " files remain to be uploaded.";
+			oss << "The utility client.py was executed but this failed to upload data: ";
+			switch(procRetValue)
+			{
+				case 3:
+					oss << "there is no internet connection.";
+					break;
+				case 4:
+					oss << "the remote server did not wake up.";
+					break;
+				case 5:
+					oss << "the archive file could not be transmitted to the remote server.";
+					break;
+				default:
+					oss << "unknown error";
+			}
 			throw( CustomException( oss.str() ) );
 		}
+	}
+}
+
+
+void DataLogger::PrepareAndUploadData()
+{
+	void **retval = (void**) &sweepIndex; //The pointer to the return value of the thread is initialized with the direction
+										//of any variable to avoid this pointer to be equal to NULL
+
+	//Checking if the previous thread finished
+	int retValueJoin = pthread_join(uploadThread, retval);
+	//Checking if the last operation finished wrongly or if the thread does not exist
+	if(retValueJoin!=0 && retValueJoin!=ESRCH)
+	{
+		CustomException exc("The checking of finishing of last thread to upload data failed.");
+		throw(exc);
+	}
+	//Checking the value returned by the thread if that existed
+	if(retValueJoin==0)
+	{
+		//Checking the value returned by the last thread
+		if(retval==PTHREAD_CANCELED)
+			cerr << "\nWarning: the last thread to upload data was cancelled." << endl;
+		else if(retval!=NULL)
+		{
+			CustomException exc( (char*) (*retval) );
+			throw(exc);
+		}
+	}
+
+	//Creating a new thread to prepare data (archive and compress) and to upload the data
+	int retValueCreate = pthread_create(&uploadThread, NULL, UploadThreadFunc, (void*)this);
+	if(retValueCreate!=0)
+	{
+		CustomException exc("The creation of the thread to prepare and upload data failed");
+		if(retValueCreate==EAGAIN)
+			exc.Append(": insufficient resources to create a thread.");
+		else
+			exc.Append(": unknown error.");
+		throw(exc);
 	}
 }

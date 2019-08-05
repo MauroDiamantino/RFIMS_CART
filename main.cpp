@@ -22,7 +22,7 @@ RFPloter * SignalHandler::sweepPloterPtr;
 RFPloter * SignalHandler::gainPloterPtr;
 RFPloter * SignalHandler::nfPloterPtr;
 //! Flags which are defined by the software arguments and which indicates the way the software must behave
-bool flagCalEnabled=true, flagPlot=false, flagInfiniteLoop=true, flagRFI=false;
+bool flagCalEnabled=true, flagPlot=false, flagInfiniteLoop=true, flagRFI=false, flagUpload=true;
 //! A variable which saves the number of measurements cycles which left to be done. It is used when the user wishes a finite number of measurements cycles.
 unsigned int numOfMeasCycles=0;
 //! A variable which saves the norm which defines the harmful RF interference levels: ska-mode1, ska-mode2, itu-ra769
@@ -369,7 +369,17 @@ int main(int argc, char * argv[])
 
 					cout << "\nDeleting old files and compressing data files to be uploaded" << endl;
 					dataLogger.DeleteOldFiles();
-					dataLogger.ArchiveAndCompress();
+					if(flagUpload)
+					{
+						try
+						{
+							dataLogger.PrepareAndUploadData();
+						}
+						catch(std::exception & exc)
+						{
+							cerr << "\nWarning: " << exc.what() << endl;
+						}
+					}
 				}
 
 				//Changing the antenna position
@@ -382,16 +392,6 @@ int main(int argc, char * argv[])
 				cout << ", Polarization=" << antPositioner.GetPolarizationString() << endl;
 
 				////////////////////////////END OF THE ANTENNA POSITIONING/////////////////////////////////////
-
-				//Trying to upload data
-				try
-				{
-					dataLogger.UploadData();
-				}
-				catch(std::exception & exc)
-				{
-					cerr << "\nWarning: " << exc.what() << endl;
-				}
 			}
 		}
 		//////////////////////////////////END OF THE GENERAL LOOP////////////////////////////////////

@@ -235,6 +235,8 @@ class DataLogger
 	bool flagNewFrontEndParam;
 	bool flagStoredRFI;
 	std::queue<std::string> filesToUpload;
+	pthread_t uploadThread;
+	char threadMsg[100];
 public:
 	//////////Class interface///////////
 	DataLogger();
@@ -243,9 +245,11 @@ public:
 	void SaveFrontEndParam(const FreqValues & gain, const FreqValues & noiseFigure);
 	void SaveSweep(const Sweep& sweep);
 	void SaveRFI(const RFI& rfi);
-	void ArchiveAndCompress();
 	void DeleteOldFiles() const;
+	void ArchiveAndCompress();
 	void UploadData();
+	void PrepareAndUploadData();
+	friend void *UploadThreadFunc(void*);
 };
 
 #endif /* SWEEPPROCESSING_H_ */

@@ -17,7 +17,6 @@ CPP_SRCS += \
 ../SpectranConfigurator.cpp \
 ../SpectranInterface.cpp \
 ../SweepBuilder.cpp \
-../TestbenchRFIDetector.cpp \
 ../TimeData.cpp \
 ../gnuplot_i.cpp \
 ../main.cpp 
@@ -36,7 +35,6 @@ OBJS += \
 ./SpectranConfigurator.o \
 ./SpectranInterface.o \
 ./SweepBuilder.o \
-./TestbenchRFIDetector.o \
 ./TimeData.o \
 ./gnuplot_i.o \
 ./main.o 
@@ -55,7 +53,6 @@ CPP_DEPS += \
 ./SpectranConfigurator.d \
 ./SpectranInterface.d \
 ./SweepBuilder.d \
-./TestbenchRFIDetector.d \
 ./TimeData.d \
 ./gnuplot_i.d \
 ./main.d 

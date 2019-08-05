@@ -38,6 +38,7 @@
 #include <unistd.h>
 #include <cstdint>
 #include <cstdlib>
+#include <pthread.h>
 #ifdef RASPBERRY_PI
 #include <wiringPi.h>
 #endif
@@ -239,7 +240,7 @@ bool ProcessMainArguments(int argc, char * argv[]);
 /////////////////////////GLOBAL VARIABLES///////////////////////
 
 //! Flags which are defined by the software arguments and which indicates the way the software must behave
-extern bool flagCalEnabled, flagPlot, flagInfiniteLoop, flagRFI;
+extern bool flagCalEnabled, flagPlot, flagInfiniteLoop, flagRFI, flagUpload;
 //! A variable which saves the number of measurements cycles which left to be done. It is used when the user wishes a finite number of measurements cycles.
 extern unsigned int numOfMeasCycles;
 //! A variable which saves the norm which defines the harmful RF interference levels: ska-mode1, ska-mode2, itu-ra769
