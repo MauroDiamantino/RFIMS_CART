@@ -227,6 +227,7 @@ std::vector<float> operator-(const std::vector<float> & vect); //defined in Basi
 void WaitForKey();
 
 void InitializeGPIO();
+void TurnOffLeds();
 
 void TurnOnFrontEnd();
 void TurnOffFrontEnd();

@@ -118,13 +118,24 @@ void InitializeGPIO()
 #endif
 }
 
+void TurnOffLeds()
+{
+#ifdef RASPBERRY_PI
+	digitalWrite(piPins.LED_SWEEP_CAPTURE, LOW);
+	digitalWrite(piPins.LED_SWEEP_PROCESS, LOW);
+	digitalWrite(piPins.LED_INIT_POS, LOW);
+	digitalWrite(piPins.LED_NEXT_POS, LOW);
+	digitalWrite(piPins.LED_POLARIZ, LOW);
+#endif
+}
+
 void TurnOnFrontEnd()
 {
 #ifdef RASPBERRY_PI
 	digitalWrite(piPins.SPECTRAN, HIGH);
 	sleep(5);
 	digitalWrite(piPins.LNAS, HIGH);
-	usleep(100000);
+	sleep(1);
 	digitalWrite(piPins.SWITCH, SWITCH_TO_ANTENNA);
 #endif
 }
@@ -134,7 +145,7 @@ void TurnOffFrontEnd()
 #ifdef RASBPERRY_PI
 	digitalWrite(piPins.NOISE_SOURCE, LOW);
 	digitalWrite(piPins.SWITCH, SWITCH_TO_NS);
-	usleep(100000);
+	sleep(1);
 	digitalWrite(piPins.LNAS, LOW);
 	sleep(1);
 	digitalWrite(piPins.SPECTRAN, LOW);

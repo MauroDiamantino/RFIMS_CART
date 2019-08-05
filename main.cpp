@@ -58,6 +58,8 @@ int main(int argc, char * argv[])
 		//Starting timer
 		timer.start();
 
+	RFPloter sweepPloter;
+	RFPloter gainPloter, nfPloter;
 	try
 	{
 		//////////////////////////////////////INITIALIZATIONS//////////////////////////////////////////
@@ -68,8 +70,6 @@ int main(int argc, char * argv[])
 		FrontEndCalibrator frontEndCalibrator(curveAdjuster);
 		RFIDetector rfiDetector(curveAdjuster);
 		DataLogger dataLogger;
-		RFPloter sweepPloter;
-		RFPloter gainPloter, nfPloter;
 		GPSInterface gpsInterface;
 		AntennaPositioner antPositioner(gpsInterface);
 
@@ -367,10 +367,13 @@ int main(int argc, char * argv[])
 					else
 						flagNewMeasCycle = true;
 
-					cout << "\nDeleting old files and compressing data files to be uploaded" << endl;
+					cout << "\nDeleting old files" << endl;
 					dataLogger.DeleteOldFiles();
+					cout << "The deleting finished" << endl;
+
 					if(flagUpload)
 					{
+						cout << "\nCreating a thread to prepare and upload data in parallel" << endl;
 						try
 						{
 							dataLogger.PrepareAndUploadData();
@@ -379,6 +382,7 @@ int main(int argc, char * argv[])
 						{
 							cerr << "\nWarning: " << exc.what() << endl;
 						}
+						cout << "The thread was created, the data to be uploaded will be processed in parallel with the rest of operations" << endl;
 					}
 				}
 
@@ -412,7 +416,9 @@ int main(int argc, char * argv[])
 		}
 
 		TurnOffFrontEnd();
+		TurnOffLeds();
 
+		cout << "\nExiting" << endl;
 		std::exit(EXIT_FAILURE);
 	}
 
@@ -430,7 +436,9 @@ int main(int argc, char * argv[])
 	}
 
 	TurnOffFrontEnd();
+	TurnOffLeds();
 
+	cout << "\nExiting" << endl;
 	return 0;
 }
 ////////////////////////////END OF MAIN FUNCTION/////////////////////////////////

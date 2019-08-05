@@ -70,10 +70,10 @@ DataLogger::~DataLogger()
 	int retValueJoin = pthread_join(uploadThread, retval);
 	//Checking if the last operation finished wrongly or if the thread does not exist
 	if(retValueJoin!=0 && retValueJoin!=ESRCH)
-		cerr << "Error: The checking of finishing of the thread to upload data failed." << endl;
+		cerr << "\nWarning: The checking of finishing of the thread to upload data failed." << endl;
 	//Checking the value returned by the thread if that existed
 	if(retValueJoin==0 && retval!=NULL)
-		cerr << "Error: " << (char*) (*retval) << endl;
+		cerr << "\nWarning: " << (char*) (*retval) << endl;
 }
 
 void DataLogger::SaveBandsParamAsCSV(const std::vector<BandParameters> & bandsParamVector)
@@ -510,11 +510,7 @@ void DataLogger::UploadData()
 		}
 
 		if(retValue==0)
-		{
 			filesToUpload.pop();
-			if( filesToUpload.empty() )
-				cout << "All archive files were uploaded" << endl;
-		}
 		else
 		{
 			procRetValue = retValue >> 8;
