@@ -1,0 +1,54 @@
+\hypertarget{classCustomException}{}\section{Custom\+Exception Class Reference}
+\label{classCustomException}\index{Custom\+Exception@{Custom\+Exception}}
+
+
+A class derived from standard class {\ttfamily std\+::exception}.  
+
+
+
+
+{\ttfamily \#include $<$Basics.\+h$>$}
+
+
+
+Inheritance diagram for Custom\+Exception\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=175pt]{classCustomException__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Custom\+Exception\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=175pt]{classCustomException__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classCustomException_a07dbd163547759b7390b6f4588fff5a8}\label{classCustomException_a07dbd163547759b7390b6f4588fff5a8}} 
+\hyperlink{classCustomException_a07dbd163547759b7390b6f4588fff5a8}{Custom\+Exception} (const std\+::string \&msg=\char`\"{}Error\char`\"{})
+\begin{DoxyCompactList}\small\item\em The default constructor which can set the internal message. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classCustomException_a54289001348effb40f5780bb7f263abb}\label{classCustomException_a54289001348effb40f5780bb7f263abb}} 
+void \hyperlink{classCustomException_a54289001348effb40f5780bb7f263abb}{Set\+Message} (const std\+::string \&msg)
+\begin{DoxyCompactList}\small\item\em The aim of this function is to modify the internal message of the exception. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classCustomException_ab8885c65813f31562bccdcce422b798c}\label{classCustomException_ab8885c65813f31562bccdcce422b798c}} 
+void \hyperlink{classCustomException_ab8885c65813f31562bccdcce422b798c}{Append} (const std\+::string \&msg)
+\begin{DoxyCompactList}\small\item\em This function is intended to add some text at the end of the internal message. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classCustomException_a0bb1756d6073f5bb8b6f1486b08fa5da}\label{classCustomException_a0bb1756d6073f5bb8b6f1486b08fa5da}} 
+const char $\ast$ \hyperlink{classCustomException_a0bb1756d6073f5bb8b6f1486b08fa5da}{what} () const  throw ()
+\begin{DoxyCompactList}\small\item\em This is a generic function for classes which manage exceptions and is intended to return the internal message as a C string ({\ttfamily char$\ast$}). \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A class derived from standard class {\ttfamily std\+::exception}. 
+
+This class is customized to managed the exceptions in a desired way. This class has been defined to ease the appending of data to the message carried by an exception object. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{Basics_8h}{Basics.\+h}\end{DoxyCompactItemize}

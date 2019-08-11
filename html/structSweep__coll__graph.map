@@ -1,0 +1,4 @@
+<map id="Sweep" name="Sweep">
+<area shape="rect" id="node2" href="$structFreqValues.html" title="The aim of this structure is to store the curve of a determined parameter or variable versus the freq..." alt="" coords="5,95,93,121"/>
+<area shape="rect" id="node3" href="$structTimeData.html" title="This structure is intended to store data related to date and time and to perform some operations with..." alt="" coords="10,5,89,32"/>
+</map>

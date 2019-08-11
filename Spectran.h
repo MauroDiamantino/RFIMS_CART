@@ -1,35 +1,33 @@
-/*
- * Spectran.h
- *
- *  Created on: 26/02/2019
- *      Author: new-mauro
- */
-
 /*! \file Spectran.h
- *  \brief This header file contains the definition of the needed classes for the communication with a Aaronia
+ *  \brief This header file contains the definition of the needed classes for the communication with an Aaronia
  *  Spectran HF-60105 V4 X spectrum analyzer.
  *
- *  This file includes the following libraries for the stated purposes:
- *  - iostream: cout, cin
- *  - vector: to use this container
- *  - string: to use this container
  *
- *  The namespace *std* is used to simplify the uses of objects like cout and cin.
+ *
  */
 
 #ifndef SPECTRAN_H_
 #define SPECTRAN_H_
 
-/////////////Libraries//////////////////
-#include <ftd2xx.h>
-#include <map>
-#include <boost/bimap.hpp> //Bidirectional container
 
-///////////Other header files/////////////
+//////////////////SPECIFIC LIBRARIES AND HEADERS/////////////////////
+
+//! Inclusion of the header file which has the declarations of the global functions, global classes, etc. and the inclusion of the global libraries.
 #include "Basics.h"
 
-//////////////User-defined global types///////////
-//! An enumeration which contains the names of all the environment variables of the Spectran HF-60105 V4 X spectrum analyzer.
+//! This library represents the D2XX driver provided by FTDI enterprise to communicate with USB devices which use FTDI chips, in this case the USB device is the spectrum analyzer.
+#include <ftd2xx.h>
+//! The library allows to use the ordered, unique-key and associative container `std::map`, where are initially stored the sweep data points.
+#include <map>
+//! This boost library allows to use the bidirectional container `Boost.Bimap` which is similar to `std::map` but both data types can be used as keys.
+#include <boost/bimap.hpp> //Bidirectional container
+
+/////////////////////////////////////////////////////////////////////
+
+
+//////////////USER-DEFINED DATA TYPES: ENUM, UNION AND TYPEDEF///////////
+
+//! An enumeration which contains the names of all the environment variables of the Aaronia Spectran HF-60105 V4 X spectrum analyzer.
 enum class SpecVariable : uint8_t { STARTFREQ=0x01, STOPFREQ, RESBANDW, VIDBANDW, SWEEPTIME, ATTENFAC, REFLEVEL, DISPRANGE,
 	DISPUNIT, DETMODE, DEMODMODE, SPECPROC, ANTTYPE, CABLETYPE, RECVCONF, CENTERFREQ=0x1E, SPANFREQ, PREAMPEN=0x10,
 	SWPDLYACC, SWPFRQPTS, REFOFFS, USBMEAS=0x20, USBSWPRST, USBSWPID, USBRUNPROG, LOGFILEID=0x30, LOGSAMPCNT,
@@ -37,12 +35,18 @@ enum class SpecVariable : uint8_t { STARTFREQ=0x01, STOPFREQ, RESBANDW, VIDBANDW
 	RBWFSTEP=0x60, ANTGAIN,	PEAK1POW=0x80, PEAK2POW, PEAK3POW, PEAK1FREQ=0x84, PEAK2FREQ, PEAK3FREQ, MAXPEAKPOW=0x90,
 	STDTONE=0xC0, UNINITIALIZED };
 
-union FloatToBytes {
+
+union FloatToBytes
+{
 	float floatValue;
 	std::uint8_t bytes[4];
-};//!< An union which is used to split a float value in its 4 bytes
+}; //!< An union which is used to split a `float` value in its 4 bytes.
 
+//!
 typedef boost::bimap<float,float> RBW_bimap;
+
+/////////////////////////////////////////////////////////////////////////
+
 
 ///////////////Constants///////////////////////
 //! A vector which is initialized with the pairs of values {RBW(Hz), RBW index}. The vector is used to initialize a bidirectional map.

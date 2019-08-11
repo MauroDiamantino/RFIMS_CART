@@ -1,0 +1,84 @@
+\hypertarget{structRFI}{}\section{R\+FI Struct Reference}
+\label{structRFI}\index{R\+FI@{R\+FI}}
+
+
+The aim of this structure is to store the data related with the detected RF interference (\hyperlink{structRFI}{R\+FI})\+: frequency, power, azimuth angle, polarization, time, reference norm, etc.  
+
+
+
+
+{\ttfamily \#include $<$Basics.\+h$>$}
+
+
+
+Inheritance diagram for R\+FI\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=146pt]{structRFI__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for R\+FI\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=156pt]{structRFI__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structRFI_a18cfa7d24274bbcd14acc6b513860cb0}\label{structRFI_a18cfa7d24274bbcd14acc6b513860cb0}} 
+enum \hyperlink{structRFI_a18cfa7d24274bbcd14acc6b513860cb0}{Thresholds\+Norm} \{ {\bfseries I\+T\+U\+\_\+\+R\+A769\+\_\+2\+\_\+\+V\+L\+BI}, 
+{\bfseries S\+K\+A\+\_\+\+M\+O\+D\+E1}, 
+{\bfseries S\+K\+A\+\_\+\+M\+O\+D\+E2}
+ \}\begin{DoxyCompactList}\small\item\em Enumeration which contains the reference documents (recommendations, protocols, etc.) of harmful \hyperlink{structRFI}{R\+FI} levels (a.\+k.\+a. thresholds)\+: the I\+TU recommendation R\+A.\+769-\/2, S\+KA protocol Mode 1, S\+KA protocol Mode 2. \end{DoxyCompactList}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structRFI_ad0183cf1bc28c3f907e16428a5816e35}\label{structRFI_ad0183cf1bc28c3f907e16428a5816e35}} 
+\hyperlink{structRFI_ad0183cf1bc28c3f907e16428a5816e35}{R\+FI} ()
+\begin{DoxyCompactList}\small\item\em The default constructor which calls the default constructor of structure {\itshape \hyperlink{structFreqValues}{Freq\+Values}} and set type to \char`\"{}rfi\char`\"{}, azimuth angle to zero, number of bands to zero and set, by default, threshold norm to S\+K\+A\+\_\+\+M\+O\+D\+E1. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structRFI_a82852dbeab11484c90d4b339f63aefa9}\label{structRFI_a82852dbeab11484c90d4b339f63aefa9}} 
+\hyperlink{structRFI_a82852dbeab11484c90d4b339f63aefa9}{R\+FI} (const \hyperlink{structRFI}{R\+FI} \&rfi)
+\begin{DoxyCompactList}\small\item\em The copy constructor which receives a {\itshape \hyperlink{structRFI}{R\+FI}} object. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structRFI_a103d0419053a7e323647cdafb3b036e3}\label{structRFI_a103d0419053a7e323647cdafb3b036e3}} 
+void \hyperlink{structRFI_a103d0419053a7e323647cdafb3b036e3}{Clear} ()
+\begin{DoxyCompactList}\small\item\em The aim of this method is to clean the attributes of this structure. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structRFI_a8fcc866a09f2f88a9754e04a1d056104}\label{structRFI_a8fcc866a09f2f88a9754e04a1d056104}} 
+const \hyperlink{structRFI}{R\+FI} \& \hyperlink{structRFI_a8fcc866a09f2f88a9754e04a1d056104}{operator=} (const \hyperlink{structRFI}{R\+FI} \&another\+R\+FI)
+\begin{DoxyCompactList}\small\item\em An overloading of the assignment operator adapted to receive a {\itshape \hyperlink{structRFI}{R\+FI}} object. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structRFI_aeb10ac61d7897dbaa6971607e56ea244}\label{structRFI_aeb10ac61d7897dbaa6971607e56ea244}} 
+float \hyperlink{structRFI_aeb10ac61d7897dbaa6971607e56ea244}{azimuth\+Angle}
+\begin{DoxyCompactList}\small\item\em The azimuth angle where this \hyperlink{structRFI}{R\+FI} was detected. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structRFI_a6c5345dd1141e8bf80b4e1cf32c092de}\label{structRFI_a6c5345dd1141e8bf80b4e1cf32c092de}} 
+std\+::string \hyperlink{structRFI_a6c5345dd1141e8bf80b4e1cf32c092de}{polarization}
+\begin{DoxyCompactList}\small\item\em The antenna polarization of the sweep where the \hyperlink{structRFI}{R\+FI} was detected. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structRFI_aefedd07c1a853fb1c8363a0f436d3973}\label{structRFI_aefedd07c1a853fb1c8363a0f436d3973}} 
+unsigned int \hyperlink{structRFI_aefedd07c1a853fb1c8363a0f436d3973}{num\+Of\+R\+F\+I\+Bands}
+\begin{DoxyCompactList}\small\item\em The number of \hyperlink{structRFI}{R\+FI} bands defined as intervals of continuous data points where it was detected \hyperlink{structRFI}{R\+FI}. \end{DoxyCompactList}\item 
+\hyperlink{structRFI_a18cfa7d24274bbcd14acc6b513860cb0}{Thresholds\+Norm} \hyperlink{structRFI_a48905b3dcebf7127bd31315a21a24599}{thresh\+Norm}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The aim of this structure is to store the data related with the detected RF interference (\hyperlink{structRFI}{R\+FI})\+: frequency, power, azimuth angle, polarization, time, reference norm, etc. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{structRFI_a48905b3dcebf7127bd31315a21a24599}\label{structRFI_a48905b3dcebf7127bd31315a21a24599}} 
+\index{R\+FI@{R\+FI}!thresh\+Norm@{thresh\+Norm}}
+\index{thresh\+Norm@{thresh\+Norm}!R\+FI@{R\+FI}}
+\subsubsection{\texorpdfstring{thresh\+Norm}{threshNorm}}
+{\footnotesize\ttfamily \hyperlink{structRFI_a18cfa7d24274bbcd14acc6b513860cb0}{Thresholds\+Norm} R\+F\+I\+::thresh\+Norm}
+
+The norm (recommendation, protocol, etc.) which was used to define the harmful interference levels. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{Basics_8h}{Basics.\+h}\end{DoxyCompactItemize}

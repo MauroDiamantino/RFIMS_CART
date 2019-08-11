@@ -1,0 +1,4 @@
+<map id="FreqValues" name="FreqValues">
+<area shape="rect" id="node2" href="$structRFI.html" title="The aim of this structure is to store the data related with the detected RF interference (RFI): frequ..." alt="" coords="5,80,49,107"/>
+<area shape="rect" id="node3" href="$structSweep.html" title="The aim of this structure is to store the data points of a sweep obtained with the spectrum analyzer ..." alt="" coords="73,80,136,107"/>
+</map>

@@ -1,0 +1,135 @@
+\hypertarget{structSweep}{}\section{Sweep Struct Reference}
+\label{structSweep}\index{Sweep@{Sweep}}
+
+
+The aim of this structure is to store the data points of a sweep obtained with the spectrum analyzer in a determined azimuth position, with a specific polarization.  
+
+
+
+
+{\ttfamily \#include $<$Basics.\+h$>$}
+
+
+
+Inheritance diagram for Sweep\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=146pt]{structSweep__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Sweep\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=156pt]{structSweep__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structSweep_a154d8154b44ffd83c26375ca8d688591}\label{structSweep_a154d8154b44ffd83c26375ca8d688591}} 
+\hyperlink{structSweep_a154d8154b44ffd83c26375ca8d688591}{Sweep} ()
+\begin{DoxyCompactList}\small\item\em The default constructor which calls the default constructor of {\itshape \hyperlink{structFreqValues}{Freq\+Values}} structure and set type to \char`\"{}sweep\char`\"{} and azimuth angle to zero. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structSweep_ae85ac9f2a48f93e3fc510118c7d67f7f}\label{structSweep_ae85ac9f2a48f93e3fc510118c7d67f7f}} 
+\hyperlink{structSweep_ae85ac9f2a48f93e3fc510118c7d67f7f}{Sweep} (const \hyperlink{structFreqValues}{Freq\+Values} \&freq\+Values)
+\begin{DoxyCompactList}\small\item\em A copy constructor which receives a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structSweep_a0a4e0f72fe9051d35cb29953005463b3}\label{structSweep_a0a4e0f72fe9051d35cb29953005463b3}} 
+\hyperlink{structSweep_a0a4e0f72fe9051d35cb29953005463b3}{Sweep} (const \hyperlink{structSweep}{Sweep} \&sweep)
+\begin{DoxyCompactList}\small\item\em A copy constructor which receives a {\itshape \hyperlink{structSweep}{Sweep}} object. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structSweep_aa852ab0cf53dc52ec354649cf6cec31e}\label{structSweep_aa852ab0cf53dc52ec354649cf6cec31e}} 
+void \hyperlink{structSweep_aa852ab0cf53dc52ec354649cf6cec31e}{Clear} ()
+\begin{DoxyCompactList}\small\item\em The aim of this method is to clean the structure, i.\+e. to delete all data points, set azimuth angle to zero and clean polarization. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structSweep_ae20eba1adf7d9510a2433ce942b14007}\label{structSweep_ae20eba1adf7d9510a2433ce942b14007}} 
+const \hyperlink{structSweep}{Sweep} \& \hyperlink{structSweep_ae20eba1adf7d9510a2433ce942b14007}{operator=} (const \hyperlink{structSweep}{Sweep} \&sweep)
+\begin{DoxyCompactList}\small\item\em An overloading of the assignment operator adapted to this structure. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structSweep_a1400ee785843eba210c37a8f7e24c941}\label{structSweep_a1400ee785843eba210c37a8f7e24c941}} 
+float \hyperlink{structSweep_a1400ee785843eba210c37a8f7e24c941}{azimuth\+Angle}
+\begin{DoxyCompactList}\small\item\em The azimuth position (or angle) of the antenna when the sweep was captured. \end{DoxyCompactList}\item 
+std\+::string \hyperlink{structSweep_a3484c258fdff60e1c109df92a1ba9ae7}{polarization}
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structSweep_a29420e86f220ed305794c8e560059bbc}\label{structSweep_a29420e86f220ed305794c8e560059bbc}} 
+\hyperlink{structSweep}{Sweep} \hyperlink{structSweep_a29420e86f220ed305794c8e560059bbc}{operator-\/} (const \hyperlink{structSweep}{Sweep} \&argument)
+\begin{DoxyCompactList}\small\item\em An overloading of the unary operator -\/ which negates a {\itshape \hyperlink{structSweep}{Sweep}} object. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structSweep_a96391241f10ea728ee36b62f6c35d604}\label{structSweep_a96391241f10ea728ee36b62f6c35d604}} 
+\hyperlink{structSweep}{Sweep} \hyperlink{structSweep_a96391241f10ea728ee36b62f6c35d604}{operator+} (const \hyperlink{structSweep}{Sweep} \&lhs, const \hyperlink{structSweep}{Sweep} \&rhs)
+\begin{DoxyCompactList}\small\item\em An overloading of operator + which calculates the sum of two objects of structure {\itshape \hyperlink{structSweep}{Sweep}}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structSweep_ab372b814f572937b3f0cef31752994b9}\label{structSweep_ab372b814f572937b3f0cef31752994b9}} 
+\hyperlink{structSweep}{Sweep} \hyperlink{structSweep_ab372b814f572937b3f0cef31752994b9}{operator+} (const \hyperlink{structSweep}{Sweep} \&lhs, const std\+::vector$<$ float $>$ \&rhs)
+\begin{DoxyCompactList}\small\item\em An overloading of operator + which calculates the sum of a {\itshape \hyperlink{structSweep}{Sweep}} object and a {\ttfamily std\+::vector$<$float$>$} container, in that order. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structSweep_a770d2ac63866693c821c99cbfe2b2c9a}\label{structSweep_a770d2ac63866693c821c99cbfe2b2c9a}} 
+\hyperlink{structSweep}{Sweep} \hyperlink{structSweep_a770d2ac63866693c821c99cbfe2b2c9a}{operator+} (const std\+::vector$<$ float $>$ \&lhs, const \hyperlink{structSweep}{Sweep} \&rhs)
+\begin{DoxyCompactList}\small\item\em An overloading of operator + which calculates the sum of a {\ttfamily std\+::vector$<$float$>$} container and a {\itshape \hyperlink{structSweep}{Sweep}} object, in that order. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structSweep_a5d6fad874c778ae77a10b57446a0bd93}\label{structSweep_a5d6fad874c778ae77a10b57446a0bd93}} 
+\hyperlink{structSweep}{Sweep} \hyperlink{structSweep_a5d6fad874c778ae77a10b57446a0bd93}{operator+} (const \hyperlink{structSweep}{Sweep} \&lhs, const \hyperlink{structFreqValues}{Freq\+Values} \&rhs)
+\begin{DoxyCompactList}\small\item\em An overloading of operator + which calculates the sum of a {\itshape \hyperlink{structSweep}{Sweep}} object and a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object, in that order. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structSweep_ae8dce428f848644d0a68cc8309f88ebf}\label{structSweep_ae8dce428f848644d0a68cc8309f88ebf}} 
+\hyperlink{structSweep}{Sweep} \hyperlink{structSweep_ae8dce428f848644d0a68cc8309f88ebf}{operator+} (const \hyperlink{structSweep}{Sweep} \&lhs, const float rhs)
+\begin{DoxyCompactList}\small\item\em An overloading of operator + which calculates the sum of a {\itshape \hyperlink{structSweep}{Sweep}} object and a {\itshape float} value, in that order. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structSweep_ac0d73d5e8e3aab8f87c9815588b66821}\label{structSweep_ac0d73d5e8e3aab8f87c9815588b66821}} 
+\hyperlink{structSweep}{Sweep} \hyperlink{structSweep_ac0d73d5e8e3aab8f87c9815588b66821}{operator+} (const float lhs, const \hyperlink{structSweep}{Sweep} \&rhs)
+\begin{DoxyCompactList}\small\item\em An overloading of operator + which calculates the sum of a {\itshape float} value and a {\itshape \hyperlink{structSweep}{Sweep}} object, in that order. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structSweep_a8f704b31d015e4d81d25d3fceca1e2f1}\label{structSweep_a8f704b31d015e4d81d25d3fceca1e2f1}} 
+\hyperlink{structSweep}{Sweep} \hyperlink{structSweep_a8f704b31d015e4d81d25d3fceca1e2f1}{operator-\/} (const \hyperlink{structSweep}{Sweep} \&lhs, const \hyperlink{structSweep}{Sweep} \&rhs)
+\begin{DoxyCompactList}\small\item\em An overloading of operator -\/ which calculates the subtraction of two objects of structure {\itshape \hyperlink{structSweep}{Sweep}}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structSweep_a8b2585969a3c379f744b662fb3bea749}\label{structSweep_a8b2585969a3c379f744b662fb3bea749}} 
+\hyperlink{structSweep}{Sweep} \hyperlink{structSweep_a8b2585969a3c379f744b662fb3bea749}{operator-\/} (const \hyperlink{structSweep}{Sweep} \&lhs, const std\+::vector$<$ float $>$ \&rhs)
+\begin{DoxyCompactList}\small\item\em An overloading of operator -\/ which calculates the subtraction of a {\itshape \hyperlink{structSweep}{Sweep}} object and a {\ttfamily std\+::vector$<$float$>$} container, in that order. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structSweep_a840a49afd7973b4b3d1020e15c4c9819}\label{structSweep_a840a49afd7973b4b3d1020e15c4c9819}} 
+\hyperlink{structSweep}{Sweep} \hyperlink{structSweep_a840a49afd7973b4b3d1020e15c4c9819}{operator-\/} (const std\+::vector$<$ float $>$ \&lhs, const \hyperlink{structSweep}{Sweep} \&rhs)
+\begin{DoxyCompactList}\small\item\em An overloading of operator -\/ which calculates the subtraction of a {\ttfamily std\+::vector$<$float$>$} container and a {\itshape \hyperlink{structSweep}{Sweep}} object, in that order. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structSweep_a124ea929f6dba249bd4d6bf5476ab621}\label{structSweep_a124ea929f6dba249bd4d6bf5476ab621}} 
+\hyperlink{structSweep}{Sweep} \hyperlink{structSweep_a124ea929f6dba249bd4d6bf5476ab621}{operator-\/} (const \hyperlink{structSweep}{Sweep} \&lhs, const \hyperlink{structFreqValues}{Freq\+Values} \&rhs)
+\begin{DoxyCompactList}\small\item\em An overloading of operator -\/ which calculates the subtraction of a {\itshape \hyperlink{structSweep}{Sweep}} object and a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object, in that order. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structSweep_a4739da92a36e5f8f17b0be140dd327f6}\label{structSweep_a4739da92a36e5f8f17b0be140dd327f6}} 
+\hyperlink{structSweep}{Sweep} \hyperlink{structSweep_a4739da92a36e5f8f17b0be140dd327f6}{operator$\ast$} (const \hyperlink{structSweep}{Sweep} \&lhs, const \hyperlink{structSweep}{Sweep} \&rhs)
+\begin{DoxyCompactList}\small\item\em An overloading of operator $\ast$ which multiplies two objects of structure {\itshape \hyperlink{structSweep}{Sweep}}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structSweep_a12c1f3e5e4869781ca7d90a50f334606}\label{structSweep_a12c1f3e5e4869781ca7d90a50f334606}} 
+\hyperlink{structSweep}{Sweep} \hyperlink{structSweep_a12c1f3e5e4869781ca7d90a50f334606}{operator$\ast$} (const \hyperlink{structSweep}{Sweep} \&lhs, const float rhs)
+\begin{DoxyCompactList}\small\item\em An overloading of operator $\ast$ which multiplies a {\itshape \hyperlink{structSweep}{Sweep}} object and a {\itshape float} value, in that order. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structSweep_ad4aac4ab6e7ea49d5bc9ebfa83eb07be}\label{structSweep_ad4aac4ab6e7ea49d5bc9ebfa83eb07be}} 
+\hyperlink{structSweep}{Sweep} \hyperlink{structSweep_ad4aac4ab6e7ea49d5bc9ebfa83eb07be}{operator$\ast$} (const float lhs, const \hyperlink{structSweep}{Sweep} \&rhs)
+\begin{DoxyCompactList}\small\item\em An overloading of operator $\ast$ which multiplies a {\itshape float} value and a {\itshape \hyperlink{structSweep}{Sweep}} object, in that order. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structSweep_a3e230f15cb1119940203a1a452676b74}\label{structSweep_a3e230f15cb1119940203a1a452676b74}} 
+\hyperlink{structSweep}{Sweep} \hyperlink{structSweep_a3e230f15cb1119940203a1a452676b74}{operator/} (const \hyperlink{structSweep}{Sweep} \&lhs, const \hyperlink{structSweep}{Sweep} \&rhs)
+\begin{DoxyCompactList}\small\item\em An overloading of operator / which calculates the division between two objects of structure {\itshape \hyperlink{structSweep}{Sweep}}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structSweep_a73694ded6e7ba41c367ca5f0934cbc2c}\label{structSweep_a73694ded6e7ba41c367ca5f0934cbc2c}} 
+\hyperlink{structSweep}{Sweep} \hyperlink{structSweep_a73694ded6e7ba41c367ca5f0934cbc2c}{operator/} (const \hyperlink{structSweep}{Sweep} \&lhs, const float rhs)
+\begin{DoxyCompactList}\small\item\em An overloading of operator / which calculates the division between a {\itshape \hyperlink{structSweep}{Sweep}} object and a {\itshape float} value, in that order. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structSweep_abe3c133bf246f7faebcfda286c5e1448}\label{structSweep_abe3c133bf246f7faebcfda286c5e1448}} 
+\hyperlink{structSweep}{Sweep} \hyperlink{structSweep_abe3c133bf246f7faebcfda286c5e1448}{operator/} (const float lhs, const \hyperlink{structSweep}{Sweep} \&rhs)
+\begin{DoxyCompactList}\small\item\em An overloading of operator / which calculates the division between a {\itshape float} value and a {\itshape \hyperlink{structSweep}{Sweep}} object, in that order. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structSweep_a37df38f37b1cf6a6bfb18f44b706d308}\label{structSweep_a37df38f37b1cf6a6bfb18f44b706d308}} 
+\hyperlink{structSweep}{Sweep} \hyperlink{structSweep_a37df38f37b1cf6a6bfb18f44b706d308}{log10} (const \hyperlink{structSweep}{Sweep} \&argument)
+\begin{DoxyCompactList}\small\item\em An overloading of function {\ttfamily \hyperlink{structSweep_a37df38f37b1cf6a6bfb18f44b706d308}{log10()}} adapted to receive an argument of type {\itshape \hyperlink{structSweep}{Sweep}}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structSweep_a09ee88cfc9b28e6ec344eea1a2817ea9}\label{structSweep_a09ee88cfc9b28e6ec344eea1a2817ea9}} 
+\hyperlink{structSweep}{Sweep} \hyperlink{structSweep_a09ee88cfc9b28e6ec344eea1a2817ea9}{pow} (const \hyperlink{structSweep}{Sweep} \&base, const float exponent)
+\begin{DoxyCompactList}\small\item\em An overloading of function {\ttfamily \hyperlink{structSweep_a09ee88cfc9b28e6ec344eea1a2817ea9}{pow()}} adapted to receive an argument of type {\itshape \hyperlink{structSweep}{Sweep}} as base and an argument of type {\itshape float} as exponent. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structSweep_a879ae44efd2611562d05b90b24099e70}\label{structSweep_a879ae44efd2611562d05b90b24099e70}} 
+\hyperlink{structSweep}{Sweep} \hyperlink{structSweep_a879ae44efd2611562d05b90b24099e70}{pow} (const float base, const \hyperlink{structSweep}{Sweep} \&exponent)
+\begin{DoxyCompactList}\small\item\em An overloading of function {\ttfamily \hyperlink{structSweep_a09ee88cfc9b28e6ec344eea1a2817ea9}{pow()}} adapted to receive an argument of type {\itshape float} as base and an argument of type {\itshape \hyperlink{structSweep}{Sweep}} as exponent. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The aim of this structure is to store the data points of a sweep obtained with the spectrum analyzer in a determined azimuth position, with a specific polarization. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{structSweep_a3484c258fdff60e1c109df92a1ba9ae7}\label{structSweep_a3484c258fdff60e1c109df92a1ba9ae7}} 
+\index{Sweep@{Sweep}!polarization@{polarization}}
+\index{polarization@{polarization}!Sweep@{Sweep}}
+\subsubsection{\texorpdfstring{polarization}{polarization}}
+{\footnotesize\ttfamily std\+::string Sweep\+::polarization}
+
+The antenna polarization when the sweep was captured. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{Basics_8h}{Basics.\+h}\end{DoxyCompactItemize}

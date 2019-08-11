@@ -1,23 +1,37 @@
 /*
- * FloatComparison.cpp
+ * Basics.cpp
  *
  *  Created on: 26/04/2019
  *      Author: new-mauro
  */
 
+/*! \file Basics.cpp
+ *	\brief This file contains the definitions of the functions and classes' methods which have been declared in file Basics.h.
+ *	\author Mauro Diamantino
+ */
+
+//! Inclusion of header file which has the declarations of the functions and class' methods which are defined in this file.
 #include "Basics.h"
 
-//! Function to compare floating-point numbers, taking into account the rounding errors.
-/*! This function was copied and modified from the following link:
- * https://www.learncpp.com/cpp-tutorial/35-relational-operators-comparisons/
- * It is based in the Knuth’s algorithm but it uses two epsilons, an absolute epsilon (ABS_EPSILON) which is very small
- * and is intended to compare near-zero floating-point numbers and a relative epsilon (REL_EPSILON, which is a percentage
- * of the biggest operand) to compare the rest of the floating-point numbers. The function returns true if the difference
- * between a and b is less than ABS_EPSILON, or within REL_EPSILON percent of the larger of a and b.
+//! This constant is used in function approximatelyEqual() and it defines the absolute epsilon.
+/*! It defines a small difference between two floating-point numbers, near to zero, which is used
+ * 	to consider the numbers approximately equal.
  */
-const float ABS_EPSILON = 1e-5;
-const float REL_EPSILON = 2e-5;
+static const float ABS_EPSILON = 1e-5;
 
+//! This constant is used in function approximatelyEqual() and it defines the relative epsilon.
+/*! It represents a percentage of the biggest operand when two floating-point numbers, not near to zero, are compared,
+ * 	and this percentage defines the maximum difference to consider the numbers approximately equal.
+ */
+static const float REL_EPSILON = 2e-5;
+
+/*! \details This function was copied from this
+ * 	[link](https://www.learncpp.com/cpp-tutorial/35-relational-operators-comparisons/), but it was modified.
+ * 	It is based in the Knuth’s algorithm but it uses two epsilons, an absolute epsilon (ABS_EPSILON) which is very small
+ * 	and is intended to compare near-zero floating-point numbers and a relative epsilon (REL_EPSILON, which is a percentage
+ * 	of the biggest operand) to compare the rest of the floating-point numbers. The function returns true if the difference
+ * 	between a and b is less than ABS_EPSILON, or within REL_EPSILON percent of the larger of a and b.
+ */
 bool approximatelyEqual(float a, float b)
 {
     // Check if the numbers are really close -- needed when comparing numbers near zero.
@@ -26,12 +40,12 @@ bool approximatelyEqual(float a, float b)
         return true;
 
     // Otherwise fall back to Knuth's algorithm
-    return diff <= ( (fabs(a) < fabs(b) ? fabs(b) : fabs(a)) * REL_EPSILON);
+    return diff <= ( ( fabs(a) < fabs(b) ? fabs(b) : fabs(a) ) * REL_EPSILON );
 }
 
 //! Function to compare vectors containing floating-point numbers, taking into account the rounding errors.
-/*! This function is based on the function presented in the following link:
- * https://www.learncpp.com/cpp-tutorial/35-relational-operators-comparisons/
+/*! This function is based on the function presented in this
+ * [link](https://www.learncpp.com/cpp-tutorial/35-relational-operators-comparisons/).
  * It is based in the Knuth’s algorithm but it uses two epsilons, an absolute epsilon (ABS_EPSILON) which is very small
  * and is intended to compare near-zero floating-point numbers and a relative epsilon (REL_EPSILON, which is a percentage
  * of the biggest operand) to compare the rest of the floating-point numbers. The function returns true if the difference
@@ -129,6 +143,10 @@ void TurnOffLeds()
 #endif
 }
 
+/*! \details To turn on the RF front-end elements in a sequential manner, first, this function turns the spectrum
+ * 	analyzer on, then it waits 5 seconds, it turns the LNAs on, it waits again but this time just
+ * 	1 second and, finally, it switches the input to the antenna.
+ */
 void TurnOnFrontEnd()
 {
 #ifdef RASPBERRY_PI
@@ -140,6 +158,10 @@ void TurnOnFrontEnd()
 #endif
 }
 
+/*! \details To turn off the RF front-end elements sequentially, this function begins ensuring the noise source
+ * 	is turned off, then it switches the input to that device, it waits 1 second, it turns the LNAs off,
+ * 	it waits again 1 second and, finally, it turns the spectrum analyzer off.
+ */
 void TurnOffFrontEnd()
 {
 #ifdef RASBPERRY_PI
@@ -157,9 +179,9 @@ void PrintHelp()
 	cout << "Usage: rfmis-cart [--plot] [--no-frontend-cal] [--rfi={ska-mode1,ska-mode2,itu-ra769}] [--num-meas-cycles='number'] [--no-upload] [--help | -h]" << endl;
 	cout << "\nThis software was designed to capture RF power measurements from a spectrum analyzer Aaronia Spectran V4, using an antenna" << endl;
 	cout << "which could be rotated to point the horizon in different azimuth angles and whose polarization could be changed between" << endl;
-	cout << "horizontal and vertical. A sweep from 1 GHz (or maybe less) to 9.4 GHz is captured in each antenna position and then it is processed" << endl;
-	cout << "to identify RF interference (RFI), it is saved into memory, it is plotted with the identified RFI and finally the measurements are sent" << endl;
-	cout << "to a remote server. The software's arguments can be put in any order." << endl;
+	cout << "horizontal and vertical. A sweep from 1 GHz (or maybe less) to 9.4 GHz is captured in each antenna position and then it is calibrated," << endl;
+	cout << "it is processed to identify RF interference (RFI), it is saved into memory, it is plotted with the detected RFI and finally" << endl;
+	cout << "the measurements are sent to a remote server. The software's arguments can be put in any order." << endl;
 	cout << "\nThe arguments' descriptions are presented in the following:" << endl;
 	cout << "\t--plot\t\t\t\t\t\tEnable the plotting of the different RF data which are got by the software." << endl;
 	cout << "\t\t\t\t\t\t\t  If this argument is not given no plot is produced." << endl;
@@ -180,7 +202,14 @@ void PrintHelp()
 	cout << "\t-h, --help\t\t\t\t\tShow this help and finish there." << endl;
 }
 
-bool ProcessMainArguments(int argc, char * argv[])
+/*! \details This function determines the values of the behavior flags (flagCalEnabled, flagPlot, flagRFI, etc.) taking
+ * into account the arguments that were received and its values. The function returns a `true` value if the arguments
+ * were processed correctly and a `false` value if there was an argument which could not be recognized, and in that case
+ * it presents a message, in the `stdout`, explaining the correct use of the software arguments.
+ * \param [in] argc The number of arguments that were received by the software.
+ * \param [in] argv An array of C strings (`char*`) where each one is a software's argument.
+ */
+bool ProcessMainArguments (int argc, char * argv[])
 {
 	if(argc>1)
 	{
@@ -255,7 +284,7 @@ bool ProcessMainArguments(int argc, char * argv[])
 			argList.erase(argIter);
 		}
 
-		//Searching the argument --num-meas-cycles=xxxx
+		//Searching the argument --num-meas-cycles=xx
 		argIter = argList.cbegin();
 		while( argIter!=argList.cend() && argIter->find("--num-meas-cycles=")==std::string::npos )		argIter++;
 		if( argIter!=argList.cend() )
