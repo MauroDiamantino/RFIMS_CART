@@ -5,11 +5,15 @@
  *      Author: new-mauro
  */
 
+/*! \file Reply.cpp
+ * 	\brief This file contains the definitions of many methods of the classes _Reply_ and _SweepReply_.
+ * 	\author Mauro Diamantino
+ */
+
 #include "Spectran.h"
 
 ////////////////////Implementations of some Reply class' methods//////////////////
 
-//! Default constructor
 Reply::Reply()
 {
 	replyType=Reply::UNINITIALIZED;
@@ -18,7 +22,9 @@ Reply::Reply()
 	numOfWaitedBytes=0;
 }
 
-//! A constructor which allows to set the reply type.
+/*! \param [in] type The reply type: VERIFY, GETSTPVAR, SETSTPVAR or AMPFREQDAT.
+ * 	\param [in] variable An optional argument which indicates the variable whose value will be received by a GETSTPVAR reply.
+ */
 Reply::Reply(const ReplyType type, const SpecVariable variable)
 {
 	replyType=type;
@@ -27,7 +33,8 @@ Reply::Reply(const ReplyType type, const SpecVariable variable)
 	PrepareReply();
 }
 
-//! The copy constructor
+/*! \param [in] anotherReply A _Reply_ object which is given to copy its attributes.
+ */
 Reply::Reply(const Reply& anotherReply)
 {
 	bytes=anotherReply.bytes;
@@ -37,7 +44,6 @@ Reply::Reply(const Reply& anotherReply)
 	value=anotherReply.value;
 }
 
-//! This method is intended to prepare the object to receive the bytes sent by the spectrum analyzer.
 /*! To prepare the object this method determines the number of waited bytes taking into account the given reply type
  * and then it asks the vector to reserve the enough memory to save those bytes. Moreover, once the object has been prepared
  * and passed to the Spectran Interface, the number of waited bytes is used by the interface to determine how many bytes
@@ -65,10 +71,11 @@ void Reply::PrepareReply()
 	bytes.reserve(numOfWaitedBytes);
 }
 
-//! This method must be used to set the reply type and to ask the object to prepare itself to receive the bytes.
 /*! The tasks performed by this methods are: to clear the object, to set the reply type and then to call the
  * private method `PrepareReply()`. The variable name must be set for the GETSTPVAR replies, for other cases it
  * is not important.
+ * \param [in] type The reply type: VERIFY, GETSTPVAR, SETSTPVAR or AMPFREQDAT.
+ * \param [in] variable An optional argument which indicates the variable whose value will be received by a GETSTPVAR reply.
  */
 void Reply::PrepareTo(const ReplyType type, const SpecVariable variable)
 {
@@ -77,13 +84,15 @@ void Reply::PrepareTo(const ReplyType type, const SpecVariable variable)
 	PrepareReply();
 }
 
+/*!	\param [in] data A pointer to the bytes which contain the information of the reply sent by the spectrum analyzer.
+ */
 void Reply::FillBytesVector(const std::uint8_t * data)
 {
 	bytes.insert(bytes.begin(), data, data+numOfWaitedBytes);
 }
 
-//! The bytes vector must be inserted in the Reply object with this method to extract the reply data then.
 /*! The reply object must have been prepared before inserting the bytes vector.
+ * 	\param [in] data A pointer to the bytes which must be inserted in the object and from which the info must be extracted.
  */
 void Reply::InsertBytes(const std::uint8_t* data)
 {
@@ -113,10 +122,11 @@ void Reply::InsertBytes(const std::uint8_t* data)
 		}
 		break;
 	case ReplyType::AMPFREQDAT:
-		floatBytes.bytes[0] = bytes.at(9);
-		floatBytes.bytes[1] = bytes.at(10);
-		floatBytes.bytes[2] = bytes.at(11);
-		floatBytes.bytes[3] = bytes.at(12);
+		//Power value, maximum value or RMS value. Even, it could be a voltage value or a field strength value.
+		floatBytes.bytes[0] = bytes.at(13);
+		floatBytes.bytes[1] = bytes.at(14);
+		floatBytes.bytes[2] = bytes.at(15);
+		floatBytes.bytes[3] = bytes.at(16);
 		value = floatBytes.floatValue;
 		break;
 	default:
@@ -124,7 +134,6 @@ void Reply::InsertBytes(const std::uint8_t* data)
 	}
 }
 
-//! A method which returns the reply type but as a string.
 std::string Reply::GetReplyTypeString() const
 {
 	switch(replyType){
@@ -145,7 +154,6 @@ std::string Reply::GetReplyTypeString() const
 	}
 }
 
-//! A method which returns the name, as a std::string, of the Spectran's variable which is related with the reply (GETSTPVAR reply)
 std::string Reply::GetVariableNameString() const
 {
 	switch(variableName)
@@ -249,10 +257,9 @@ std::string Reply::GetVariableNameString() const
 	}
 }
 
-//! This method states if the received reply is right.
 /*! To do so, the method checks if the reply type (determined when the reply object was prepared) is equal to first
- * received byte and then, if the reply type is VERIFY it checks if the following bytes are correct, or if the reply
- * type is GETSTPVAR or SETSTPVAR it checks the "status" byte, which must be zero when all is right.
+ * 	received byte and if the reply type is VERIFY it checks if the following bytes are correct, or if the reply
+ * 	type is GETSTPVAR or SETSTPVAR it checks the "status" byte, which must be zero when all is right.
  */
 bool Reply::IsRight() const
 {
@@ -296,7 +303,6 @@ bool Reply::IsRight() const
 	return flagRight;
 }
 
-//! The method to reset the object.
 void Reply::Clear()
 {
 	replyType=ReplyType::UNINITIALIZED;
@@ -306,7 +312,9 @@ void Reply::Clear()
 	value=0.0;
 }
 
-//! The overloading of the assignment operator.
+/*!	\param [in] anotherReply A _Reply_ object which is given to copy its attributes.
+ *
+ */
 const Reply& Reply::operator =(const Reply& anotherReply)
 {
 	bytes=anotherReply.bytes;
@@ -319,15 +327,20 @@ const Reply& Reply::operator =(const Reply& anotherReply)
 
 /////////////////////Implementation of some SweepRely class' methods/////////////////
 
+/*! This constructor clears the class attributes and calls the _Reply_ constructor with an argument to
+ * set the reply type to AMPFREQDAT.
+ */
 SweepReply::SweepReply() : Reply(Reply::AMPFREQDAT)
 {
 	timestamp=0;
-	//frequency=0.0;
 	frequency=0;
 	minValue=0.0;
 	maxValue=0.0;
 }
 
+/*! This method extracts the timestamp, frequency value and power values of a AMPFREQDAT reply.
+ * 	\param [in] data A pointer to the bytes which contains the timestamp and the frequency and power values.
+ */
 void SweepReply::InsertBytes(const std::uint8_t * data)
 {
 	union UnIntToBytes{
@@ -339,8 +352,8 @@ void SweepReply::InsertBytes(const std::uint8_t * data)
 
 	FillBytesVector(data);
 
-	/*! Timestamp extraction: this value is received as a 4-bytes unsigned integer and it represents the count of Spectran's
-	 * an internal timer. The timer period is approximately 3.5 nS and it is a 32-bit timer.
+	/*! Timestamp extraction: this value is received as a 4-byte unsigned integer and it represents the count of a
+	 *  internal timer of the spectrum analyzer. The timer period is approximately 3.5 nS and it is a 32-bit timer.
 	 */
 	unsIntBytes.bytes[0]=bytes.at(1);
 	unsIntBytes.bytes[1]=bytes.at(2);
@@ -348,22 +361,21 @@ void SweepReply::InsertBytes(const std::uint8_t * data)
 	unsIntBytes.bytes[3]=bytes.at(4);
 	timestamp=unsIntBytes.intValue;
 
-	/*! Frequency extraction: this value is received as a 4-bytes unsigned integer in Hz/10. */
+	/*! Frequency extraction: this value is received as a 4-byte unsigned integer in Hz/10 and it is stored as an unsigned integer in Hz. */
 	unsIntBytes.bytes[0]=bytes.at(5);
 	unsIntBytes.bytes[1]=bytes.at(6);
 	unsIntBytes.bytes[2]=bytes.at(7);
 	unsIntBytes.bytes[3]=bytes.at(8);
-	//frequency=float(unsIntBytes.intValue)*10.0;
 	frequency = ( (std::uint_least64_t) unsIntBytes.intValue )*10;
 
-	/*! Min power extraction: this value is received as a 4-bytes floating point value, measured in dBm. */
+	/*! Min/RMS power extraction: this value is received as a 4-byte floating point value, measured in dBm. Even, it could be a voltage value or a field strength value.*/
 	floatBytes.bytes[0]=bytes.at(9);
 	floatBytes.bytes[1]=bytes.at(10);
 	floatBytes.bytes[2]=bytes.at(11);
 	floatBytes.bytes[3]=bytes.at(12);
 	minValue=floatBytes.floatValue;
 
-	/*! Max power extraction: this value is received as a 4-bytes floating point value, measured in dBm. */
+	/*! Max/RMS power extraction: this value is received as a 4-bytes floating point value, measured in dBm. Even, it could be a voltage value or a field strength value.*/
 	floatBytes.bytes[0]=bytes.at(13);
 	floatBytes.bytes[1]=bytes.at(14);
 	floatBytes.bytes[2]=bytes.at(15);
@@ -376,12 +388,13 @@ void SweepReply::Clear()
 	bytes.clear();
 	value=0.0;
 	timestamp=0.0;
-	//frequency=0.0;
 	frequency=0;
 	minValue=0.0;
 	maxValue=0.0;
 }
 
+/*!	\param [in] anotherReply A _Reply_ object which is given to copy its attributes.
+ */
 const SweepReply& SweepReply::operator=(const SweepReply& anotherReply)
 {
 	bytes=anotherReply.bytes;

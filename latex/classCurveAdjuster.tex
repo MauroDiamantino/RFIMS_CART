@@ -1,0 +1,88 @@
+\hypertarget{classCurveAdjuster}{}\section{Curve\+Adjuster Class Reference}
+\label{classCurveAdjuster}\index{Curve\+Adjuster@{Curve\+Adjuster}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classCurveAdjuster_a200e4c6f01360a11d7db776e1aeb3048}\label{classCurveAdjuster_a200e4c6f01360a11d7db776e1aeb3048}} 
+\hyperlink{classCurveAdjuster_a200e4c6f01360a11d7db776e1aeb3048}{Curve\+Adjuster} ()
+\begin{DoxyCompactList}\small\item\em The unique constructor of the class. \end{DoxyCompactList}\item 
+\hyperlink{classCurveAdjuster_ae1939fed50d532e46bef47db5e3883c3}{$\sim$\+Curve\+Adjuster} ()
+\begin{DoxyCompactList}\small\item\em The destructor of the class. \end{DoxyCompactList}\item 
+void \hyperlink{classCurveAdjuster_a17080bae5109c5128caa4c214b856e19}{Set\+Bands\+Parameters} (const std\+::vector$<$ \hyperlink{structBandParameters}{Band\+Parameters} $>$ \&bands\+Param)
+\begin{DoxyCompactList}\small\item\em This method allows to give the bands\textquotesingle{} parameters to the object. \end{DoxyCompactList}\item 
+void \hyperlink{classCurveAdjuster_a5865916cf99ab2cad0a7a9bc2b4e1d56}{Set\+Ref\+Sweep} (const \hyperlink{structSweep}{Sweep} \&swp)
+\begin{DoxyCompactList}\small\item\em This method allow to give the reference sweep to the object. \end{DoxyCompactList}\item 
+const \hyperlink{structFreqValues}{Freq\+Values} \& \hyperlink{classCurveAdjuster_a3645614620645c7bfd86386576072d0a}{Adjust\+Curve} (const \hyperlink{structFreqValues}{Freq\+Values} \&curve)
+\begin{DoxyCompactList}\small\item\em This is the central method which allows to adjust a frequency curve. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classCurveAdjuster_a613e815a190d44b7d64e70b08da82e1f}\label{classCurveAdjuster_a613e815a190d44b7d64e70b08da82e1f}} 
+const \hyperlink{structFreqValues}{Freq\+Values} \& \hyperlink{classCurveAdjuster_a613e815a190d44b7d64e70b08da82e1f}{Get\+Adjusted\+Curve} () const
+\begin{DoxyCompactList}\small\item\em This method returns the last adjusted curve. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classCurveAdjuster_ae1939fed50d532e46bef47db5e3883c3}\label{classCurveAdjuster_ae1939fed50d532e46bef47db5e3883c3}} 
+\index{Curve\+Adjuster@{Curve\+Adjuster}!````~Curve\+Adjuster@{$\sim$\+Curve\+Adjuster}}
+\index{````~Curve\+Adjuster@{$\sim$\+Curve\+Adjuster}!Curve\+Adjuster@{Curve\+Adjuster}}
+\subsubsection{\texorpdfstring{$\sim$\+Curve\+Adjuster()}{~CurveAdjuster()}}
+{\footnotesize\ttfamily Curve\+Adjuster\+::$\sim$\+Curve\+Adjuster (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+The destructor of the class. 
+
+Its implementation is empty because the attributes destruction is implicitly. However, the destructor is defined here to allow this one to be called explicitly in any part of the code, what is used by the signals handler to destroy the objects when a signal to finish the execution of the software is received. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classCurveAdjuster_a3645614620645c7bfd86386576072d0a}\label{classCurveAdjuster_a3645614620645c7bfd86386576072d0a}} 
+\index{Curve\+Adjuster@{Curve\+Adjuster}!Adjust\+Curve@{Adjust\+Curve}}
+\index{Adjust\+Curve@{Adjust\+Curve}!Curve\+Adjuster@{Curve\+Adjuster}}
+\subsubsection{\texorpdfstring{Adjust\+Curve()}{AdjustCurve()}}
+{\footnotesize\ttfamily const \hyperlink{structFreqValues}{Freq\+Values} \& Curve\+Adjuster\+::\+Adjust\+Curve (\begin{DoxyParamCaption}\item[{const \hyperlink{structFreqValues}{Freq\+Values} \&}]{curve }\end{DoxyParamCaption})}
+
+
+
+This is the central method which allows to adjust a frequency curve. 
+
+This method takes the set of linear functions, which model the given in the frequency domain, and it generates the adjusted curve evaluating each linear function, in its range, taking into account the frequency values of the reference sweep.
+
+The frequency curve must be a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} structure or any of the structure derived from that one. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em curve} & The frequency curve to be adjusted. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classCurveAdjuster_a17080bae5109c5128caa4c214b856e19}\label{classCurveAdjuster_a17080bae5109c5128caa4c214b856e19}} 
+\index{Curve\+Adjuster@{Curve\+Adjuster}!Set\+Bands\+Parameters@{Set\+Bands\+Parameters}}
+\index{Set\+Bands\+Parameters@{Set\+Bands\+Parameters}!Curve\+Adjuster@{Curve\+Adjuster}}
+\subsubsection{\texorpdfstring{Set\+Bands\+Parameters()}{SetBandsParameters()}}
+{\footnotesize\ttfamily void Curve\+Adjuster\+::\+Set\+Bands\+Parameters (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \hyperlink{structBandParameters}{Band\+Parameters} $>$ \&}]{bands\+Param }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+This method allows to give the bands\textquotesingle{} parameters to the object. 
+
+The bands\textquotesingle{} parameters are taken into account to perform the adjusting of a curve. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em bands\+Param} & The frequency bands\textquotesingle{} parameters. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classCurveAdjuster_a5865916cf99ab2cad0a7a9bc2b4e1d56}\label{classCurveAdjuster_a5865916cf99ab2cad0a7a9bc2b4e1d56}} 
+\index{Curve\+Adjuster@{Curve\+Adjuster}!Set\+Ref\+Sweep@{Set\+Ref\+Sweep}}
+\index{Set\+Ref\+Sweep@{Set\+Ref\+Sweep}!Curve\+Adjuster@{Curve\+Adjuster}}
+\subsubsection{\texorpdfstring{Set\+Ref\+Sweep()}{SetRefSweep()}}
+{\footnotesize\ttfamily void Curve\+Adjuster\+::\+Set\+Ref\+Sweep (\begin{DoxyParamCaption}\item[{const \hyperlink{structSweep}{Sweep} \&}]{swp }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+This method allow to give the reference sweep to the object. 
+
+The reference sweep is used to know which are the exact frequency values which are delivered by the spectrum analyzer. This allows to correctly perform the curve adjusting. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em swp} & The reference sweep. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{SweepProcessing_8h}{Sweep\+Processing.\+h}\item 
+Curve\+Adjuster.\+cpp\end{DoxyCompactItemize}

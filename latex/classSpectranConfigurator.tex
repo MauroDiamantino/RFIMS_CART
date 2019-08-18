@@ -1,0 +1,146 @@
+\hypertarget{classSpectranConfigurator}{}\section{Spectran\+Configurator Class Reference}
+\label{classSpectranConfigurator}\index{Spectran\+Configurator@{Spectran\+Configurator}}
+
+
+The class {\itshape \hyperlink{classSpectranConfigurator}{Spectran\+Configurator}} is intended to manage the process of configuring the Aaronia Spectran device.  
+
+
+
+
+{\ttfamily \#include $<$Spectran.\+h$>$}
+
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structSpectranConfigurator_1_1FixedParameters}{Fixed\+Parameters}
+\begin{DoxyCompactList}\small\item\em This structure saves the fixed parameters of the spectrum analyzer, i.\+e. the parameters which do not change through the entire measurement cycle. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classSpectranConfigurator_af6a9f524ea5625e6e30be0e843c17c8a}{Spectran\+Configurator} (\hyperlink{classSpectranInterface}{Spectran\+Interface} \&interf)
+\begin{DoxyCompactList}\small\item\em The default constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSpectranConfigurator_aa697b14d994a5d0fabe2639036f70dc8}\label{classSpectranConfigurator_aa697b14d994a5d0fabe2639036f70dc8}} 
+\hyperlink{classSpectranConfigurator_aa697b14d994a5d0fabe2639036f70dc8}{$\sim$\+Spectran\+Configurator} ()
+\begin{DoxyCompactList}\small\item\em The destructor which just makes sure the input file stream is closed. \end{DoxyCompactList}\item 
+bool \hyperlink{classSpectranConfigurator_ab3dfc0843d10b2e9bad09f599165d6ff}{Load\+Fixed\+Parameters} ()
+\begin{DoxyCompactList}\small\item\em This method loads the fixed Spectran\textquotesingle{}s parameters from the corresponding file. \end{DoxyCompactList}\item 
+bool \hyperlink{classSpectranConfigurator_a9171d48390718bd6f2d05922ee6596cd}{Load\+Bands\+Parameters} ()
+\begin{DoxyCompactList}\small\item\em This method loads the frequency bands parameters from the corresponding file. \end{DoxyCompactList}\item 
+void \hyperlink{classSpectranConfigurator_ad2deb73f4c1691cd8bff29b810f8f42b}{Initial\+Configuration} ()
+\begin{DoxyCompactList}\small\item\em This method is intended to configure the spectrum analyzer with the fixed parameters at the beginning of a measurement cycle. \end{DoxyCompactList}\item 
+\hyperlink{structBandParameters}{Band\+Parameters} \hyperlink{classSpectranConfigurator_a4bea5937bcf7c904c3eb435a2d25e3fb}{Configure\+Next\+Band} ()
+\begin{DoxyCompactList}\small\item\em The aim of this method is to configure the spectrum analyzer with parameters of the next frequency band. \end{DoxyCompactList}\item 
+void \hyperlink{classSpectranConfigurator_a7402a16a8514a0c1b230164b7f5d9d21}{Set\+Curr\+Band\+Parameters} (const \hyperlink{structBandParameters}{Band\+Parameters} \&curr\+Band\+Param)
+\begin{DoxyCompactList}\small\item\em This method allows to change the parameters of the current frequency band, given a {\itshape \hyperlink{structBandParameters}{Band\+Parameters}} structure as parameter. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSpectranConfigurator_a4d5f0fc0842d96bdaef2555f63cd5ad6}\label{classSpectranConfigurator_a4d5f0fc0842d96bdaef2555f63cd5ad6}} 
+const \hyperlink{structSpectranConfigurator_1_1FixedParameters}{Fixed\+Parameters} \& \hyperlink{classSpectranConfigurator_a4d5f0fc0842d96bdaef2555f63cd5ad6}{Get\+Fixed\+Parameters} () const
+\begin{DoxyCompactList}\small\item\em This method returns the fixed parameters. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSpectranConfigurator_a8d7445409e7e019d9763228343d04c5f}\label{classSpectranConfigurator_a8d7445409e7e019d9763228343d04c5f}} 
+const std\+::vector$<$ \hyperlink{structBandParameters}{Band\+Parameters} $>$ \& \hyperlink{classSpectranConfigurator_a8d7445409e7e019d9763228343d04c5f}{Get\+Bands\+Parameters} () const
+\begin{DoxyCompactList}\small\item\em This method returns a vector with the parameters of all frequency bands. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSpectranConfigurator_a9349287cdb255852996aa5b07e83bf0d}\label{classSpectranConfigurator_a9349287cdb255852996aa5b07e83bf0d}} 
+const std\+::vector$<$ \hyperlink{structBandParameters}{Band\+Parameters} $>$ \& \hyperlink{classSpectranConfigurator_a9349287cdb255852996aa5b07e83bf0d}{Get\+Sub\+Bands\+Parameters} () const
+\begin{DoxyCompactList}\small\item\em This method returns a vector with the parameters of all frequency sub-\/bands. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSpectranConfigurator_ad9d3fa35d5fbca578a8e503a4eaff97f}\label{classSpectranConfigurator_ad9d3fa35d5fbca578a8e503a4eaff97f}} 
+const \hyperlink{structBandParameters}{Band\+Parameters} \& \hyperlink{classSpectranConfigurator_ad9d3fa35d5fbca578a8e503a4eaff97f}{Get\+Curr\+Band\+Parameters} () const
+\begin{DoxyCompactList}\small\item\em This method returns the parameters of the current frequency band. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSpectranConfigurator_ad76d87b5f229c12dbf378dcf3f9fbf52}\label{classSpectranConfigurator_ad76d87b5f229c12dbf378dcf3f9fbf52}} 
+unsigned int \hyperlink{classSpectranConfigurator_ad76d87b5f229c12dbf378dcf3f9fbf52}{Get\+Num\+Of\+Bands} () const
+\begin{DoxyCompactList}\small\item\em This method returns the number of frequency sub-\/bands (or bands if they were not split). \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSpectranConfigurator_a72997f08ddcf4bbcfa4d1bfa632ac002}\label{classSpectranConfigurator_a72997f08ddcf4bbcfa4d1bfa632ac002}} 
+unsigned int \hyperlink{classSpectranConfigurator_a72997f08ddcf4bbcfa4d1bfa632ac002}{Get\+Band\+Index} () const
+\begin{DoxyCompactList}\small\item\em This method returns the current value of the band index. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSpectranConfigurator_afe7186f4e99bf125f2301ce411a8c559}\label{classSpectranConfigurator_afe7186f4e99bf125f2301ce411a8c559}} 
+bool \hyperlink{classSpectranConfigurator_afe7186f4e99bf125f2301ce411a8c559}{Is\+Last\+Band} () const
+\begin{DoxyCompactList}\small\item\em This method returns a {\ttfamily true} if the current band is the last one and a {\ttfamily false} otherwise. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The class {\itshape \hyperlink{classSpectranConfigurator}{Spectran\+Configurator}} is intended to manage the process of configuring the Aaronia Spectran device. 
+
+To do this task, this component give {\itshape \hyperlink{classCommand}{Command}} objects to the {\itshape \hyperlink{classSpectranInterface}{Spectran\+Interface}} object, which writes them in the spectrum analyzer and then it reads the replies, the Spectran Interface passes them as {\itshape \hyperlink{classReply}{Reply}} objects to the Spectran Configurator, so this one can know if the last configuration was performed successfully or not. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classSpectranConfigurator_af6a9f524ea5625e6e30be0e843c17c8a}\label{classSpectranConfigurator_af6a9f524ea5625e6e30be0e843c17c8a}} 
+\index{Spectran\+Configurator@{Spectran\+Configurator}!Spectran\+Configurator@{Spectran\+Configurator}}
+\index{Spectran\+Configurator@{Spectran\+Configurator}!Spectran\+Configurator@{Spectran\+Configurator}}
+\subsubsection{\texorpdfstring{Spectran\+Configurator()}{SpectranConfigurator()}}
+{\footnotesize\ttfamily Spectran\+Configurator\+::\+Spectran\+Configurator (\begin{DoxyParamCaption}\item[{\hyperlink{classSpectranInterface}{Spectran\+Interface} \&}]{interf }\end{DoxyParamCaption})}
+
+
+
+The default constructor. 
+
+At instantiation of an object, a reference to the {\itshape \hyperlink{classSpectranInterface}{Spectran\+Interface}} object must be given. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em interf} & A reference to the unique {\itshape \hyperlink{classSpectranInterface}{Spectran\+Interface}} object, which is responsible for the communication with the spectrum analyzer. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classSpectranConfigurator_a4bea5937bcf7c904c3eb435a2d25e3fb}\label{classSpectranConfigurator_a4bea5937bcf7c904c3eb435a2d25e3fb}} 
+\index{Spectran\+Configurator@{Spectran\+Configurator}!Configure\+Next\+Band@{Configure\+Next\+Band}}
+\index{Configure\+Next\+Band@{Configure\+Next\+Band}!Spectran\+Configurator@{Spectran\+Configurator}}
+\subsubsection{\texorpdfstring{Configure\+Next\+Band()}{ConfigureNextBand()}}
+{\footnotesize\ttfamily \hyperlink{structBandParameters}{Band\+Parameters} Spectran\+Configurator\+::\+Configure\+Next\+Band (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+The aim of this method is to configure the spectrum analyzer with parameters of the next frequency band. 
+
+The first time this method is called, it configures the spectrum analyzer with the first band\textquotesingle{}s parameters. Then, it will increase the band index to move to the parameters of the next band. Again, the streaming of sweep points should be disabled before calling this method.
+
+This method returns the parameters of the current frequency band as a {\itshape \hyperlink{structBandParameters}{Band\+Parameters}} structure. \mbox{\Hypertarget{classSpectranConfigurator_ad2deb73f4c1691cd8bff29b810f8f42b}\label{classSpectranConfigurator_ad2deb73f4c1691cd8bff29b810f8f42b}} 
+\index{Spectran\+Configurator@{Spectran\+Configurator}!Initial\+Configuration@{Initial\+Configuration}}
+\index{Initial\+Configuration@{Initial\+Configuration}!Spectran\+Configurator@{Spectran\+Configurator}}
+\subsubsection{\texorpdfstring{Initial\+Configuration()}{InitialConfiguration()}}
+{\footnotesize\ttfamily void Spectran\+Configurator\+::\+Initial\+Configuration (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+This method is intended to configure the spectrum analyzer with the fixed parameters at the beginning of a measurement cycle. 
+
+This method should be used at the beginning of the first measurement cycle and at beginning of rest ones if the file with the fixed parameters has been modified. Obviously, the sending of measurements via U\+SB must be disable before calling this method. \mbox{\Hypertarget{classSpectranConfigurator_a9171d48390718bd6f2d05922ee6596cd}\label{classSpectranConfigurator_a9171d48390718bd6f2d05922ee6596cd}} 
+\index{Spectran\+Configurator@{Spectran\+Configurator}!Load\+Bands\+Parameters@{Load\+Bands\+Parameters}}
+\index{Load\+Bands\+Parameters@{Load\+Bands\+Parameters}!Spectran\+Configurator@{Spectran\+Configurator}}
+\subsubsection{\texorpdfstring{Load\+Bands\+Parameters()}{LoadBandsParameters()}}
+{\footnotesize\ttfamily bool Spectran\+Configurator\+::\+Load\+Bands\+Parameters (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+This method loads the frequency bands parameters from the corresponding file. 
+
+The method loads the parameters of one band, stores them in a structure {\itshape Bands\+Parameters} and then it splits the band in several sub-\/bands, if its span is bigger than 200 M\+Hz. Then it moves to next frequency band until the end-\/of-\/file (E\+OF) is reached.
+
+The method returns a {\ttfamily true} if the parameters were loaded from the file, either because it is the first time they are read or because the corresponding file was modified. If the parameters had been loaded before and it was found that the file was not modified from the last loading, the parameters are not read from the file and the method returns a {\ttfamily false}. \mbox{\Hypertarget{classSpectranConfigurator_ab3dfc0843d10b2e9bad09f599165d6ff}\label{classSpectranConfigurator_ab3dfc0843d10b2e9bad09f599165d6ff}} 
+\index{Spectran\+Configurator@{Spectran\+Configurator}!Load\+Fixed\+Parameters@{Load\+Fixed\+Parameters}}
+\index{Load\+Fixed\+Parameters@{Load\+Fixed\+Parameters}!Spectran\+Configurator@{Spectran\+Configurator}}
+\subsubsection{\texorpdfstring{Load\+Fixed\+Parameters()}{LoadFixedParameters()}}
+{\footnotesize\ttfamily bool Spectran\+Configurator\+::\+Load\+Fixed\+Parameters (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+This method loads the fixed Spectran\textquotesingle{}s parameters from the corresponding file. 
+
+The method returns a boolean value to indicate if the fixed parameters have been updated so the initial configuration should be repeated. The method returns a {\ttfamily true} if the parameters were loaded from the file, either because it is the first time they are read or because the corresponding file was modified. If the parameters had been loaded before and it was found that the file was not modified from the last loading, the parameters are not read from the file and the method returns a {\ttfamily false}. \mbox{\Hypertarget{classSpectranConfigurator_a7402a16a8514a0c1b230164b7f5d9d21}\label{classSpectranConfigurator_a7402a16a8514a0c1b230164b7f5d9d21}} 
+\index{Spectran\+Configurator@{Spectran\+Configurator}!Set\+Curr\+Band\+Parameters@{Set\+Curr\+Band\+Parameters}}
+\index{Set\+Curr\+Band\+Parameters@{Set\+Curr\+Band\+Parameters}!Spectran\+Configurator@{Spectran\+Configurator}}
+\subsubsection{\texorpdfstring{Set\+Curr\+Band\+Parameters()}{SetCurrBandParameters()}}
+{\footnotesize\ttfamily void Spectran\+Configurator\+::\+Set\+Curr\+Band\+Parameters (\begin{DoxyParamCaption}\item[{const \hyperlink{structBandParameters}{Band\+Parameters} \&}]{curr\+Band\+Param }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+This method allows to change the parameters of the current frequency band, given a {\itshape \hyperlink{structBandParameters}{Band\+Parameters}} structure as parameter. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em curr\+Band\+Param} & A {\itshape \hyperlink{structBandParameters}{Band\+Parameters}} structure with the parameters which it is desired the current frequency band to have. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{Spectran_8h}{Spectran.\+h}\item 
+\hyperlink{SpectranConfigurator_8cpp}{Spectran\+Configurator.\+cpp}\end{DoxyCompactItemize}

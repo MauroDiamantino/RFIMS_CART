@@ -1,0 +1,61 @@
+\hypertarget{AntennaPositioning_8h}{}\section{Antenna\+Positioning.\+h File Reference}
+\label{AntennaPositioning_8h}\index{Antenna\+Positioning.\+h@{Antenna\+Positioning.\+h}}
+
+
+This file contains the declarations of classes \hyperlink{classAntennaPositioner}{Antenna\+Positioner} and \hyperlink{classGPSInterface}{G\+P\+S\+Interface}.  
+
+
+{\ttfamily \#include $<$nmea.\+h$>$}\newline
+{\ttfamily \#include $<$nmea/gprmc.\+h$>$}\newline
+{\ttfamily \#include $<$nmea/gpgga.\+h$>$}\newline
+{\ttfamily \#include $<$ftd2xx.\+h$>$}\newline
+{\ttfamily \#include $<$dirent.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}Basics.\+h\char`\"{}}\newline
+Include dependency graph for Antenna\+Positioning.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{AntennaPositioning_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=189pt]{AntennaPositioning_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structData3D}{Data3D}
+\begin{DoxyCompactList}\small\item\em A structure intended to save the the tri-\/axial values of the 3D sensors which are integrated in the G\+PS receiver. \end{DoxyCompactList}\item 
+struct \hyperlink{structGPSCoordinates}{G\+P\+S\+Coordinates}
+\begin{DoxyCompactList}\small\item\em A structure which saves the G\+PS coordinates. \end{DoxyCompactList}\item 
+class \hyperlink{classGPSInterface}{G\+P\+S\+Interface}
+\begin{DoxyCompactList}\small\item\em It is intended to establish the communication with the Aaronia G\+PS receiver, to request and capture messages from this and extract useful data from messages. \end{DoxyCompactList}\item 
+class \hyperlink{classAntennaPositioner}{Antenna\+Positioner}
+\begin{DoxyCompactList}\small\item\em The aim of this class is to drive the antenna positioning. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{AntennaPositioning_8h_a55887c7bc32d70c0308472ff4de3e282}\label{AntennaPositioning_8h_a55887c7bc32d70c0308472ff4de3e282}} 
+enum {\bfseries Polarization} \+: char \{ {\bfseries H\+O\+R\+I\+Z\+O\+N\+T\+AL}, 
+{\bfseries V\+E\+R\+T\+I\+C\+AL}, 
+{\bfseries U\+N\+K\+N\+O\+WN}
+ \}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This file contains the declarations of classes \hyperlink{classAntennaPositioner}{Antenna\+Positioner} and \hyperlink{classGPSInterface}{G\+P\+S\+Interface}. 
+
+This header files includes the following libraries\+:
+\begin{DoxyItemize}
+\item iostream\+: cin, cout.
+\item libnmea\+: parsers for the G\+P\+R\+MC and G\+P\+G\+GA messages
+\item string\+: the U\+SB protocol of G\+PS receiver is text-\/based.
+\item ftd2xx\+: communication with the F\+T\+DI IC which is in the G\+PS receiver.
+\end{DoxyItemize}
+
+The namespace {\itshape std} is used to simplify the uses of objects like cout and cin. 

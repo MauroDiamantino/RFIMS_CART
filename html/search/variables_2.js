@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['day',['day',['../structTimeData.html#aee725dc9551cd482534c155a168b3d60',1,'TimeData']]],
-  ['detector',['detector',['../structBandParameters.html#a37ddad49ed6a8562c878d60081c65188',1,'BandParameters']]]
+  ['cabletype',['cableType',['../structSpectranConfigurator_1_1FixedParameters.html#af1eeef76fb85a2ccf937f3dd949d9980',1,'SpectranConfigurator::FixedParameters']]]
 ];

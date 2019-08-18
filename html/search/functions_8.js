@@ -1,6 +1,9 @@
 var searchData=
 [
-  ['printhelp',['PrintHelp',['../Basics_8h.html#ae964ff8411b4fdcaf65cb5529aea4bef',1,'PrintHelp():&#160;Basics.cpp'],['../Basics_8cpp.html#ae964ff8411b4fdcaf65cb5529aea4bef',1,'PrintHelp():&#160;Basics.cpp']]],
-  ['processmainarguments',['ProcessMainArguments',['../Basics_8h.html#abab505eef94a08a9092f916c62637071',1,'ProcessMainArguments(int argc, char *argv[]):&#160;Basics.cpp'],['../Basics_8cpp.html#abab505eef94a08a9092f916c62637071',1,'ProcessMainArguments(int argc, char *argv[]):&#160;Basics.cpp']]],
-  ['pushback',['PushBack',['../structFreqValues.html#a01315cf6bb4ed4e21ee1b6441c44a850',1,'FreqValues']]]
+  ['loadbandsparameters',['LoadBandsParameters',['../classSpectranConfigurator.html#a9171d48390718bd6f2d05922ee6596cd',1,'SpectranConfigurator']]],
+  ['loaddefaultparameters',['LoadDefaultParameters',['../classFrontEndCalibrator.html#a5943d84aa272ed548dcc5ad61a65306b',1,'FrontEndCalibrator']]],
+  ['loadenr',['LoadENR',['../classFrontEndCalibrator.html#af166e90f4fe0dfd7cdf825b88d33a479',1,'FrontEndCalibrator']]],
+  ['loadfixedparameters',['LoadFixedParameters',['../classSpectranConfigurator.html#ab3dfc0843d10b2e9bad09f599165d6ff',1,'SpectranConfigurator']]],
+  ['loadthreshcurve',['LoadThreshCurve',['../classRFIDetector.html#a1eba12febd92bba77f658dfe664ea5c6',1,'RFIDetector']]],
+  ['logout',['LogOut',['../classSpectranInterface.html#a8884f03d3075589a2850c83c9fd57e72',1,'SpectranInterface']]]
 ];

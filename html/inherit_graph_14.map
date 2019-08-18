@@ -1,0 +1,4 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classReply.html" title="The class Reply is intended to receive a bytes vector sent by the spectrum analyzer and to extract it..." alt="" coords="5,5,61,32"/>
+<area shape="rect" id="node2" href="$classSweepReply.html" title="This class derives from the base class Reply and is intended to process in a better way replies with ..." alt="" coords="109,5,205,32"/>
+</map>

@@ -22,6 +22,10 @@ void *UploadThreadFunc(void *arg)
 
 //////////////////Class' methods////////////////////
 
+/*! The constructor initializes all the internal attributes, checks if the corresponding folders exist and if
+ * any folder does not exist so it is created. Also, it checks if there is a shell available to be able to
+ * execute the external python script "client.py" to upload the data.
+ */
 DataLogger::DataLogger()
 {
 	sweepIndex=10000; //To make sure this variable will be set to zero the first time the method SaveData() is called
@@ -76,6 +80,15 @@ DataLogger::~DataLogger()
 		cerr << "\nWarning: " << (char*) (*retval) << endl;
 }
 
+/*! This method should be called each time the bands' parameters are reloaded (or loaded by first time)
+ * because of the file [BASE_PATH](\ref BASE_PATH)/parameters/freqbands.txt was modified, to update the
+ * file [BASE_PATH](\ref BASE_PATH)/parameters/csv/freqbands.csv to that has the same parameters, just
+ * in a different format. The CSV file is generated because it is easier the bands' parameters to be
+ * loaded from a file with CSV format than from a file with a more human-readable format like
+ * freqbands.txt. Each time this method is called the file freqbands.csv is regenerated and then it
+ * is incorporated in the archive file which will be uploaded at the end of the measurement cycle.
+ * \param [in] bandsParamVector A vector with the parameters of all the frequency bands.
+ */
 void DataLogger::SaveBandsParamAsCSV(const std::vector<BandParameters> & bandsParamVector)
 {
 	if( !bandsParamVector.empty() )
@@ -126,6 +139,21 @@ void DataLogger::SaveBandsParamAsCSV(const std::vector<BandParameters> & bandsPa
 		throw( CustomException("The data logger was asked to save an empty bands parameters vector.") );
 }
 
+/*! The given front end parameters are saved in two different files:
+ * - [BASE_PATH](\ref BASE_PATH)/calibration/frontendparam/gain_DD-MM-YYYYTHH:MM:SS.csv
+ * - [BASE_PATH](\ref BASE_PATH)/calibration/frontendparam/noisefigure_DD-MM-YYYYTHH:MM:SS.csv
+ * where DD-MM-YYYYTHH:MM:SS is the timestamp of the current measurement cycle.
+ *
+ * Those files are then incorporated into the archive file which will be uploaded at the end
+ * of the measurement cycle. If the front end parameters were not estimated in a measurement
+ * cycle, then the default front end parameters are used, which are curves that were estimated
+ * in the laboratory and which are saved in the following files:
+ * - [BASE_PATH](\ref BASE_PATH)/calibration/frontendparam/default/gain_default.csv
+ * - [BASE_PATH](\ref BASE_PATH)/calibration/frontendparam/default/noisefigure_default.csv
+ * In that case, these files are incorporated into the archive file to be uploaded.
+ * \param [in] gain A structure with the estimated values of the total front end gain versus the frequency.
+ * \param [in] noiseFigure A structure with the estimated values of the total front end noise figure versus the frequency.
+ */
 void DataLogger::SaveFrontEndParam(const FreqValues & gain, const FreqValues & noiseFigure)
 {
 	if( !gain.Empty() && !noiseFigure.Empty() )
@@ -152,7 +180,6 @@ void DataLogger::SaveFrontEndParam(const FreqValues & gain, const FreqValues & n
 		//Saving the noise figure data
 		ofs << "Timestamp";
 		for(const auto & freq : noiseFigure.frequencies)
-			//ofs << ',' << std::setprecision(4) << (freq/1e6);
 			ofs << ',' << std::setprecision(4) << double(freq)/1e6;
 		ofs << "\r\n";
 		ofs << timestamp;
@@ -180,7 +207,6 @@ void DataLogger::SaveFrontEndParam(const FreqValues & gain, const FreqValues & n
 		//Saving the gain data
 		ofs << "Timestamp";
 		for(const auto& freq : gain.frequencies)
-			//ofs << ',' << std::setprecision(4) << (freq/1e6);
 			ofs << ',' << std::setprecision(4) << double(freq)/1e6;
 		ofs << "\r\n";
 		ofs << timestamp;
@@ -197,17 +223,25 @@ void DataLogger::SaveFrontEndParam(const FreqValues & gain, const FreqValues & n
 		throw( CustomException("The data logger was asked to save empty front end parameters curves.") );
 }
 
+/*!	The given sweep is saved in [BASE_PATH](\ref BASE_PATH)/measurements/ with the filename format
+ * "sweep_DD-MM-YYYYTHH:MM:SS.csv" where the last part is the timestamp of the measurement cycle,
+ * which correspond to the beginning of this.
+ *
+ * All sweeps which corresponds to the same measurement cycle are saved in the same file and the method
+ * automatically create a new file or reopen the corresponding file each time a new sweep must be saved.
+ * \param [in] sweep A structure with the sweep to be saved.
+ */
 void DataLogger::SaveSweep(const Sweep & sweep)
 {
 	//The data are saved only if a sweep has been loaded
 	if( !sweep.Empty() )
 	{
-		if(++sweepIndex >= 2*NUM_OF_POSITIONS) //2 polarizations multiplied by NUM_OF_POSITIONS azimuthal positions
+		if(++sweepIndex >= 2*NUM_OF_POSITIONS) //2 polarizations multiplied by NUM_OF_POSITIONS azimuth positions
 			sweepIndex=0;
 
 		if(sweepIndex==0)
 		{
-			/////////New measurement cycle//////////
+			//New measurement cycle//
 
 			//Updating the first sweep date if the method SaveFrontEndParam() has not been called before
 			if(!flagNewFrontEndParam)
@@ -230,7 +264,6 @@ void DataLogger::SaveSweep(const Sweep & sweep)
 			//Writing header with frequency values
 			ofs << "Timestamp,Azimuthal Angle,Polarization";
 			for(const auto& freq : sweep.frequencies)
-				//ofs << std::setprecision(4) << ',' << (freq/1e6);
 				ofs << ',' << std::setprecision(4) << double(freq)/1e6; //The frequency values are saved in MHz
 			ofs << "\r\n";
 		}
@@ -268,7 +301,13 @@ void DataLogger::SaveSweep(const Sweep & sweep)
 		throw( CustomException("The data logger was asked to save an empty sweep.") );
 }
 
-
+/*! Each given structure with the RFI detected in the last sweep is saved in a different file with the filename format
+ * RFI_x.csv, where 'x' is an integer number between 1 and 2*(number of azimuth positions). So each file corresponds to
+ * a sweep of the measurement cycle and all the files of determined measurement cycle are in the same folder,
+ * [BASE_PATH](\ref BASE_PATH)/measurement/RFI_DD-MM-YYYYTHH:MM:SS/ where the last part of the folder's name is the
+ * timestamp of the measurement cycle.
+ * \param [in] rfi A structure with RFI to be saved.
+ */
 void DataLogger::SaveRFI(const RFI& rfi)
 {
 	if( !rfi.Empty() )
@@ -315,7 +354,10 @@ void DataLogger::SaveRFI(const RFI& rfi)
 		throw( CustomException("The data logger was asked to save an empty RFI structure.") );
 }
 
-
+/*!	To archive the data files the utility 'tar' is used and thr utility 'lzma' is used to compress to resulting archive file.
+ * The resulting compressed archive file is name as "rfims_data_DD-MM-YYYYTHH:MM:SS.tar.lzma", where the last part, before the
+ * extension is the timestamp of the corresponding measurement cycle.
+ */
 void DataLogger::ArchiveAndCompress()
 {
 	///////////Copying data files to the uploads folder////////////
@@ -495,6 +537,13 @@ void DataLogger::DeleteOldFiles() const
 	}
 }
 
+/*! To upload the files the script /usr/local/client.py is called. This script try to send the archive
+ * file many times through one hour, taking into account the possibility that there is no internet
+ * connection in the first try. If the script achieves the sending, then it wakes up the remote server
+ * to that one to read the files, and finally the script removes the local archive file. If the script
+ * ends with errors, the file is not deleted and remains in a queue waiting to be send. The idea is the
+ * uploading to perform at the end of each measurement cycle.
+ */
 void DataLogger::UploadData()
 {
 	int retValue=0, procRetValue=0;
@@ -519,7 +568,7 @@ void DataLogger::UploadData()
 			switch(procRetValue)
 			{
 				case 3:
-					oss << "there is no internet connection.";
+					oss << "there is no Internet connection.";
 					break;
 				case 4:
 					oss << "the remote server did not wake up.";
@@ -535,7 +584,12 @@ void DataLogger::UploadData()
 	}
 }
 
-
+/*! This method creates a thread where the methods `ArchiveAndCompress()` and `UploadData()` are called.
+ * After the creation of the thread, the method ends and the main thread can continues with the next
+ * operations, like the moving of the antenna, the capture of a new sweep, etc. The next time this method
+ * is called, it will control if the last thread has finished, if not, the method will wait to the thread
+ * to finish, and then it will create a new thread for the uploading of the new data.
+ */
 void DataLogger::PrepareAndUploadData()
 {
 	void **retval = (void**) &sweepIndex; //The pointer to the return value of the thread is initialized with the direction

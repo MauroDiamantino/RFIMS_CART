@@ -9,23 +9,21 @@
  * \brief This file contains the declarations of classes AntennaPositioner and GPSInterface.
  *
  * This header files includes the following libraries:
- * - iostream: cin, cout.
  * - libnmea: parsers for the GPRMC and GPGGA messages
  * - string: the USB protocol of GPS receiver is text-based.
  * - ftd2xx: communication with the FTDI IC which is in the GPS receiver.
- *
- * The namespace *std* is used to simplify the uses of objects like cout and cin.
  */
 
 #ifndef ANTENNAPOSITIONING_H_
 #define ANTENNAPOSITIONING_H_
+
+#include "Basics.h"
 
 #include <nmea.h> //Library libnmea
 #include <nmea/gprmc.h> //parser of GPRMC messages
 #include <nmea/gpgga.h> //parser of GPGGA messages
 #include <ftd2xx.h> //FTDI library
 #include <dirent.h> //To get filenames
-#include "Basics.h"
 
 //! A structure intended to save the the tri-axial values of the 3D sensors which are integrated in the GPS receiver.
 typedef struct

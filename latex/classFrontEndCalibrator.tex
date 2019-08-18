@@ -1,0 +1,198 @@
+\hypertarget{classFrontEndCalibrator}{}\section{Front\+End\+Calibrator Class Reference}
+\label{classFrontEndCalibrator}\index{Front\+End\+Calibrator@{Front\+End\+Calibrator}}
+
+
+The aim of this class is to calculate the total gain and total noise figure curves versus frequency of the RF front end.  
+
+
+
+
+{\ttfamily \#include $<$Sweep\+Processing.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFrontEndCalibrator_abff839c00a46ff060c1d66fc3b151d65}{Front\+End\+Calibrator} (\hyperlink{classCurveAdjuster}{Curve\+Adjuster} \&adj)
+\begin{DoxyCompactList}\small\item\em The default class constructor. \end{DoxyCompactList}\item 
+\hyperlink{classFrontEndCalibrator_a026150fceb18ec9601cbc698e04f39cc}{Front\+End\+Calibrator} (\hyperlink{classCurveAdjuster}{Curve\+Adjuster} \&adj, const std\+::vector$<$ \hyperlink{structBandParameters}{Band\+Parameters} $>$ \&bands\+Param)
+\begin{DoxyCompactList}\small\item\em A more complete constructor which allows to insert the vector with the parameters of all frequency bands. \end{DoxyCompactList}\item 
+\hyperlink{classFrontEndCalibrator_a8744dd099d7e7ba6f04be3505cd4a607}{$\sim$\+Front\+End\+Calibrator} ()
+\begin{DoxyCompactList}\small\item\em The {\itshape \hyperlink{classFrontEndCalibrator}{Front\+End\+Calibrator}} destructor. \end{DoxyCompactList}\item 
+void \hyperlink{classFrontEndCalibrator_a6fcf8e8343878614d1b03910bb97a3d6}{Set\+Bands\+Parameters} (const std\+::vector$<$ \hyperlink{structBandParameters}{Band\+Parameters} $>$ \&bands\+Param)
+\begin{DoxyCompactList}\small\item\em This method allows to insert a vector with the parameters of all frequency bands. \end{DoxyCompactList}\item 
+void \hyperlink{classFrontEndCalibrator_af166e90f4fe0dfd7cdf825b88d33a479}{Load\+E\+NR} ()
+\begin{DoxyCompactList}\small\item\em This method load the curve of E\+NR values versus frequency of the noise generator, from the corresponding file. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classFrontEndCalibrator_a548817f0476ac8a459a991a0518e9be5}\label{classFrontEndCalibrator_a548817f0476ac8a459a991a0518e9be5}} 
+void \hyperlink{classFrontEndCalibrator_a548817f0476ac8a459a991a0518e9be5}{Start\+Calibration} ()
+\begin{DoxyCompactList}\small\item\em The calibration is started ensuring the noise source is turned off, switching the input to this device and preparing the object to receive the sweeps. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classFrontEndCalibrator_a816fdd2af713e8e980a96c9242ff0180}\label{classFrontEndCalibrator_a816fdd2af713e8e980a96c9242ff0180}} 
+void \hyperlink{classFrontEndCalibrator_a816fdd2af713e8e980a96c9242ff0180}{Turn\+On\+NS} ()
+\begin{DoxyCompactList}\small\item\em This method just turns on the noise generator and it internally registers this situation. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classFrontEndCalibrator_ad29e76f2ff18f7d794fa219fab97ab53}\label{classFrontEndCalibrator_ad29e76f2ff18f7d794fa219fab97ab53}} 
+void \hyperlink{classFrontEndCalibrator_ad29e76f2ff18f7d794fa219fab97ab53}{Turn\+Off\+NS} ()
+\begin{DoxyCompactList}\small\item\em This method just turns off the noise generator and it internally registers this situation. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classFrontEndCalibrator_a4ba6971b00b7736b80e04a5f9ca784dc}\label{classFrontEndCalibrator_a4ba6971b00b7736b80e04a5f9ca784dc}} 
+void \hyperlink{classFrontEndCalibrator_a4ba6971b00b7736b80e04a5f9ca784dc}{End\+Calibration} ()
+\begin{DoxyCompactList}\small\item\em The calibration process is finished turning it off the noise generator and switching the input to the antenna. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classFrontEndCalibrator_a54329452d80cfb0fbcff947803091bb7}\label{classFrontEndCalibrator_a54329452d80cfb0fbcff947803091bb7}} 
+void \hyperlink{classFrontEndCalibrator_a54329452d80cfb0fbcff947803091bb7}{Set\+Sweep} (const \hyperlink{structFreqValues}{Freq\+Values} \&sweep)
+\begin{DoxyCompactList}\small\item\em This method is intended to insert the two sweeps which are captured during the calibration process, with the noise source turned on and off. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classFrontEndCalibrator_ae054d1423b8d2cdba2bd223ab8488e2d}\label{classFrontEndCalibrator_ae054d1423b8d2cdba2bd223ab8488e2d}} 
+void \hyperlink{classFrontEndCalibrator_ae054d1423b8d2cdba2bd223ab8488e2d}{Set\+N\+Soff\+Temp} (const float ns\+Off\+Temp)
+\begin{DoxyCompactList}\small\item\em This method allow to set the equivalent noise temperature of the noise source when it is turned off, what matches its physical temperature. \end{DoxyCompactList}\item 
+void \hyperlink{classFrontEndCalibrator_a2d643afa2c6bcf15b0f051cdc34855c2}{Estimate\+Parameters} ()
+\begin{DoxyCompactList}\small\item\em This is one of the central methods. It estimates the front end parameters once the two sweeps were captured. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classFrontEndCalibrator_a9c50d372271fd12e10c295c2b6c98300}\label{classFrontEndCalibrator_a9c50d372271fd12e10c295c2b6c98300}} 
+const \hyperlink{structFreqValues}{Freq\+Values} \& \hyperlink{classFrontEndCalibrator_a9c50d372271fd12e10c295c2b6c98300}{Get\+Gain} () const
+\begin{DoxyCompactList}\small\item\em This method returns the estimated total gain curve of the front end. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classFrontEndCalibrator_a62bd5a5fdd4a62e70bf5048d75566df9}\label{classFrontEndCalibrator_a62bd5a5fdd4a62e70bf5048d75566df9}} 
+const \hyperlink{structFreqValues}{Freq\+Values} \& \hyperlink{classFrontEndCalibrator_a62bd5a5fdd4a62e70bf5048d75566df9}{Get\+Noise\+Temp} () const
+\begin{DoxyCompactList}\small\item\em This method returns the estimated total noise temperature curve of the front end. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classFrontEndCalibrator_aef62a6573191332e82430093d809ecb3}\label{classFrontEndCalibrator_aef62a6573191332e82430093d809ecb3}} 
+const \hyperlink{structFreqValues}{Freq\+Values} \& \hyperlink{classFrontEndCalibrator_aef62a6573191332e82430093d809ecb3}{Get\+Noise\+Figure} () const
+\begin{DoxyCompactList}\small\item\em This method returns the estimated total noise figure curve of the front end. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classFrontEndCalibrator_a066f5c2a3f21c2bc3875b1926048e3be}\label{classFrontEndCalibrator_a066f5c2a3f21c2bc3875b1926048e3be}} 
+\hyperlink{structFreqValues}{Freq\+Values} \hyperlink{classFrontEndCalibrator_a066f5c2a3f21c2bc3875b1926048e3be}{Get\+E\+N\+Rcorr} () const
+\begin{DoxyCompactList}\small\item\em This method returns the corrected E\+NR values of the noise source. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classFrontEndCalibrator_a49a2457f8c8c046e3e9dfcb0ba9047f0}\label{classFrontEndCalibrator_a49a2457f8c8c046e3e9dfcb0ba9047f0}} 
+float \hyperlink{classFrontEndCalibrator_a49a2457f8c8c046e3e9dfcb0ba9047f0}{Get\+N\+Soff\+Temp} () const
+\begin{DoxyCompactList}\small\item\em This method returns the noise temperature of the noise source when it is turned off, what matches its physical temperature. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classFrontEndCalibrator_a59000567e2ba2b8bf5b14e6edee56b5e}\label{classFrontEndCalibrator_a59000567e2ba2b8bf5b14e6edee56b5e}} 
+const \hyperlink{structFreqValues}{Freq\+Values} \& \hyperlink{classFrontEndCalibrator_a59000567e2ba2b8bf5b14e6edee56b5e}{Get\+Sweep\+N\+Soff} () const
+\begin{DoxyCompactList}\small\item\em This method returns the sweep with output power values which were got with the noise source turned off. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classFrontEndCalibrator_ae0914096e6cee72ca5ae86543e3615ef}\label{classFrontEndCalibrator_ae0914096e6cee72ca5ae86543e3615ef}} 
+const \hyperlink{structFreqValues}{Freq\+Values} \& \hyperlink{classFrontEndCalibrator_ae0914096e6cee72ca5ae86543e3615ef}{Get\+Sweep\+N\+Son} () const
+\begin{DoxyCompactList}\small\item\em This method returns the sweep with output power values which were got with the noise source turned on. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classFrontEndCalibrator_a8e3b3555fa5505ed9916fa8f76fee7cb}\label{classFrontEndCalibrator_a8e3b3555fa5505ed9916fa8f76fee7cb}} 
+bool \hyperlink{classFrontEndCalibrator_a8e3b3555fa5505ed9916fa8f76fee7cb}{Is\+Calib\+Started} () const
+\begin{DoxyCompactList}\small\item\em This method allows to know if the calibration has been started, i.\+e. the noise source is connected to the input. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classFrontEndCalibrator_a0a10567c6a721f166e3ad63873813745}\label{classFrontEndCalibrator_a0a10567c6a721f166e3ad63873813745}} 
+bool \hyperlink{classFrontEndCalibrator_a0a10567c6a721f166e3ad63873813745}{Is\+Noise\+Source\+Off} () const
+\begin{DoxyCompactList}\small\item\em This method allows to know if the noise source is turned off or not. \end{DoxyCompactList}\item 
+const \hyperlink{structSweep}{Sweep} \& \hyperlink{classFrontEndCalibrator_afd5775502a0aa05976dccd6142ad46b0}{Calibrate\+Sweep} (const \hyperlink{structSweep}{Sweep} \&uncal\+Sweep)
+\begin{DoxyCompactList}\small\item\em This another central method which is intended to calibrate (correct) the sweeps obtained with the antenna, once the front end parameters have been estimated. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classFrontEndCalibrator_af4bca93a2737020967d428c2e698ca34}\label{classFrontEndCalibrator_af4bca93a2737020967d428c2e698ca34}} 
+const \hyperlink{structSweep}{Sweep} \& \hyperlink{classFrontEndCalibrator_af4bca93a2737020967d428c2e698ca34}{Get\+Cal\+Sweep} () const
+\begin{DoxyCompactList}\small\item\em This method returns the last calibrated sweep. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classFrontEndCalibrator_a5943d84aa272ed548dcc5ad61a65306b}\label{classFrontEndCalibrator_a5943d84aa272ed548dcc5ad61a65306b}} 
+void \hyperlink{classFrontEndCalibrator_a5943d84aa272ed548dcc5ad61a65306b}{Load\+Default\+Parameters} ()
+\begin{DoxyCompactList}\small\item\em When errors occur during the calibration process, a set of default parameters curves are used to calibrate sweeps. This method loads those curve from the corresponding files. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classFrontEndCalibrator_a9a1173af037c656b63cce0f9dc1b51be}\label{classFrontEndCalibrator_a9a1173af037c656b63cce0f9dc1b51be}} 
+bool \hyperlink{classFrontEndCalibrator_a9a1173af037c656b63cce0f9dc1b51be}{Are\+Param\+Empty} ()
+\begin{DoxyCompactList}\small\item\em This method returns a {\ttfamily true} if no front end parameters have been estimated or loaded from the corresponding files, and a {\ttfamily false} otherwise. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The aim of this class is to calculate the total gain and total noise figure curves versus frequency of the RF front end. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFrontEndCalibrator_abff839c00a46ff060c1d66fc3b151d65}\label{classFrontEndCalibrator_abff839c00a46ff060c1d66fc3b151d65}} 
+\index{Front\+End\+Calibrator@{Front\+End\+Calibrator}!Front\+End\+Calibrator@{Front\+End\+Calibrator}}
+\index{Front\+End\+Calibrator@{Front\+End\+Calibrator}!Front\+End\+Calibrator@{Front\+End\+Calibrator}}
+\subsubsection{\texorpdfstring{Front\+End\+Calibrator()}{FrontEndCalibrator()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily Front\+End\+Calibrator\+::\+Front\+End\+Calibrator (\begin{DoxyParamCaption}\item[{\hyperlink{classCurveAdjuster}{Curve\+Adjuster} \&}]{adj }\end{DoxyParamCaption})}
+
+
+
+The default class constructor. 
+
+At instantiation, the programmer must provide a reference to a {\itshape \hyperlink{classCurveAdjuster}{Curve\+Adjuster}} object. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em adj} & A reference to a {\itshape \hyperlink{classCurveAdjuster}{Curve\+Adjuster}} object, which will be used to adjust some internal curves. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classFrontEndCalibrator_a026150fceb18ec9601cbc698e04f39cc}\label{classFrontEndCalibrator_a026150fceb18ec9601cbc698e04f39cc}} 
+\index{Front\+End\+Calibrator@{Front\+End\+Calibrator}!Front\+End\+Calibrator@{Front\+End\+Calibrator}}
+\index{Front\+End\+Calibrator@{Front\+End\+Calibrator}!Front\+End\+Calibrator@{Front\+End\+Calibrator}}
+\subsubsection{\texorpdfstring{Front\+End\+Calibrator()}{FrontEndCalibrator()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily Front\+End\+Calibrator\+::\+Front\+End\+Calibrator (\begin{DoxyParamCaption}\item[{\hyperlink{classCurveAdjuster}{Curve\+Adjuster} \&}]{adj,  }\item[{const std\+::vector$<$ \hyperlink{structBandParameters}{Band\+Parameters} $>$ \&}]{bands\+Param }\end{DoxyParamCaption})}
+
+
+
+A more complete constructor which allows to insert the vector with the parameters of all frequency bands. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em adj} & A reference to a {\itshape \hyperlink{classCurveAdjuster}{Curve\+Adjuster}} object, which will be used to adjust some internal curves. \\
+\hline
+\mbox{\tt in}  & {\em bands\+Param} & A vector with the parameters of all frequency bands. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classFrontEndCalibrator_a8744dd099d7e7ba6f04be3505cd4a607}\label{classFrontEndCalibrator_a8744dd099d7e7ba6f04be3505cd4a607}} 
+\index{Front\+End\+Calibrator@{Front\+End\+Calibrator}!````~Front\+End\+Calibrator@{$\sim$\+Front\+End\+Calibrator}}
+\index{````~Front\+End\+Calibrator@{$\sim$\+Front\+End\+Calibrator}!Front\+End\+Calibrator@{Front\+End\+Calibrator}}
+\subsubsection{\texorpdfstring{$\sim$\+Front\+End\+Calibrator()}{~FrontEndCalibrator()}}
+{\footnotesize\ttfamily Front\+End\+Calibrator\+::$\sim$\+Front\+End\+Calibrator (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+The {\itshape \hyperlink{classFrontEndCalibrator}{Front\+End\+Calibrator}} destructor. 
+
+Its implementation is empty because the attributes destruction is implicitly. However, the destructor is defined here to allow this one to be called explicitly in any part of the code, what is used by the signals handler to destroy the objects when a signal to finish the execution of the software is received. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFrontEndCalibrator_afd5775502a0aa05976dccd6142ad46b0}\label{classFrontEndCalibrator_afd5775502a0aa05976dccd6142ad46b0}} 
+\index{Front\+End\+Calibrator@{Front\+End\+Calibrator}!Calibrate\+Sweep@{Calibrate\+Sweep}}
+\index{Calibrate\+Sweep@{Calibrate\+Sweep}!Front\+End\+Calibrator@{Front\+End\+Calibrator}}
+\subsubsection{\texorpdfstring{Calibrate\+Sweep()}{CalibrateSweep()}}
+{\footnotesize\ttfamily const \hyperlink{structSweep}{Sweep} \& Front\+End\+Calibrator\+::\+Calibrate\+Sweep (\begin{DoxyParamCaption}\item[{const \hyperlink{structSweep}{Sweep} \&}]{power\+Out }\end{DoxyParamCaption})}
+
+
+
+This another central method which is intended to calibrate (correct) the sweeps obtained with the antenna, once the front end parameters have been estimated. 
+
+The calibration of sweeps with output power values implies the following tasks\+:
+\begin{DoxyItemize}
+\item Referencing the sweep to the input of the front end (antenna\textquotesingle{}s output), what is done subtracting the total gain curve to the sweep, taking the power values in d\+Bm and the gain values in dB.
+\item Removing of the internal noise added to the sweep by the front end, what is done taking into account its total equivalent noise temperature. To perform these tasks the following equation are used\+: \[ P_{IN_{eff}[dBm]}=P_{OUT[dBm]}-G_{receiver[dB]} \] \[ P_{IN_{eff}[W]}=10^{\frac{P_{IN_{eff}[dBm]}}{10}}*10^{-3} \] \[ P_{IN[W]}=P_{IN_{eff}[W]}-N_{receiver[W]}=P_{IN_{eff}[W]}-k_{[J/°K]}*RBW_{[Hz]}*T_{receiver[°K]} \] \[ P_{IN[dBm]}=10*\log_{10}(P_{IN[W]})+30 \] 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em power\+Out} & A {\itshape \hyperlink{structSweep}{Sweep}} structure which stores an uncalibrated sweep. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The calibrated sweep. 
+\end{DoxyReturn}
+
+\end{DoxyItemize}\mbox{\Hypertarget{classFrontEndCalibrator_a2d643afa2c6bcf15b0f051cdc34855c2}\label{classFrontEndCalibrator_a2d643afa2c6bcf15b0f051cdc34855c2}} 
+\index{Front\+End\+Calibrator@{Front\+End\+Calibrator}!Estimate\+Parameters@{Estimate\+Parameters}}
+\index{Estimate\+Parameters@{Estimate\+Parameters}!Front\+End\+Calibrator@{Front\+End\+Calibrator}}
+\subsubsection{\texorpdfstring{Estimate\+Parameters()}{EstimateParameters()}}
+{\footnotesize\ttfamily void Front\+End\+Calibrator\+::\+Estimate\+Parameters (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+This is one of the central methods. It estimates the front end parameters once the two sweeps were captured. 
+
+This method must be called once the calibration process finished, i.\+e. the method {\ttfamily \hyperlink{classFrontEndCalibrator_a4ba6971b00b7736b80e04a5f9ca784dc}{End\+Calibration()}} must be called first. The front end parameters, total gain and total noise figure, are estimated using the Y-\/\+Factor method, which is exposed in the Application Note \char`\"{}\+Noise Figure Measurement Accuracy – The Y-\/\+Factor Method\char`\"{} of Keysight Technologies.
+
+Once the parameters\textquotesingle{} curves have been estimated, their mean values are checked to be reasonable. \mbox{\Hypertarget{classFrontEndCalibrator_af166e90f4fe0dfd7cdf825b88d33a479}\label{classFrontEndCalibrator_af166e90f4fe0dfd7cdf825b88d33a479}} 
+\index{Front\+End\+Calibrator@{Front\+End\+Calibrator}!Load\+E\+NR@{Load\+E\+NR}}
+\index{Load\+E\+NR@{Load\+E\+NR}!Front\+End\+Calibrator@{Front\+End\+Calibrator}}
+\subsubsection{\texorpdfstring{Load\+E\+N\+R()}{LoadENR()}}
+{\footnotesize\ttfamily void Front\+End\+Calibrator\+::\+Load\+E\+NR (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+This method load the curve of E\+NR values versus frequency of the noise generator, from the corresponding file. 
+
+The E\+NR values versus frequency of the noise generator are loaded from the file \hyperlink{Basics_8h_a0423f4cb393331ce0b9f6b3a43adcaae}{B\+A\+S\+E\+\_\+\+P\+A\+TH}/calibration/enr.txt, then those values are corrected taking into account a statistical mean physical temperature of the noise source at time of the factory calibration. That technique is exposed in the Application Note \char`\"{}\+Noise Figure Measurement Accuracy – The Y-\/\+Factor Method\char`\"{} of Keysight Technologies. To finish, the corrected E\+NR curve is adjusted to be used in the mathematical operations with the captured sweeps. To perform the estimation of the front end parameters the following equations are used\+: \[ ENR_{CORR}=ENR_{CAL}+\frac{T_{O}-T_{CORR}}{T_{O}} \] \[ T_{SON}=T_{O}*ENR_{CORR}+T_{SOFF} \] \[ Y=\frac{N_{OUT_{ON}}}{N_{OUT_{OFF}}} \] \[ T_{receiver}=\frac{T_{SON}-Y*T_{SOFF}}{Y-1} \] \[ F_{receiver}=1+\frac{T_{receiver}}{T_O} \] \[ NF_{receiver}=10*\log_{10}(F_{receiver}) \] \[ G_{receiver}=\frac{1}{2*k*RBW}*\left[\frac{N_{OUT_{ON}}}{T_{SON}+T_{receiver}}+\frac{N_{OUT_{OFF}}}{T_{SOFF}+T_{receiver}}\right] \] \mbox{\Hypertarget{classFrontEndCalibrator_a6fcf8e8343878614d1b03910bb97a3d6}\label{classFrontEndCalibrator_a6fcf8e8343878614d1b03910bb97a3d6}} 
+\index{Front\+End\+Calibrator@{Front\+End\+Calibrator}!Set\+Bands\+Parameters@{Set\+Bands\+Parameters}}
+\index{Set\+Bands\+Parameters@{Set\+Bands\+Parameters}!Front\+End\+Calibrator@{Front\+End\+Calibrator}}
+\subsubsection{\texorpdfstring{Set\+Bands\+Parameters()}{SetBandsParameters()}}
+{\footnotesize\ttfamily void Front\+End\+Calibrator\+::\+Set\+Bands\+Parameters (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \hyperlink{structBandParameters}{Band\+Parameters} $>$ \&}]{bands\+Param }\end{DoxyParamCaption})}
+
+
+
+This method allows to insert a vector with the parameters of all frequency bands. 
+
+After the bands\textquotesingle{} parameters are stored, the R\+BW curve is built, taking into account those parameters. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em bands\+Param} & A vector with the parameters of all frequency bands. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{SweepProcessing_8h}{Sweep\+Processing.\+h}\item 
+Front\+End\+Calibrator.\+cpp\end{DoxyCompactItemize}

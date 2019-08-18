@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['empty',['Empty',['../structFreqValues.html#ae5a9b788cbf75ad4c3e1dd1ed86a0ddc',1,'FreqValues']]]
+  ['disablestreaming',['DisableStreaming',['../classGPSInterface.html#a663c36374cc097040cb8945a3c25b190',1,'GPSInterface']]],
+  ['disablesweep',['DisableSweep',['../classSpectranInterface.html#a68b1b1a6af802369cb146c69161d031d',1,'SpectranInterface']]]
 ];

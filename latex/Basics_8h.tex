@@ -31,7 +31,7 @@ This graph shows which files directly or indirectly include this file\+:\nopageb
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=145pt]{Basics_8h__dep__incl}
+\includegraphics[width=350pt]{Basics_8h__dep__incl}
 \end{center}
 \end{figure}
 \subsection*{Classes}
@@ -42,7 +42,7 @@ class \hyperlink{classCustomException}{Custom\+Exception}
 struct \hyperlink{structTimeData}{Time\+Data}
 \begin{DoxyCompactList}\small\item\em This structure is intended to store data related to {\itshape date} and {\itshape time} and to perform some operations with that data. \end{DoxyCompactList}\item 
 struct \hyperlink{structFreqValues}{Freq\+Values}
-\begin{DoxyCompactList}\small\item\em The aim of this structure is to store the curve of a determined parameter or variable versus the frequency, a.\+k.\+a. a frequency curve. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em The aim of this structure is to store the curve of a determined parameter or variable versus the frequency, which is named a frequency curve here. \end{DoxyCompactList}\item 
 struct \hyperlink{structSweep}{Sweep}
 \begin{DoxyCompactList}\small\item\em The aim of this structure is to store the data points of a sweep obtained with the spectrum analyzer in a determined azimuth position, with a specific polarization. \end{DoxyCompactList}\item 
 struct \hyperlink{structRFI}{R\+FI}
@@ -56,8 +56,7 @@ bool \hyperlink{Basics_8h_ab0cf00620947abc90fbfe36db36f8fc7}{approximately\+Equa
 \begin{DoxyCompactList}\small\item\em Function intended to compare floating-\/point numbers as approximately equal, taking into account the floating-\/point rounding errors. \end{DoxyCompactList}\item 
 bool \hyperlink{Basics_8h_adee734e43e4a9a5f4b9f610ccdd3f8e0}{approximately\+Equal} (std\+::vector$<$ float $>$ vectorA, std\+::vector$<$ float $>$ vectorB)
 \begin{DoxyCompactList}\small\item\em Function intended to compare {\ttfamily std\+::vector$<$float$>$} containers as approximately equal, taking into account the floating-\/point rounding errors. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{Basics_8h_ac744212c600f3f610807ec4add576822}\label{Basics_8h_ac744212c600f3f610807ec4add576822}} 
-std\+::vector$<$ float $>$ \hyperlink{Basics_8h_ac744212c600f3f610807ec4add576822}{operator-\/} (const std\+::vector$<$ float $>$ \&vect)
+std\+::vector$<$ float $>$ \hyperlink{Basics_8h_ac744212c600f3f610807ec4add576822}{operator-\/} (const std\+::vector$<$ float $>$ \&\hyperlink{Spectran_8h_a16fa8eb91a19fde7a399d85c521f63fd}{vect})
 \begin{DoxyCompactList}\small\item\em An overloading of unary operator -\/ which negates the elements of a {\ttfamily std\+::vector$<$float$>$} container. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{Basics_8h_abe6b1466ff5e3b09c33ca5dc9fc81c5a}\label{Basics_8h_abe6b1466ff5e3b09c33ca5dc9fc81c5a}} 
 void \hyperlink{Basics_8h_abe6b1466ff5e3b09c33ca5dc9fc81c5a}{Wait\+For\+Key} ()
@@ -83,7 +82,6 @@ bool \hyperlink{Basics_8h_abab505eef94a08a9092f916c62637071}{Process\+Main\+Argu
 \mbox{\Hypertarget{Basics_8h_a0423f4cb393331ce0b9f6b3a43adcaae}\label{Basics_8h_a0423f4cb393331ce0b9f6b3a43adcaae}} 
 const std\+::string \hyperlink{Basics_8h_a0423f4cb393331ce0b9f6b3a43adcaae}{B\+A\+S\+E\+\_\+\+P\+A\+TH} = \char`\"{}/home/new-\/mauro/R\+F\+I\+MS-\/C\+A\+RT\char`\"{}
 \begin{DoxyCompactList}\small\item\em This constant define the base path where there are the files and folders used by the software. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{Basics_8h_a73be6649a1d91070309752a2fbcf5b8a}\label{Basics_8h_a73be6649a1d91070309752a2fbcf5b8a}} 
 bool \hyperlink{Basics_8h_a73be6649a1d91070309752a2fbcf5b8a}{flag\+Cal\+Enabled}
 \begin{DoxyCompactList}\small\item\em The declaration of an external flag which defines if the calibration of the RF front end must be done or not. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{Basics_8h_a20c207881b1f505ca91715905e27bacb}\label{Basics_8h_a20c207881b1f505ca91715905e27bacb}} 
@@ -98,10 +96,8 @@ bool \hyperlink{Basics_8h_a816d4b897ea7e7b008ad3957e2203934}{flag\+R\+FI}
 \mbox{\Hypertarget{Basics_8h_a7616186dd32bbd21eb512dfdc580214c}\label{Basics_8h_a7616186dd32bbd21eb512dfdc580214c}} 
 bool \hyperlink{Basics_8h_a7616186dd32bbd21eb512dfdc580214c}{flag\+Upload}
 \begin{DoxyCompactList}\small\item\em The declaration of an external flag which defines if the software has to upload the measurements or not. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{Basics_8h_a4a22fc28d7ca5b183f4a901f4dafd4a6}\label{Basics_8h_a4a22fc28d7ca5b183f4a901f4dafd4a6}} 
 unsigned int \hyperlink{Basics_8h_a4a22fc28d7ca5b183f4a901f4dafd4a6}{num\+Of\+Meas\+Cycles}
 \begin{DoxyCompactList}\small\item\em The declaration of an external variable which stores the number of measurements cycles which left to be done. It is used when the user wishes a finite number of measurements cycles. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{Basics_8h_a5fca012de3aeabad258f4f0fa6877334}\label{Basics_8h_a5fca012de3aeabad258f4f0fa6877334}} 
 \hyperlink{structRFI_a18cfa7d24274bbcd14acc6b513860cb0}{R\+F\+I\+::\+Thresholds\+Norm} \hyperlink{Basics_8h_a5fca012de3aeabad258f4f0fa6877334}{rfi\+Norm}
 \begin{DoxyCompactList}\small\item\em The declaration of an external variable which saves the norm which defines the harmful interference levels\+: ska-\/mode1, ska-\/mode2, itu-\/ra769-\/2-\/vlbi. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
@@ -134,7 +130,14 @@ Mauro Diamantino
 
 Function intended to compare floating-\/point numbers as approximately equal, taking into account the floating-\/point rounding errors. 
 
-This function was copied from this \href{https://www.learncpp.com/cpp-tutorial/35-relational-operators-comparisons/}{\tt link}, but it was modified. It is based in the Knuth’s algorithm but it uses two epsilons, an absolute epsilon (A\+B\+S\+\_\+\+E\+P\+S\+I\+L\+ON) which is very small and is intended to compare near-\/zero floating-\/point numbers and a relative epsilon (R\+E\+L\+\_\+\+E\+P\+S\+I\+L\+ON, which is a percentage of the biggest operand) to compare the rest of the floating-\/point numbers. The function returns true if the difference between a and b is less than A\+B\+S\+\_\+\+E\+P\+S\+I\+L\+ON, or within R\+E\+L\+\_\+\+E\+P\+S\+I\+L\+ON percent of the larger of a and b. \mbox{\Hypertarget{Basics_8h_adee734e43e4a9a5f4b9f610ccdd3f8e0}\label{Basics_8h_adee734e43e4a9a5f4b9f610ccdd3f8e0}} 
+This function was copied from this \href{https://www.learncpp.com/cpp-tutorial/35-relational-operators-comparisons/}{\tt link}, but it was modified. It is based in the Knuth’s algorithm but it uses two epsilons, an absolute epsilon (A\+B\+S\+\_\+\+E\+P\+S\+I\+L\+ON) which is very small and is intended to compare near-\/zero floating-\/point numbers and a relative epsilon (R\+E\+L\+\_\+\+E\+P\+S\+I\+L\+ON, which is a percentage of the biggest operand) to compare the rest of the floating-\/point numbers. The function returns true if the difference between a and b is less than A\+B\+S\+\_\+\+E\+P\+S\+I\+L\+ON, or within R\+E\+L\+\_\+\+E\+P\+S\+I\+L\+ON percent of the larger of a and b. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em a} & The left-\/hand side argument. \\
+\hline
+\mbox{\tt in}  & {\em b} & The right-\/hand side argument. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{Basics_8h_adee734e43e4a9a5f4b9f610ccdd3f8e0}\label{Basics_8h_adee734e43e4a9a5f4b9f610ccdd3f8e0}} 
 \index{Basics.\+h@{Basics.\+h}!approximately\+Equal@{approximately\+Equal}}
 \index{approximately\+Equal@{approximately\+Equal}!Basics.\+h@{Basics.\+h}}
 \subsubsection{\texorpdfstring{approximately\+Equal()}{approximatelyEqual()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
@@ -144,9 +147,31 @@ This function was copied from this \href{https://www.learncpp.com/cpp-tutorial/3
 
 Function intended to compare {\ttfamily std\+::vector$<$float$>$} containers as approximately equal, taking into account the floating-\/point rounding errors. 
 
-Function intended to compare {\ttfamily std\+::vector$<$float$>$} containers as approximately equal, taking into account the floating-\/point rounding errors.
+This function is based on the function presented in this \href{https://www.learncpp.com/cpp-tutorial/35-relational-operators-comparisons/}{\tt link}.
 
-This function is based on the function presented in this \href{https://www.learncpp.com/cpp-tutorial/35-relational-operators-comparisons/}{\tt link}. It is based in the Knuth’s algorithm but it uses two epsilons, an absolute epsilon (A\+B\+S\+\_\+\+E\+P\+S\+I\+L\+ON) which is very small and is intended to compare near-\/zero floating-\/point numbers and a relative epsilon (R\+E\+L\+\_\+\+E\+P\+S\+I\+L\+ON, which is a percentage of the biggest operand) to compare the rest of the floating-\/point numbers. The function returns true if the difference between a and b is less than A\+B\+S\+\_\+\+E\+P\+S\+I\+L\+ON, or within R\+E\+L\+\_\+\+E\+P\+S\+I\+L\+ON percent of the larger of a and b. \mbox{\Hypertarget{Basics_8h_abab505eef94a08a9092f916c62637071}\label{Basics_8h_abab505eef94a08a9092f916c62637071}} 
+It is based in the Knuth’s algorithm but it uses two epsilons, an absolute epsilon (A\+B\+S\+\_\+\+E\+P\+S\+I\+L\+ON) which is very small and is intended to compare near-\/zero floating-\/point numbers and a relative epsilon (R\+E\+L\+\_\+\+E\+P\+S\+I\+L\+ON, which is a percentage of the biggest operand) to compare the rest of the floating-\/point numbers. The function returns true if the difference between a and b is less than A\+B\+S\+\_\+\+E\+P\+S\+I\+L\+ON, or within R\+E\+L\+\_\+\+E\+P\+S\+I\+L\+ON percent of the larger of a and b. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em vectorA} & The left-\/hand side argument. \\
+\hline
+\mbox{\tt in}  & {\em vectorB} & The right-\/hand side argument. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{Basics_8h_ac744212c600f3f610807ec4add576822}\label{Basics_8h_ac744212c600f3f610807ec4add576822}} 
+\index{Basics.\+h@{Basics.\+h}!operator-\/@{operator-\/}}
+\index{operator-\/@{operator-\/}!Basics.\+h@{Basics.\+h}}
+\subsubsection{\texorpdfstring{operator-\/()}{operator-()}}
+{\footnotesize\ttfamily std\+::vector$<$float$>$ operator-\/ (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ float $>$ \&}]{vect }\end{DoxyParamCaption})}
+
+
+
+An overloading of unary operator -\/ which negates the elements of a {\ttfamily std\+::vector$<$float$>$} container. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em vect} & A {\ttfamily std\+::vector$<$float$>$} container which must be negated. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{Basics_8h_abab505eef94a08a9092f916c62637071}\label{Basics_8h_abab505eef94a08a9092f916c62637071}} 
 \index{Basics.\+h@{Basics.\+h}!Process\+Main\+Arguments@{Process\+Main\+Arguments}}
 \index{Process\+Main\+Arguments@{Process\+Main\+Arguments}!Basics.\+h@{Basics.\+h}}
 \subsubsection{\texorpdfstring{Process\+Main\+Arguments()}{ProcessMainArguments()}}
@@ -184,3 +209,36 @@ To turn off the RF front-\/end elements sequentially, this function begins ensur
 The aim of this function is to turn on the RF front-\/end elements in a sequential manner, from the spectrum analyzer to the antenna.. 
 
 To turn on the RF front-\/end elements in a sequential manner, first, this function turns the spectrum analyzer on, then it waits 5 seconds, it turns the L\+N\+As on, it waits again but this time just 1 second and, finally, it switches the input to the antenna. 
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{Basics_8h_a73be6649a1d91070309752a2fbcf5b8a}\label{Basics_8h_a73be6649a1d91070309752a2fbcf5b8a}} 
+\index{Basics.\+h@{Basics.\+h}!flag\+Cal\+Enabled@{flag\+Cal\+Enabled}}
+\index{flag\+Cal\+Enabled@{flag\+Cal\+Enabled}!Basics.\+h@{Basics.\+h}}
+\subsubsection{\texorpdfstring{flag\+Cal\+Enabled}{flagCalEnabled}}
+{\footnotesize\ttfamily bool flag\+Cal\+Enabled}
+
+
+
+The declaration of an external flag which defines if the calibration of the RF front end must be done or not. 
+
+The declaration of an external flag which defines if the calibration of the RF front end must be done or not. \mbox{\Hypertarget{Basics_8h_a4a22fc28d7ca5b183f4a901f4dafd4a6}\label{Basics_8h_a4a22fc28d7ca5b183f4a901f4dafd4a6}} 
+\index{Basics.\+h@{Basics.\+h}!num\+Of\+Meas\+Cycles@{num\+Of\+Meas\+Cycles}}
+\index{num\+Of\+Meas\+Cycles@{num\+Of\+Meas\+Cycles}!Basics.\+h@{Basics.\+h}}
+\subsubsection{\texorpdfstring{num\+Of\+Meas\+Cycles}{numOfMeasCycles}}
+{\footnotesize\ttfamily unsigned int num\+Of\+Meas\+Cycles}
+
+
+
+The declaration of an external variable which stores the number of measurements cycles which left to be done. It is used when the user wishes a finite number of measurements cycles. 
+
+The declaration of an external variable which stores the number of measurements cycles which left to be done. It is used when the user wishes a finite number of measurements cycles. \mbox{\Hypertarget{Basics_8h_a5fca012de3aeabad258f4f0fa6877334}\label{Basics_8h_a5fca012de3aeabad258f4f0fa6877334}} 
+\index{Basics.\+h@{Basics.\+h}!rfi\+Norm@{rfi\+Norm}}
+\index{rfi\+Norm@{rfi\+Norm}!Basics.\+h@{Basics.\+h}}
+\subsubsection{\texorpdfstring{rfi\+Norm}{rfiNorm}}
+{\footnotesize\ttfamily \hyperlink{structRFI_a18cfa7d24274bbcd14acc6b513860cb0}{R\+F\+I\+::\+Thresholds\+Norm} rfi\+Norm}
+
+
+
+The declaration of an external variable which saves the norm which defines the harmful interference levels\+: ska-\/mode1, ska-\/mode2, itu-\/ra769-\/2-\/vlbi. 
+
+The declaration of an external variable which saves the norm which defines the harmful interference levels\+: ska-\/mode1, ska-\/mode2, itu-\/ra769-\/2-\/vlbi. 

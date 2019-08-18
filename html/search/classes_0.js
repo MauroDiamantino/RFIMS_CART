@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['bandparameters',['BandParameters',['../structBandParameters.html',1,'']]]
+  ['antennapositioner',['AntennaPositioner',['../classAntennaPositioner.html',1,'']]]
 ];

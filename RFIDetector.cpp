@@ -9,6 +9,11 @@
 
 /////////////////Implementations of the RFIDetector class' methods//////////////////////////////
 
+/*!	The threshold curve is loaded from one of the fileS in the path [BASE_PATH](\ref BASE_PATH)/thresholds/.
+ * The argument determines which recommendation, protocol or norm must be taken as reference to determine
+ * the threshold curve to be used, i.e. to determine from which file load that curve.
+ * \param [in] thrNorm The norm, recommendation or protocol that must be taken as reference.
+ */
 void RFIDetector::LoadThreshCurve(const RFI::ThresholdsNorm thrNorm)
 {
 	boost::filesystem::path pathAndFilename(THRESHOLDS_PATH);
@@ -91,6 +96,10 @@ void RFIDetector::LoadThreshCurve(const RFI::ThresholdsNorm thrNorm)
 	}
 }
 
+/*!	The given sweep should have been calibrated before.
+ * \param [in] sweep A calibrated sweep.
+ * \return A structure with the pairs of values (frequency,power) where it was detected RFI.
+ */
 const RFI & RFIDetector::DetectRFI(const Sweep & sweep)
 {
 	rfi.Clear();

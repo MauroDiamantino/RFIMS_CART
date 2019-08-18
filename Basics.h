@@ -1,10 +1,3 @@
-/*
- * Basics.h
- *
- *  Created on: 02/04/2019
- *      Author: new-mauro
- */
-
 /*! \file Basics.h
  * 	\brief This header file contains the declarations of the most basic and global entities which are used by many others entities.
  *
@@ -25,10 +18,10 @@
 
 /////////////////////////DEFINE'S//////////////////////////////
 
-//#define RASPBERRY_PI //!< This preprocessor definition enables the use of the code which can only be used in the Raspberry Pi board (for example WiringPi functions).
-//#define DEBUG //!< This definition enables some code blocks which are aimed to test the software performance.
+//#define RASPBERRY_PI // This preprocessor definition enables the use of the code which can only be used in the Raspberry Pi board (for example WiringPi functions).
+//#define DEBUG // This definition enables some code blocks which are aimed to test the software performance.
 #ifdef RASPBERRY_PI
-	//#define BUTTON //!< This definition determines the use of Enter key to respond to some software messages or the use of a button connected to a GPIO pin.
+	//#define BUTTON // This definition determines the use of Enter key to respond to some software messages or the use of a button connected to a GPIO pin.
 #endif
 
 ///////////////////////////////////////////////////////////////
@@ -36,41 +29,40 @@
 
 ////////////////////////GLOBAL LIBRARIES AND HEADERS//////////////////////////////
 
-//! The must-have library which allows to use the objects `std::cout` and `std::cin` among a lot of other things.
+// The must-have library which allows to use the objects `std::cout` and `std::cin` among a lot of other things.
 #include <iostream>
-//! It is included to use base class `std::exception`. A specific class, called CustomException, is derived from that base class to manage the exceptions.
+// It is included to use base class `std::exception`. A specific class, called CustomException, is derived from that base class to manage the exceptions.
 #include <exception>
-//! It is included to use the famous container `std::vector`.
+// It is included to use the famous container `std::vector`.
 #include <vector>
-//! This library is included to make use of the famous container `std::string`.
+// This library is included to make use of the famous container `std::string`.
 #include <string>
-//! It is included to state the classes `std::ostringstream` and `std::istringstream` are being used, but it is unnecessary if the *iostream* library has already bee included.
+// It is included to state the classes `std::ostringstream` and `std::istringstream` are being used, but it is unnecessary if the *iostream* library has already bee included.
 #include <sstream>
-//! *iomanip* is a library which allows to use parametric manipulators to modify the way things (like numbers) are plotted with `std::cout`, `std::cerr`, etc.
+// *iomanip* is a library which allows to use parametric manipulators to modify the way things (like numbers) are plotted with `std::cout`, `std::cerr`, etc.
 #include <iomanip>
-//! This library is included to make use the function `boost::algorithm::to_lower()` to convert upper-case characters to lower-case ones.
+// This library is included to make use the function `boost::algorithm::to_lower()` to convert upper-case characters to lower-case ones.
 #include <boost/algorithm/string.hpp>
-//! This library allows to use several functions and classes to perform tasks related to the filesystem such as creating a new file, see a directory's content, remove a file, etc.
+// This library allows to use several functions and classes to perform tasks related to the filesystem such as creating a new file, see a directory's content, remove a file, etc.
 #include <boost/filesystem.hpp>
-//! A library which allows to perform task related with dates, such as getting the date of 30 days ago from the current date. Classes `boost::gregorian::date()` and `boost::gregorian::date_duration()` are used.
+// A library which allows to perform task related with dates, such as getting the date of 30 days ago from the current date. Classes `boost::gregorian::date()` and `boost::gregorian::date_duration()` are used.
 #include <boost/date_time/gregorian/gregorian.hpp>
-//! This library is used to perform common mathematical operations like arc tangent, logarithm, power, and so on.
+// This library is used to perform common mathematical operations like arc tangent, logarithm, power, and so on.
 #include <cmath>
-//! This library allows to use to classes `std::ifstream` and `std::ofstream` to read and write data from files.
+// This library allows to use to classes `std::ifstream` and `std::ofstream` to read and write data from files.
 #include <fstream>
-//! This is a header file that provides access to the POSIX operating system API, for instance it allows to use the command `sleep()`.
+// This is a header file that provides access to the POSIX operating system API, for instance it allows to use the command `sleep()`.
 #include <unistd.h>
-//! This header file defines a set of integral type aliases with specific width requirements.
+// This header file defines a set of integral type aliases with specific width requirements.
 #include <cstdint>
-//! This header defines several general purpose functions and it is included here to use `exit()` function.
-/*! This header file includes dynamic memory management, integer arithmetics, searching, sorting and converting.
- */
+// This header defines several general purpose functions and it is included here to use `exit()` function.
+/* This header file includes dynamic memory management, integer arithmetics, searching, sorting and converting. */
 #include <cstdlib>
-//! This library specifies a set of interfaces for threaded programming commonly known as POSIX threads, or Pthread.
+// This library specifies a set of interfaces for threaded programming commonly known as POSIX threads, or Pthread.
 #include <pthread.h>
 #ifdef RASPBERRY_PI
-//! WiringPi is a PIN based GPIO access library for the SoC devices used in all Raspberry Pi versions.
-/*! It’s designed to be familiar to people who have used the Arduino “wiring” system. It's developed directly
+// WiringPi is a PIN based GPIO access library for the SoC devices used in all Raspberry Pi versions.
+/* It’s designed to be familiar to people who have used the Arduino “wiring” system. It's developed directly
  * on a Raspberry Pi running 32-bit Raspbian. It supports the BCM2835, BCM2836 and BCM2837 SoC devices.
  */
 #include <wiringPi.h>
@@ -109,11 +101,14 @@ class CustomException : public std::exception
 	std::string message; //!< The internal message which contains the info of the exception.
 public:
 	//! The default constructor which can set the internal message.
+	/*! \param [in] msg The internal message of the exception, which can be of type `char*` or `std::string`.	*/
 	CustomException(const std::string& msg="Error") : message(msg) {}
 	//! The aim of this function is to modify the internal message of the exception.
+	/*! \param [in] msg The internal message of the exception, which can be of type `char*` or `std::string`.	*/
 	void SetMessage(const std::string& msg) {	message=msg;	}
 	//! This function is intended to add some text at the end of the internal message.
-	void Append(const std::string& msg) {		message+=msg;	}
+	/*! \param [in] msg A sentence which must be appended to the internal message of the exception and which can be of type `char*` or `std::string`.	*/
+	void Append(const std::string& msg) {	message+=msg;	}
 	//! This is a generic function for classes which manage exceptions and is intended to return the internal message as a C string (`char*`).
 	const char * what() const throw() {	return message.c_str();	}
 };
@@ -134,9 +129,10 @@ struct TimeData
 	unsigned int minute; //!< This variable stores the minutes as a number that can be between 0 and 59.
 	unsigned int second; //!< This variable stores the seconds as a number that can be between 0 and 59.
 
-	//! The class' constructor which clear all attributes, i.e. set date and time as 00-00-00T00:00:00.
+	//! The class' constructor which clear all attributes, i.e. set date and time as 00-00-0000T00:00:00.
 	TimeData() {	Clear();	}
 	//! The class' copy constructor.
+	/*!	\param [in]	timeData Another _TimeData_ object which is given to copy its attributes.	*/
 	TimeData(const TimeData& timeData) {	operator=(timeData);	}
 	//! A method to get the date as a `std::string`
 	std::string GetDate() const;
@@ -152,7 +148,7 @@ struct TimeData
 	void SetTimestamp(const std::string & timestamp);
 	//! This method allows to turn a time point back a specified number of days.
 	void TurnBackDays(const unsigned int days);
-	//! An overloading of the assignmetn operator.
+	//! An overloading of the assignment operator.
 	const TimeData& operator=(const TimeData& anotherTimeData);
 	//! A method to clear all attributes, i.e. it set the object as 00-00-00T00:00:00.
 	void Clear() {	year=month=day=hour=minute=second=0;	}
@@ -175,12 +171,14 @@ struct FreqValues
 	std::vector<std::uint_least64_t> frequencies; //!< Frequency values in Hz.
 	TimeData timeData; //!< A TimeData object which contains information about the time when the values were captured, defined, etc.
 	//! The default constructor which can receive the curve type.
+	/*! \param [in] typ The type of parameter whose curve of values versus frequency is stored in the structure.	*/
 	FreqValues(const std::string& typ="unknown") : type(typ) {}
 	//! The copy constructor
+	/*! \param [in] freqValues Another _FreqValues_ structure which is given to copy its attributes.	*/
 	FreqValues(const FreqValues& freqValues) {	operator=(freqValues);	}
 	//! This is the structure's destructor which is virtual because there are structures derived from this structure.
 	virtual ~FreqValues() {}
-	//! This method is intended to insert a data point (frequency,value) in the structure, at the end.
+	//! This method is intended to insert one data point (frequency,value) or a set of data points in the structure, at the end.
 	bool PushBack(const FreqValues& freqValues);
 	//! This method is intended to clear the structure, i.e. to delete all its data points.
 	virtual void Clear();
@@ -220,11 +218,11 @@ struct FreqValues
 	friend FreqValues operator/(const FreqValues & lhs, const float rhs); //defined in FreqValues.cpp
 	//! An overloading of operator / which calculates the division between a _float_ value and a _FreqValues_ object, in that order.
 	friend FreqValues operator/(const float lhs, const FreqValues & rhs); //defined in FreqValues.cpp
-	//! An overloading of function `log10()` adapted to receive an argument of type _FreqValues_.
+	//! An overloading of function `log10()`, decimal logarithm, adapted to receive an argument of type _FreqValues_.
 	friend FreqValues log10(const FreqValues & argument); //decimal logarithm, defined in FreqValues.cpp
-	//! An overloading of function `pow()` adapted to receive an argument of type _FreqValues_ as base and an argument of type _float_ as exponent.
+	//! An overloading of function `pow()`, power function, adapted to receive an argument of type _FreqValues_ as base and an argument of type _float_ as exponent.
 	friend FreqValues pow(const FreqValues & base, const float exponent); //exponentiation, defined in FreqValues.cpp
-	//! An overloading of function `pow()` adapted to receive an argument of type _float_ as base and an argument of type _FreqValues_ as exponent.
+	//! An overloading of function `pow()`, exponentiation, adapted to receive an argument of type _float_ as base and an argument of type _FreqValues_ as exponent.
 	friend FreqValues pow(const float base, const FreqValues & exponent); //exponentiation, defined in FreqValues.cpp
 };
 
@@ -237,8 +235,12 @@ struct Sweep : public FreqValues
 	//! The default constructor which calls the default constructor of _FreqValues_ structure and set type to "sweep" and azimuth angle to zero.
 	Sweep() : FreqValues("sweep") {	azimuthAngle=0.0; }
 	//! A copy constructor which receives a _FreqValues_ object.
+	/*!	Just the compatible attributes are copied.
+	 * 	\param [in] freqValues A _FreqValues_ structure which is given to copy its attributes.
+	 */
 	Sweep(const FreqValues & freqValues) : FreqValues(freqValues) { azimuthAngle=0.0; }
 	//! A copy constructor which receives a _Sweep_ object.
+	/*!	\param [in] sweep Another _Sweep_ structure which is given to copy its attributes.	*/
 	Sweep(const Sweep & sweep) {	operator=(sweep);		}
 	//! The aim of this method is to clean the structure, i.e. to delete all data points, set azimuth angle to zero and clean polarization.
 	void Clear() {	FreqValues::Clear(); azimuthAngle=0.0; polarization.clear();	}
@@ -301,10 +303,12 @@ struct RFI : public FreqValues
 	//! The default constructor which calls the default constructor of structure _FreqValues_ and set type to "rfi", azimuth angle to zero, number of bands to zero and set, by default, threshold norm to SKA_MODE1.
 	RFI() : FreqValues("rfi") { azimuthAngle=0.0; numOfRFIBands=0; threshNorm=ThresholdsNorm::SKA_MODE1;	}
 	//! The copy constructor which receives a _RFI_ object.
+	/*! \param [in] rfi A _RFI_ structure given to copy its attributes.	*/
 	RFI(const RFI & rfi) {	operator=(rfi);		}
 	//! The aim of this method is to clean the attributes of this structure.
 	void Clear() { 	FreqValues::Clear(); azimuthAngle=0.0; numOfRFIBands=0; polarization.clear();	}
 	//! An overloading of the assignment operator adapted to receive a _RFI_ object.
+	/*! \param [in] anotherRFI Another _RFI_ structure given to copy its attributes.	*/
 	const RFI & operator=(const RFI & anotherRFI)
 	{
 		azimuthAngle=anotherRFI.azimuthAngle; polarization=anotherRFI.polarization;

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['customexception',['CustomException',['../classCustomException.html',1,'']]]
+  ['bandparameters',['BandParameters',['../structBandParameters.html',1,'']]]
 ];

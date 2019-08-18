@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['rfi',['RFI',['../structRFI.html',1,'']]]
+  ['data3d',['Data3D',['../structData3D.html',1,'']]],
+  ['datalogger',['DataLogger',['../classDataLogger.html',1,'']]]
 ];

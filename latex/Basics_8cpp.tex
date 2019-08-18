@@ -19,12 +19,11 @@ Include dependency graph for Basics.\+cpp\+:\nopagebreak
 bool \hyperlink{Basics_8cpp_ab0cf00620947abc90fbfe36db36f8fc7}{approximately\+Equal} (float a, float b)
 \begin{DoxyCompactList}\small\item\em Function intended to compare floating-\/point numbers as approximately equal, taking into account the floating-\/point rounding errors. \end{DoxyCompactList}\item 
 bool \hyperlink{Basics_8cpp_adee734e43e4a9a5f4b9f610ccdd3f8e0}{approximately\+Equal} (std\+::vector$<$ float $>$ vectorA, std\+::vector$<$ float $>$ vectorB)
-\begin{DoxyCompactList}\small\item\em Function to compare vectors containing floating-\/point numbers, taking into account the rounding errors. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Function intended to compare {\ttfamily std\+::vector$<$float$>$} containers as approximately equal, taking into account the floating-\/point rounding errors. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{Basics_8cpp_abe6b1466ff5e3b09c33ca5dc9fc81c5a}\label{Basics_8cpp_abe6b1466ff5e3b09c33ca5dc9fc81c5a}} 
 void \hyperlink{Basics_8cpp_abe6b1466ff5e3b09c33ca5dc9fc81c5a}{Wait\+For\+Key} ()
 \begin{DoxyCompactList}\small\item\em This function stop the execution up to any key is pressed by the user and it was used for debugging purpose. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{Basics_8cpp_ac744212c600f3f610807ec4add576822}\label{Basics_8cpp_ac744212c600f3f610807ec4add576822}} 
-std\+::vector$<$ float $>$ \hyperlink{Basics_8cpp_ac744212c600f3f610807ec4add576822}{operator-\/} (const std\+::vector$<$ float $>$ \&vect)
+std\+::vector$<$ float $>$ \hyperlink{Basics_8cpp_ac744212c600f3f610807ec4add576822}{operator-\/} (const std\+::vector$<$ float $>$ \&\hyperlink{Spectran_8h_a16fa8eb91a19fde7a399d85c521f63fd}{vect})
 \begin{DoxyCompactList}\small\item\em An overloading of unary operator -\/ which negates the elements of a {\ttfamily std\+::vector$<$float$>$} container. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{Basics_8cpp_adb434b11769fc3a9acd409f2fe534395}\label{Basics_8cpp_adb434b11769fc3a9acd409f2fe534395}} 
 void \hyperlink{Basics_8cpp_adb434b11769fc3a9acd409f2fe534395}{Initialize\+G\+P\+IO} ()
@@ -62,7 +61,14 @@ Mauro Diamantino
 
 Function intended to compare floating-\/point numbers as approximately equal, taking into account the floating-\/point rounding errors. 
 
-This function was copied from this \href{https://www.learncpp.com/cpp-tutorial/35-relational-operators-comparisons/}{\tt link}, but it was modified. It is based in the Knuth’s algorithm but it uses two epsilons, an absolute epsilon (A\+B\+S\+\_\+\+E\+P\+S\+I\+L\+ON) which is very small and is intended to compare near-\/zero floating-\/point numbers and a relative epsilon (R\+E\+L\+\_\+\+E\+P\+S\+I\+L\+ON, which is a percentage of the biggest operand) to compare the rest of the floating-\/point numbers. The function returns true if the difference between a and b is less than A\+B\+S\+\_\+\+E\+P\+S\+I\+L\+ON, or within R\+E\+L\+\_\+\+E\+P\+S\+I\+L\+ON percent of the larger of a and b. \mbox{\Hypertarget{Basics_8cpp_adee734e43e4a9a5f4b9f610ccdd3f8e0}\label{Basics_8cpp_adee734e43e4a9a5f4b9f610ccdd3f8e0}} 
+This function was copied from this \href{https://www.learncpp.com/cpp-tutorial/35-relational-operators-comparisons/}{\tt link}, but it was modified. It is based in the Knuth’s algorithm but it uses two epsilons, an absolute epsilon (A\+B\+S\+\_\+\+E\+P\+S\+I\+L\+ON) which is very small and is intended to compare near-\/zero floating-\/point numbers and a relative epsilon (R\+E\+L\+\_\+\+E\+P\+S\+I\+L\+ON, which is a percentage of the biggest operand) to compare the rest of the floating-\/point numbers. The function returns true if the difference between a and b is less than A\+B\+S\+\_\+\+E\+P\+S\+I\+L\+ON, or within R\+E\+L\+\_\+\+E\+P\+S\+I\+L\+ON percent of the larger of a and b. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em a} & The left-\/hand side argument. \\
+\hline
+\mbox{\tt in}  & {\em b} & The right-\/hand side argument. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{Basics_8cpp_adee734e43e4a9a5f4b9f610ccdd3f8e0}\label{Basics_8cpp_adee734e43e4a9a5f4b9f610ccdd3f8e0}} 
 \index{Basics.\+cpp@{Basics.\+cpp}!approximately\+Equal@{approximately\+Equal}}
 \index{approximately\+Equal@{approximately\+Equal}!Basics.\+cpp@{Basics.\+cpp}}
 \subsubsection{\texorpdfstring{approximately\+Equal()}{approximatelyEqual()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
@@ -70,11 +76,33 @@ This function was copied from this \href{https://www.learncpp.com/cpp-tutorial/3
 
 
 
-Function to compare vectors containing floating-\/point numbers, taking into account the rounding errors. 
+Function intended to compare {\ttfamily std\+::vector$<$float$>$} containers as approximately equal, taking into account the floating-\/point rounding errors. 
 
-Function intended to compare {\ttfamily std\+::vector$<$float$>$} containers as approximately equal, taking into account the floating-\/point rounding errors.
+This function is based on the function presented in this \href{https://www.learncpp.com/cpp-tutorial/35-relational-operators-comparisons/}{\tt link}.
 
-This function is based on the function presented in this \href{https://www.learncpp.com/cpp-tutorial/35-relational-operators-comparisons/}{\tt link}. It is based in the Knuth’s algorithm but it uses two epsilons, an absolute epsilon (A\+B\+S\+\_\+\+E\+P\+S\+I\+L\+ON) which is very small and is intended to compare near-\/zero floating-\/point numbers and a relative epsilon (R\+E\+L\+\_\+\+E\+P\+S\+I\+L\+ON, which is a percentage of the biggest operand) to compare the rest of the floating-\/point numbers. The function returns true if the difference between a and b is less than A\+B\+S\+\_\+\+E\+P\+S\+I\+L\+ON, or within R\+E\+L\+\_\+\+E\+P\+S\+I\+L\+ON percent of the larger of a and b. \mbox{\Hypertarget{Basics_8cpp_abab505eef94a08a9092f916c62637071}\label{Basics_8cpp_abab505eef94a08a9092f916c62637071}} 
+It is based in the Knuth’s algorithm but it uses two epsilons, an absolute epsilon (A\+B\+S\+\_\+\+E\+P\+S\+I\+L\+ON) which is very small and is intended to compare near-\/zero floating-\/point numbers and a relative epsilon (R\+E\+L\+\_\+\+E\+P\+S\+I\+L\+ON, which is a percentage of the biggest operand) to compare the rest of the floating-\/point numbers. The function returns true if the difference between a and b is less than A\+B\+S\+\_\+\+E\+P\+S\+I\+L\+ON, or within R\+E\+L\+\_\+\+E\+P\+S\+I\+L\+ON percent of the larger of a and b. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em vectorA} & The left-\/hand side argument. \\
+\hline
+\mbox{\tt in}  & {\em vectorB} & The right-\/hand side argument. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{Basics_8cpp_ac744212c600f3f610807ec4add576822}\label{Basics_8cpp_ac744212c600f3f610807ec4add576822}} 
+\index{Basics.\+cpp@{Basics.\+cpp}!operator-\/@{operator-\/}}
+\index{operator-\/@{operator-\/}!Basics.\+cpp@{Basics.\+cpp}}
+\subsubsection{\texorpdfstring{operator-\/()}{operator-()}}
+{\footnotesize\ttfamily std\+::vector$<$float$>$ operator-\/ (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ float $>$ \&}]{vect }\end{DoxyParamCaption})}
+
+
+
+An overloading of unary operator -\/ which negates the elements of a {\ttfamily std\+::vector$<$float$>$} container. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em vect} & A {\ttfamily std\+::vector$<$float$>$} container which must be negated. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{Basics_8cpp_abab505eef94a08a9092f916c62637071}\label{Basics_8cpp_abab505eef94a08a9092f916c62637071}} 
 \index{Basics.\+cpp@{Basics.\+cpp}!Process\+Main\+Arguments@{Process\+Main\+Arguments}}
 \index{Process\+Main\+Arguments@{Process\+Main\+Arguments}!Basics.\+cpp@{Basics.\+cpp}}
 \subsubsection{\texorpdfstring{Process\+Main\+Arguments()}{ProcessMainArguments()}}

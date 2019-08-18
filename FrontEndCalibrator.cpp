@@ -7,16 +7,46 @@
 
 #include "SweepProcessing.h"
 
+
 #ifdef DEBUG
+/*! At instantiation, the programmer must provide a reference to a _CurveAdjuster_ object.
+ * \param [in] adj A reference to a _CurveAdjuster_ object, which will be used to adjust some internal curves.
+ */
 FrontEndCalibrator::FrontEndCalibrator(CurveAdjuster & adj) : adjuster(adj), correctENR("enr"), powerNSoff("sweep"),
-		powerNSon("sweep"), powerNSoff_w("sweep"), powerNSon_w("sweep"), noiseTempNSoff("noise temperature"),
-		noiseTempNSon("noise temperature"), gain("gain"), noiseTemperature("noise temperature"),
+		powerNSon("sweep"), powerNSoff_w("sweep"), powerNSon_w("sweep"), gain("gain"),
+		noiseTemperature("noise temperature"), noiseFigure("noise figure"), rbwCurve("rbw values curve"),
+		auxRFPloter("Sweeps captured with a 50 ohm load at the input")
+#else
+/*! At instantiation, the programmer must provide a reference to a _CurveAdjuster_ object.
+ * \param [in] adj A reference to a _CurveAdjuster_ object, which will be used to adjust some internal curves.
+ */
+FrontEndCalibrator::FrontEndCalibrator(CurveAdjuster & adj) : adjuster(adj), correctENR("enr"), powerNSoff("sweep"),
+		powerNSon("sweep"), powerNSoff_w("sweep"), powerNSon_w("sweep"), gain("gain"),
+		noiseTemperature("noise temperature"), noiseFigure("noise figure"), rbwCurve("rbw values curve")
+#endif
+{
+	enrFileLastWriteTime = -100;
+	tsoff = REF_TEMPERATURE;
+	flagNSon = false;
+	flagCalStarted = false;
+}
+
+#ifdef DEBUG
+/*! \param [in] adj A reference to a _CurveAdjuster_ object, which will be used to adjust some internal curves.
+ * 	\param [in] bandsParam A vector with the parameters of all frequency bands.
+ */
+FrontEndCalibrator::FrontEndCalibrator(CurveAdjuster & adj, const std::vector<BandParameters> & bandsParam) :
+		adjuster(adj), correctENR("enr"), powerNSoff("sweep"), powerNSon("sweep"), powerNSoff_w("sweep"),
+		powerNSon_w("sweep"), bandsParameters(bandsParam), gain("gain"), noiseTemperature("noise temperature"),
 		noiseFigure("noise figure"), rbwCurve("rbw values curve"),
 		auxRFPloter("Sweeps captured with a 50 ohm load at the input")
 #else
-FrontEndCalibrator::FrontEndCalibrator(CurveAdjuster & adj) : adjuster(adj), correctENR("enr"), powerNSoff("sweep"),
-		powerNSon("sweep"), powerNSoff_w("sweep"), powerNSon_w("sweep"), noiseTempNSoff("noise temperature"),
-		noiseTempNSon("noise temperature"), gain("gain"), noiseTemperature("noise temperature"),
+/*! \param [in] adj A reference to a _CurveAdjuster_ object, which will be used to adjust some internal curves.
+ * 	\param [in] bandsParam A vector with the parameters of all frequency bands.
+ */
+FrontEndCalibrator::FrontEndCalibrator(CurveAdjuster & adj, const std::vector<BandParameters> & bandsParam) :
+		adjuster(adj), correctENR("enr"), powerNSoff("sweep"), powerNSon("sweep"), powerNSoff_w("sweep"),
+		powerNSon_w("sweep"), bandsParameters(bandsParam), gain("gain"), noiseTemperature("noise temperature"),
 		noiseFigure("noise figure"), rbwCurve("rbw values curve")
 #endif
 {
@@ -26,34 +56,13 @@ FrontEndCalibrator::FrontEndCalibrator(CurveAdjuster & adj) : adjuster(adj), cor
 	flagCalStarted = false;
 }
 
-#ifdef DEBUG
-FrontEndCalibrator::FrontEndCalibrator(CurveAdjuster & adj, const std::vector<BandParameters> & bandsParam) :
-		adjuster(adj), correctENR("enr"), powerNSoff("sweep"), powerNSon("sweep"), powerNSoff_w("sweep"),
-		powerNSon_w("sweep"), noiseTempNSoff("noise temperature"), noiseTempNSon("noise temperature"),
-		bandsParameters(bandsParam), gain("gain"), noiseTemperature("noise temperature"), noiseFigure("noise figure"),
-		rbwCurve("rbw values curve"), auxRFPloter("Sweeps captured with a 50 ohm load at the input")
-#else
-FrontEndCalibrator::FrontEndCalibrator(CurveAdjuster & adj, const std::vector<BandParameters> & bandsParam) :
-		adjuster(adj), correctENR("enr"), powerNSoff("sweep"), powerNSon("sweep"), powerNSoff_w("sweep"),
-		powerNSon_w("sweep"), noiseTempNSoff("noise temperature"), noiseTempNSon("noise temperature"),
-		bandsParameters(bandsParam), gain("gain"), noiseTemperature("noise temperature"), noiseFigure("noise figure"),
-		rbwCurve("rbw values curve")
-#endif
-{
-	enrFileLastWriteTime = -100;
-	tsoff = REF_TEMPERATURE;
-	flagNSon = false;
-	flagCalStarted = false;
-}
-
-//! This method build a curve with RBW values versus frequency.
 /*! The aim of the RBW curve is to simplify the syntax of the equations which are used in the methods
- * `FrontEndCalibrator :: EstimateParameters ()` and `FrontEndCalibrator :: CalibrateSweep ()`.
+ * `FrontEndCalibrator::EstimateParameters()` and `FrontEndCalibrator::CalibrateSweep()`.
  * Firstly, the RBW curve is loaded with two points for each frequency band: one point with the RBW value
- * of that band and the start frequency (Fstart) and the other point with the same RBW value and the stop
- * frequency (Fstop). Then, the RBW curve is adjusted (interpolated) using the CurveAdjuster object and,
- * because the way the first values ​​were loaded, the end RBW curve will be formed by steps, i.e. all the
- * frequencies which corresponds to the same band will have the same RBW value.
+ * of that band and its start frequency (Fstart) and the other point with the same RBW value and its stop
+ * frequency (Fstop). Then, the RBW curve is adjusted using the _CurveAdjuster_ object and, because of
+ * the way the first values ​​were loaded, the end RBW curve will be formed by steps, i.e. all the frequencies
+ * which corresponds to the same band will have the same RBW value.
  */
 void FrontEndCalibrator::BuildRBWCurve()
 {
@@ -73,12 +82,45 @@ void FrontEndCalibrator::BuildRBWCurve()
 	rbwCurve = adjuster.AdjustCurve(rbwCurve);
 }
 
+/*!	After the bands' parameters are stored, the RBW curve is built, taking into account those parameters.
+ * \param [in] bandsParam A vector with the parameters of all frequency bands.
+ */
 void FrontEndCalibrator::SetBandsParameters(const std::vector<BandParameters> & bandsParam)
 {
 	bandsParameters = bandsParam;
 	BuildRBWCurve();
 }
 
+/*!	The ENR values versus frequency of the noise generator are loaded from the file
+ * [BASE_PATH](\ref BASE_PATH)/calibration/enr.txt, then those values are corrected taking into account
+ * a statistical mean physical temperature of the noise source at time of the factory calibration.
+ * That technique is exposed in the Application Note "Noise Figure Measurement Accuracy – The Y-Factor
+ * Method" of Keysight Technologies. To finish, the corrected ENR curve is adjusted to be used in the
+ * mathematical operations with the captured sweeps.
+ *
+ * To perform the estimation of the front end parameters the following equations are used:
+ * \f[
+ * 		ENR_{CORR}=ENR_{CAL}+\frac{T_{O}-T_{CORR}}{T_{O}}
+ * \f]
+ * \f[
+ * 		T_{SON}=T_{O}*ENR_{CORR}+T_{SOFF}
+ * \f]
+ * \f[
+ * 		Y=\frac{N_{OUT_{ON}}}{N_{OUT_{OFF}}}
+ * \f]
+ * \f[
+ * 		T_{receiver}=\frac{T_{SON}-Y*T_{SOFF}}{Y-1}
+ * \f]
+ * \f[
+ * 		F_{receiver}=1+\frac{T_{receiver}}{T_O}
+ * \f]
+ * \f[
+ * 		NF_{receiver}=10*\log_{10}(F_{receiver})
+ * \f]
+ * \f[
+ * 		G_{receiver}=\frac{1}{2*k*RBW}*\left[\frac{N_{OUT_{ON}}}{T_{SON}+T_{receiver}}+\frac{N_{OUT_{OFF}}}{T_{SOFF}+T_{receiver}}\right]
+ * \f]
+ */
 void FrontEndCalibrator::LoadENR()
 {
 	boost::filesystem::path pathAndFilename(CAL_FILES_PATH);
@@ -219,7 +261,12 @@ void FrontEndCalibrator::SetSweep(const FreqValues & sweep)
 	}
 }
 
-
+/*! This method must be called once the calibration process finished, i.e. the method `EndCalibration()` must be called first.
+ * 	The front end parameters, total gain and total noise figure, are estimated using the Y-Factor method, which is exposed in
+ * 	the Application Note "Noise Figure Measurement Accuracy – The Y-Factor Method" of Keysight Technologies.
+ *
+ * 	Once the parameters' curves have been estimated, their mean values are checked to be reasonable.
+ */
 void FrontEndCalibrator::EstimateParameters()
 {
 	if( powerNSon_w.Empty() || powerNSoff_w.Empty() )
@@ -253,6 +300,27 @@ void FrontEndCalibrator::EstimateParameters()
 		throw( CustomException("A ridiculous mean gain was got during estimation.") );
 }
 
+/*!	The calibration of sweeps with output power values implies the following tasks:
+ * - Referencing the sweep to the input of the front end (antenna's output), what is done subtracting
+ * the total gain curve to the sweep, taking the power values in dBm and the gain values in dB.
+ * - Removing of the internal noise added to the sweep by the front end, what is done taking into
+ * account its total equivalent noise temperature.
+ * To perform these tasks the following equation are used:
+ * \f[
+ * 		P_{IN_{eff}[dBm]}=P_{OUT[dBm]}-G_{receiver[dB]}
+ * \f]
+ * \f[
+ * 		P_{IN_{eff}[W]}=10^{\frac{P_{IN_{eff}[dBm]}}{10}}*10^{-3}
+ * \f]
+ * \f[
+ * 		P_{IN[W]}=P_{IN_{eff}[W]}-N_{receiver[W]}=P_{IN_{eff}[W]}-k_{[J/°K]}*RBW_{[Hz]}*T_{receiver[°K]}
+ * \f]
+ * \f[
+ * 		P_{IN[dBm]}=10*\log_{10}(P_{IN[W]})+30
+ * \f]
+ * \param [in] powerOut A _Sweep_ structure which stores an uncalibrated sweep.
+ * \return The calibrated sweep.
+ */
 const Sweep& FrontEndCalibrator::CalibrateSweep(const Sweep& powerOut)
 {
 #ifdef DEBUG

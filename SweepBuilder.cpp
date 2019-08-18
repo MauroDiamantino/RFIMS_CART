@@ -9,7 +9,6 @@
 
 /////////////////////////Definitions of SweepBuilder class' methods///////////////////////
 
-//! A method which build the definite sweep object, which is of type *FreqValues* (struct), from the partial sweep which is map container.
 void SweepBuilder::BuildSweep()
 {
 	sweep.Clear();
@@ -21,38 +20,25 @@ void SweepBuilder::BuildSweep()
 	}
 }
 
-//void SweepBuilder::SoundNewSweep()
-//{
-//	Command comm(Command::SETSTPVAR, SpecVariable::STDTONE, 100.0);
-//	Reply reply(Reply::SETSTPVAR);
-//	try
-//	{
-//		interface.Write(comm);
-//		interface.Read(reply);
-//		if(reply.IsRight()!=true)
-//		{
-//			CustomException exc("The reply to the command to make the sound which indicates the start of a new sweep was wrong.");
-//			throw(exc);
-//		}
-//	}
-//	catch(CustomException & exc)
-//	{
-//		cerr << "Warning: " << exc.what() << endl;
-//		cerr << "The sound to show that a new sweep will be captured could not be made." << endl;
-//	}
-//}
-
-
-//! The aim of this method is to capture one sweep from the Spectran Interface and return it.
+/*!	The method receives a _BandParameters_ structure, where the parameters of the current frequency band are stored, and it uses this
+ * 	structure to check if the frequency values are coherent and it corrects the number of sweep points of the structure.
+ *
+ * 	First, the method sends a command to reset the current sweep, it waits a moment and then it enables the streaming of sweep points.
+ * 	Later, the method enters in a loop where each sweep point is captured and inserted in the `std::map` container. That kind of
+ * 	container are ordered and unique-key, so automatically the container orders the sweep points, taking into account the frequency,
+ * 	and it does not allow to insert two points with the same frequency. When that happens, the container states that and the loop finishes.
+ * 	Later, the number of sweep points is checked and stored in the given _BandParameters_ structure, the streaming of sweep points is
+ * 	disabled and, finally, the sweep is moved to a _Sweep_ structure, which is more optimum to perform mathematical operations, and this
+ * 	structure is returned.
+ * 	\param bandParam [in,out] The parameters of the current frequency band.
+ */
 const Sweep& SweepBuilder::CaptureSweep(BandParameters & bandParam)
 {
 	bool flagSweepReady=false;
 	SweepReply swReply;
 	float power;
-	//float frequency;
 	std::uint_least64_t frequency;
 	std::pair< SweepMap::iterator, bool> mapReply;
-//	__useconds_t deltaTime = 1000*(bandParam.sweepTime/bandParam.samplePoints); //theoretical time interval between sweep points
 	unsigned int errorTimeCount=0, errorFreqCount=0;
 	unsigned long samplesCount=0;
 
@@ -60,8 +46,10 @@ const Sweep& SweepBuilder::CaptureSweep(BandParameters & bandParam)
 
 	partialSweep.clear();
 
+	/////////
 //	cout << "\t\tFrecuencia\t\tPotencia" << endl;
 //	cout.setf(std::ios::fixed, std::ios::floatfield);
+	////////
 
 	usleep(300000);
 
@@ -80,11 +68,7 @@ const Sweep& SweepBuilder::CaptureSweep(BandParameters & bandParam)
 		{
 			cerr << "Warning: " << exc.what() << endl;
 			if(++errorTimeCount < 3)
-			{
-//				deltaTime *= 2;
-//				cout << "The time interval (delta time) which is waited before capture a sweep point has been doubled. The new value is " << deltaTime << endl;
 				continue;
-			}
 			else
 			{
 				interface.DisableSweep();
@@ -130,7 +114,6 @@ const Sweep& SweepBuilder::CaptureSweep(BandParameters & bandParam)
 		flagSweepReady = !mapReply.second;
 		++samplesCount;
 
-		//usleep( deltaTime );
 	}
 
 	--samplesCount;

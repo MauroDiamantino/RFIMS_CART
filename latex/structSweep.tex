@@ -33,17 +33,14 @@ Collaboration diagram for Sweep\+:\nopagebreak
 \mbox{\Hypertarget{structSweep_a154d8154b44ffd83c26375ca8d688591}\label{structSweep_a154d8154b44ffd83c26375ca8d688591}} 
 \hyperlink{structSweep_a154d8154b44ffd83c26375ca8d688591}{Sweep} ()
 \begin{DoxyCompactList}\small\item\em The default constructor which calls the default constructor of {\itshape \hyperlink{structFreqValues}{Freq\+Values}} structure and set type to \char`\"{}sweep\char`\"{} and azimuth angle to zero. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{structSweep_ae85ac9f2a48f93e3fc510118c7d67f7f}\label{structSweep_ae85ac9f2a48f93e3fc510118c7d67f7f}} 
 \hyperlink{structSweep_ae85ac9f2a48f93e3fc510118c7d67f7f}{Sweep} (const \hyperlink{structFreqValues}{Freq\+Values} \&freq\+Values)
 \begin{DoxyCompactList}\small\item\em A copy constructor which receives a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{structSweep_a0a4e0f72fe9051d35cb29953005463b3}\label{structSweep_a0a4e0f72fe9051d35cb29953005463b3}} 
 \hyperlink{structSweep_a0a4e0f72fe9051d35cb29953005463b3}{Sweep} (const \hyperlink{structSweep}{Sweep} \&sweep)
 \begin{DoxyCompactList}\small\item\em A copy constructor which receives a {\itshape \hyperlink{structSweep}{Sweep}} object. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{structSweep_aa852ab0cf53dc52ec354649cf6cec31e}\label{structSweep_aa852ab0cf53dc52ec354649cf6cec31e}} 
 void \hyperlink{structSweep_aa852ab0cf53dc52ec354649cf6cec31e}{Clear} ()
 \begin{DoxyCompactList}\small\item\em The aim of this method is to clean the structure, i.\+e. to delete all data points, set azimuth angle to zero and clean polarization. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{structSweep_ae20eba1adf7d9510a2433ce942b14007}\label{structSweep_ae20eba1adf7d9510a2433ce942b14007}} 
-const \hyperlink{structSweep}{Sweep} \& \hyperlink{structSweep_ae20eba1adf7d9510a2433ce942b14007}{operator=} (const \hyperlink{structSweep}{Sweep} \&sweep)
+const \hyperlink{structSweep}{Sweep} \& \hyperlink{structSweep_a0cd5bc95e0e71b06887de9de4ea5ee6a}{operator=} (const \hyperlink{structSweep}{Sweep} \&sweep)
 \begin{DoxyCompactList}\small\item\em An overloading of the assignment operator adapted to this structure. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Public Attributes}
 \begin{DoxyCompactItemize}
@@ -56,70 +53,472 @@ std\+::string \hyperlink{structSweep_a3484c258fdff60e1c109df92a1ba9ae7}{polariza
 \subsection*{Friends}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{structSweep_a29420e86f220ed305794c8e560059bbc}\label{structSweep_a29420e86f220ed305794c8e560059bbc}} 
 \hyperlink{structSweep}{Sweep} \hyperlink{structSweep_a29420e86f220ed305794c8e560059bbc}{operator-\/} (const \hyperlink{structSweep}{Sweep} \&argument)
 \begin{DoxyCompactList}\small\item\em An overloading of the unary operator -\/ which negates a {\itshape \hyperlink{structSweep}{Sweep}} object. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{structSweep_a96391241f10ea728ee36b62f6c35d604}\label{structSweep_a96391241f10ea728ee36b62f6c35d604}} 
 \hyperlink{structSweep}{Sweep} \hyperlink{structSweep_a96391241f10ea728ee36b62f6c35d604}{operator+} (const \hyperlink{structSweep}{Sweep} \&lhs, const \hyperlink{structSweep}{Sweep} \&rhs)
 \begin{DoxyCompactList}\small\item\em An overloading of operator + which calculates the sum of two objects of structure {\itshape \hyperlink{structSweep}{Sweep}}. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{structSweep_ab372b814f572937b3f0cef31752994b9}\label{structSweep_ab372b814f572937b3f0cef31752994b9}} 
 \hyperlink{structSweep}{Sweep} \hyperlink{structSweep_ab372b814f572937b3f0cef31752994b9}{operator+} (const \hyperlink{structSweep}{Sweep} \&lhs, const std\+::vector$<$ float $>$ \&rhs)
 \begin{DoxyCompactList}\small\item\em An overloading of operator + which calculates the sum of a {\itshape \hyperlink{structSweep}{Sweep}} object and a {\ttfamily std\+::vector$<$float$>$} container, in that order. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{structSweep_a770d2ac63866693c821c99cbfe2b2c9a}\label{structSweep_a770d2ac63866693c821c99cbfe2b2c9a}} 
 \hyperlink{structSweep}{Sweep} \hyperlink{structSweep_a770d2ac63866693c821c99cbfe2b2c9a}{operator+} (const std\+::vector$<$ float $>$ \&lhs, const \hyperlink{structSweep}{Sweep} \&rhs)
 \begin{DoxyCompactList}\small\item\em An overloading of operator + which calculates the sum of a {\ttfamily std\+::vector$<$float$>$} container and a {\itshape \hyperlink{structSweep}{Sweep}} object, in that order. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{structSweep_a5d6fad874c778ae77a10b57446a0bd93}\label{structSweep_a5d6fad874c778ae77a10b57446a0bd93}} 
 \hyperlink{structSweep}{Sweep} \hyperlink{structSweep_a5d6fad874c778ae77a10b57446a0bd93}{operator+} (const \hyperlink{structSweep}{Sweep} \&lhs, const \hyperlink{structFreqValues}{Freq\+Values} \&rhs)
 \begin{DoxyCompactList}\small\item\em An overloading of operator + which calculates the sum of a {\itshape \hyperlink{structSweep}{Sweep}} object and a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object, in that order. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{structSweep_ae8dce428f848644d0a68cc8309f88ebf}\label{structSweep_ae8dce428f848644d0a68cc8309f88ebf}} 
 \hyperlink{structSweep}{Sweep} \hyperlink{structSweep_ae8dce428f848644d0a68cc8309f88ebf}{operator+} (const \hyperlink{structSweep}{Sweep} \&lhs, const float rhs)
 \begin{DoxyCompactList}\small\item\em An overloading of operator + which calculates the sum of a {\itshape \hyperlink{structSweep}{Sweep}} object and a {\itshape float} value, in that order. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{structSweep_ac0d73d5e8e3aab8f87c9815588b66821}\label{structSweep_ac0d73d5e8e3aab8f87c9815588b66821}} 
 \hyperlink{structSweep}{Sweep} \hyperlink{structSweep_ac0d73d5e8e3aab8f87c9815588b66821}{operator+} (const float lhs, const \hyperlink{structSweep}{Sweep} \&rhs)
 \begin{DoxyCompactList}\small\item\em An overloading of operator + which calculates the sum of a {\itshape float} value and a {\itshape \hyperlink{structSweep}{Sweep}} object, in that order. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{structSweep_a8f704b31d015e4d81d25d3fceca1e2f1}\label{structSweep_a8f704b31d015e4d81d25d3fceca1e2f1}} 
 \hyperlink{structSweep}{Sweep} \hyperlink{structSweep_a8f704b31d015e4d81d25d3fceca1e2f1}{operator-\/} (const \hyperlink{structSweep}{Sweep} \&lhs, const \hyperlink{structSweep}{Sweep} \&rhs)
 \begin{DoxyCompactList}\small\item\em An overloading of operator -\/ which calculates the subtraction of two objects of structure {\itshape \hyperlink{structSweep}{Sweep}}. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{structSweep_a8b2585969a3c379f744b662fb3bea749}\label{structSweep_a8b2585969a3c379f744b662fb3bea749}} 
 \hyperlink{structSweep}{Sweep} \hyperlink{structSweep_a8b2585969a3c379f744b662fb3bea749}{operator-\/} (const \hyperlink{structSweep}{Sweep} \&lhs, const std\+::vector$<$ float $>$ \&rhs)
 \begin{DoxyCompactList}\small\item\em An overloading of operator -\/ which calculates the subtraction of a {\itshape \hyperlink{structSweep}{Sweep}} object and a {\ttfamily std\+::vector$<$float$>$} container, in that order. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{structSweep_a840a49afd7973b4b3d1020e15c4c9819}\label{structSweep_a840a49afd7973b4b3d1020e15c4c9819}} 
 \hyperlink{structSweep}{Sweep} \hyperlink{structSweep_a840a49afd7973b4b3d1020e15c4c9819}{operator-\/} (const std\+::vector$<$ float $>$ \&lhs, const \hyperlink{structSweep}{Sweep} \&rhs)
 \begin{DoxyCompactList}\small\item\em An overloading of operator -\/ which calculates the subtraction of a {\ttfamily std\+::vector$<$float$>$} container and a {\itshape \hyperlink{structSweep}{Sweep}} object, in that order. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{structSweep_a124ea929f6dba249bd4d6bf5476ab621}\label{structSweep_a124ea929f6dba249bd4d6bf5476ab621}} 
 \hyperlink{structSweep}{Sweep} \hyperlink{structSweep_a124ea929f6dba249bd4d6bf5476ab621}{operator-\/} (const \hyperlink{structSweep}{Sweep} \&lhs, const \hyperlink{structFreqValues}{Freq\+Values} \&rhs)
 \begin{DoxyCompactList}\small\item\em An overloading of operator -\/ which calculates the subtraction of a {\itshape \hyperlink{structSweep}{Sweep}} object and a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object, in that order. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{structSweep_a4739da92a36e5f8f17b0be140dd327f6}\label{structSweep_a4739da92a36e5f8f17b0be140dd327f6}} 
 \hyperlink{structSweep}{Sweep} \hyperlink{structSweep_a4739da92a36e5f8f17b0be140dd327f6}{operator$\ast$} (const \hyperlink{structSweep}{Sweep} \&lhs, const \hyperlink{structSweep}{Sweep} \&rhs)
 \begin{DoxyCompactList}\small\item\em An overloading of operator $\ast$ which multiplies two objects of structure {\itshape \hyperlink{structSweep}{Sweep}}. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{structSweep_a12c1f3e5e4869781ca7d90a50f334606}\label{structSweep_a12c1f3e5e4869781ca7d90a50f334606}} 
 \hyperlink{structSweep}{Sweep} \hyperlink{structSweep_a12c1f3e5e4869781ca7d90a50f334606}{operator$\ast$} (const \hyperlink{structSweep}{Sweep} \&lhs, const float rhs)
 \begin{DoxyCompactList}\small\item\em An overloading of operator $\ast$ which multiplies a {\itshape \hyperlink{structSweep}{Sweep}} object and a {\itshape float} value, in that order. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{structSweep_ad4aac4ab6e7ea49d5bc9ebfa83eb07be}\label{structSweep_ad4aac4ab6e7ea49d5bc9ebfa83eb07be}} 
 \hyperlink{structSweep}{Sweep} \hyperlink{structSweep_ad4aac4ab6e7ea49d5bc9ebfa83eb07be}{operator$\ast$} (const float lhs, const \hyperlink{structSweep}{Sweep} \&rhs)
 \begin{DoxyCompactList}\small\item\em An overloading of operator $\ast$ which multiplies a {\itshape float} value and a {\itshape \hyperlink{structSweep}{Sweep}} object, in that order. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{structSweep_a3e230f15cb1119940203a1a452676b74}\label{structSweep_a3e230f15cb1119940203a1a452676b74}} 
 \hyperlink{structSweep}{Sweep} \hyperlink{structSweep_a3e230f15cb1119940203a1a452676b74}{operator/} (const \hyperlink{structSweep}{Sweep} \&lhs, const \hyperlink{structSweep}{Sweep} \&rhs)
 \begin{DoxyCompactList}\small\item\em An overloading of operator / which calculates the division between two objects of structure {\itshape \hyperlink{structSweep}{Sweep}}. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{structSweep_a73694ded6e7ba41c367ca5f0934cbc2c}\label{structSweep_a73694ded6e7ba41c367ca5f0934cbc2c}} 
 \hyperlink{structSweep}{Sweep} \hyperlink{structSweep_a73694ded6e7ba41c367ca5f0934cbc2c}{operator/} (const \hyperlink{structSweep}{Sweep} \&lhs, const float rhs)
 \begin{DoxyCompactList}\small\item\em An overloading of operator / which calculates the division between a {\itshape \hyperlink{structSweep}{Sweep}} object and a {\itshape float} value, in that order. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{structSweep_abe3c133bf246f7faebcfda286c5e1448}\label{structSweep_abe3c133bf246f7faebcfda286c5e1448}} 
 \hyperlink{structSweep}{Sweep} \hyperlink{structSweep_abe3c133bf246f7faebcfda286c5e1448}{operator/} (const float lhs, const \hyperlink{structSweep}{Sweep} \&rhs)
 \begin{DoxyCompactList}\small\item\em An overloading of operator / which calculates the division between a {\itshape float} value and a {\itshape \hyperlink{structSweep}{Sweep}} object, in that order. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{structSweep_a37df38f37b1cf6a6bfb18f44b706d308}\label{structSweep_a37df38f37b1cf6a6bfb18f44b706d308}} 
 \hyperlink{structSweep}{Sweep} \hyperlink{structSweep_a37df38f37b1cf6a6bfb18f44b706d308}{log10} (const \hyperlink{structSweep}{Sweep} \&argument)
 \begin{DoxyCompactList}\small\item\em An overloading of function {\ttfamily \hyperlink{structSweep_a37df38f37b1cf6a6bfb18f44b706d308}{log10()}} adapted to receive an argument of type {\itshape \hyperlink{structSweep}{Sweep}}. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{structSweep_a09ee88cfc9b28e6ec344eea1a2817ea9}\label{structSweep_a09ee88cfc9b28e6ec344eea1a2817ea9}} 
 \hyperlink{structSweep}{Sweep} \hyperlink{structSweep_a09ee88cfc9b28e6ec344eea1a2817ea9}{pow} (const \hyperlink{structSweep}{Sweep} \&base, const float exponent)
 \begin{DoxyCompactList}\small\item\em An overloading of function {\ttfamily \hyperlink{structSweep_a09ee88cfc9b28e6ec344eea1a2817ea9}{pow()}} adapted to receive an argument of type {\itshape \hyperlink{structSweep}{Sweep}} as base and an argument of type {\itshape float} as exponent. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{structSweep_a879ae44efd2611562d05b90b24099e70}\label{structSweep_a879ae44efd2611562d05b90b24099e70}} 
 \hyperlink{structSweep}{Sweep} \hyperlink{structSweep_a879ae44efd2611562d05b90b24099e70}{pow} (const float base, const \hyperlink{structSweep}{Sweep} \&exponent)
 \begin{DoxyCompactList}\small\item\em An overloading of function {\ttfamily \hyperlink{structSweep_a09ee88cfc9b28e6ec344eea1a2817ea9}{pow()}} adapted to receive an argument of type {\itshape float} as base and an argument of type {\itshape \hyperlink{structSweep}{Sweep}} as exponent. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
 The aim of this structure is to store the data points of a sweep obtained with the spectrum analyzer in a determined azimuth position, with a specific polarization. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{structSweep_ae85ac9f2a48f93e3fc510118c7d67f7f}\label{structSweep_ae85ac9f2a48f93e3fc510118c7d67f7f}} 
+\index{Sweep@{Sweep}!Sweep@{Sweep}}
+\index{Sweep@{Sweep}!Sweep@{Sweep}}
+\subsubsection{\texorpdfstring{Sweep()}{Sweep()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily Sweep\+::\+Sweep (\begin{DoxyParamCaption}\item[{const \hyperlink{structFreqValues}{Freq\+Values} \&}]{freq\+Values }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+A copy constructor which receives a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object. 
+
+Just the compatible attributes are copied. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em freq\+Values} & A {\itshape \hyperlink{structFreqValues}{Freq\+Values}} structure which is given to copy its attributes. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{structSweep_a0a4e0f72fe9051d35cb29953005463b3}\label{structSweep_a0a4e0f72fe9051d35cb29953005463b3}} 
+\index{Sweep@{Sweep}!Sweep@{Sweep}}
+\index{Sweep@{Sweep}!Sweep@{Sweep}}
+\subsubsection{\texorpdfstring{Sweep()}{Sweep()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily Sweep\+::\+Sweep (\begin{DoxyParamCaption}\item[{const \hyperlink{structSweep}{Sweep} \&}]{sweep }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+A copy constructor which receives a {\itshape \hyperlink{structSweep}{Sweep}} object. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em sweep} & Another {\itshape \hyperlink{structSweep}{Sweep}} structure which is given to copy its attributes. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{structSweep_a0cd5bc95e0e71b06887de9de4ea5ee6a}\label{structSweep_a0cd5bc95e0e71b06887de9de4ea5ee6a}} 
+\index{Sweep@{Sweep}!operator=@{operator=}}
+\index{operator=@{operator=}!Sweep@{Sweep}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily const \hyperlink{structSweep}{Sweep} \& Sweep\+::operator= (\begin{DoxyParamCaption}\item[{const \hyperlink{structSweep}{Sweep} \&}]{sweep }\end{DoxyParamCaption})}
+
+
+
+An overloading of the assignment operator adapted to this structure. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em sweep} & Another {\itshape \hyperlink{structSweep}{Sweep}} structure which is given to copy its attributes. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Friends And Related Function Documentation}
+\mbox{\Hypertarget{structSweep_a37df38f37b1cf6a6bfb18f44b706d308}\label{structSweep_a37df38f37b1cf6a6bfb18f44b706d308}} 
+\index{Sweep@{Sweep}!log10@{log10}}
+\index{log10@{log10}!Sweep@{Sweep}}
+\subsubsection{\texorpdfstring{log10}{log10}}
+{\footnotesize\ttfamily \hyperlink{structSweep}{Sweep} log10 (\begin{DoxyParamCaption}\item[{const \hyperlink{structSweep}{Sweep} \&}]{argument }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+An overloading of function {\ttfamily \hyperlink{structSweep_a37df38f37b1cf6a6bfb18f44b706d308}{log10()}} adapted to receive an argument of type {\itshape \hyperlink{structSweep}{Sweep}}. 
+
+This function takes each point of the given structure, apply the decimal logarithm whit its value and stores the result in a different {\itshape \hyperlink{structSweep}{Sweep}} structure, which is then returned. The rest of attributes (frequency, type, timestamp, etc.) are copied as-\/is to the object to be returned. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em argument} & The {\itshape \hyperlink{structSweep}{Sweep}} structure to be used as argument to the decimal logarithm operation. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{structSweep_a4739da92a36e5f8f17b0be140dd327f6}\label{structSweep_a4739da92a36e5f8f17b0be140dd327f6}} 
+\index{Sweep@{Sweep}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!Sweep@{Sweep}}
+\subsubsection{\texorpdfstring{operator$\ast$}{operator*}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily \hyperlink{structSweep}{Sweep} operator$\ast$ (\begin{DoxyParamCaption}\item[{const \hyperlink{structSweep}{Sweep} \&}]{lhs,  }\item[{const \hyperlink{structSweep}{Sweep} \&}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+An overloading of operator $\ast$ which multiplies two objects of structure {\itshape \hyperlink{structSweep}{Sweep}}. 
+
+Before performing the operation, the function checks if the frequencies of each structure match and if the \char`\"{}values\char`\"{} vectors have the same sizes as the \char`\"{}frequencies\char`\"{} vectors. The values of the of object to be returned are determined by the operation, while the rest of attributes (frequency, type, timestamp, etc.) are copied from the left-\/hand side argument.
+
+The function returns a {\itshape \hyperlink{structSweep}{Sweep}} object with the results of the operation. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em lhs} & The left-\/hand side operand. \\
+\hline
+\mbox{\tt in}  & {\em rhs} & The right-\/hand side operand. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{structSweep_a12c1f3e5e4869781ca7d90a50f334606}\label{structSweep_a12c1f3e5e4869781ca7d90a50f334606}} 
+\index{Sweep@{Sweep}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!Sweep@{Sweep}}
+\subsubsection{\texorpdfstring{operator$\ast$}{operator*}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily \hyperlink{structSweep}{Sweep} operator$\ast$ (\begin{DoxyParamCaption}\item[{const \hyperlink{structSweep}{Sweep} \&}]{lhs,  }\item[{const float}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+An overloading of operator $\ast$ which multiplies a {\itshape \hyperlink{structSweep}{Sweep}} object and a {\itshape float} value, in that order. 
+
+The values of the of object to be returned are determined by the operation, while the rest of attributes (frequency, type, timestamp, etc.) are copied from the left-\/hand side argument, the only one argument of type {\itshape \hyperlink{structSweep}{Sweep}}.
+
+The function returns a {\itshape \hyperlink{structSweep}{Sweep}} object with the results of the operation. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em lhs} & The left-\/hand side operand. \\
+\hline
+\mbox{\tt in}  & {\em rhs} & The right-\/hand side operand. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{structSweep_ad4aac4ab6e7ea49d5bc9ebfa83eb07be}\label{structSweep_ad4aac4ab6e7ea49d5bc9ebfa83eb07be}} 
+\index{Sweep@{Sweep}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!Sweep@{Sweep}}
+\subsubsection{\texorpdfstring{operator$\ast$}{operator*}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily \hyperlink{structSweep}{Sweep} operator$\ast$ (\begin{DoxyParamCaption}\item[{const float}]{lhs,  }\item[{const \hyperlink{structSweep}{Sweep} \&}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+An overloading of operator $\ast$ which multiplies a {\itshape float} value and a {\itshape \hyperlink{structSweep}{Sweep}} object, in that order. 
+
+The values of the of object to be returned are determined by the operation, while the rest of attributes (frequency, type, timestamp, etc.) are copied from the right-\/hand side argument, the only one argument of type {\itshape \hyperlink{structSweep}{Sweep}}.
+
+The function returns a {\itshape \hyperlink{structSweep}{Sweep}} object with the results of the operation. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em lhs} & The left-\/hand side operand. \\
+\hline
+\mbox{\tt in}  & {\em rhs} & The right-\/hand side operand. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{structSweep_a96391241f10ea728ee36b62f6c35d604}\label{structSweep_a96391241f10ea728ee36b62f6c35d604}} 
+\index{Sweep@{Sweep}!operator+@{operator+}}
+\index{operator+@{operator+}!Sweep@{Sweep}}
+\subsubsection{\texorpdfstring{operator+}{operator+}\hspace{0.1cm}{\footnotesize\ttfamily [1/6]}}
+{\footnotesize\ttfamily \hyperlink{structSweep}{Sweep} operator+ (\begin{DoxyParamCaption}\item[{const \hyperlink{structSweep}{Sweep} \&}]{lhs,  }\item[{const \hyperlink{structSweep}{Sweep} \&}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+An overloading of operator + which calculates the sum of two objects of structure {\itshape \hyperlink{structSweep}{Sweep}}. 
+
+Before performing the operation, the function checks if the frequencies of each structure match and if the \char`\"{}values\char`\"{} vectors have the same sizes as the \char`\"{}frequencies\char`\"{} vectors. The values of the of object to be returned are determined by the operation, while the rest of attributes (frequency, type, timestamp, etc.) are copied from the left-\/hand side argument.
+
+The function returns a {\itshape \hyperlink{structSweep}{Sweep}} object with the results of the operation. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em lhs} & The left-\/hand side operand. \\
+\hline
+\mbox{\tt in}  & {\em rhs} & The right-\/hand side operand. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{structSweep_ab372b814f572937b3f0cef31752994b9}\label{structSweep_ab372b814f572937b3f0cef31752994b9}} 
+\index{Sweep@{Sweep}!operator+@{operator+}}
+\index{operator+@{operator+}!Sweep@{Sweep}}
+\subsubsection{\texorpdfstring{operator+}{operator+}\hspace{0.1cm}{\footnotesize\ttfamily [2/6]}}
+{\footnotesize\ttfamily \hyperlink{structSweep}{Sweep} operator+ (\begin{DoxyParamCaption}\item[{const \hyperlink{structSweep}{Sweep} \&}]{lhs,  }\item[{const std\+::vector$<$ float $>$ \&}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+An overloading of operator + which calculates the sum of a {\itshape \hyperlink{structSweep}{Sweep}} object and a {\ttfamily std\+::vector$<$float$>$} container, in that order. 
+
+Before performing the operation, the function checks if the \char`\"{}values\char`\"{} vectors have the same sizes. The values of the of object to be returned are determined by the operation, while the rest of attributes (frequency, type, timestamp, etc.) are copied from the left-\/hand side argument.
+
+The function returns a {\itshape \hyperlink{structSweep}{Sweep}} object with the results of the operation. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em lhs} & The left-\/hand side operand. \\
+\hline
+\mbox{\tt in}  & {\em rhs} & The right-\/hand side operand. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{structSweep_a770d2ac63866693c821c99cbfe2b2c9a}\label{structSweep_a770d2ac63866693c821c99cbfe2b2c9a}} 
+\index{Sweep@{Sweep}!operator+@{operator+}}
+\index{operator+@{operator+}!Sweep@{Sweep}}
+\subsubsection{\texorpdfstring{operator+}{operator+}\hspace{0.1cm}{\footnotesize\ttfamily [3/6]}}
+{\footnotesize\ttfamily \hyperlink{structSweep}{Sweep} operator+ (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ float $>$ \&}]{lhs,  }\item[{const \hyperlink{structSweep}{Sweep} \&}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+An overloading of operator + which calculates the sum of a {\ttfamily std\+::vector$<$float$>$} container and a {\itshape \hyperlink{structSweep}{Sweep}} object, in that order. 
+
+Before performing the operation, the function checks if the \char`\"{}values\char`\"{} vectors have the same sizes. The values of the of object to be returned are determined by the operation, while the rest of attributes (frequency, type, timestamp, etc.) are copied from the left-\/hand side argument.
+
+The function returns a {\itshape \hyperlink{structSweep}{Sweep}} object with the results of the operation. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em lhs} & The left-\/hand side operand. \\
+\hline
+\mbox{\tt in}  & {\em rhs} & The right-\/hand side operand. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{structSweep_a5d6fad874c778ae77a10b57446a0bd93}\label{structSweep_a5d6fad874c778ae77a10b57446a0bd93}} 
+\index{Sweep@{Sweep}!operator+@{operator+}}
+\index{operator+@{operator+}!Sweep@{Sweep}}
+\subsubsection{\texorpdfstring{operator+}{operator+}\hspace{0.1cm}{\footnotesize\ttfamily [4/6]}}
+{\footnotesize\ttfamily \hyperlink{structSweep}{Sweep} operator+ (\begin{DoxyParamCaption}\item[{const \hyperlink{structSweep}{Sweep} \&}]{lhs,  }\item[{const \hyperlink{structFreqValues}{Freq\+Values} \&}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+An overloading of operator + which calculates the sum of a {\itshape \hyperlink{structSweep}{Sweep}} object and a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object, in that order. 
+
+To perform this operation the {\itshape \hyperlink{structFreqValues}{Freq\+Values}} argument is casted to {\itshape \hyperlink{structSweep}{Sweep}}. The values of the of object to be returned are determined by the operation, while the rest of attributes (frequency, type, timestamp, etc.) are copied from the left-\/hand side argument, because the other argument has less attributes as it is an object of the base class {\itshape \hyperlink{structFreqValues}{Freq\+Values}} from which the class {\itshape \hyperlink{structSweep}{Sweep}} derives.
+
+The function returns a {\itshape \hyperlink{structSweep}{Sweep}} object with the results of the operation. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em lhs} & The left-\/hand side operand. \\
+\hline
+\mbox{\tt in}  & {\em rhs} & The right-\/hand side operand. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{structSweep_ae8dce428f848644d0a68cc8309f88ebf}\label{structSweep_ae8dce428f848644d0a68cc8309f88ebf}} 
+\index{Sweep@{Sweep}!operator+@{operator+}}
+\index{operator+@{operator+}!Sweep@{Sweep}}
+\subsubsection{\texorpdfstring{operator+}{operator+}\hspace{0.1cm}{\footnotesize\ttfamily [5/6]}}
+{\footnotesize\ttfamily \hyperlink{structSweep}{Sweep} operator+ (\begin{DoxyParamCaption}\item[{const \hyperlink{structSweep}{Sweep} \&}]{lhs,  }\item[{const float}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+An overloading of operator + which calculates the sum of a {\itshape \hyperlink{structSweep}{Sweep}} object and a {\itshape float} value, in that order. 
+
+The values of the of object to be returned are determined by the operation, while the rest of attributes (frequency, type, timestamp, etc.) are copied from the left-\/hand side argument, the only one argument of type {\itshape \hyperlink{structSweep}{Sweep}}.
+
+The function returns a {\itshape \hyperlink{structSweep}{Sweep}} object with the results of the operation. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em lhs} & The left-\/hand side operand. \\
+\hline
+\mbox{\tt in}  & {\em rhs} & The right-\/hand side operand. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{structSweep_ac0d73d5e8e3aab8f87c9815588b66821}\label{structSweep_ac0d73d5e8e3aab8f87c9815588b66821}} 
+\index{Sweep@{Sweep}!operator+@{operator+}}
+\index{operator+@{operator+}!Sweep@{Sweep}}
+\subsubsection{\texorpdfstring{operator+}{operator+}\hspace{0.1cm}{\footnotesize\ttfamily [6/6]}}
+{\footnotesize\ttfamily \hyperlink{structSweep}{Sweep} operator+ (\begin{DoxyParamCaption}\item[{const float}]{lhs,  }\item[{const \hyperlink{structSweep}{Sweep} \&}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+An overloading of operator + which calculates the sum of a {\itshape float} value and a {\itshape \hyperlink{structSweep}{Sweep}} object, in that order. 
+
+The values of the of object to be returned are determined by the operation, while the rest of attributes (frequency, type, timestamp, etc.) are copied from the right-\/hand side argument, the only one argument of type {\itshape \hyperlink{structSweep}{Sweep}}.
+
+The function returns a {\itshape \hyperlink{structSweep}{Sweep}} object with the results of the operation. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em lhs} & The left-\/hand side operand. \\
+\hline
+\mbox{\tt in}  & {\em rhs} & The right-\/hand side operand. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{structSweep_a29420e86f220ed305794c8e560059bbc}\label{structSweep_a29420e86f220ed305794c8e560059bbc}} 
+\index{Sweep@{Sweep}!operator-\/@{operator-\/}}
+\index{operator-\/@{operator-\/}!Sweep@{Sweep}}
+\subsubsection{\texorpdfstring{operator-\/}{operator-}\hspace{0.1cm}{\footnotesize\ttfamily [1/5]}}
+{\footnotesize\ttfamily \hyperlink{structSweep}{Sweep} operator-\/ (\begin{DoxyParamCaption}\item[{const \hyperlink{structSweep}{Sweep} \&}]{argument }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+An overloading of the unary operator -\/ which negates a {\itshape \hyperlink{structSweep}{Sweep}} object. 
+
+This function takes each point of the given structure, negates it (the stored value, not the frequency) and stores the result in a different {\itshape \hyperlink{structSweep}{Sweep}} structure, which is then returned. The rest of attributes (frequency, type, timestamp, etc.) are copied as-\/is to the object to be returned. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em argument} & The {\itshape \hyperlink{structSweep}{Sweep}} structure to be negated. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{structSweep_a8f704b31d015e4d81d25d3fceca1e2f1}\label{structSweep_a8f704b31d015e4d81d25d3fceca1e2f1}} 
+\index{Sweep@{Sweep}!operator-\/@{operator-\/}}
+\index{operator-\/@{operator-\/}!Sweep@{Sweep}}
+\subsubsection{\texorpdfstring{operator-\/}{operator-}\hspace{0.1cm}{\footnotesize\ttfamily [2/5]}}
+{\footnotesize\ttfamily \hyperlink{structSweep}{Sweep} operator-\/ (\begin{DoxyParamCaption}\item[{const \hyperlink{structSweep}{Sweep} \&}]{lhs,  }\item[{const \hyperlink{structSweep}{Sweep} \&}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+An overloading of operator -\/ which calculates the subtraction of two objects of structure {\itshape \hyperlink{structSweep}{Sweep}}. 
+
+Before performing the operation, the function checks if the frequencies of each structure match and if the \char`\"{}values\char`\"{} vectors have the same sizes as the \char`\"{}frequencies\char`\"{} vectors. The values of the of object to be returned are determined by the operation, while the rest of attributes (frequency, type, timestamp, etc.) are copied from the left-\/hand side argument.
+
+The function returns a {\itshape \hyperlink{structSweep}{Sweep}} object with the results of the operation. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em lhs} & The left-\/hand side operand. \\
+\hline
+\mbox{\tt in}  & {\em rhs} & The right-\/hand side operand. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{structSweep_a8b2585969a3c379f744b662fb3bea749}\label{structSweep_a8b2585969a3c379f744b662fb3bea749}} 
+\index{Sweep@{Sweep}!operator-\/@{operator-\/}}
+\index{operator-\/@{operator-\/}!Sweep@{Sweep}}
+\subsubsection{\texorpdfstring{operator-\/}{operator-}\hspace{0.1cm}{\footnotesize\ttfamily [3/5]}}
+{\footnotesize\ttfamily \hyperlink{structSweep}{Sweep} operator-\/ (\begin{DoxyParamCaption}\item[{const \hyperlink{structSweep}{Sweep} \&}]{lhs,  }\item[{const std\+::vector$<$ float $>$ \&}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+An overloading of operator -\/ which calculates the subtraction of a {\itshape \hyperlink{structSweep}{Sweep}} object and a {\ttfamily std\+::vector$<$float$>$} container, in that order. 
+
+Before performing the operation, the function checks if the \char`\"{}values\char`\"{} vectors have the same sizes. The values of the of object to be returned are determined by the operation, while the rest of attributes (frequency, type, timestamp, etc.) are copied from the left-\/hand side argument.
+
+The function returns a {\itshape \hyperlink{structSweep}{Sweep}} object with the results of the operation. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em lhs} & The left-\/hand side operand. \\
+\hline
+\mbox{\tt in}  & {\em rhs} & The right-\/hand side operand. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{structSweep_a840a49afd7973b4b3d1020e15c4c9819}\label{structSweep_a840a49afd7973b4b3d1020e15c4c9819}} 
+\index{Sweep@{Sweep}!operator-\/@{operator-\/}}
+\index{operator-\/@{operator-\/}!Sweep@{Sweep}}
+\subsubsection{\texorpdfstring{operator-\/}{operator-}\hspace{0.1cm}{\footnotesize\ttfamily [4/5]}}
+{\footnotesize\ttfamily \hyperlink{structSweep}{Sweep} operator-\/ (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ float $>$ \&}]{lhs,  }\item[{const \hyperlink{structSweep}{Sweep} \&}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+An overloading of operator -\/ which calculates the subtraction of a {\ttfamily std\+::vector$<$float$>$} container and a {\itshape \hyperlink{structSweep}{Sweep}} object, in that order. 
+
+Before performing the operation, the function checks if the \char`\"{}values\char`\"{} vectors have the same sizes. The values of the of object to be returned are determined by the operation, while the rest of attributes (frequency, type, timestamp, etc.) are copied from the right-\/hand side argument.
+
+The function returns a {\itshape \hyperlink{structSweep}{Sweep}} object with the results of the operation. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em lhs} & The left-\/hand side operand. \\
+\hline
+\mbox{\tt in}  & {\em rhs} & The right-\/hand side operand. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{structSweep_a124ea929f6dba249bd4d6bf5476ab621}\label{structSweep_a124ea929f6dba249bd4d6bf5476ab621}} 
+\index{Sweep@{Sweep}!operator-\/@{operator-\/}}
+\index{operator-\/@{operator-\/}!Sweep@{Sweep}}
+\subsubsection{\texorpdfstring{operator-\/}{operator-}\hspace{0.1cm}{\footnotesize\ttfamily [5/5]}}
+{\footnotesize\ttfamily \hyperlink{structSweep}{Sweep} operator-\/ (\begin{DoxyParamCaption}\item[{const \hyperlink{structSweep}{Sweep} \&}]{lhs,  }\item[{const \hyperlink{structFreqValues}{Freq\+Values} \&}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+An overloading of operator -\/ which calculates the subtraction of a {\itshape \hyperlink{structSweep}{Sweep}} object and a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object, in that order. 
+
+To perform this operation the {\itshape \hyperlink{structFreqValues}{Freq\+Values}} argument is casted to {\itshape \hyperlink{structSweep}{Sweep}}. The values of the of object to be returned are determined by the operation, while the rest of attributes (frequency, type, timestamp, etc.) are copied from the left-\/hand side argument, because the other argument has less attributes as it is an object of the base class {\itshape \hyperlink{structFreqValues}{Freq\+Values}} from which the class {\itshape \hyperlink{structSweep}{Sweep}} derives.
+
+The function returns a {\itshape \hyperlink{structSweep}{Sweep}} object with the results of the operation. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em lhs} & The left-\/hand side operand. \\
+\hline
+\mbox{\tt in}  & {\em rhs} & The right-\/hand side operand. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{structSweep_a3e230f15cb1119940203a1a452676b74}\label{structSweep_a3e230f15cb1119940203a1a452676b74}} 
+\index{Sweep@{Sweep}!operator/@{operator/}}
+\index{operator/@{operator/}!Sweep@{Sweep}}
+\subsubsection{\texorpdfstring{operator/}{operator/}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily \hyperlink{structSweep}{Sweep} operator/ (\begin{DoxyParamCaption}\item[{const \hyperlink{structSweep}{Sweep} \&}]{lhs,  }\item[{const \hyperlink{structSweep}{Sweep} \&}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+An overloading of operator / which calculates the division between two objects of structure {\itshape \hyperlink{structSweep}{Sweep}}. 
+
+Before performing the operation, the function checks if the frequencies of each structure match and if the \char`\"{}values\char`\"{} vectors have the same sizes as the \char`\"{}frequencies\char`\"{} vectors. The values of the of object to be returned are determined by the operation, while the rest of attributes (frequency, type, timestamp, etc.) are copied from the left-\/hand side argument.
+
+The function returns a {\itshape \hyperlink{structSweep}{Sweep}} object with the results of the operation. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em lhs} & The left-\/hand side operand. \\
+\hline
+\mbox{\tt in}  & {\em rhs} & The right-\/hand side operand. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{structSweep_a73694ded6e7ba41c367ca5f0934cbc2c}\label{structSweep_a73694ded6e7ba41c367ca5f0934cbc2c}} 
+\index{Sweep@{Sweep}!operator/@{operator/}}
+\index{operator/@{operator/}!Sweep@{Sweep}}
+\subsubsection{\texorpdfstring{operator/}{operator/}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily \hyperlink{structSweep}{Sweep} operator/ (\begin{DoxyParamCaption}\item[{const \hyperlink{structSweep}{Sweep} \&}]{lhs,  }\item[{const float}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+An overloading of operator / which calculates the division between a {\itshape \hyperlink{structSweep}{Sweep}} object and a {\itshape float} value, in that order. 
+
+The values of the of object to be returned are determined by the operation, while the rest of attributes (frequency, type, timestamp, etc.) are copied from the left-\/hand side argument, the only one argument of type {\itshape \hyperlink{structSweep}{Sweep}}.
+
+The function returns a {\itshape \hyperlink{structSweep}{Sweep}} object with the results of the operation. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em lhs} & The left-\/hand side operand. \\
+\hline
+\mbox{\tt in}  & {\em rhs} & The right-\/hand side operand. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{structSweep_abe3c133bf246f7faebcfda286c5e1448}\label{structSweep_abe3c133bf246f7faebcfda286c5e1448}} 
+\index{Sweep@{Sweep}!operator/@{operator/}}
+\index{operator/@{operator/}!Sweep@{Sweep}}
+\subsubsection{\texorpdfstring{operator/}{operator/}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily \hyperlink{structSweep}{Sweep} operator/ (\begin{DoxyParamCaption}\item[{const float}]{lhs,  }\item[{const \hyperlink{structSweep}{Sweep} \&}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+An overloading of operator / which calculates the division between a {\itshape float} value and a {\itshape \hyperlink{structSweep}{Sweep}} object, in that order. 
+
+The values of the of object to be returned are determined by the operation, while the rest of attributes (frequency, type, timestamp, etc.) are copied from the right-\/hand side argument, the only one argument of type {\itshape \hyperlink{structSweep}{Sweep}}.
+
+The function returns a {\itshape \hyperlink{structSweep}{Sweep}} object with the results of the operation. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em lhs} & The left-\/hand side operand. \\
+\hline
+\mbox{\tt in}  & {\em rhs} & The right-\/hand side operand. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{structSweep_a09ee88cfc9b28e6ec344eea1a2817ea9}\label{structSweep_a09ee88cfc9b28e6ec344eea1a2817ea9}} 
+\index{Sweep@{Sweep}!pow@{pow}}
+\index{pow@{pow}!Sweep@{Sweep}}
+\subsubsection{\texorpdfstring{pow}{pow}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \hyperlink{structSweep}{Sweep} pow (\begin{DoxyParamCaption}\item[{const \hyperlink{structSweep}{Sweep} \&}]{base,  }\item[{const float}]{exponent }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+An overloading of function {\ttfamily \hyperlink{structSweep_a09ee88cfc9b28e6ec344eea1a2817ea9}{pow()}} adapted to receive an argument of type {\itshape \hyperlink{structSweep}{Sweep}} as base and an argument of type {\itshape float} as exponent. 
+
+This function takes each point of the structure, raises its value to the exponent and stores the result in a different {\itshape \hyperlink{structSweep}{Sweep}} structure, which is then returned. The rest of attributes (frequency, type, timestamp, etc.) are copied from the base argument, which the only argument that is of type {\itshape \hyperlink{structSweep}{Sweep}}. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em base} & The {\itshape \hyperlink{structSweep}{Sweep}} structure to be used as the base of the power function. \\
+\hline
+\mbox{\tt in}  & {\em exponent} & The float value which will be used as the exponent. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{structSweep_a879ae44efd2611562d05b90b24099e70}\label{structSweep_a879ae44efd2611562d05b90b24099e70}} 
+\index{Sweep@{Sweep}!pow@{pow}}
+\index{pow@{pow}!Sweep@{Sweep}}
+\subsubsection{\texorpdfstring{pow}{pow}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \hyperlink{structSweep}{Sweep} pow (\begin{DoxyParamCaption}\item[{const float}]{base,  }\item[{const \hyperlink{structSweep}{Sweep} \&}]{exponent }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+An overloading of function {\ttfamily \hyperlink{structSweep_a09ee88cfc9b28e6ec344eea1a2817ea9}{pow()}} adapted to receive an argument of type {\itshape float} as base and an argument of type {\itshape \hyperlink{structSweep}{Sweep}} as exponent. 
+
+This function takes the {\ttfamily float} value, given as the base, and raises it to each of the values of the {\itshape \hyperlink{structSweep}{Sweep}} structure given as the exponent. Each result is stored in a different {\itshape \hyperlink{structSweep}{Sweep}} structure which is then returned. The rest of attributes (frequency, type, timestamp, etc.) of this structure are copied from the right-\/hand side argument, which is the only argument that is of type {\itshape \hyperlink{structSweep}{Sweep}}. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em base} & The {\ttfamily float} value given as the base of the exponentiation operation. \\
+\hline
+\mbox{\tt in}  & {\em exponent} & The {\itshape \hyperlink{structSweep}{Sweep}} structure whose values will be used as the exponents of the exponentiation operation. \\
+\hline
+\end{DoxyParams}
+
 
 \subsection{Member Data Documentation}
 \mbox{\Hypertarget{structSweep_a3484c258fdff60e1c109df92a1ba9ae7}\label{structSweep_a3484c258fdff60e1c109df92a1ba9ae7}} 
@@ -130,6 +529,7 @@ The aim of this structure is to store the data points of a sweep obtained with t
 
 The antenna polarization when the sweep was captured. 
 
-The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-\hyperlink{Basics_8h}{Basics.\+h}\end{DoxyCompactItemize}
+\hyperlink{Basics_8h}{Basics.\+h}\item 
+Freq\+Values.\+cpp\end{DoxyCompactItemize}

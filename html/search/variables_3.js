@@ -1,11 +1,7 @@
 var searchData=
 [
-  ['flagcalenabled',['flagCalEnabled',['../Basics_8h.html#a73be6649a1d91070309752a2fbcf5b8a',1,'Basics.h']]],
-  ['flagdefaultsamplepoints',['flagDefaultSamplePoints',['../structBandParameters.html#ad66053858886e8e15ec84f5d25aa5504',1,'BandParameters']]],
-  ['flagenable',['flagEnable',['../structBandParameters.html#a17711121a32967d8909a2aceadaa460b',1,'BandParameters']]],
-  ['flaginfiniteloop',['flagInfiniteLoop',['../Basics_8h.html#a6f3cbd74619175fd2b8580b37587f825',1,'Basics.h']]],
-  ['flagplot',['flagPlot',['../Basics_8h.html#a20c207881b1f505ca91715905e27bacb',1,'Basics.h']]],
-  ['flagrfi',['flagRFI',['../Basics_8h.html#a816d4b897ea7e7b008ad3957e2203934',1,'Basics.h']]],
-  ['flagupload',['flagUpload',['../Basics_8h.html#a7616186dd32bbd21eb512dfdc580214c',1,'Basics.h']]],
-  ['frequencies',['frequencies',['../structFreqValues.html#a2b625831a46019f93a0999c1bed5c3a0',1,'FreqValues']]]
+  ['day',['day',['../structTimeData.html#aee725dc9551cd482534c155a168b3d60',1,'TimeData']]],
+  ['demodmode',['demodMode',['../structSpectranConfigurator_1_1FixedParameters.html#ad9255da208ff6b07f5a591f3dea22f84',1,'SpectranConfigurator::FixedParameters']]],
+  ['detector',['detector',['../structBandParameters.html#a37ddad49ed6a8562c878d60081c65188',1,'BandParameters']]],
+  ['displayunit',['displayUnit',['../structSpectranConfigurator_1_1FixedParameters.html#ad8a37b8a7981c811f1e8f89770ba2a7d',1,'SpectranConfigurator::FixedParameters']]]
 ];

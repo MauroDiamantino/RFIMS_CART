@@ -5,19 +5,27 @@
  *      Author: new-mauro
  */
 
+/*!	\file SpectranConfigurator.cpp
+ * 	\brief This file contains the definitions of some of the methods of the class _SpectranConfigurator_.
+ * 	\author Mauro Diamantino
+ */
+
 #include "Spectran.h"
 
-//! The only one constructor of class SpectranConfigurator
+/*! At instantiation of an object, a reference to the _SpectranInterface_ object must be given.
+ * 	\param [in] interf A reference to the unique _SpectranInterface_ object, which is responsible for the communication with the spectrum analyzer.
+ */
 SpectranConfigurator::SpectranConfigurator(SpectranInterface& interf) : interface(interf)
 {
 	bandIndex=10000;
 	lastWriteTimes[0]=lastWriteTimes[1]=0;
 }
 
-//! This method loads the Spectran's parameters from the corresponding files.
-/*! The method opens the files with the Spectran's parameters, checks if they have been modified since the last
- * loading and if that is true reloads the parameters. The method returns a boolean value to indicate if the fixed
- * parameters have been updated so the initial configuration should be repeated.
+/*! The method returns a boolean value to indicate if the fixed	parameters have been updated so the initial configuration
+ * 	should be repeated. The method returns a `true` if the parameters were loaded from the file, either because it is the
+ * 	first time they are read or because the corresponding file was modified. If the parameters had been loaded before and
+ * 	it was found that the file was not modified from the last loading, the parameters are not read from the file and the
+ * 	method returns a `false`.
  */
 bool SpectranConfigurator::LoadFixedParameters()
 {
@@ -211,6 +219,14 @@ bool SpectranConfigurator::LoadFixedParameters()
 	return false;
 }
 
+/*!	The method loads the parameters of one band, stores them in a structure _BandsParameters_ and then it splits the band
+ * 	in several sub-bands, if its span is bigger than 200 MHz. Then it moves to next frequency band until the end-of-file
+ * 	(EOF) is reached.
+ *
+ * 	The method returns a `true` if the parameters were loaded from the file, either because it is the first time they are
+ * 	read or because the corresponding file was modified. If the parameters had been loaded before and it was found that
+ * 	the file was not modified from the last loading, the parameters are not read from the file and the method returns a `false`.
+ */
 bool SpectranConfigurator::LoadBandsParameters()
 {
 	boost::filesystem::path pathAndFilename(SPECTRAN_PARAM_PATH);
@@ -475,6 +491,9 @@ bool SpectranConfigurator::LoadBandsParameters()
 	return false;
 }
 
+/*!	\param [in] variable The name of the variable which will be set.
+ * 	\param [in] value The value which must be used to set the variable.
+ */
 void SpectranConfigurator::SetVariable(const SpecVariable variable, const float value)
 {
 	//Setting up the variable
@@ -498,7 +517,10 @@ void SpectranConfigurator::SetVariable(const SpecVariable variable, const float 
 	}
 }
 
-
+/*!	This method is intended to check variables which are always set up exactly with the desired value by the spectrum analyzer.
+ * 	\param [in] variable The name of the variable which must be checked.
+ * 	\param [in] value The value what it is hoped to be the current value of the variable.
+ */
 void SpectranConfigurator::CheckEqual(const SpecVariable variable, const float value)
 {
 	//Checking the variable's current value
@@ -529,6 +551,11 @@ void SpectranConfigurator::CheckEqual(const SpecVariable variable, const float v
 	}
 }
 
+/*!	This method is intended to check variables which are, sometimes, set up with a slightly different value from the desired value
+ * 	by the spectrum analyzer, because of floating-point errors, so they are check as approximately equal.
+ * 	\param [in] variable The name of the variable which must be checked.
+ * 	\param [in] value The value what it is hoped to be near to the current value of the variable.
+ */
 void SpectranConfigurator::CheckApproxEqual(const SpecVariable variable, float & value)
 {
 	//Checking the variable's current value
@@ -561,10 +588,8 @@ void SpectranConfigurator::CheckApproxEqual(const SpecVariable variable, float &
 	}
 }
 
-//! This method is intended to configure the spectrum analyzer with the parameters which will stay fixed during the multiple sweeps.
-/*! This method should be used the first time the spectrum analyzer will be configured and when a measurements cycle has
- * finished if the fixed parameters have changed. Obviously, the sending of measurements via USB must be disable before
- * calling this method.
+/*! This method should be used at the beginning of the first measurement cycle and at beginning of rest ones if the file with
+ * 	the fixed parameters has been modified. Obviously, the sending of measurements via USB must be disable before calling this method.
  */
 void SpectranConfigurator::InitialConfiguration()
 {
@@ -602,11 +627,11 @@ void SpectranConfigurator::InitialConfiguration()
 	CheckApproxEqual( SpecVariable::SPKVOLUME, fixedParam.speakerVol );
 }
 
-//! The aim of this method is to configure the spectrum analyzer with parameters of the next frequency band.
-/*! The parameters which will be configured are the variable parameters, i.e. ones which are different from one
- * frequency band to another. The first time this method is called, it will configured the spectrum analyzer with
- * the first band's parameters. Again, the sending of measurements via USB should be disabled before calling this
- * method. The method returns the index of the next frequency band.
+/*! The first time this method is called, it configures the spectrum analyzer with the first band's parameters.
+ * 	Then, it will increase the band index to move to the parameters of the next band. Again, the streaming of
+ * 	sweep points should be disabled before calling this method.
+ *
+ *	This method returns the parameters of the current frequency band as a _BandParameters_ structure.
  */
 BandParameters SpectranConfigurator::ConfigureNextBand()
 {

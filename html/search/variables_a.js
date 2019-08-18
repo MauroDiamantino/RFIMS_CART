@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['threshnorm',['threshNorm',['../structRFI.html#a48905b3dcebf7127bd31315a21a24599',1,'RFI']]],
-  ['timedata',['timeData',['../structFreqValues.html#a4c97a4710c83078f5af5d92f2bedfe61',1,'FreqValues']]],
-  ['type',['type',['../structFreqValues.html#a457f391fad53ee1e8bca839dde90c5f1',1,'FreqValues']]]
+  ['peaklevelaudiotone',['peakLevelAudioTone',['../structSpectranConfigurator_1_1FixedParameters.html#a5d0c325f17d9e3efce429b187c833911',1,'SpectranConfigurator::FixedParameters']]],
+  ['polarization',['polarization',['../structSweep.html#a3484c258fdff60e1c109df92a1ba9ae7',1,'Sweep::polarization()'],['../structRFI.html#a6c5345dd1141e8bf80b4e1cf32c092de',1,'RFI::polarization()']]]
 ];

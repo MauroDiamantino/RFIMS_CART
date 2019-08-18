@@ -5,15 +5,17 @@
  *      Author: new-mauro
  */
 
+/*! \file Command.cpp
+ * 	\brief This file contains the definitions of several of the methods of the class _Command_.
+ * 	\author Mauro Diamantino
+ */
+
 #include "Spectran.h"
 
 //////////////////////Implementations of some Command class' methods//////////////////////////
 
-//! Default constructor
 /*! When this constructor is used, the programmer must provide the command data with the method
- * `SetAs(commType,variable,value)`, and even with the method `SetParameters(variable,value)`. Also, the programmer
- * must set the internal pointers with the method `SetPointers`. The internal pointers are used to get info about the
- * variables' IDs and the RBW's indexes.
+ * `SetAs(commType,variable,value)`, and even with the method `SetParameters(variable,value)`.
  */
 Command::Command()
 {
@@ -22,10 +24,12 @@ Command::Command()
 	value=0.0;
 }
 
-//! The most complete constructor which allows to set the internal pointers and optionally the command type.
-/*! If this constructor is used providing both parameters, then the method `SetParamerts` should be used to set the
- * variable name (GETSTPVAR and SETSTPVAR commands) and its value (just SETSTPVAR command). If it used providing just
- * the first parameter, then the method `SetAs` should be used to set command type, variable name and value.
+/*! If this constructor is used just providing the first parameter, _command type_, then the method `SetParameters()` should be used
+ * 	to set the variable name (for _GETSTPVAR_ and _SETSTPVAR_ commands) and the value that must be used to write it (just for _SETSTPVAR_
+ * 	commands).
+ * 	\param [in] type The command type: VERIFY, LOGOUT, GETSTPVAR or SETSTPVAR.
+ * 	\param [in] variable An optional argument which determines which variable will be read or written.
+ * 	\param [in] val An optional argument which represents the value which will be used to write the given variable.
  */
 Command::Command(const CommandType type, const SpecVariable variable, const float val)
 {
@@ -35,7 +39,9 @@ Command::Command(const CommandType type, const SpecVariable variable, const floa
 	FillBytesVector();
 }
 
-//! The copy constructor
+/*! This method takes an object of the same class as argument, and it copies its attributes.
+ * \param [in] anotherComm A _Command_ object given to copy its attributes.
+ */
 Command::Command(const Command& anotherComm)
 {
 	bytes=anotherComm.bytes;
@@ -44,13 +50,11 @@ Command::Command(const Command& anotherComm)
 	value=anotherComm.value;
 }
 
-//! This method build the bytes vector when the enough data have been given.
-/*! The method *FillBytesVector* is the heart of this class because this perform the main task of the class, to correctly
- * build the bytes vector with the data given: command type, variable and value. Theses two last data are not taken into
- * for some commands.
+/*! This method is the heart of this class because this perform its main task: to build the bytes vector with the given data, this is
+ * the command type, variable name and value. Theses two last data are not taken into account for some commands.
  *
- * Once the command object is complete, it is passed to the Spectran Interface which take the command, extract the bytes
- * vector and send it to the spectrum analyzer.
+ * Once the command object is complete, it is passed to the _Spectran Interface_ which takes the command, extracts the bytes
+ * vector and it sends this to the spectrum analyzer.
  */
 void Command::FillBytesVector()
 {
@@ -81,13 +85,12 @@ void Command::FillBytesVector()
 		var_id = std::uint8_t(variableName);
 		if( variableName==SpecVariable::RESBANDW || variableName==SpecVariable::VIDBANDW )
 		{
-			floatBytes.floatValue = RBW_INDEX.left.at(value); //The given value is the actual frequency value but the
-															//corresponding RBW (and VBW) index must be sent, so here
-															//this conversion is made
+			floatBytes.floatValue = RBW_INDEX.left.at(value); //The given value is the actual frequency value, in Hertz, but the
+															//corresponding RBW (and VBW) index must be sent, so here this conversion is made.
 		}else if ( variableName==SpecVariable::STARTFREQ || variableName==SpecVariable::STOPFREQ ||
 				variableName==SpecVariable::CENTERFREQ || variableName==SpecVariable::SPANFREQ )
 		{
-			floatBytes.floatValue=value/1.0e6; //The given value is in Hz but it must be sent in MHz, so it is divided by
+			floatBytes.floatValue=value/1e6; //The given value is in Hz but it must be sent in MHz, so it is divided by
 												//one million (1e6) to change it.
 		}else
 		{
@@ -109,7 +112,10 @@ void Command::FillBytesVector()
 	}
 }
 
-//! This method is intended to provide to the object the enough data so this could configure itself to be ready to be sent.
+/*! \param [in] commType The command type: VERIFY, LOGOUT, GETSTPVAR or SETSTPVAR.
+ * 	\param [in] variable An optional argument which determines which variable will be read or written.
+ * 	\param [in] val An optional argument which represents the value which will be used to write the given variable.
+ */
 void Command::SetAs(const CommandType commType, const SpecVariable variable, const float val)
 {
 	commandType=commType;
@@ -118,7 +124,9 @@ void Command::SetAs(const CommandType commType, const SpecVariable variable, con
 	FillBytesVector();
 }
 
-//! This method is intended to set the command's parameters, so it should be used when the command type has already been set.
+/*! \param [in] variable The variable which will be read or written, with the commands GETSTPVAR and SETSTPVAR.
+ * 	\param [in] val An optional argument which determines the value which will be used to write the given variable.
+ */
 void Command::SetParameters(const SpecVariable variable, const float val)
 {
 	variableName=variable;
@@ -126,7 +134,6 @@ void Command::SetParameters(const SpecVariable variable, const float val)
 	FillBytesVector();
 }
 
-//! A method which returns the command type as a std::string.
 std::string Command::GetCommTypeString() const
 {
 	switch(commandType)
@@ -148,7 +155,6 @@ std::string Command::GetCommTypeString() const
 	}
 }
 
-//! A method which returns the name, as a std::string, of the Spectran's variable which is related with the command (GETSTPVAR and SETSTPVAR commands)
 std::string Command::GetVariableNameString() const
 {
 	switch(variableName)
@@ -252,7 +258,6 @@ std::string Command::GetVariableNameString() const
 	}
 }
 
-//! This method allows to reset the object, cleaning the bytes vector, command type, variable name and value.
 void Command::Clear()
 {
 	bytes.clear();
@@ -261,7 +266,8 @@ void Command::Clear()
 	value=0.0;
 }
 
-//! The overloading of the assignment operator.
+/*!	\param [in] anotherComm A _Command_ object given to copy its attributes.
+ */
 const Command& Command::operator=(const Command& anotherComm)
 {
 	bytes=anotherComm.bytes;

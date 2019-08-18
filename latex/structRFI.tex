@@ -42,13 +42,11 @@ enum \hyperlink{structRFI_a18cfa7d24274bbcd14acc6b513860cb0}{Thresholds\+Norm} \
 \mbox{\Hypertarget{structRFI_ad0183cf1bc28c3f907e16428a5816e35}\label{structRFI_ad0183cf1bc28c3f907e16428a5816e35}} 
 \hyperlink{structRFI_ad0183cf1bc28c3f907e16428a5816e35}{R\+FI} ()
 \begin{DoxyCompactList}\small\item\em The default constructor which calls the default constructor of structure {\itshape \hyperlink{structFreqValues}{Freq\+Values}} and set type to \char`\"{}rfi\char`\"{}, azimuth angle to zero, number of bands to zero and set, by default, threshold norm to S\+K\+A\+\_\+\+M\+O\+D\+E1. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{structRFI_a82852dbeab11484c90d4b339f63aefa9}\label{structRFI_a82852dbeab11484c90d4b339f63aefa9}} 
 \hyperlink{structRFI_a82852dbeab11484c90d4b339f63aefa9}{R\+FI} (const \hyperlink{structRFI}{R\+FI} \&rfi)
 \begin{DoxyCompactList}\small\item\em The copy constructor which receives a {\itshape \hyperlink{structRFI}{R\+FI}} object. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{structRFI_a103d0419053a7e323647cdafb3b036e3}\label{structRFI_a103d0419053a7e323647cdafb3b036e3}} 
 void \hyperlink{structRFI_a103d0419053a7e323647cdafb3b036e3}{Clear} ()
 \begin{DoxyCompactList}\small\item\em The aim of this method is to clean the attributes of this structure. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{structRFI_a8fcc866a09f2f88a9754e04a1d056104}\label{structRFI_a8fcc866a09f2f88a9754e04a1d056104}} 
 const \hyperlink{structRFI}{R\+FI} \& \hyperlink{structRFI_a8fcc866a09f2f88a9754e04a1d056104}{operator=} (const \hyperlink{structRFI}{R\+FI} \&another\+R\+FI)
 \begin{DoxyCompactList}\small\item\em An overloading of the assignment operator adapted to receive a {\itshape \hyperlink{structRFI}{R\+FI}} object. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Public Attributes}
@@ -69,6 +67,42 @@ unsigned int \hyperlink{structRFI_aefedd07c1a853fb1c8363a0f436d3973}{num\+Of\+R\
 
 \subsection{Detailed Description}
 The aim of this structure is to store the data related with the detected RF interference (\hyperlink{structRFI}{R\+FI})\+: frequency, power, azimuth angle, polarization, time, reference norm, etc. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{structRFI_a82852dbeab11484c90d4b339f63aefa9}\label{structRFI_a82852dbeab11484c90d4b339f63aefa9}} 
+\index{R\+FI@{R\+FI}!R\+FI@{R\+FI}}
+\index{R\+FI@{R\+FI}!R\+FI@{R\+FI}}
+\subsubsection{\texorpdfstring{R\+F\+I()}{RFI()}}
+{\footnotesize\ttfamily R\+F\+I\+::\+R\+FI (\begin{DoxyParamCaption}\item[{const \hyperlink{structRFI}{R\+FI} \&}]{rfi }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+The copy constructor which receives a {\itshape \hyperlink{structRFI}{R\+FI}} object. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em rfi} & A {\itshape \hyperlink{structRFI}{R\+FI}} structure given to copy its attributes. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{structRFI_a8fcc866a09f2f88a9754e04a1d056104}\label{structRFI_a8fcc866a09f2f88a9754e04a1d056104}} 
+\index{R\+FI@{R\+FI}!operator=@{operator=}}
+\index{operator=@{operator=}!R\+FI@{R\+FI}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily const \hyperlink{structRFI}{R\+FI}\& R\+F\+I\+::operator= (\begin{DoxyParamCaption}\item[{const \hyperlink{structRFI}{R\+FI} \&}]{another\+R\+FI }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+An overloading of the assignment operator adapted to receive a {\itshape \hyperlink{structRFI}{R\+FI}} object. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em another\+R\+FI} & Another {\itshape \hyperlink{structRFI}{R\+FI}} structure given to copy its attributes. \\
+\hline
+\end{DoxyParams}
+
 
 \subsection{Member Data Documentation}
 \mbox{\Hypertarget{structRFI_a48905b3dcebf7127bd31315a21a24599}\label{structRFI_a48905b3dcebf7127bd31315a21a24599}} 

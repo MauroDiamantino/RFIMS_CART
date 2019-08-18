@@ -25,12 +25,13 @@ static const float ABS_EPSILON = 1e-5;
  */
 static const float REL_EPSILON = 2e-5;
 
-/*! \details This function was copied from this
- * 	[link](https://www.learncpp.com/cpp-tutorial/35-relational-operators-comparisons/), but it was modified.
- * 	It is based in the Knuth’s algorithm but it uses two epsilons, an absolute epsilon (ABS_EPSILON) which is very small
- * 	and is intended to compare near-zero floating-point numbers and a relative epsilon (REL_EPSILON, which is a percentage
- * 	of the biggest operand) to compare the rest of the floating-point numbers. The function returns true if the difference
- * 	between a and b is less than ABS_EPSILON, or within REL_EPSILON percent of the larger of a and b.
+/*! This function was copied from this [link](https://www.learncpp.com/cpp-tutorial/35-relational-operators-comparisons/),
+ * 	but it was modified. It is based in the Knuth’s algorithm but it uses two epsilons, an absolute epsilon (ABS_EPSILON)
+ * 	which is very small and is intended to compare near-zero floating-point numbers and a relative epsilon (REL_EPSILON,
+ * 	which is a percentage of the biggest operand) to compare the rest of the floating-point numbers. The function returns
+ * 	true if the difference between a and b is less than ABS_EPSILON, or within REL_EPSILON percent of the larger of a and b.
+ * 	\param [in] a The left-hand side argument.
+ * 	\param [in] b The right-hand side argument.
  */
 bool approximatelyEqual(float a, float b)
 {
@@ -43,13 +44,15 @@ bool approximatelyEqual(float a, float b)
     return diff <= ( ( fabs(a) < fabs(b) ? fabs(b) : fabs(a) ) * REL_EPSILON );
 }
 
-//! Function to compare vectors containing floating-point numbers, taking into account the rounding errors.
 /*! This function is based on the function presented in this
  * [link](https://www.learncpp.com/cpp-tutorial/35-relational-operators-comparisons/).
+ *
  * It is based in the Knuth’s algorithm but it uses two epsilons, an absolute epsilon (ABS_EPSILON) which is very small
  * and is intended to compare near-zero floating-point numbers and a relative epsilon (REL_EPSILON, which is a percentage
  * of the biggest operand) to compare the rest of the floating-point numbers. The function returns true if the difference
  * between a and b is less than ABS_EPSILON, or within REL_EPSILON percent of the larger of a and b.
+ * 	\param [in] vectorA The left-hand side argument.
+ * 	\param [in] vectorB The right-hand side argument.
  */
 bool approximatelyEqual(std::vector<float> vectorA, std::vector<float> vectorB)
 {
@@ -86,6 +89,7 @@ void WaitForKey()
     cin.get();
 }
 
+/*! \param [in] vect A `std::vector<float>` container which must be negated.	*/
 std::vector<float> operator-(const std::vector<float> & vect)
 {
 	std::vector<float> result;

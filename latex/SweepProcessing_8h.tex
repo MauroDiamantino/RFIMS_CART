@@ -1,0 +1,53 @@
+\hypertarget{SweepProcessing_8h}{}\section{Sweep\+Processing.\+h File Reference}
+\label{SweepProcessing_8h}\index{Sweep\+Processing.\+h@{Sweep\+Processing.\+h}}
+
+
+This header file contains the declarations of the classes which are responsible for the processing of each sweep, once it has been captured.  
+
+
+{\ttfamily \#include \char`\"{}Basics.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}gnuplot\+\_\+i.\+hpp\char`\"{}}\newline
+{\ttfamily \#include $<$queue$>$}\newline
+Include dependency graph for Sweep\+Processing.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{SweepProcessing_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=184pt]{SweepProcessing_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classRFPloter}{R\+F\+Ploter}
+\begin{DoxyCompactList}\small\item\em The class {\itshape \hyperlink{classRFPloter}{R\+F\+Ploter}} is intended to plot sweeps, RF interference (\hyperlink{structRFI}{R\+FI}) and any frequency curve. \end{DoxyCompactList}\item 
+class \hyperlink{classCurveAdjuster}{Curve\+Adjuster}
+\item 
+class \hyperlink{classFrontEndCalibrator}{Front\+End\+Calibrator}
+\begin{DoxyCompactList}\small\item\em The aim of this class is to calculate the total gain and total noise figure curves versus frequency of the RF front end. \end{DoxyCompactList}\item 
+class \hyperlink{classRFIDetector}{R\+F\+I\+Detector}
+\begin{DoxyCompactList}\small\item\em The aim of this class is to compare each calibrated sweep with a threshold curve to determine where there is RF interference (\hyperlink{structRFI}{R\+FI}). \end{DoxyCompactList}\item 
+class \hyperlink{classDataLogger}{Data\+Logger}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This header file contains the declarations of the classes which are responsible for the processing of each sweep, once it has been captured. 
+
+The tasks which are performed by the classes defined here are the following\+:
+\begin{DoxyItemize}
+\item Plotting of sweeps, \hyperlink{structRFI}{R\+FI} and any frequency curve.
+\item Adjusting (interpolation) of frequency curves.
+\item Front end calibration.
+\item \hyperlink{structRFI}{R\+FI} detection.
+\item Data logging. \begin{DoxyAuthor}{Author}
+Mauro Diamantino 
+\end{DoxyAuthor}
+
+\end{DoxyItemize}

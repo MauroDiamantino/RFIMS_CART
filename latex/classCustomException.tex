@@ -30,13 +30,10 @@ Collaboration diagram for Custom\+Exception\+:\nopagebreak
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{classCustomException_a07dbd163547759b7390b6f4588fff5a8}\label{classCustomException_a07dbd163547759b7390b6f4588fff5a8}} 
 \hyperlink{classCustomException_a07dbd163547759b7390b6f4588fff5a8}{Custom\+Exception} (const std\+::string \&msg=\char`\"{}Error\char`\"{})
 \begin{DoxyCompactList}\small\item\em The default constructor which can set the internal message. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classCustomException_a54289001348effb40f5780bb7f263abb}\label{classCustomException_a54289001348effb40f5780bb7f263abb}} 
 void \hyperlink{classCustomException_a54289001348effb40f5780bb7f263abb}{Set\+Message} (const std\+::string \&msg)
 \begin{DoxyCompactList}\small\item\em The aim of this function is to modify the internal message of the exception. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classCustomException_ab8885c65813f31562bccdcce422b798c}\label{classCustomException_ab8885c65813f31562bccdcce422b798c}} 
 void \hyperlink{classCustomException_ab8885c65813f31562bccdcce422b798c}{Append} (const std\+::string \&msg)
 \begin{DoxyCompactList}\small\item\em This function is intended to add some text at the end of the internal message. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{classCustomException_a0bb1756d6073f5bb8b6f1486b08fa5da}\label{classCustomException_a0bb1756d6073f5bb8b6f1486b08fa5da}} 
@@ -48,6 +45,57 @@ const char $\ast$ \hyperlink{classCustomException_a0bb1756d6073f5bb8b6f1486b08fa
 A class derived from standard class {\ttfamily std\+::exception}. 
 
 This class is customized to managed the exceptions in a desired way. This class has been defined to ease the appending of data to the message carried by an exception object. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classCustomException_a07dbd163547759b7390b6f4588fff5a8}\label{classCustomException_a07dbd163547759b7390b6f4588fff5a8}} 
+\index{Custom\+Exception@{Custom\+Exception}!Custom\+Exception@{Custom\+Exception}}
+\index{Custom\+Exception@{Custom\+Exception}!Custom\+Exception@{Custom\+Exception}}
+\subsubsection{\texorpdfstring{Custom\+Exception()}{CustomException()}}
+{\footnotesize\ttfamily Custom\+Exception\+::\+Custom\+Exception (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{msg = {\ttfamily \char`\"{}Error\char`\"{}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+The default constructor which can set the internal message. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em msg} & The internal message of the exception, which can be of type {\ttfamily char$\ast$} or {\ttfamily std\+::string}. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classCustomException_ab8885c65813f31562bccdcce422b798c}\label{classCustomException_ab8885c65813f31562bccdcce422b798c}} 
+\index{Custom\+Exception@{Custom\+Exception}!Append@{Append}}
+\index{Append@{Append}!Custom\+Exception@{Custom\+Exception}}
+\subsubsection{\texorpdfstring{Append()}{Append()}}
+{\footnotesize\ttfamily void Custom\+Exception\+::\+Append (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{msg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+This function is intended to add some text at the end of the internal message. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em msg} & A sentence which must be appended to the internal message of the exception and which can be of type {\ttfamily char$\ast$} or {\ttfamily std\+::string}. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classCustomException_a54289001348effb40f5780bb7f263abb}\label{classCustomException_a54289001348effb40f5780bb7f263abb}} 
+\index{Custom\+Exception@{Custom\+Exception}!Set\+Message@{Set\+Message}}
+\index{Set\+Message@{Set\+Message}!Custom\+Exception@{Custom\+Exception}}
+\subsubsection{\texorpdfstring{Set\+Message()}{SetMessage()}}
+{\footnotesize\ttfamily void Custom\+Exception\+::\+Set\+Message (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{msg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+The aim of this function is to modify the internal message of the exception. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em msg} & The internal message of the exception, which can be of type {\ttfamily char$\ast$} or {\ttfamily std\+::string}. \\
+\hline
+\end{DoxyParams}
+
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 

@@ -23,6 +23,7 @@ std::string TimeData::GetTime() const
 	return oss.str();
 }
 
+/*!	\param [in] date A date given as a `std::string` object, or even it can be inserted as `char` pointer.	*/
 void TimeData::SetDate(const std::string & date)
 {
 	std::istringstream iss(date);
@@ -30,6 +31,7 @@ void TimeData::SetDate(const std::string & date)
 	iss >> day >> hyphen >> month >> hyphen >> year;
 }
 
+/*!	\param [in] time A time given as a `std::string` object, or even it can be inserted as `char` pointer.	*/
 void TimeData::SetTime(const std::string & time)
 {
 	std::istringstream iss(time);
@@ -37,6 +39,7 @@ void TimeData::SetTime(const std::string & time)
 	iss >> hour >> colon >> minute >> colon >> second;
 }
 
+/*!	\param [in] timestamp A timestamp given as a `std::string` object, or even it can be inserted as `char` pointer.	*/
 void TimeData::SetTimestamp(const std::string & timestamp)
 {
 	std::size_t delimiterPos = timestamp.find('T');
@@ -52,6 +55,7 @@ void TimeData::SetTimestamp(const std::string & timestamp)
 	}
 }
 
+/*!	\param [in] days The number of days which must be used to turn back the current date.	*/
 void TimeData::TurnBackDays(const unsigned int daysToTurnBack)
 {
 	boost::gregorian::date currDate(year, month, day);
@@ -63,6 +67,7 @@ void TimeData::TurnBackDays(const unsigned int daysToTurnBack)
 	day=backDate.day();
 }
 
+/*!	\param [in] anotherTimeData Another _TimeData_ object which is given to copy its attributes.	*/
 const TimeData& TimeData::operator=(const TimeData& anotherTimeData)
 {
 	year=anotherTimeData.year; month=anotherTimeData.month; day=anotherTimeData.day;
@@ -72,6 +77,9 @@ const TimeData& TimeData::operator=(const TimeData& anotherTimeData)
 
 /////////////////////////Friends functions///////////////////////
 
+/*!	\param [in] lhs The left-hand side operand.
+ * 	\param [in] rhs The right-hand side operand.
+ */
 bool operator<(const TimeData & lhs, const TimeData & rhs)
 {
 	if( lhs.year<rhs.year )
@@ -110,6 +118,9 @@ bool operator<(const TimeData & lhs, const TimeData & rhs)
 							return false;
 }
 
+/*!	\param [in] lhs The left-hand side operand.
+ * 	\param [in] rhs The right-hand side operand.
+ */
 bool operator>(const TimeData & lhs, const TimeData & rhs)
 {
 	if( lhs.year>rhs.year )
@@ -148,6 +159,9 @@ bool operator>(const TimeData & lhs, const TimeData & rhs)
 							return false;
 }
 
+/*!	\param [in] lhs The left-hand side operand.
+ * 	\param [in] rhs The right-hand side operand.
+ */
 bool operator==(const TimeData & lhs, const TimeData & rhs)
 {
 	if( lhs.year==rhs.year )

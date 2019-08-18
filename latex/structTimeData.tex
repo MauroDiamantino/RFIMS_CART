@@ -15,7 +15,6 @@ This structure is intended to store data related to {\itshape date} and {\itshap
 \mbox{\Hypertarget{structTimeData_a4be51d0cd0dce3b91ce449b6c995a9e9}\label{structTimeData_a4be51d0cd0dce3b91ce449b6c995a9e9}} 
 \hyperlink{structTimeData_a4be51d0cd0dce3b91ce449b6c995a9e9}{Time\+Data} ()
 \begin{DoxyCompactList}\small\item\em The class\textquotesingle{} constructor which clear all attributes, i.\+e. set date and time as 00-\/00-\/00\+T00\+:00\+:00. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{structTimeData_af0454b54d768d6b21267b3692dae4d3d}\label{structTimeData_af0454b54d768d6b21267b3692dae4d3d}} 
 \hyperlink{structTimeData_af0454b54d768d6b21267b3692dae4d3d}{Time\+Data} (const \hyperlink{structTimeData}{Time\+Data} \&time\+Data)
 \begin{DoxyCompactList}\small\item\em The class\textquotesingle{} copy constructor. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{structTimeData_a78640fbf87e59255e08836b6779ec5c0}\label{structTimeData_a78640fbf87e59255e08836b6779ec5c0}} 
@@ -27,21 +26,16 @@ std\+::string \hyperlink{structTimeData_a6810621b9bd2289b697a7cd7b1799515}{Get\+
 \mbox{\Hypertarget{structTimeData_a06956ece691807dc69e4fe6add2bd423}\label{structTimeData_a06956ece691807dc69e4fe6add2bd423}} 
 std\+::string \hyperlink{structTimeData_a06956ece691807dc69e4fe6add2bd423}{Get\+Timestamp} () const
 \begin{DoxyCompactList}\small\item\em A method to get a timestamp as a {\ttfamily std\+::string} with the format D\+D-\/\+M\+M-\/\+Y\+Y\+Y\+Y\+T\+HH\+:MM\+:SS. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{structTimeData_ac4a84f214fbaeaac5fa77df2c68bad79}\label{structTimeData_ac4a84f214fbaeaac5fa77df2c68bad79}} 
 void \hyperlink{structTimeData_ac4a84f214fbaeaac5fa77df2c68bad79}{Set\+Date} (const std\+::string \&date)
 \begin{DoxyCompactList}\small\item\em This method is intended to set just the date. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{structTimeData_a79c359b6aa1d5362065105d0e6b2f657}\label{structTimeData_a79c359b6aa1d5362065105d0e6b2f657}} 
 void \hyperlink{structTimeData_a79c359b6aa1d5362065105d0e6b2f657}{Set\+Time} (const std\+::string \&time)
 \begin{DoxyCompactList}\small\item\em This method is intended to set just the time. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{structTimeData_a753d18acb1fdebbde3e910e2462b4073}\label{structTimeData_a753d18acb1fdebbde3e910e2462b4073}} 
 void \hyperlink{structTimeData_a753d18acb1fdebbde3e910e2462b4073}{Set\+Timestamp} (const std\+::string \&timestamp)
 \begin{DoxyCompactList}\small\item\em This method is intended to modify all attributes, giving these as a timestamp. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{structTimeData_ad204062485d50c24aad1d4b41a582bd8}\label{structTimeData_ad204062485d50c24aad1d4b41a582bd8}} 
 void \hyperlink{structTimeData_ad204062485d50c24aad1d4b41a582bd8}{Turn\+Back\+Days} (const unsigned int days)
 \begin{DoxyCompactList}\small\item\em This method allows to turn a time point back a specified number of days. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{structTimeData_a43ba78733adf4369e4c8c89db1819772}\label{structTimeData_a43ba78733adf4369e4c8c89db1819772}} 
-const \hyperlink{structTimeData}{Time\+Data} \& \hyperlink{structTimeData_a43ba78733adf4369e4c8c89db1819772}{operator=} (const \hyperlink{structTimeData}{Time\+Data} \&another\+Time\+Data)
-\begin{DoxyCompactList}\small\item\em An overloading of the assignmetn operator. \end{DoxyCompactList}\item 
+const \hyperlink{structTimeData}{Time\+Data} \& \hyperlink{structTimeData_afa65d92842691d57ee5e2428f2156eef}{operator=} (const \hyperlink{structTimeData}{Time\+Data} \&another\+Time\+Data)
+\begin{DoxyCompactList}\small\item\em An overloading of the assignment operator. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{structTimeData_af1071330f0fadc98a5e08d41a8436907}\label{structTimeData_af1071330f0fadc98a5e08d41a8436907}} 
 void \hyperlink{structTimeData_af1071330f0fadc98a5e08d41a8436907}{Clear} ()
 \begin{DoxyCompactList}\small\item\em A method to clear all attributes, i.\+e. it set the object as 00-\/00-\/00\+T00\+:00\+:00. \end{DoxyCompactList}\end{DoxyCompactItemize}
@@ -69,13 +63,10 @@ unsigned int \hyperlink{structTimeData_ac17cd0725bea21f3be277d2c9a00e3d8}{second
 \subsection*{Friends}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{structTimeData_a05ed1f021fd859fd0507d8ec74de5afd}\label{structTimeData_a05ed1f021fd859fd0507d8ec74de5afd}} 
 bool \hyperlink{structTimeData_a05ed1f021fd859fd0507d8ec74de5afd}{operator$<$} (const \hyperlink{structTimeData}{Time\+Data} \&lhs, const \hyperlink{structTimeData}{Time\+Data} \&rhs)
 \begin{DoxyCompactList}\small\item\em An overloading of the operator $<$ to compare two \hyperlink{structTimeData}{Time\+Data} objects as the first one lesser than the second one. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{structTimeData_a6ba5c50a9564dae90072889e68cc8a42}\label{structTimeData_a6ba5c50a9564dae90072889e68cc8a42}} 
 bool \hyperlink{structTimeData_a6ba5c50a9564dae90072889e68cc8a42}{operator$>$} (const \hyperlink{structTimeData}{Time\+Data} \&lhs, const \hyperlink{structTimeData}{Time\+Data} \&rhs)
 \begin{DoxyCompactList}\small\item\em An overloading of the operator $>$ to compare two \hyperlink{structTimeData}{Time\+Data} objects as the first one bigger than the second one. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{structTimeData_a77e7e3db1d21909c98eb40309a3ac989}\label{structTimeData_a77e7e3db1d21909c98eb40309a3ac989}} 
 bool \hyperlink{structTimeData_a77e7e3db1d21909c98eb40309a3ac989}{operator==} (const \hyperlink{structTimeData}{Time\+Data} \&lhs, const \hyperlink{structTimeData}{Time\+Data} \&rhs)
 \begin{DoxyCompactList}\small\item\em An overloading of the operator == to compare two \hyperlink{structTimeData}{Time\+Data} objects as equal. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
@@ -85,6 +76,157 @@ This structure is intended to store data related to {\itshape date} and {\itshap
 
 This structure can store time data (hour, minute and second) and date data (year, month and date) which are obtained from a G\+PS receiver. It can offer just the date as a string, or just the time as a string or even can build a {\itshape timestamp} with a specific format\+: D\+D-\/\+M\+M-\/\+Y\+Y\+Y\+Y\+T\+HH\+:MM\+:SS. Also it can take a date and time and turn that back a specific number of days taking into account the {\itshape gregorian} calendar. An object of this class can even be compared as equal to, less than or bigger than another object of the same class. 
 
-The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{structTimeData_af0454b54d768d6b21267b3692dae4d3d}\label{structTimeData_af0454b54d768d6b21267b3692dae4d3d}} 
+\index{Time\+Data@{Time\+Data}!Time\+Data@{Time\+Data}}
+\index{Time\+Data@{Time\+Data}!Time\+Data@{Time\+Data}}
+\subsubsection{\texorpdfstring{Time\+Data()}{TimeData()}}
+{\footnotesize\ttfamily Time\+Data\+::\+Time\+Data (\begin{DoxyParamCaption}\item[{const \hyperlink{structTimeData}{Time\+Data} \&}]{time\+Data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+The class\textquotesingle{} copy constructor. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em time\+Data} & Another {\itshape \hyperlink{structTimeData}{Time\+Data}} object which is given to copy its attributes. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{structTimeData_afa65d92842691d57ee5e2428f2156eef}\label{structTimeData_afa65d92842691d57ee5e2428f2156eef}} 
+\index{Time\+Data@{Time\+Data}!operator=@{operator=}}
+\index{operator=@{operator=}!Time\+Data@{Time\+Data}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily const \hyperlink{structTimeData}{Time\+Data} \& Time\+Data\+::operator= (\begin{DoxyParamCaption}\item[{const \hyperlink{structTimeData}{Time\+Data} \&}]{another\+Time\+Data }\end{DoxyParamCaption})}
+
+
+
+An overloading of the assignment operator. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em another\+Time\+Data} & Another {\itshape \hyperlink{structTimeData}{Time\+Data}} object which is given to copy its attributes. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{structTimeData_ac4a84f214fbaeaac5fa77df2c68bad79}\label{structTimeData_ac4a84f214fbaeaac5fa77df2c68bad79}} 
+\index{Time\+Data@{Time\+Data}!Set\+Date@{Set\+Date}}
+\index{Set\+Date@{Set\+Date}!Time\+Data@{Time\+Data}}
+\subsubsection{\texorpdfstring{Set\+Date()}{SetDate()}}
+{\footnotesize\ttfamily void Time\+Data\+::\+Set\+Date (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{date }\end{DoxyParamCaption})}
+
+
+
+This method is intended to set just the date. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em date} & A date given as a {\ttfamily std\+::string} object, or even it can be inserted as {\ttfamily char} pointer. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{structTimeData_a79c359b6aa1d5362065105d0e6b2f657}\label{structTimeData_a79c359b6aa1d5362065105d0e6b2f657}} 
+\index{Time\+Data@{Time\+Data}!Set\+Time@{Set\+Time}}
+\index{Set\+Time@{Set\+Time}!Time\+Data@{Time\+Data}}
+\subsubsection{\texorpdfstring{Set\+Time()}{SetTime()}}
+{\footnotesize\ttfamily void Time\+Data\+::\+Set\+Time (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{time }\end{DoxyParamCaption})}
+
+
+
+This method is intended to set just the time. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em time} & A time given as a {\ttfamily std\+::string} object, or even it can be inserted as {\ttfamily char} pointer. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{structTimeData_a753d18acb1fdebbde3e910e2462b4073}\label{structTimeData_a753d18acb1fdebbde3e910e2462b4073}} 
+\index{Time\+Data@{Time\+Data}!Set\+Timestamp@{Set\+Timestamp}}
+\index{Set\+Timestamp@{Set\+Timestamp}!Time\+Data@{Time\+Data}}
+\subsubsection{\texorpdfstring{Set\+Timestamp()}{SetTimestamp()}}
+{\footnotesize\ttfamily void Time\+Data\+::\+Set\+Timestamp (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{timestamp }\end{DoxyParamCaption})}
+
+
+
+This method is intended to modify all attributes, giving these as a timestamp. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em timestamp} & A timestamp given as a {\ttfamily std\+::string} object, or even it can be inserted as {\ttfamily char} pointer. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{structTimeData_ad204062485d50c24aad1d4b41a582bd8}\label{structTimeData_ad204062485d50c24aad1d4b41a582bd8}} 
+\index{Time\+Data@{Time\+Data}!Turn\+Back\+Days@{Turn\+Back\+Days}}
+\index{Turn\+Back\+Days@{Turn\+Back\+Days}!Time\+Data@{Time\+Data}}
+\subsubsection{\texorpdfstring{Turn\+Back\+Days()}{TurnBackDays()}}
+{\footnotesize\ttfamily void Time\+Data\+::\+Turn\+Back\+Days (\begin{DoxyParamCaption}\item[{const unsigned int}]{days\+To\+Turn\+Back }\end{DoxyParamCaption})}
+
+
+
+This method allows to turn a time point back a specified number of days. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em days} & The number of days which must be used to turn back the current date. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Friends And Related Function Documentation}
+\mbox{\Hypertarget{structTimeData_a05ed1f021fd859fd0507d8ec74de5afd}\label{structTimeData_a05ed1f021fd859fd0507d8ec74de5afd}} 
+\index{Time\+Data@{Time\+Data}!operator$<$@{operator$<$}}
+\index{operator$<$@{operator$<$}!Time\+Data@{Time\+Data}}
+\subsubsection{\texorpdfstring{operator$<$}{operator<}}
+{\footnotesize\ttfamily bool operator$<$ (\begin{DoxyParamCaption}\item[{const \hyperlink{structTimeData}{Time\+Data} \&}]{lhs,  }\item[{const \hyperlink{structTimeData}{Time\+Data} \&}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+An overloading of the operator $<$ to compare two \hyperlink{structTimeData}{Time\+Data} objects as the first one lesser than the second one. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em lhs} & The left-\/hand side operand. \\
+\hline
+\mbox{\tt in}  & {\em rhs} & The right-\/hand side operand. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{structTimeData_a77e7e3db1d21909c98eb40309a3ac989}\label{structTimeData_a77e7e3db1d21909c98eb40309a3ac989}} 
+\index{Time\+Data@{Time\+Data}!operator==@{operator==}}
+\index{operator==@{operator==}!Time\+Data@{Time\+Data}}
+\subsubsection{\texorpdfstring{operator==}{operator==}}
+{\footnotesize\ttfamily bool operator== (\begin{DoxyParamCaption}\item[{const \hyperlink{structTimeData}{Time\+Data} \&}]{lhs,  }\item[{const \hyperlink{structTimeData}{Time\+Data} \&}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+An overloading of the operator == to compare two \hyperlink{structTimeData}{Time\+Data} objects as equal. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em lhs} & The left-\/hand side operand. \\
+\hline
+\mbox{\tt in}  & {\em rhs} & The right-\/hand side operand. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{structTimeData_a6ba5c50a9564dae90072889e68cc8a42}\label{structTimeData_a6ba5c50a9564dae90072889e68cc8a42}} 
+\index{Time\+Data@{Time\+Data}!operator$>$@{operator$>$}}
+\index{operator$>$@{operator$>$}!Time\+Data@{Time\+Data}}
+\subsubsection{\texorpdfstring{operator$>$}{operator>}}
+{\footnotesize\ttfamily bool operator$>$ (\begin{DoxyParamCaption}\item[{const \hyperlink{structTimeData}{Time\+Data} \&}]{lhs,  }\item[{const \hyperlink{structTimeData}{Time\+Data} \&}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+An overloading of the operator $>$ to compare two \hyperlink{structTimeData}{Time\+Data} objects as the first one bigger than the second one. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em lhs} & The left-\/hand side operand. \\
+\hline
+\mbox{\tt in}  & {\em rhs} & The right-\/hand side operand. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-\hyperlink{Basics_8h}{Basics.\+h}\end{DoxyCompactItemize}
+\hyperlink{Basics_8h}{Basics.\+h}\item 
+Time\+Data.\+cpp\end{DoxyCompactItemize}

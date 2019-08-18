@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['thresholdsnorm',['ThresholdsNorm',['../structRFI.html#a18cfa7d24274bbcd14acc6b513860cb0',1,'RFI']]]
+  ['commandtype',['CommandType',['../classCommand.html#a658ae4be30c6dd9b673e467908acaeb5',1,'Command']]]
 ];

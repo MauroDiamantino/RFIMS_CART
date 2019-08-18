@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['waitforkey',['WaitForKey',['../Basics_8h.html#abe6b1466ff5e3b09c33ca5dc9fc81c5a',1,'WaitForKey():&#160;Basics.cpp'],['../Basics_8cpp.html#abe6b1466ff5e3b09c33ca5dc9fc81c5a',1,'WaitForKey():&#160;Basics.cpp']]],
-  ['what',['what',['../classCustomException.html#a0bb1756d6073f5bb8b6f1486b08fa5da',1,'CustomException']]]
+  ['value',['value',['../classReply.html#ae6d1cce2fdfa549568ad0ec9f5c6f13c',1,'Reply']]],
+  ['values',['values',['../structFreqValues.html#a07669bbe3b65cbfb80300631ce85fb76',1,'FreqValues']]],
+  ['vbw',['vbw',['../structBandParameters.html#aee179b682657437dd9a7f45e7054ae97',1,'BandParameters']]],
+  ['vect',['vect',['../Spectran_8h.html#a16fa8eb91a19fde7a399d85c521f63fd',1,'Spectran.h']]]
 ];
