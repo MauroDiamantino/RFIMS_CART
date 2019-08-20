@@ -1,0 +1,56 @@
+#! /bin/sh
+# Start/stop the RF Interference Monitoring System software, of the China-Argentina RadioTelescope
+
+### BEGIN INIT INFO
+# Provides:          rfims-cart
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Simple script to start the program rfims-cart
+# Description:       rfims-cart is a software intended to get RF power measurements
+#					 from a spectrum analyzer which has to be connected to an antenna
+#					 which is able to change its azimuth angle and its polarization,
+#					 to analize the RF interference which is present around the
+#					 China-Argentina RadiosTelescope.
+### END INIT INFO
+
+sleep 10
+
+# Carry out specific functions when asked to by the system
+case "$1" in
+  start)
+    echo "Starting rfims-cart"
+
+    #nice -n -20 /usr/local/bin/rfims-cart --plot --rfi=ska-mode1
+	/usr/local/bin/rfims-cart --plot --rfi=ska-mode1
+
+    for i in 1 2 3
+    do
+      sleep 300 #5 minutes
+      RFIMS_CART_PID="$(pidof rfims-cart)"
+      if [ ! ${RFIMS_CART_PID} ]
+      then
+		if [ $i -eq 3 ]
+		then
+          	echo "\nIt was tried to execute the program rfims-cart three times, but all times this failed."
+        else
+	  		echo "\nThe program rfims-cart failed. It will be tried to execute it again."
+	  		#nice -n -20 /usr/local/bin/rfims-cart --plot --rfi=ska-mode1
+	  		/usr/local/bin/rfims-cart --plot --rfi=ska-mode1
+		fi
+      fi
+    done
+
+    ;;
+  stop)
+    echo "Stopping rfims-cart"
+    killall rfims-cart
+    ;;
+  *)
+    echo "Usage: /etc/init.d/rfims-cart-boot {start|stop}"
+    exit 1
+    ;;
+esac
+
+exit 0

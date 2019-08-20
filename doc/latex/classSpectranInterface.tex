@@ -1,0 +1,208 @@
+\hypertarget{classSpectranInterface}{}\section{Spectran\+Interface Class Reference}
+\label{classSpectranInterface}\index{Spectran\+Interface@{Spectran\+Interface}}
+
+
+The aim of this class is to manage the communication with the Aaronia Spectran device.  
+
+
+
+
+{\ttfamily \#include $<$Spectran.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classSpectranInterface_a9ace3807dcbbf01313890871d6a60f51}{Spectran\+Interface} ()
+\begin{DoxyCompactList}\small\item\em The default class constructor. \end{DoxyCompactList}\item 
+\hyperlink{classSpectranInterface_a52592fb5fe9d7734d869540826b47325}{$\sim$\+Spectran\+Interface} ()
+\begin{DoxyCompactList}\small\item\em The class destructor. \end{DoxyCompactList}\item 
+void \hyperlink{classSpectranInterface_a29d4a40c802f909b19014a5bfdac7db5}{Initialize} ()
+\begin{DoxyCompactList}\small\item\em This method logs in with the spectrum analyzer, once the communication has been opened and its parameters has been set up. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSpectranInterface_a31b64b69e1d99723fea1fd9c112dcfda}\label{classSpectranInterface_a31b64b69e1d99723fea1fd9c112dcfda}} 
+unsigned int \hyperlink{classSpectranInterface_a31b64b69e1d99723fea1fd9c112dcfda}{Available} ()
+\begin{DoxyCompactList}\small\item\em This method returns the number of available bytes in the input buffer. \end{DoxyCompactList}\item 
+void \hyperlink{classSpectranInterface_a512218c4f1589c32b4fd9a0f7ad5e8cc}{Reset\+Sweep} ()
+\begin{DoxyCompactList}\small\item\em This method is intended to restore the streaming of sweep points to the first point which corresponds to the initial frequency (Fstart). \end{DoxyCompactList}\item 
+void \hyperlink{classSpectranInterface_ac812a1bcaede6504f62cc544c30fffea}{Enable\+Sweep} ()
+\begin{DoxyCompactList}\small\item\em This method allows to enable the streaming of sweep points. \end{DoxyCompactList}\item 
+void \hyperlink{classSpectranInterface_a68b1b1a6af802369cb146c69161d031d}{Disable\+Sweep} ()
+\begin{DoxyCompactList}\small\item\em This method allows to disable the streaming of sweep points. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSpectranInterface_a67de35ac5416ab4e7880ee03fcd2884e}\label{classSpectranInterface_a67de35ac5416ab4e7880ee03fcd2884e}} 
+void \hyperlink{classSpectranInterface_a67de35ac5416ab4e7880ee03fcd2884e}{Purge} ()
+\begin{DoxyCompactList}\small\item\em This method purges the input buffer. \end{DoxyCompactList}\item 
+void \hyperlink{classSpectranInterface_a59eff163ecf77f55bba22f49ef79d909}{Soft\+Reset} ()
+\begin{DoxyCompactList}\small\item\em The soft reset is performed using the function {\ttfamily F\+T\+\_\+\+Reset\+Device()} of the driver D2\+XX. \end{DoxyCompactList}\item 
+void \hyperlink{classSpectranInterface_a44ee786fb582c5db42253ec0c96f3b8e}{Hard\+Reset} ()
+\begin{DoxyCompactList}\small\item\em The hard reset implies that the spectrum analyzer is turned off and then it is turned on again. \end{DoxyCompactList}\item 
+void \hyperlink{classSpectranInterface_a8884f03d3075589a2850c83c9fd57e72}{Log\+Out} ()
+\begin{DoxyCompactList}\small\item\em This method finishes the communication session with the spectrum analyzer. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSpectranInterface_a7c7d78879a60f850b866386ad6101e20}\label{classSpectranInterface_a7c7d78879a60f850b866386ad6101e20}} 
+D\+W\+O\+RD \hyperlink{classSpectranInterface_a7c7d78879a60f850b866386ad6101e20}{Get\+V\+ID} () const
+\begin{DoxyCompactList}\small\item\em This method returns the Vendor ID of the spectrum analyzer. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSpectranInterface_a70e03dced69c7c7c60951692894d26ce}\label{classSpectranInterface_a70e03dced69c7c7c60951692894d26ce}} 
+D\+W\+O\+RD \hyperlink{classSpectranInterface_a70e03dced69c7c7c60951692894d26ce}{Get\+P\+ID} () const
+\begin{DoxyCompactList}\small\item\em This method returns the Product ID of the spectrum analyzer. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSpectranInterface_a37854d2e596c8338c0015d8ec9120cae}\label{classSpectranInterface_a37854d2e596c8338c0015d8ec9120cae}} 
+std\+::string \hyperlink{classSpectranInterface_a37854d2e596c8338c0015d8ec9120cae}{Get\+Dev\+Description} () const
+\begin{DoxyCompactList}\small\item\em This method returns the device description (a string) of the spectrum analyzer. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSpectranInterface_a7e80df1d7f5709f2976847ee1c91a85d}\label{classSpectranInterface_a7e80df1d7f5709f2976847ee1c91a85d}} 
+bool \hyperlink{classSpectranInterface_a7e80df1d7f5709f2976847ee1c91a85d}{Is\+Logged} () const
+\begin{DoxyCompactList}\small\item\em This method returns a true value if the communication has been opened and a login has been performed, and a false value otherwise. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSpectranInterface_ad921e08380e246d03d01b4ad080cec99}\label{classSpectranInterface_ad921e08380e246d03d01b4ad080cec99}} 
+bool \hyperlink{classSpectranInterface_ad921e08380e246d03d01b4ad080cec99}{Is\+Sweep\+Enabled} () const
+\begin{DoxyCompactList}\small\item\em This method returns a true value if the streaming of sweep points has been enabled and a false otherwise. \end{DoxyCompactList}\item 
+void \hyperlink{classSpectranInterface_a6064f5888f86d0913b8c2af429bdf278}{Sound\+New\+Sweep} ()
+\begin{DoxyCompactList}\small\item\em This method allows to perform the a sound to state the capturing of a sweep has finished. \end{DoxyCompactList}\item 
+void \hyperlink{classSpectranInterface_a3046fce691a5ed248e3fd647b0b043e8}{Write} (const \hyperlink{classCommand}{Command} \&command)
+\begin{DoxyCompactList}\small\item\em This method is intended to perform all the writing operations. \end{DoxyCompactList}\item 
+void \hyperlink{classSpectranInterface_a63c61d4d26c5aa335c6a20f469f3ec00}{Read} (\hyperlink{classReply}{Reply} \&reply)
+\begin{DoxyCompactList}\small\item\em This method is intended to perform all the reading operations. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The aim of this class is to manage the communication with the Aaronia Spectran device. 
+
+This class establishes the communication with the Aaronia Spectran device (V\+ID=0403, P\+ID=E8\+D8) and allows to write commands to the device and read its replies. Also, it allows to know the available bytes in the input buffer, purge that buffer and reset the communication with the device. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classSpectranInterface_a9ace3807dcbbf01313890871d6a60f51}\label{classSpectranInterface_a9ace3807dcbbf01313890871d6a60f51}} 
+\index{Spectran\+Interface@{Spectran\+Interface}!Spectran\+Interface@{Spectran\+Interface}}
+\index{Spectran\+Interface@{Spectran\+Interface}!Spectran\+Interface@{Spectran\+Interface}}
+\subsubsection{\texorpdfstring{Spectran\+Interface()}{SpectranInterface()}}
+{\footnotesize\ttfamily Spectran\+Interface\+::\+Spectran\+Interface (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+The default class constructor. 
+
+This constructor initializes the internal flags, flag\+Log\+In and flag\+Sweeps\+Enabled, as false, includes the V\+ID and P\+ID of the spectrum analyzer in the list of possible values and, finally, it calls the method {\ttfamily Open\+And\+Set\+Up()}. \mbox{\Hypertarget{classSpectranInterface_a52592fb5fe9d7734d869540826b47325}\label{classSpectranInterface_a52592fb5fe9d7734d869540826b47325}} 
+\index{Spectran\+Interface@{Spectran\+Interface}!````~Spectran\+Interface@{$\sim$\+Spectran\+Interface}}
+\index{````~Spectran\+Interface@{$\sim$\+Spectran\+Interface}!Spectran\+Interface@{Spectran\+Interface}}
+\subsubsection{\texorpdfstring{$\sim$\+Spectran\+Interface()}{~SpectranInterface()}}
+{\footnotesize\ttfamily Spectran\+Interface\+::$\sim$\+Spectran\+Interface (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+The class destructor. 
+
+The destructor carry out the logging out and the communication closing. In each operation, this method produces messages in the {\ttfamily stdout} if there were errors, but it never produces exceptions. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classSpectranInterface_a68b1b1a6af802369cb146c69161d031d}\label{classSpectranInterface_a68b1b1a6af802369cb146c69161d031d}} 
+\index{Spectran\+Interface@{Spectran\+Interface}!Disable\+Sweep@{Disable\+Sweep}}
+\index{Disable\+Sweep@{Disable\+Sweep}!Spectran\+Interface@{Spectran\+Interface}}
+\subsubsection{\texorpdfstring{Disable\+Sweep()}{DisableSweep()}}
+{\footnotesize\ttfamily void Spectran\+Interface\+::\+Disable\+Sweep (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+This method allows to disable the streaming of sweep points. 
+
+To ensure the streaming is disabled at least two commands (U\+S\+M\+E\+AS, 0) must be sent because the first one will receive a wrong reply as there is a delay until the spectrum analyzer stops sending sweep points (A\+M\+P\+F\+R\+E\+Q\+D\+AT), so the reply to first command will be mixed with the sweep points and the software will read it with errors. Because of that, this method is implemented with a loop where it is tried to disable the streaming times, up to 4 times. After the streaming is disabled successfully, the input buffer is purged. \mbox{\Hypertarget{classSpectranInterface_ac812a1bcaede6504f62cc544c30fffea}\label{classSpectranInterface_ac812a1bcaede6504f62cc544c30fffea}} 
+\index{Spectran\+Interface@{Spectran\+Interface}!Enable\+Sweep@{Enable\+Sweep}}
+\index{Enable\+Sweep@{Enable\+Sweep}!Spectran\+Interface@{Spectran\+Interface}}
+\subsubsection{\texorpdfstring{Enable\+Sweep()}{EnableSweep()}}
+{\footnotesize\ttfamily void Spectran\+Interface\+::\+Enable\+Sweep (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+This method allows to enable the streaming of sweep points. 
+
+Take into account that once the streaming the sweep points is enabled, the spectrum analyzer will send these points autonomously, i.\+e. the communication will not follow anymore the master-\/slave paradigm where the slave only sends data to the master when this sends a request. So the software must be prepared to receive and process the data stream. \mbox{\Hypertarget{classSpectranInterface_a44ee786fb582c5db42253ec0c96f3b8e}\label{classSpectranInterface_a44ee786fb582c5db42253ec0c96f3b8e}} 
+\index{Spectran\+Interface@{Spectran\+Interface}!Hard\+Reset@{Hard\+Reset}}
+\index{Hard\+Reset@{Hard\+Reset}!Spectran\+Interface@{Spectran\+Interface}}
+\subsubsection{\texorpdfstring{Hard\+Reset()}{HardReset()}}
+{\footnotesize\ttfamily void Spectran\+Interface\+::\+Hard\+Reset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+The hard reset implies that the spectrum analyzer is turned off and then it is turned on again. 
+
+To start, a logout is performed, then the communication is closed, the entire RF front end is turned off sequentially, then it is waited 10 seconds, the entire front end is turned on again sequentially, and finally the communication is opened again. After the calling of this method, a login must be performed calling the method \hyperlink{classSpectranInterface_a29d4a40c802f909b19014a5bfdac7db5}{Initialize()}. \mbox{\Hypertarget{classSpectranInterface_a29d4a40c802f909b19014a5bfdac7db5}\label{classSpectranInterface_a29d4a40c802f909b19014a5bfdac7db5}} 
+\index{Spectran\+Interface@{Spectran\+Interface}!Initialize@{Initialize}}
+\index{Initialize@{Initialize}!Spectran\+Interface@{Spectran\+Interface}}
+\subsubsection{\texorpdfstring{Initialize()}{Initialize()}}
+{\footnotesize\ttfamily void Spectran\+Interface\+::\+Initialize (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+This method logs in with the spectrum analyzer, once the communication has been opened and its parameters has been set up. 
+
+Firstly, this method sends two V\+E\+R\+I\+FY commands to log in with the spectrum analyzer. If that operation failed, it resets the spectrum analyzer in a hard way (turn it off and then turn it on), then it tries again to send two V\+E\+R\+I\+FY commands and if that failed it retries the reset and repeat this up to three times.
+
+Secondly, it makes sure the streaming of sweep points is disabled. And finally, it set up the speaker volume, produces the login sounds and purge the input and output buffers. \mbox{\Hypertarget{classSpectranInterface_a8884f03d3075589a2850c83c9fd57e72}\label{classSpectranInterface_a8884f03d3075589a2850c83c9fd57e72}} 
+\index{Spectran\+Interface@{Spectran\+Interface}!Log\+Out@{Log\+Out}}
+\index{Log\+Out@{Log\+Out}!Spectran\+Interface@{Spectran\+Interface}}
+\subsubsection{\texorpdfstring{Log\+Out()}{LogOut()}}
+{\footnotesize\ttfamily void Spectran\+Interface\+::\+Log\+Out (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+This method finishes the communication session with the spectrum analyzer. 
+
+To ensure the logout can be carried out successfully, first, the streaming of sweep points is disabled, then the logout sound is performed and, finally, the command to logout is sent to the spectrum analyzer. \mbox{\Hypertarget{classSpectranInterface_a63c61d4d26c5aa335c6a20f469f3ec00}\label{classSpectranInterface_a63c61d4d26c5aa335c6a20f469f3ec00}} 
+\index{Spectran\+Interface@{Spectran\+Interface}!Read@{Read}}
+\index{Read@{Read}!Spectran\+Interface@{Spectran\+Interface}}
+\subsubsection{\texorpdfstring{Read()}{Read()}}
+{\footnotesize\ttfamily void Spectran\+Interface\+::\+Read (\begin{DoxyParamCaption}\item[{\hyperlink{classReply}{Reply} \&}]{reply }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+This method is intended to perform all the reading operations. 
+
+Before the calling of the function {\ttfamily F\+T\+\_\+\+Read()}, there is a loop where it is queried if the number of waited bytes are available. After each query which states less bytes than what are waited, the method waits 70 ms. Once the desired number bytes are available, the method waits 70 ms to avoid an error which was observed during the tests and which consists in a reading failure when this operation is performed immediately after the needed number of bytes are available. After that waitng, the function {\ttfamily F\+T\+\_\+\+Read()} is called. Later, it is checked if the operation finished with errors and if all bytes were read and, finally, the read bytes are inserted in the {\itshape \hyperlink{classReply}{Reply}} object. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in,out}  & {\em reply} & A {\itshape \hyperlink{classReply}{Reply}} object which states the number of bytes must be read and which receives these bytes to the extract the info from them. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classSpectranInterface_a512218c4f1589c32b4fd9a0f7ad5e8cc}\label{classSpectranInterface_a512218c4f1589c32b4fd9a0f7ad5e8cc}} 
+\index{Spectran\+Interface@{Spectran\+Interface}!Reset\+Sweep@{Reset\+Sweep}}
+\index{Reset\+Sweep@{Reset\+Sweep}!Spectran\+Interface@{Spectran\+Interface}}
+\subsubsection{\texorpdfstring{Reset\+Sweep()}{ResetSweep()}}
+{\footnotesize\ttfamily void Spectran\+Interface\+::\+Reset\+Sweep (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+This method is intended to restore the streaming of sweep points to the first point which corresponds to the initial frequency (Fstart). 
+
+The reset of the current sweep has sense when the streaming of sweep points is enabled. \mbox{\Hypertarget{classSpectranInterface_a59eff163ecf77f55bba22f49ef79d909}\label{classSpectranInterface_a59eff163ecf77f55bba22f49ef79d909}} 
+\index{Spectran\+Interface@{Spectran\+Interface}!Soft\+Reset@{Soft\+Reset}}
+\index{Soft\+Reset@{Soft\+Reset}!Spectran\+Interface@{Spectran\+Interface}}
+\subsubsection{\texorpdfstring{Soft\+Reset()}{SoftReset()}}
+{\footnotesize\ttfamily void Spectran\+Interface\+::\+Soft\+Reset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+The soft reset is performed using the function {\ttfamily F\+T\+\_\+\+Reset\+Device()} of the driver D2\+XX. 
+
+First, a logout is performed, then the communication is restarted using the function F\+T\+\_\+\+Reset\+Device() and, finally, the method sleeps 3 seconds. After calling this method the communication must be initialized again with the method \hyperlink{classSpectranInterface_a29d4a40c802f909b19014a5bfdac7db5}{Initialize()}. \mbox{\Hypertarget{classSpectranInterface_a6064f5888f86d0913b8c2af429bdf278}\label{classSpectranInterface_a6064f5888f86d0913b8c2af429bdf278}} 
+\index{Spectran\+Interface@{Spectran\+Interface}!Sound\+New\+Sweep@{Sound\+New\+Sweep}}
+\index{Sound\+New\+Sweep@{Sound\+New\+Sweep}!Spectran\+Interface@{Spectran\+Interface}}
+\subsubsection{\texorpdfstring{Sound\+New\+Sweep()}{SoundNewSweep()}}
+{\footnotesize\ttfamily void Spectran\+Interface\+::\+Sound\+New\+Sweep (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+This method allows to perform the a sound to state the capturing of a sweep has finished. 
+
+The new-\/sweep sound is compound of just one pulse whose duration is determined by the constant N\+E\+W\+\_\+\+S\+W\+E\+E\+P\+\_\+\+S\+O\+U\+N\+D\+\_\+\+D\+U\+R\+A\+T\+I\+ON. This method should be called by the object which is responsible for the capture of the sweep points and the building of the entire sweep. \mbox{\Hypertarget{classSpectranInterface_a3046fce691a5ed248e3fd647b0b043e8}\label{classSpectranInterface_a3046fce691a5ed248e3fd647b0b043e8}} 
+\index{Spectran\+Interface@{Spectran\+Interface}!Write@{Write}}
+\index{Write@{Write}!Spectran\+Interface@{Spectran\+Interface}}
+\subsubsection{\texorpdfstring{Write()}{Write()}}
+{\footnotesize\ttfamily void Spectran\+Interface\+::\+Write (\begin{DoxyParamCaption}\item[{const \hyperlink{classCommand}{Command} \&}]{command }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+This method is intended to perform all the writing operations. 
+
+First, the method copies the bytes of the command to an auxiliary array, because the function {\ttfamily F\+T\+\_\+\+Write()} destroys the array of bytes which is passed to it, so this is done to avoid the modification of the {\itshape \hyperlink{classCommand}{Command}} object. Then the function {\ttfamily F\+T\+\_\+\+Write()} is called with the corresponding arguments and, finally, it is controlled if there were errors and if all bytes were written. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em command} & A {\itshape \hyperlink{classCommand}{Command}} object which contains the bytes must be sent to the spectrum analyzer. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/\hyperlink{Spectran_8h}{Spectran.\+h}\item 
+/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/\hyperlink{SpectranInterface_8cpp}{Spectran\+Interface.\+cpp}\end{DoxyCompactItemize}

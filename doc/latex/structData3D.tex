@@ -1,0 +1,47 @@
+\hypertarget{structData3D}{}\section{Data3D Struct Reference}
+\label{structData3D}\index{Data3D@{Data3D}}
+
+
+A structure intended to save the the values of the 3d sensors which are integrated in the G\+PS receiver.  
+
+
+
+
+{\ttfamily \#include $<$Antenna\+Positioning.\+h$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structData3D_a1b38ab89b23a0b2b309671ac9281a2ac}\label{structData3D_a1b38ab89b23a0b2b309671ac9281a2ac}} 
+enum \hyperlink{structData3D_a1b38ab89b23a0b2b309671ac9281a2ac}{Sensor\+Type} \+: char \{ {\bfseries G\+Y\+R\+O\+S\+C\+O\+PE}, 
+{\bfseries C\+O\+M\+P\+A\+SS}, 
+{\bfseries A\+C\+C\+E\+L\+E\+R\+O\+M\+E\+T\+ER}, 
+{\bfseries U\+N\+I\+N\+I\+T\+I\+A\+L\+I\+Z\+ED}
+ \}\begin{DoxyCompactList}\small\item\em An enumeration with the names of the sensors integrated in the G\+PS receiver. \end{DoxyCompactList}
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structData3D_adf9870c0bad9cadb351fc191110549ce}\label{structData3D_adf9870c0bad9cadb351fc191110549ce}} 
+\hyperlink{structData3D_a1b38ab89b23a0b2b309671ac9281a2ac}{Sensor\+Type} \hyperlink{structData3D_adf9870c0bad9cadb351fc191110549ce}{sensor}
+\begin{DoxyCompactList}\small\item\em The specific sensor whose values are represented in the structure. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structData3D_a566d9370452a647cceea530cee5bb62a}\label{structData3D_a566d9370452a647cceea530cee5bb62a}} 
+std\+::string \hyperlink{structData3D_a566d9370452a647cceea530cee5bb62a}{time}
+\begin{DoxyCompactList}\small\item\em The time when the measurement were made, in the format H\+H\+M\+M\+S\+S.\+N\+NN, where N\+NN is a G\+PS\textquotesingle{}s internal counter that is reset when the time is updated by a new G\+PS data. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structData3D_ae8b4e2391802fc2e8b063274e6c0828e}\label{structData3D_ae8b4e2391802fc2e8b063274e6c0828e}} 
+double \hyperlink{structData3D_ae8b4e2391802fc2e8b063274e6c0828e}{x}
+\begin{DoxyCompactList}\small\item\em The x-\/axis value. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structData3D_a265d0776c17fba2cc402061b41853ebc}\label{structData3D_a265d0776c17fba2cc402061b41853ebc}} 
+double \hyperlink{structData3D_a265d0776c17fba2cc402061b41853ebc}{y}
+\begin{DoxyCompactList}\small\item\em The y-\/axis value. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structData3D_a561037592c0c27d385ddeaeb7a61f864}\label{structData3D_a561037592c0c27d385ddeaeb7a61f864}} 
+double \hyperlink{structData3D_a561037592c0c27d385ddeaeb7a61f864}{z}
+\begin{DoxyCompactList}\small\item\em The z-\/axis value. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A structure intended to save the the values of the 3d sensors which are integrated in the G\+PS receiver. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/\hyperlink{AntennaPositioning_8h}{Antenna\+Positioning.\+h}\end{DoxyCompactItemize}

@@ -1,0 +1,137 @@
+\hypertarget{classAntennaPositioner}{}\section{Antenna\+Positioner Class Reference}
+\label{classAntennaPositioner}\index{Antenna\+Positioner@{Antenna\+Positioner}}
+
+
+The aim of the class {\itshape \hyperlink{classAntennaPositioner}{Antenna\+Positioner}} is to handle the antenna positioning system.  
+
+
+
+
+{\ttfamily \#include $<$Antenna\+Positioning.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classAntennaPositioner_ad7e864f6073421c98585c64802a3e78e}{Antenna\+Positioner} (\hyperlink{classGPSInterface}{G\+P\+S\+Interface} \&gps\+Interf)
+\begin{DoxyCompactList}\small\item\em An index which allows to know how many positions have been swept and how many remains to reach the last position. \end{DoxyCompactList}\item 
+\hyperlink{classAntennaPositioner_a7a3a48b1aab43b9a43b664567a8c5829}{$\sim$\+Antenna\+Positioner} ()
+\begin{DoxyCompactList}\small\item\em The class destructor. \end{DoxyCompactList}\item 
+bool \hyperlink{classAntennaPositioner_a5087caa452709b33082c41b2cef2a23e}{Initialize} ()
+\begin{DoxyCompactList}\small\item\em This method performs the initialization of the antenna positioning system. \end{DoxyCompactList}\item 
+bool \hyperlink{classAntennaPositioner_a2e05c385b9933d2ee1d4f8f953c99070}{Next\+Azim\+Position} ()
+\begin{DoxyCompactList}\small\item\em This method moves the antenna to the next azimuth position. \end{DoxyCompactList}\item 
+bool \hyperlink{classAntennaPositioner_a0e4f58f67280f2a6daa10c7cc02f0abd}{Change\+Polarization} ()
+\begin{DoxyCompactList}\small\item\em This method change the antenna polarization. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classAntennaPositioner_a72cb61d647eaad277f256b3ca9555f8a}\label{classAntennaPositioner_a72cb61d647eaad277f256b3ca9555f8a}} 
+float \hyperlink{classAntennaPositioner_a72cb61d647eaad277f256b3ca9555f8a}{Get\+Azim\+Position} () const
+\begin{DoxyCompactList}\small\item\em This method returns the current antenna azimuth angle. \end{DoxyCompactList}\item 
+std\+::string \hyperlink{classAntennaPositioner_a897b759fa711bd8a4261e57177e3db1c}{Get\+Polarization\+String} () const
+\begin{DoxyCompactList}\small\item\em This method returns the current antenna polarization, as a {\ttfamily std\+::string} object. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classAntennaPositioner_a590e07740567be77f677d822cf63b69a}\label{classAntennaPositioner_a590e07740567be77f677d822cf63b69a}} 
+\hyperlink{AntennaPositioning_8h_a55887c7bc32d70c0308472ff4de3e282}{Polarization} \hyperlink{classAntennaPositioner_a590e07740567be77f677d822cf63b69a}{Get\+Polarization} () const
+\begin{DoxyCompactList}\small\item\em This method returns the current antenna polarization, as a value of the enumeration \hyperlink{AntennaPositioning_8h_a55887c7bc32d70c0308472ff4de3e282}{Polarization}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classAntennaPositioner_aa77a4d7ef1dd79ae4253167ebaf66a5e}\label{classAntennaPositioner_aa77a4d7ef1dd79ae4253167ebaf66a5e}} 
+unsigned int \hyperlink{classAntennaPositioner_aa77a4d7ef1dd79ae4253167ebaf66a5e}{Get\+Position\+Index} () const
+\begin{DoxyCompactList}\small\item\em This method returns the current azimuth position index. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classAntennaPositioner_a62c014613a812a0d2948dcebb0b1c9dc}\label{classAntennaPositioner_a62c014613a812a0d2948dcebb0b1c9dc}} 
+unsigned int \hyperlink{classAntennaPositioner_a62c014613a812a0d2948dcebb0b1c9dc}{Get\+Num\+Of\+Positions} () const
+\begin{DoxyCompactList}\small\item\em This method return the total number of azimuth positions. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classAntennaPositioner_a512104fe937395e266284eded6a8359d}\label{classAntennaPositioner_a512104fe937395e266284eded6a8359d}} 
+bool \hyperlink{classAntennaPositioner_a512104fe937395e266284eded6a8359d}{Is\+Last\+Position} () const
+\begin{DoxyCompactList}\small\item\em This method states if the current position is the last one. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The aim of the class {\itshape \hyperlink{classAntennaPositioner}{Antenna\+Positioner}} is to handle the antenna positioning system. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classAntennaPositioner_ad7e864f6073421c98585c64802a3e78e}\label{classAntennaPositioner_ad7e864f6073421c98585c64802a3e78e}} 
+\index{Antenna\+Positioner@{Antenna\+Positioner}!Antenna\+Positioner@{Antenna\+Positioner}}
+\index{Antenna\+Positioner@{Antenna\+Positioner}!Antenna\+Positioner@{Antenna\+Positioner}}
+\subsubsection{\texorpdfstring{Antenna\+Positioner()}{AntennaPositioner()}}
+{\footnotesize\ttfamily Antenna\+Positioner\+::\+Antenna\+Positioner (\begin{DoxyParamCaption}\item[{\hyperlink{classGPSInterface}{G\+P\+S\+Interface} \&}]{gps\+Interf }\end{DoxyParamCaption})}
+
+
+
+An index which allows to know how many positions have been swept and how many remains to reach the last position. 
+
+The unique constructor of the class {\itshape \hyperlink{classAntennaPositioner}{Antenna\+Positioner}}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em gps\+Interf} & A reference to the object which is responsible for the communication with the Aaronia G\+PS receiver. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classAntennaPositioner_a7a3a48b1aab43b9a43b664567a8c5829}\label{classAntennaPositioner_a7a3a48b1aab43b9a43b664567a8c5829}} 
+\index{Antenna\+Positioner@{Antenna\+Positioner}!````~Antenna\+Positioner@{$\sim$\+Antenna\+Positioner}}
+\index{````~Antenna\+Positioner@{$\sim$\+Antenna\+Positioner}!Antenna\+Positioner@{Antenna\+Positioner}}
+\subsubsection{\texorpdfstring{$\sim$\+Antenna\+Positioner()}{~AntennaPositioner()}}
+{\footnotesize\ttfamily Antenna\+Positioner\+::$\sim$\+Antenna\+Positioner (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+The class destructor. 
+
+Its implementation is empty because the attributes are implicitly destroyed. However, the destructor is defined here to allow this one to be called explicitly in any part of the code, what is used by the signals handler to destroy the objects when a signal to finish the execution of the software is received. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classAntennaPositioner_a0e4f58f67280f2a6daa10c7cc02f0abd}\label{classAntennaPositioner_a0e4f58f67280f2a6daa10c7cc02f0abd}} 
+\index{Antenna\+Positioner@{Antenna\+Positioner}!Change\+Polarization@{Change\+Polarization}}
+\index{Change\+Polarization@{Change\+Polarization}!Antenna\+Positioner@{Antenna\+Positioner}}
+\subsubsection{\texorpdfstring{Change\+Polarization()}{ChangePolarization()}}
+{\footnotesize\ttfamily bool Antenna\+Positioner\+::\+Change\+Polarization (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+This method change the antenna polarization. 
+
+If the current polarization is horizontal, then it is changed to vertical, and vice versa. \begin{DoxyReturn}{Returns}
+A {\ttfamily true} if the operation was successful or a {\ttfamily false} otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classAntennaPositioner_a897b759fa711bd8a4261e57177e3db1c}\label{classAntennaPositioner_a897b759fa711bd8a4261e57177e3db1c}} 
+\index{Antenna\+Positioner@{Antenna\+Positioner}!Get\+Polarization\+String@{Get\+Polarization\+String}}
+\index{Get\+Polarization\+String@{Get\+Polarization\+String}!Antenna\+Positioner@{Antenna\+Positioner}}
+\subsubsection{\texorpdfstring{Get\+Polarization\+String()}{GetPolarizationString()}}
+{\footnotesize\ttfamily std\+::string Antenna\+Positioner\+::\+Get\+Polarization\+String (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+This method returns the current antenna polarization, as a {\ttfamily std\+::string} object. 
+
+\begin{DoxyReturn}{Returns}
+A {\ttfamily std\+::string} object with the current antenna polarization. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classAntennaPositioner_a5087caa452709b33082c41b2cef2a23e}\label{classAntennaPositioner_a5087caa452709b33082c41b2cef2a23e}} 
+\index{Antenna\+Positioner@{Antenna\+Positioner}!Initialize@{Initialize}}
+\index{Initialize@{Initialize}!Antenna\+Positioner@{Antenna\+Positioner}}
+\subsubsection{\texorpdfstring{Initialize()}{Initialize()}}
+{\footnotesize\ttfamily bool Antenna\+Positioner\+::\+Initialize (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+This method performs the initialization of the antenna positioning system. 
+
+This initialization implies to move the antenna to its initial position, to capture the initial azimuth angle and to ensure the antenna polarization is horizontal. \begin{DoxyReturn}{Returns}
+A {\ttfamily true} if the initialization was successful or a {\ttfamily false} otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classAntennaPositioner_a2e05c385b9933d2ee1d4f8f953c99070}\label{classAntennaPositioner_a2e05c385b9933d2ee1d4f8f953c99070}} 
+\index{Antenna\+Positioner@{Antenna\+Positioner}!Next\+Azim\+Position@{Next\+Azim\+Position}}
+\index{Next\+Azim\+Position@{Next\+Azim\+Position}!Antenna\+Positioner@{Antenna\+Positioner}}
+\subsubsection{\texorpdfstring{Next\+Azim\+Position()}{NextAzimPosition()}}
+{\footnotesize\ttfamily bool Antenna\+Positioner\+::\+Next\+Azim\+Position (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+This method moves the antenna to the next azimuth position. 
+
+To move the antenna to the next position, this is rotated an angle determined by the number of positions (360/number of positions) and in a clockwise way. If the current position is the last one, then the antenna is move to the initial position, rotating this one counterclockwise to avoid the cables to tangle or stretch.
+
+Taking into account the method \hyperlink{classAntennaPositioner_a5087caa452709b33082c41b2cef2a23e}{Initialize()}, it is waited this method to be called when the antenna polarization changes from vertical to horizontal. \begin{DoxyReturn}{Returns}
+A {\ttfamily true} if the operation was successful or a {\ttfamily false} otherwise. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/\hyperlink{AntennaPositioning_8h}{Antenna\+Positioning.\+h}\item 
+/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/\hyperlink{AntennaPositioner_8cpp}{Antenna\+Positioner.\+cpp}\end{DoxyCompactItemize}

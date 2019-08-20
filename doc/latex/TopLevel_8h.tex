@@ -1,0 +1,46 @@
+\hypertarget{TopLevel_8h}{}\section{/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/\+Top\+Level.h File Reference}
+\label{TopLevel_8h}\index{/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/\+Top\+Level.\+h@{/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/\+Top\+Level.\+h}}
+
+
+This header file includes the rest of the header files and the class of the signal handler is declared here.  
+
+
+{\ttfamily \#include \char`\"{}Spectran.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Sweep\+Processing.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Antenna\+Positioning.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$signal.\+h$>$}\newline
+{\ttfamily \#include $<$boost/timer/timer.\+hpp$>$}\newline
+{\ttfamily \#include $<$boost/date\+\_\+time/posix\+\_\+time/posix\+\_\+time.\+hpp$>$}\newline
+Include dependency graph for Top\+Level.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{TopLevel_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=231pt]{TopLevel_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classSignalHandler}{Signal\+Handler}
+\begin{DoxyCompactList}\small\item\em The class {\itshape \hyperlink{classSignalHandler}{Signal\+Handler}} is intended to handle the interprocess signals (I\+PC) which terminates the software. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{TopLevel_8h_add9d7dd1477d4336f2912fed380aeeea}\label{TopLevel_8h_add9d7dd1477d4336f2912fed380aeeea}} 
+boost\+::timer\+::cpu\+\_\+timer \hyperlink{TopLevel_8h_add9d7dd1477d4336f2912fed380aeeea}{timer}
+\begin{DoxyCompactList}\small\item\em A timer which is used to measure the execution time when the number of iterations is finite. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This header file includes the rest of the header files and the class of the signal handler is declared here. 
+
+This header file simplifies the include in the \hyperlink{main_8cpp}{main.\+cpp} file. The declaration of the class {\itshape \hyperlink{classSignalHandler}{Signal\+Handler}} must be put in an high-\/level header file because this class must know the declarations of almost all the classes of the software. \begin{DoxyAuthor}{Author}
+Mauro Diamantino 
+\end{DoxyAuthor}

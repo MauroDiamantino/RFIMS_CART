@@ -1,0 +1,223 @@
+\hypertarget{client_8py}{}\section{/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/scripts/client.py File Reference}
+\label{client_8py}\index{/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/scripts/client.\+py@{/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/scripts/client.\+py}}
+
+
+The aim of this script is to upload the data collected by the software \textquotesingle{}rfims-\/cart\textquotesingle{} (which calls this script).  
+
+
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{client_8py_af02a90f3bd6542c0620a930e41d8f11f}{client.\+Internet\+\_\+on} ()
+\begin{DoxyCompactList}\small\item\em This function checks if there is Internet connection. \end{DoxyCompactList}\item 
+def \hyperlink{client_8py_acc7d8611dafefdaff59c1da66e0605c7}{client.\+Send\+Data} (file\+\_\+path)
+\begin{DoxyCompactList}\small\item\em This function sends the given file to the remote server, using scp. \end{DoxyCompactList}\item 
+def \hyperlink{client_8py_a6e1b8361c3e8ee7e36252c1ec1426cd5}{client.\+Server\+Wake\+Up} (file\+\_\+name)
+\begin{DoxyCompactList}\small\item\em This function wakes up the remote server to that one processes the sent file. \end{DoxyCompactList}\item 
+def \hyperlink{client_8py_a07619314bd3b9624b1856ca394622b1a}{client.\+Name\+Extractor} (file\+\_\+path)
+\begin{DoxyCompactList}\small\item\em This function extracts the filename from the script argument. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+string \hyperlink{client_8py_ad39c4666bbab8c2e37b88274a0eaf7ba}{client.\+H\+O\+ST} = \char`\"{}\char`\"{}
+\begin{DoxyCompactList}\small\item\em The public IP of the MV Amazon remote server. \end{DoxyCompactList}\item 
+string \hyperlink{client_8py_ab0de14872d05c0ca564d673a2708e652}{client.\+U\+S\+E\+R\+N\+A\+ME} = \char`\"{}\char`\"{}
+\begin{DoxyCompactList}\small\item\em The username which must be used to log in the remote server. \end{DoxyCompactList}\item 
+string \hyperlink{client_8py_a9669c4cc19a3ff55592a7cd864b523d2}{client.\+P\+A\+S\+S\+W\+O\+RD} = \char`\"{}\char`\"{}
+\begin{DoxyCompactList}\small\item\em The password which must be used to log in the remote server. \end{DoxyCompactList}\item 
+int \hyperlink{client_8py_acd2f280864b8945bb46e196ed2b0990a}{client.\+P\+O\+RT} = 22
+\begin{DoxyCompactList}\small\item\em The port through which the data file is sent, using scp. \end{DoxyCompactList}\item 
+string \hyperlink{client_8py_a12c4adde99faf52947567bf2b6177fda}{client.\+R\+E\+M\+O\+T\+E\+\_\+\+F\+O\+L\+D\+ER} = \char`\"{}/home/server/R\+F\+I\+MS-\/C\+A\+RT/downloads/\char`\"{}
+\begin{DoxyCompactList}\small\item\em The remote folder where the file is stored. \end{DoxyCompactList}\item 
+string \hyperlink{client_8py_a33d4cdf80191ac474c678feee0944a78}{client.\+S\+E\+R\+V\+E\+R\+\_\+\+S\+C\+R\+I\+P\+T\+\_\+\+P\+A\+TH} = \char`\"{}/home/server/R\+F\+I\+MS-\/C\+A\+RT/Server2.\+py\char`\"{}
+\begin{DoxyCompactList}\small\item\em The remote path to the sript which must be executed to wake up the server. \end{DoxyCompactList}\item 
+int \hyperlink{client_8py_a1147ca818ea7c198f39540e1bf9ffe00}{client.\+T\+R\+I\+ES} = 6
+\begin{DoxyCompactList}\small\item\em The number of times the Internet connection is checked, with an interval time between each try. \end{DoxyCompactList}\item 
+int \hyperlink{client_8py_a39259fc1d28e4d56bd1293310809fe9f}{client.\+W\+A\+I\+T\+\_\+\+S\+E\+C\+O\+N\+DS} = 600
+\begin{DoxyCompactList}\small\item\em The interval time which is waited between two tries of checking Internet connection, expressed in seconds (s). \end{DoxyCompactList}\item 
+int \hyperlink{client_8py_a2f4ec3c69f753683d30fceeba65b5d4c}{client.\+W\+A\+I\+T\+\_\+\+M\+I\+NS} = W\+A\+I\+T\+\_\+\+S\+E\+C\+O\+N\+DS / 60
+\begin{DoxyCompactList}\small\item\em The interval time which is waited between two tries of checking Internet connection, expressed in minutes. \end{DoxyCompactList}\item 
+\hyperlink{client_8py_a686381b8278fc354359e6df546e999c9}{client.\+file\+\_\+path} = sys.\+argv\mbox{[}1\mbox{]}
+\begin{DoxyCompactList}\small\item\em The script argument which contains the path and name of the file to be sent. \end{DoxyCompactList}\item 
+def \hyperlink{client_8py_a6f84214513663541fb5aa9e953658668}{client.\+file\+\_\+name} = Name\+Extractor(file\+\_\+path)
+\begin{DoxyCompactList}\small\item\em The name of the file to be sent. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The aim of this script is to upload the data collected by the software \textquotesingle{}rfims-\/cart\textquotesingle{} (which calls this script). 
+
+First, the script checks many times if there is Internet connection, through one hour, if so then it sends a compressed archive file with the rfims-\/cart data to the remote server, using scp, later it wakes up the server and, finally, it deletes the local archive file. If any error occurs the local archive file is not removed and it remains in a queue (in the software rfims-\/data) waiting to be uploaded. The path and name of the file to be sent is passed as an argument.
+
+\begin{DoxyAuthor}{Author}
+Leandro Saldivar 
+
+Mauro Diamantino 
+\end{DoxyAuthor}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{client_8py_file_af02a90f3bd6542c0620a930e41d8f11f}\label{client_8py_file_af02a90f3bd6542c0620a930e41d8f11f}} 
+\index{client.\+py@{client.\+py}!Internet\+\_\+on@{Internet\+\_\+on}}
+\index{Internet\+\_\+on@{Internet\+\_\+on}!client.\+py@{client.\+py}}
+\subsubsection{\texorpdfstring{Internet\+\_\+on()}{Internet\_on()}}
+{\footnotesize\ttfamily def client.\+Internet\+\_\+on (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+This function checks if there is Internet connection. 
+
+\begin{DoxyReturn}{Returns}
+A {\ttfamily true} value is returned if theres is Internet connection and a {\ttfamily false} value otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{client_8py_file_a07619314bd3b9624b1856ca394622b1a}\label{client_8py_file_a07619314bd3b9624b1856ca394622b1a}} 
+\index{client.\+py@{client.\+py}!Name\+Extractor@{Name\+Extractor}}
+\index{Name\+Extractor@{Name\+Extractor}!client.\+py@{client.\+py}}
+\subsubsection{\texorpdfstring{Name\+Extractor()}{NameExtractor()}}
+{\footnotesize\ttfamily def client.\+Name\+Extractor (\begin{DoxyParamCaption}\item[{}]{file\+\_\+path }\end{DoxyParamCaption})}
+
+
+
+This function extracts the filename from the script argument. 
+
+\begin{DoxyReturn}{Returns}
+The name of the file to be sent. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{client_8py_file_acc7d8611dafefdaff59c1da66e0605c7}\label{client_8py_file_acc7d8611dafefdaff59c1da66e0605c7}} 
+\index{client.\+py@{client.\+py}!Send\+Data@{Send\+Data}}
+\index{Send\+Data@{Send\+Data}!client.\+py@{client.\+py}}
+\subsubsection{\texorpdfstring{Send\+Data()}{SendData()}}
+{\footnotesize\ttfamily def client.\+Send\+Data (\begin{DoxyParamCaption}\item[{}]{file\+\_\+path }\end{DoxyParamCaption})}
+
+
+
+This function sends the given file to the remote server, using scp. 
+
+\begin{DoxyReturn}{Returns}
+A {\ttfamily true} value is returned if the operation finished successfully, and a {\ttfamily false} value otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{client_8py_file_a6e1b8361c3e8ee7e36252c1ec1426cd5}\label{client_8py_file_a6e1b8361c3e8ee7e36252c1ec1426cd5}} 
+\index{client.\+py@{client.\+py}!Server\+Wake\+Up@{Server\+Wake\+Up}}
+\index{Server\+Wake\+Up@{Server\+Wake\+Up}!client.\+py@{client.\+py}}
+\subsubsection{\texorpdfstring{Server\+Wake\+Up()}{ServerWakeUp()}}
+{\footnotesize\ttfamily def client.\+Server\+Wake\+Up (\begin{DoxyParamCaption}\item[{}]{file\+\_\+name }\end{DoxyParamCaption})}
+
+
+
+This function wakes up the remote server to that one processes the sent file. 
+
+\begin{DoxyReturn}{Returns}
+A {\ttfamily true} value is returned if the operation finished successfully, and a {\ttfamily false} value otherwise. 
+\end{DoxyReturn}
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{client_8py_file_a6f84214513663541fb5aa9e953658668}\label{client_8py_file_a6f84214513663541fb5aa9e953658668}} 
+\index{client.\+py@{client.\+py}!file\+\_\+name@{file\+\_\+name}}
+\index{file\+\_\+name@{file\+\_\+name}!client.\+py@{client.\+py}}
+\subsubsection{\texorpdfstring{file\+\_\+name}{file\_name}}
+{\footnotesize\ttfamily def client.\+file\+\_\+name = Name\+Extractor(file\+\_\+path)}
+
+
+
+The name of the file to be sent. 
+
+\mbox{\Hypertarget{client_8py_file_a686381b8278fc354359e6df546e999c9}\label{client_8py_file_a686381b8278fc354359e6df546e999c9}} 
+\index{client.\+py@{client.\+py}!file\+\_\+path@{file\+\_\+path}}
+\index{file\+\_\+path@{file\+\_\+path}!client.\+py@{client.\+py}}
+\subsubsection{\texorpdfstring{file\+\_\+path}{file\_path}}
+{\footnotesize\ttfamily client.\+file\+\_\+path = sys.\+argv\mbox{[}1\mbox{]}}
+
+
+
+The script argument which contains the path and name of the file to be sent. 
+
+\mbox{\Hypertarget{client_8py_file_ad39c4666bbab8c2e37b88274a0eaf7ba}\label{client_8py_file_ad39c4666bbab8c2e37b88274a0eaf7ba}} 
+\index{client.\+py@{client.\+py}!H\+O\+ST@{H\+O\+ST}}
+\index{H\+O\+ST@{H\+O\+ST}!client.\+py@{client.\+py}}
+\subsubsection{\texorpdfstring{H\+O\+ST}{HOST}}
+{\footnotesize\ttfamily string client.\+H\+O\+ST = \char`\"{}\char`\"{}}
+
+
+
+The public IP of the MV Amazon remote server. 
+
+\mbox{\Hypertarget{client_8py_file_a9669c4cc19a3ff55592a7cd864b523d2}\label{client_8py_file_a9669c4cc19a3ff55592a7cd864b523d2}} 
+\index{client.\+py@{client.\+py}!P\+A\+S\+S\+W\+O\+RD@{P\+A\+S\+S\+W\+O\+RD}}
+\index{P\+A\+S\+S\+W\+O\+RD@{P\+A\+S\+S\+W\+O\+RD}!client.\+py@{client.\+py}}
+\subsubsection{\texorpdfstring{P\+A\+S\+S\+W\+O\+RD}{PASSWORD}}
+{\footnotesize\ttfamily string client.\+P\+A\+S\+S\+W\+O\+RD = \char`\"{}\char`\"{}}
+
+
+
+The password which must be used to log in the remote server. 
+
+\mbox{\Hypertarget{client_8py_file_acd2f280864b8945bb46e196ed2b0990a}\label{client_8py_file_acd2f280864b8945bb46e196ed2b0990a}} 
+\index{client.\+py@{client.\+py}!P\+O\+RT@{P\+O\+RT}}
+\index{P\+O\+RT@{P\+O\+RT}!client.\+py@{client.\+py}}
+\subsubsection{\texorpdfstring{P\+O\+RT}{PORT}}
+{\footnotesize\ttfamily int client.\+P\+O\+RT = 22}
+
+
+
+The port through which the data file is sent, using scp. 
+
+\mbox{\Hypertarget{client_8py_file_a12c4adde99faf52947567bf2b6177fda}\label{client_8py_file_a12c4adde99faf52947567bf2b6177fda}} 
+\index{client.\+py@{client.\+py}!R\+E\+M\+O\+T\+E\+\_\+\+F\+O\+L\+D\+ER@{R\+E\+M\+O\+T\+E\+\_\+\+F\+O\+L\+D\+ER}}
+\index{R\+E\+M\+O\+T\+E\+\_\+\+F\+O\+L\+D\+ER@{R\+E\+M\+O\+T\+E\+\_\+\+F\+O\+L\+D\+ER}!client.\+py@{client.\+py}}
+\subsubsection{\texorpdfstring{R\+E\+M\+O\+T\+E\+\_\+\+F\+O\+L\+D\+ER}{REMOTE\_FOLDER}}
+{\footnotesize\ttfamily string client.\+R\+E\+M\+O\+T\+E\+\_\+\+F\+O\+L\+D\+ER = \char`\"{}/home/server/R\+F\+I\+MS-\/C\+A\+RT/downloads/\char`\"{}}
+
+
+
+The remote folder where the file is stored. 
+
+\mbox{\Hypertarget{client_8py_file_a33d4cdf80191ac474c678feee0944a78}\label{client_8py_file_a33d4cdf80191ac474c678feee0944a78}} 
+\index{client.\+py@{client.\+py}!S\+E\+R\+V\+E\+R\+\_\+\+S\+C\+R\+I\+P\+T\+\_\+\+P\+A\+TH@{S\+E\+R\+V\+E\+R\+\_\+\+S\+C\+R\+I\+P\+T\+\_\+\+P\+A\+TH}}
+\index{S\+E\+R\+V\+E\+R\+\_\+\+S\+C\+R\+I\+P\+T\+\_\+\+P\+A\+TH@{S\+E\+R\+V\+E\+R\+\_\+\+S\+C\+R\+I\+P\+T\+\_\+\+P\+A\+TH}!client.\+py@{client.\+py}}
+\subsubsection{\texorpdfstring{S\+E\+R\+V\+E\+R\+\_\+\+S\+C\+R\+I\+P\+T\+\_\+\+P\+A\+TH}{SERVER\_SCRIPT\_PATH}}
+{\footnotesize\ttfamily string client.\+S\+E\+R\+V\+E\+R\+\_\+\+S\+C\+R\+I\+P\+T\+\_\+\+P\+A\+TH = \char`\"{}/home/server/R\+F\+I\+MS-\/C\+A\+RT/Server2.\+py\char`\"{}}
+
+
+
+The remote path to the sript which must be executed to wake up the server. 
+
+\mbox{\Hypertarget{client_8py_file_a1147ca818ea7c198f39540e1bf9ffe00}\label{client_8py_file_a1147ca818ea7c198f39540e1bf9ffe00}} 
+\index{client.\+py@{client.\+py}!T\+R\+I\+ES@{T\+R\+I\+ES}}
+\index{T\+R\+I\+ES@{T\+R\+I\+ES}!client.\+py@{client.\+py}}
+\subsubsection{\texorpdfstring{T\+R\+I\+ES}{TRIES}}
+{\footnotesize\ttfamily int client.\+T\+R\+I\+ES = 6}
+
+
+
+The number of times the Internet connection is checked, with an interval time between each try. 
+
+\mbox{\Hypertarget{client_8py_file_ab0de14872d05c0ca564d673a2708e652}\label{client_8py_file_ab0de14872d05c0ca564d673a2708e652}} 
+\index{client.\+py@{client.\+py}!U\+S\+E\+R\+N\+A\+ME@{U\+S\+E\+R\+N\+A\+ME}}
+\index{U\+S\+E\+R\+N\+A\+ME@{U\+S\+E\+R\+N\+A\+ME}!client.\+py@{client.\+py}}
+\subsubsection{\texorpdfstring{U\+S\+E\+R\+N\+A\+ME}{USERNAME}}
+{\footnotesize\ttfamily string client.\+U\+S\+E\+R\+N\+A\+ME = \char`\"{}\char`\"{}}
+
+
+
+The username which must be used to log in the remote server. 
+
+\mbox{\Hypertarget{client_8py_file_a2f4ec3c69f753683d30fceeba65b5d4c}\label{client_8py_file_a2f4ec3c69f753683d30fceeba65b5d4c}} 
+\index{client.\+py@{client.\+py}!W\+A\+I\+T\+\_\+\+M\+I\+NS@{W\+A\+I\+T\+\_\+\+M\+I\+NS}}
+\index{W\+A\+I\+T\+\_\+\+M\+I\+NS@{W\+A\+I\+T\+\_\+\+M\+I\+NS}!client.\+py@{client.\+py}}
+\subsubsection{\texorpdfstring{W\+A\+I\+T\+\_\+\+M\+I\+NS}{WAIT\_MINS}}
+{\footnotesize\ttfamily int client.\+W\+A\+I\+T\+\_\+\+M\+I\+NS = W\+A\+I\+T\+\_\+\+S\+E\+C\+O\+N\+DS / 60}
+
+
+
+The interval time which is waited between two tries of checking Internet connection, expressed in minutes. 
+
+\mbox{\Hypertarget{client_8py_file_a39259fc1d28e4d56bd1293310809fe9f}\label{client_8py_file_a39259fc1d28e4d56bd1293310809fe9f}} 
+\index{client.\+py@{client.\+py}!W\+A\+I\+T\+\_\+\+S\+E\+C\+O\+N\+DS@{W\+A\+I\+T\+\_\+\+S\+E\+C\+O\+N\+DS}}
+\index{W\+A\+I\+T\+\_\+\+S\+E\+C\+O\+N\+DS@{W\+A\+I\+T\+\_\+\+S\+E\+C\+O\+N\+DS}!client.\+py@{client.\+py}}
+\subsubsection{\texorpdfstring{W\+A\+I\+T\+\_\+\+S\+E\+C\+O\+N\+DS}{WAIT\_SECONDS}}
+{\footnotesize\ttfamily int client.\+W\+A\+I\+T\+\_\+\+S\+E\+C\+O\+N\+DS = 600}
+
+
+
+The interval time which is waited between two tries of checking Internet connection, expressed in seconds (s). 
+

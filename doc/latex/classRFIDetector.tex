@@ -1,0 +1,107 @@
+\hypertarget{classRFIDetector}{}\section{R\+F\+I\+Detector Class Reference}
+\label{classRFIDetector}\index{R\+F\+I\+Detector@{R\+F\+I\+Detector}}
+
+
+The aim of this class is to compare each calibrated sweep with a threshold curve to determine where there is RF interference (\hyperlink{structRFI}{R\+FI}).  
+
+
+
+
+{\ttfamily \#include $<$Sweep\+Processing.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classRFIDetector_a1943c00a5ab657a24cdacaf2b0d550f1}{R\+F\+I\+Detector} (\hyperlink{classCurveAdjuster}{Curve\+Adjuster} \&adj)
+\begin{DoxyCompactList}\small\item\em The unique class constructor. \end{DoxyCompactList}\item 
+\hyperlink{classRFIDetector_a6445cd27f7b22459d8f1e3b67c323cf0}{$\sim$\+R\+F\+I\+Detector} ()
+\begin{DoxyCompactList}\small\item\em The class destructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classRFIDetector_aea149c6aa9fa7db44616973b27863ebc}\label{classRFIDetector_aea149c6aa9fa7db44616973b27863ebc}} 
+void \hyperlink{classRFIDetector_aea149c6aa9fa7db44616973b27863ebc}{Set\+Bands\+Parameters} (const std\+::vector$<$ \hyperlink{structBandParameters}{Band\+Parameters} $>$ \&bands\+Param)
+\begin{DoxyCompactList}\small\item\em A method to insert a vector with the parameters of all frequency bands. \end{DoxyCompactList}\item 
+void \hyperlink{classRFIDetector_a1eba12febd92bba77f658dfe664ea5c6}{Load\+Thresh\+Curve} (const \hyperlink{structRFI_a18cfa7d24274bbcd14acc6b513860cb0}{R\+F\+I\+::\+Thresholds\+Norm} thr\+Norm)
+\begin{DoxyCompactList}\small\item\em This method loads a determined thresholds curve from the corresponding file. \end{DoxyCompactList}\item 
+const \hyperlink{structRFI}{R\+FI} \& \hyperlink{classRFIDetector_a98bf817b6c6aee954e0f0056fb5e4360}{Detect\+R\+FI} (const \hyperlink{structSweep}{Sweep} \&sweep)
+\begin{DoxyCompactList}\small\item\em This method detects \hyperlink{structRFI}{R\+FI} in a calibrated sweep. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classRFIDetector_a6e2c5fbdb76bc7b752fb0fec3bc4f41c}\label{classRFIDetector_a6e2c5fbdb76bc7b752fb0fec3bc4f41c}} 
+const \hyperlink{structFreqValues}{Freq\+Values} \& \hyperlink{classRFIDetector_a6e2c5fbdb76bc7b752fb0fec3bc4f41c}{Get\+Thresh\+Curve} () const
+\begin{DoxyCompactList}\small\item\em This method returns the threshold curve which has been loaded. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classRFIDetector_a053ba4f21411a8671ff0a38f2a18d393}\label{classRFIDetector_a053ba4f21411a8671ff0a38f2a18d393}} 
+unsigned int \hyperlink{classRFIDetector_a053ba4f21411a8671ff0a38f2a18d393}{Get\+Num\+Of\+R\+F\+I\+Bands} () const
+\begin{DoxyCompactList}\small\item\em This method returns the number of \hyperlink{structRFI}{R\+FI} bands which were detected in the last sweep. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classRFIDetector_ad50815b6e1004d2a6c15aef7deaca272}\label{classRFIDetector_ad50815b6e1004d2a6c15aef7deaca272}} 
+const \hyperlink{structRFI}{R\+FI} \& \hyperlink{classRFIDetector_ad50815b6e1004d2a6c15aef7deaca272}{Get\+R\+FI} () const
+\begin{DoxyCompactList}\small\item\em This method returns the last detected \hyperlink{structRFI}{R\+FI}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The aim of this class is to compare each calibrated sweep with a threshold curve to determine where there is RF interference (\hyperlink{structRFI}{R\+FI}). 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classRFIDetector_a1943c00a5ab657a24cdacaf2b0d550f1}\label{classRFIDetector_a1943c00a5ab657a24cdacaf2b0d550f1}} 
+\index{R\+F\+I\+Detector@{R\+F\+I\+Detector}!R\+F\+I\+Detector@{R\+F\+I\+Detector}}
+\index{R\+F\+I\+Detector@{R\+F\+I\+Detector}!R\+F\+I\+Detector@{R\+F\+I\+Detector}}
+\subsubsection{\texorpdfstring{R\+F\+I\+Detector()}{RFIDetector()}}
+{\footnotesize\ttfamily R\+F\+I\+Detector\+::\+R\+F\+I\+Detector (\begin{DoxyParamCaption}\item[{\hyperlink{classCurveAdjuster}{Curve\+Adjuster} \&}]{adj }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+The unique class constructor. 
+
+At instantiation the programmer must provide a reference to a {\itshape \hyperlink{classCurveAdjuster}{Curve\+Adjuster}} object. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em adj} & A {\itshape \hyperlink{classCurveAdjuster}{Curve\+Adjuster}} object. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classRFIDetector_a6445cd27f7b22459d8f1e3b67c323cf0}\label{classRFIDetector_a6445cd27f7b22459d8f1e3b67c323cf0}} 
+\index{R\+F\+I\+Detector@{R\+F\+I\+Detector}!````~R\+F\+I\+Detector@{$\sim$\+R\+F\+I\+Detector}}
+\index{````~R\+F\+I\+Detector@{$\sim$\+R\+F\+I\+Detector}!R\+F\+I\+Detector@{R\+F\+I\+Detector}}
+\subsubsection{\texorpdfstring{$\sim$\+R\+F\+I\+Detector()}{~RFIDetector()}}
+{\footnotesize\ttfamily R\+F\+I\+Detector\+::$\sim$\+R\+F\+I\+Detector (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+The class destructor. 
+
+Its implementation is empty because the attributes destruction is implicitly. However, the destructor is defined here to allow this one to be called explicitly in any part of the code, what is used by the signals handler to destroy the objects when a signal to finish the execution of the software is received. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classRFIDetector_a98bf817b6c6aee954e0f0056fb5e4360}\label{classRFIDetector_a98bf817b6c6aee954e0f0056fb5e4360}} 
+\index{R\+F\+I\+Detector@{R\+F\+I\+Detector}!Detect\+R\+FI@{Detect\+R\+FI}}
+\index{Detect\+R\+FI@{Detect\+R\+FI}!R\+F\+I\+Detector@{R\+F\+I\+Detector}}
+\subsubsection{\texorpdfstring{Detect\+R\+F\+I()}{DetectRFI()}}
+{\footnotesize\ttfamily const \hyperlink{structRFI}{R\+FI} \& R\+F\+I\+Detector\+::\+Detect\+R\+FI (\begin{DoxyParamCaption}\item[{const \hyperlink{structSweep}{Sweep} \&}]{sweep }\end{DoxyParamCaption})}
+
+
+
+This method detects \hyperlink{structRFI}{R\+FI} in a calibrated sweep. 
+
+The given sweep should have been calibrated before. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em sweep} & A calibrated sweep. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A structure with the pairs of values (frequency,power) where it was detected \hyperlink{structRFI}{R\+FI}. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classRFIDetector_a1eba12febd92bba77f658dfe664ea5c6}\label{classRFIDetector_a1eba12febd92bba77f658dfe664ea5c6}} 
+\index{R\+F\+I\+Detector@{R\+F\+I\+Detector}!Load\+Thresh\+Curve@{Load\+Thresh\+Curve}}
+\index{Load\+Thresh\+Curve@{Load\+Thresh\+Curve}!R\+F\+I\+Detector@{R\+F\+I\+Detector}}
+\subsubsection{\texorpdfstring{Load\+Thresh\+Curve()}{LoadThreshCurve()}}
+{\footnotesize\ttfamily void R\+F\+I\+Detector\+::\+Load\+Thresh\+Curve (\begin{DoxyParamCaption}\item[{const \hyperlink{structRFI_a18cfa7d24274bbcd14acc6b513860cb0}{R\+F\+I\+::\+Thresholds\+Norm}}]{thr\+Norm }\end{DoxyParamCaption})}
+
+
+
+This method loads a determined thresholds curve from the corresponding file. 
+
+The threshold curve is loaded from one of the fileS in the path \hyperlink{Basics_8h_a0423f4cb393331ce0b9f6b3a43adcaae}{B\+A\+S\+E\+\_\+\+P\+A\+TH}/thresholds/. The argument determines which recommendation, protocol or norm must be taken as reference to determine the threshold curve to be used, i.\+e. to determine from which file load that curve. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em thr\+Norm} & The norm, recommendation or protocol that must be taken as reference. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/\hyperlink{SweepProcessing_8h}{Sweep\+Processing.\+h}\item 
+/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/\hyperlink{RFIDetector_8cpp}{R\+F\+I\+Detector.\+cpp}\end{DoxyCompactItemize}

@@ -1,0 +1,242 @@
+\hypertarget{classReply}{}\section{Reply Class Reference}
+\label{classReply}\index{Reply@{Reply}}
+
+
+The class {\itshape \hyperlink{classReply}{Reply}} is intended to receive a bytes vector sent by the spectrum analyzer and to extract its information.  
+
+
+
+
+{\ttfamily \#include $<$Spectran.\+h$>$}
+
+
+
+Inheritance diagram for Reply\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=152pt]{classReply__inherit__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{classReply_aa873dec4817ed08a5212ec3ba2b5c807}{Reply\+Type} \+: char \{ \newline
+{\bfseries V\+E\+R\+I\+FY} =0x01, 
+{\bfseries G\+E\+T\+S\+T\+P\+V\+AR} =0x20, 
+{\bfseries S\+E\+T\+S\+T\+P\+V\+AR}, 
+{\bfseries A\+M\+P\+F\+R\+E\+Q\+D\+AT}, 
+\newline
+{\bfseries U\+N\+I\+N\+I\+T\+I\+A\+L\+I\+Z\+ED}
+ \}\begin{DoxyCompactList}\small\item\em An enumeration which contains the reply types which can be received from a Spectran H\+F-\/60105 V4 X spectrum analyzer. \end{DoxyCompactList}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classReply_a48042b6ebf852fd8f0c28664eadf851e}\label{classReply_a48042b6ebf852fd8f0c28664eadf851e}} 
+\hyperlink{classReply_a48042b6ebf852fd8f0c28664eadf851e}{Reply} ()
+\begin{DoxyCompactList}\small\item\em The default constructor. \end{DoxyCompactList}\item 
+\hyperlink{classReply_a4c993ea22d3674d2a337b6ca157d2bea}{Reply} (const \hyperlink{classReply_aa873dec4817ed08a5212ec3ba2b5c807}{Reply\+Type} type, const \hyperlink{Spectran_8h_a0411392c90f0c8f0d8e44a4e94259276}{Spec\+Variable} variable=Spec\+Variable\+::\+U\+N\+I\+N\+I\+T\+I\+A\+L\+I\+Z\+ED)
+\begin{DoxyCompactList}\small\item\em A constructor which allows to set the reply type and the variable name, in case of {\itshape G\+E\+T\+S\+T\+P\+V\+AR} replies, and prepare the object to receive a spectrum analyzer\textquotesingle{}s reply. \end{DoxyCompactList}\item 
+\hyperlink{classReply_add752285090cf6966ba993aae7056229}{Reply} (const \hyperlink{classReply}{Reply} \&another\+Reply)
+\begin{DoxyCompactList}\small\item\em The copy constructor. \end{DoxyCompactList}\item 
+virtual \hyperlink{classReply_a165e19cb7b393c0993d8992d47e7141d}{$\sim$\+Reply} ()
+\begin{DoxyCompactList}\small\item\em The class destructor which is defined as virtual because there are some classes derived from this one. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classReply_a8c27c3e783dcc1ce75f709114b7e79f1}{Prepare\+To} (const \hyperlink{classReply_aa873dec4817ed08a5212ec3ba2b5c807}{Reply\+Type} type, const \hyperlink{Spectran_8h_a0411392c90f0c8f0d8e44a4e94259276}{Spec\+Variable} variable=Spec\+Variable\+::\+U\+N\+I\+N\+I\+T\+I\+A\+L\+I\+Z\+ED)
+\begin{DoxyCompactList}\small\item\em This method is intended to set the reply type and variable name, in case of {\itshape G\+E\+T\+S\+T\+P\+V\+AR} replies, and to ask the object to prepare itself to receive the bytes. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classReply_a005fb1894b469cc16e69bf93fed967af}{Insert\+Bytes} (const std\+::uint8\+\_\+t $\ast$data)
+\begin{DoxyCompactList}\small\item\em This method is intended to insert a reply\textquotesingle{}s bytes and to extract its data. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classReply_ab9eca743c910c467007488cdbb8125b8}\label{classReply_ab9eca743c910c467007488cdbb8125b8}} 
+\hyperlink{classReply_aa873dec4817ed08a5212ec3ba2b5c807}{Reply\+Type} \hyperlink{classReply_ab9eca743c910c467007488cdbb8125b8}{Get\+Reply\+Type} () const
+\begin{DoxyCompactList}\small\item\em This method returns the reply type as the corresponding value of the enumeration {\itshape Reply\+Type}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classReply_a72a6fd5b94e9842916f55b3420e8b05f}\label{classReply_a72a6fd5b94e9842916f55b3420e8b05f}} 
+std\+::string \hyperlink{classReply_a72a6fd5b94e9842916f55b3420e8b05f}{Get\+Reply\+Type\+String} () const
+\begin{DoxyCompactList}\small\item\em A method which returns the reply type as a {\ttfamily std\+::string}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classReply_adb2d432c7d1dbe6bddd4b6900eeea7e3}\label{classReply_adb2d432c7d1dbe6bddd4b6900eeea7e3}} 
+std\+::string \hyperlink{classReply_adb2d432c7d1dbe6bddd4b6900eeea7e3}{Get\+Variable\+Name\+String} () const
+\begin{DoxyCompactList}\small\item\em A method which returns the name of the Spectran\textquotesingle{}s variable which is related with the reply (G\+E\+T\+S\+T\+P\+V\+AR reply) as a {\ttfamily std\+::string}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classReply_a027a08e481d00901d55bf7cfd5e7eb5f}\label{classReply_a027a08e481d00901d55bf7cfd5e7eb5f}} 
+const std\+::vector$<$ std\+::uint8\+\_\+t $>$ \& \hyperlink{classReply_a027a08e481d00901d55bf7cfd5e7eb5f}{Get\+Bytes\+Vector} () const
+\begin{DoxyCompactList}\small\item\em A method to get the bytes vector like this is implemented internally, a {\ttfamily std\+::vector} container. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classReply_a69d6dc14661b2a2148d16a1345cebc32}\label{classReply_a69d6dc14661b2a2148d16a1345cebc32}} 
+const std\+::uint8\+\_\+t $\ast$ \hyperlink{classReply_a69d6dc14661b2a2148d16a1345cebc32}{Get\+Bytes\+Pointer} () const
+\begin{DoxyCompactList}\small\item\em A method to get a direct pointer to the bytes of the internal vector. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classReply_a8aada6cea6e2008c6ba824fc7035627f}\label{classReply_a8aada6cea6e2008c6ba824fc7035627f}} 
+unsigned int \hyperlink{classReply_a8aada6cea6e2008c6ba824fc7035627f}{Get\+Num\+Of\+Bytes} () const
+\begin{DoxyCompactList}\small\item\em A method which allows to know the size of the bytes vector. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classReply_a4d9caba2f778fc50ea55e937f01e16db}\label{classReply_a4d9caba2f778fc50ea55e937f01e16db}} 
+float \hyperlink{classReply_a4d9caba2f778fc50ea55e937f01e16db}{Get\+Value} () const
+\begin{DoxyCompactList}\small\item\em A method to get the value of the variable which was queried with a {\itshape G\+E\+T\+S\+T\+P\+V\+AR} command or a power value (or voltage or field strength) which was received with a {\itshape A\+M\+P\+F\+R\+E\+Q\+D\+AT} reply. \end{DoxyCompactList}\item 
+bool \hyperlink{classReply_a8527429859aeab3a0e62081871e5ce92}{Is\+Right} () const
+\begin{DoxyCompactList}\small\item\em This method states if the received reply is right. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classReply_a387ea6ba4bad8ad832c2e5f4a95878d6}\label{classReply_a387ea6ba4bad8ad832c2e5f4a95878d6}} 
+virtual void \hyperlink{classReply_a387ea6ba4bad8ad832c2e5f4a95878d6}{Clear} ()
+\begin{DoxyCompactList}\small\item\em This method resets the object. \end{DoxyCompactList}\item 
+virtual const \hyperlink{classReply}{Reply} \& \hyperlink{classReply_a7a4a6c76ee53d9ecf9833ab2880c3420}{operator=} (const \hyperlink{classReply}{Reply} \&another\+Reply)
+\begin{DoxyCompactList}\small\item\em An overloading of the assignment operator, adapted to this class. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classReply_a8a6a68aeda60bfda6615272d2905a1ac}{Fill\+Bytes\+Vector} (const std\+::uint8\+\_\+t $\ast$data)
+\begin{DoxyCompactList}\small\item\em This method fills correctly the internal bytes vector with the received bytes. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classReply_af9a348b823fc5ef09b470ba2cf2f625a}\label{classReply_af9a348b823fc5ef09b470ba2cf2f625a}} 
+std\+::vector$<$ std\+::uint8\+\_\+t $>$ \hyperlink{classReply_af9a348b823fc5ef09b470ba2cf2f625a}{bytes}
+\begin{DoxyCompactList}\small\item\em Bytes array (or vector) which has been received from the spectrum analyzer. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classReply_ae6d1cce2fdfa549568ad0ec9f5c6f13c}\label{classReply_ae6d1cce2fdfa549568ad0ec9f5c6f13c}} 
+float \hyperlink{classReply_ae6d1cce2fdfa549568ad0ec9f5c6f13c}{value}
+\begin{DoxyCompactList}\small\item\em The value (as a floating-\/point number) of a queried Spectran variable or a power value (or voltage of field strength). It has sense with {\itshape G\+E\+T\+S\+T\+P\+V\+AR} and {\itshape A\+M\+P\+F\+R\+E\+Q\+D\+AT} replies. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The class {\itshape \hyperlink{classReply}{Reply}} is intended to receive a bytes vector sent by the spectrum analyzer and to extract its information. 
+
+When a command is sent to a Spectran H\+F-\/60105 V4 X spectrum analyzer, this will respond with another bytes vector (however some commands do not have reply), so the idea is to insert this in an object of class {\itshape \hyperlink{classReply}{Reply}}, then the object will process and extract the info (variable id, value, etc.) of the bytes vector and finally the info will be available through the \char`\"{}\+Get\char`\"{} methods. 
+
+\subsection{Member Enumeration Documentation}
+\mbox{\Hypertarget{classReply_aa873dec4817ed08a5212ec3ba2b5c807}\label{classReply_aa873dec4817ed08a5212ec3ba2b5c807}} 
+\index{Reply@{Reply}!Reply\+Type@{Reply\+Type}}
+\index{Reply\+Type@{Reply\+Type}!Reply@{Reply}}
+\subsubsection{\texorpdfstring{Reply\+Type}{ReplyType}}
+{\footnotesize\ttfamily enum \hyperlink{classReply_aa873dec4817ed08a5212ec3ba2b5c807}{Reply\+::\+Reply\+Type} \+: char}
+
+
+
+An enumeration which contains the reply types which can be received from a Spectran H\+F-\/60105 V4 X spectrum analyzer. 
+
+This enumeration contains just four replies from the Spectran U\+SB Protocol\+: {\itshape V\+E\+R\+I\+FY}, {\itshape G\+E\+T\+S\+T\+P\+V\+AR}, {\itshape S\+E\+T\+S\+T\+P\+V\+AR} and {\itshape A\+M\+P\+F\+R\+E\+Q\+D\+AT}. The other replies are received when an internal file of the spectrum analyzer have been queried or modified, and because that will not be done, they are not added. There is an extra command type which is {\itshape U\+N\+I\+N\+I\+T\+I\+A\+L\+I\+Z\+ED} whose purpose is to state that the object is not prepared. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classReply_a4c993ea22d3674d2a337b6ca157d2bea}\label{classReply_a4c993ea22d3674d2a337b6ca157d2bea}} 
+\index{Reply@{Reply}!Reply@{Reply}}
+\index{Reply@{Reply}!Reply@{Reply}}
+\subsubsection{\texorpdfstring{Reply()}{Reply()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily Reply\+::\+Reply (\begin{DoxyParamCaption}\item[{const \hyperlink{classReply_aa873dec4817ed08a5212ec3ba2b5c807}{Reply\+Type}}]{type,  }\item[{const \hyperlink{Spectran_8h_a0411392c90f0c8f0d8e44a4e94259276}{Spec\+Variable}}]{variable = {\ttfamily SpecVariable\+:\+:UNINITIALIZED} }\end{DoxyParamCaption})}
+
+
+
+A constructor which allows to set the reply type and the variable name, in case of {\itshape G\+E\+T\+S\+T\+P\+V\+AR} replies, and prepare the object to receive a spectrum analyzer\textquotesingle{}s reply. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em type} & The reply type\+: V\+E\+R\+I\+FY, G\+E\+T\+S\+T\+P\+V\+AR, S\+E\+T\+S\+T\+P\+V\+AR or A\+M\+P\+F\+R\+E\+Q\+D\+AT. \\
+\hline
+\mbox{\tt in}  & {\em variable} & An optional argument which indicates the variable whose value will be received by a G\+E\+T\+S\+T\+P\+V\+AR reply. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classReply_add752285090cf6966ba993aae7056229}\label{classReply_add752285090cf6966ba993aae7056229}} 
+\index{Reply@{Reply}!Reply@{Reply}}
+\index{Reply@{Reply}!Reply@{Reply}}
+\subsubsection{\texorpdfstring{Reply()}{Reply()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily Reply\+::\+Reply (\begin{DoxyParamCaption}\item[{const \hyperlink{classReply}{Reply} \&}]{another\+Reply }\end{DoxyParamCaption})}
+
+
+
+The copy constructor. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em another\+Reply} & A {\itshape \hyperlink{classReply}{Reply}} object which is given to copy its attributes. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classReply_a165e19cb7b393c0993d8992d47e7141d}\label{classReply_a165e19cb7b393c0993d8992d47e7141d}} 
+\index{Reply@{Reply}!````~Reply@{$\sim$\+Reply}}
+\index{````~Reply@{$\sim$\+Reply}!Reply@{Reply}}
+\subsubsection{\texorpdfstring{$\sim$\+Reply()}{~Reply()}}
+{\footnotesize\ttfamily virtual Reply\+::$\sim$\+Reply (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+The class destructor which is defined as virtual because there are some classes derived from this one. 
+
+It was necessary to implement the destructor here to define this one as {\itshape virtual}. However, it was not necessary to explicitly clean, close and/or destroy any attribute and, because of that, the implementation is empty. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classReply_a8a6a68aeda60bfda6615272d2905a1ac}\label{classReply_a8a6a68aeda60bfda6615272d2905a1ac}} 
+\index{Reply@{Reply}!Fill\+Bytes\+Vector@{Fill\+Bytes\+Vector}}
+\index{Fill\+Bytes\+Vector@{Fill\+Bytes\+Vector}!Reply@{Reply}}
+\subsubsection{\texorpdfstring{Fill\+Bytes\+Vector()}{FillBytesVector()}}
+{\footnotesize\ttfamily void Reply\+::\+Fill\+Bytes\+Vector (\begin{DoxyParamCaption}\item[{const std\+::uint8\+\_\+t $\ast$}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+This method fills correctly the internal bytes vector with the received bytes. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em data} & A pointer to the bytes which contain the information of the reply sent by the spectrum analyzer. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classReply_a005fb1894b469cc16e69bf93fed967af}\label{classReply_a005fb1894b469cc16e69bf93fed967af}} 
+\index{Reply@{Reply}!Insert\+Bytes@{Insert\+Bytes}}
+\index{Insert\+Bytes@{Insert\+Bytes}!Reply@{Reply}}
+\subsubsection{\texorpdfstring{Insert\+Bytes()}{InsertBytes()}}
+{\footnotesize\ttfamily void Reply\+::\+Insert\+Bytes (\begin{DoxyParamCaption}\item[{const std\+::uint8\+\_\+t $\ast$}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+This method is intended to insert a reply\textquotesingle{}s bytes and to extract its data. 
+
+The reply object must have been prepared before inserting the bytes vector. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em data} & A pointer to the bytes which must be inserted in the object and from which the info must be extracted. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented in \hyperlink{classSweepReply_a8eff11f046d6cd2fb8c3987f889c5d11}{Sweep\+Reply}.
+
+\mbox{\Hypertarget{classReply_a8527429859aeab3a0e62081871e5ce92}\label{classReply_a8527429859aeab3a0e62081871e5ce92}} 
+\index{Reply@{Reply}!Is\+Right@{Is\+Right}}
+\index{Is\+Right@{Is\+Right}!Reply@{Reply}}
+\subsubsection{\texorpdfstring{Is\+Right()}{IsRight()}}
+{\footnotesize\ttfamily bool Reply\+::\+Is\+Right (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+This method states if the received reply is right. 
+
+To do so, the method checks if the reply type (determined when the reply object was prepared) is equal to first received byte and if the reply type is V\+E\+R\+I\+FY it checks if the following bytes are correct, or if the reply type is G\+E\+T\+S\+T\+P\+V\+AR or S\+E\+T\+S\+T\+P\+V\+AR it checks the \char`\"{}status\char`\"{} byte, which must be zero when all is right. By default the method indicates that the reply is incorrect. \mbox{\Hypertarget{classReply_a7a4a6c76ee53d9ecf9833ab2880c3420}\label{classReply_a7a4a6c76ee53d9ecf9833ab2880c3420}} 
+\index{Reply@{Reply}!operator=@{operator=}}
+\index{operator=@{operator=}!Reply@{Reply}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily const \hyperlink{classReply}{Reply} \& Reply\+::operator= (\begin{DoxyParamCaption}\item[{const \hyperlink{classReply}{Reply} \&}]{another\+Reply }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+An overloading of the assignment operator, adapted to this class. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em another\+Reply} & A {\itshape \hyperlink{classReply}{Reply}} object which is given to copy its attributes. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classReply_a8c27c3e783dcc1ce75f709114b7e79f1}\label{classReply_a8c27c3e783dcc1ce75f709114b7e79f1}} 
+\index{Reply@{Reply}!Prepare\+To@{Prepare\+To}}
+\index{Prepare\+To@{Prepare\+To}!Reply@{Reply}}
+\subsubsection{\texorpdfstring{Prepare\+To()}{PrepareTo()}}
+{\footnotesize\ttfamily void Reply\+::\+Prepare\+To (\begin{DoxyParamCaption}\item[{const \hyperlink{classReply_aa873dec4817ed08a5212ec3ba2b5c807}{Reply\+Type}}]{type,  }\item[{const \hyperlink{Spectran_8h_a0411392c90f0c8f0d8e44a4e94259276}{Spec\+Variable}}]{variable = {\ttfamily SpecVariable\+:\+:UNINITIALIZED} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+This method is intended to set the reply type and variable name, in case of {\itshape G\+E\+T\+S\+T\+P\+V\+AR} replies, and to ask the object to prepare itself to receive the bytes. 
+
+The tasks performed by this methods are\+: to clear the object, to set the reply type and then to call the private method {\ttfamily Prepare\+Reply()}. The variable name must be set for the G\+E\+T\+S\+T\+P\+V\+AR replies, for other cases it is not important. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em type} & The reply type\+: V\+E\+R\+I\+FY, G\+E\+T\+S\+T\+P\+V\+AR, S\+E\+T\+S\+T\+P\+V\+AR or A\+M\+P\+F\+R\+E\+Q\+D\+AT. \\
+\hline
+\mbox{\tt in}  & {\em variable} & An optional argument which indicates the variable whose value will be received by a G\+E\+T\+S\+T\+P\+V\+AR reply. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented in \hyperlink{classSweepReply_a513705c42bec154f66f75903813a5db1}{Sweep\+Reply}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/\hyperlink{Spectran_8h}{Spectran.\+h}\item 
+/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/\hyperlink{Reply_8cpp}{Reply.\+cpp}\end{DoxyCompactItemize}

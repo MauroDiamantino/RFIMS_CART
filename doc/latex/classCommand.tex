@@ -1,0 +1,206 @@
+\hypertarget{classCommand}{}\section{Command Class Reference}
+\label{classCommand}\index{Command@{Command}}
+
+
+This class builds the corresponding bytes array to send a certain command to a Aaronia Spectran V4 series spectrum analyzer.  
+
+
+
+
+{\ttfamily \#include $<$Spectran.\+h$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{classCommand_a658ae4be30c6dd9b673e467908acaeb5}{Command\+Type} \+: char \{ \newline
+{\bfseries V\+E\+R\+I\+FY} =0x01, 
+{\bfseries L\+O\+G\+O\+UT}, 
+{\bfseries G\+E\+T\+S\+T\+P\+V\+AR} =0x20, 
+{\bfseries S\+E\+T\+S\+T\+P\+V\+AR}, 
+\newline
+{\bfseries U\+N\+I\+N\+I\+T\+I\+A\+L\+I\+Z\+ED}
+ \}\begin{DoxyCompactList}\small\item\em An enumeration which contains the command types which can be sent to a spectrum analyzer Aaronia Spectran H\+F-\/60105 V4 X. \end{DoxyCompactList}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classCommand_a18df2d81039392daeb0b78c346a70537}{Command} ()
+\begin{DoxyCompactList}\small\item\em The default constructor. \end{DoxyCompactList}\item 
+\hyperlink{classCommand_aa092997d602d3e2e4d0036ce2d4853c6}{Command} (const \hyperlink{classCommand_a658ae4be30c6dd9b673e467908acaeb5}{Command\+Type} comm\+Type, const \hyperlink{Spectran_8h_a0411392c90f0c8f0d8e44a4e94259276}{Spec\+Variable} variable=Spec\+Variable\+::\+U\+N\+I\+N\+I\+T\+I\+A\+L\+I\+Z\+ED, const float val=0.\+0)
+\begin{DoxyCompactList}\small\item\em The most complete constructor which allows to set the internal pointers and optionally the command type. \end{DoxyCompactList}\item 
+\hyperlink{classCommand_a8a7c0c91424400c15b4ce0ce92ce3064}{Command} (const \hyperlink{classCommand}{Command} \&another\+Comm)
+\begin{DoxyCompactList}\small\item\em The copy constructor. \end{DoxyCompactList}\item 
+void \hyperlink{classCommand_ab49af30836fbeb1ec43a9814132889c8}{Set\+As} (const \hyperlink{classCommand_a658ae4be30c6dd9b673e467908acaeb5}{Command\+Type} comm\+Type, const \hyperlink{Spectran_8h_a0411392c90f0c8f0d8e44a4e94259276}{Spec\+Variable} variable=Spec\+Variable\+::\+U\+N\+I\+N\+I\+T\+I\+A\+L\+I\+Z\+ED, const float val=0.\+0)
+\begin{DoxyCompactList}\small\item\em This method is intended to provide to the object the enough data so this can configure itself to be ready to be sent. \end{DoxyCompactList}\item 
+void \hyperlink{classCommand_a11e0a357319d12c7c29d41c1b6fcfbd6}{Set\+Parameters} (const \hyperlink{Spectran_8h_a0411392c90f0c8f0d8e44a4e94259276}{Spec\+Variable} variable, const float val=0.\+0)
+\begin{DoxyCompactList}\small\item\em This method is intended to set the command\textquotesingle{}s parameters, so it should be used when the command type has already been set. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classCommand_a4e69970f959855553b77b773749dc111}\label{classCommand_a4e69970f959855553b77b773749dc111}} 
+\hyperlink{classCommand_a658ae4be30c6dd9b673e467908acaeb5}{Command\+Type} \hyperlink{classCommand_a4e69970f959855553b77b773749dc111}{Get\+Command\+Type} () const
+\begin{DoxyCompactList}\small\item\em A method to get the current command type as a value of the enumeration {\itshape Command\+Type}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classCommand_a4ac214f4079253f6a1fc9137053621ec}\label{classCommand_a4ac214f4079253f6a1fc9137053621ec}} 
+std\+::string \hyperlink{classCommand_a4ac214f4079253f6a1fc9137053621ec}{Get\+Comm\+Type\+String} () const
+\begin{DoxyCompactList}\small\item\em A method which returns the command type as a {\ttfamily std\+::string}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classCommand_ab3a8e530c1262370a09cf2c4f35b11c5}\label{classCommand_ab3a8e530c1262370a09cf2c4f35b11c5}} 
+\hyperlink{Spectran_8h_a0411392c90f0c8f0d8e44a4e94259276}{Spec\+Variable} \hyperlink{classCommand_ab3a8e530c1262370a09cf2c4f35b11c5}{Get\+Variable\+Name} () const
+\begin{DoxyCompactList}\small\item\em A method to get the variable name which is going to be modified or read, as a value of the enumeration {\itshape Spec\+Variable}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classCommand_a49e5f8b0ccf24da257adcb78ce337d00}\label{classCommand_a49e5f8b0ccf24da257adcb78ce337d00}} 
+std\+::string \hyperlink{classCommand_a49e5f8b0ccf24da257adcb78ce337d00}{Get\+Variable\+Name\+String} () const
+\begin{DoxyCompactList}\small\item\em A method which returns the name of the Spectran\textquotesingle{}s variable which is related with the command ({\itshape G\+E\+T\+S\+T\+P\+V\+AR} and {\itshape S\+E\+T\+S\+T\+P\+V\+AR} commands) as a {\ttfamily std\+::string}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classCommand_a79bfc4354efdeb3639da14cc318bd723}\label{classCommand_a79bfc4354efdeb3639da14cc318bd723}} 
+float \hyperlink{classCommand_a79bfc4354efdeb3639da14cc318bd723}{Get\+Value} () const
+\begin{DoxyCompactList}\small\item\em A method to get the value which is going to be or has been used to modify a variable. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classCommand_a56e9f53a7d1b9c0e47b51ac61aaad400}\label{classCommand_a56e9f53a7d1b9c0e47b51ac61aaad400}} 
+const std\+::vector$<$ std\+::uint8\+\_\+t $>$ \& \hyperlink{classCommand_a56e9f53a7d1b9c0e47b51ac61aaad400}{Get\+Bytes\+Vector} () const
+\begin{DoxyCompactList}\small\item\em A method to obtain the bytes vector like this is implemented internally, a {\ttfamily std\+::vector} container. \end{DoxyCompactList}\item 
+const std\+::uint8\+\_\+t $\ast$ \hyperlink{classCommand_a3bb0b48bb03f1fe5b32d119ebc64a71b}{Get\+Bytes\+Pointer} () const
+\begin{DoxyCompactList}\small\item\em A method to obtain the bytes vector but like a C-\/style array ({\ttfamily std\+::uint8\+\_\+t$\ast$}). \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classCommand_a6f526ceab284f63416ebe9e173ae665b}\label{classCommand_a6f526ceab284f63416ebe9e173ae665b}} 
+unsigned int \hyperlink{classCommand_a6f526ceab284f63416ebe9e173ae665b}{Get\+Num\+Of\+Bytes} () const
+\begin{DoxyCompactList}\small\item\em A method which returns the size of the bytes vector. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classCommand_af14e3fe4a4cd1c474419693bf6f26650}\label{classCommand_af14e3fe4a4cd1c474419693bf6f26650}} 
+void \hyperlink{classCommand_af14e3fe4a4cd1c474419693bf6f26650}{Clear} ()
+\begin{DoxyCompactList}\small\item\em This method allows to reset the object, cleaning the bytes vector, command type, variable name and value. \end{DoxyCompactList}\item 
+const \hyperlink{classCommand}{Command} \& \hyperlink{classCommand_ac3345fe77bca04644aaddcf2de835f34}{operator=} (const \hyperlink{classCommand}{Command} \&command)
+\begin{DoxyCompactList}\small\item\em An overloading of the assignment operator, adapted for this class. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This class builds the corresponding bytes array to send a certain command to a Aaronia Spectran V4 series spectrum analyzer. 
+
+The {\itshape \hyperlink{classCommand}{Command}} class is intended to build the bytes array which will be sent a spectrum analyzer to perform one of the following tasks\+:
+\begin{DoxyItemize}
+\item Initialize the communication with the device.
+\item Set an environment variable.
+\item Get the value of an environment variable.
+\item Enable/disable the streaming of sweep points.
+\item Close the communication. The user have to say to the object which \char`\"{}command type\char`\"{} he wants, which \char`\"{}variable\char`\"{} he wants to write/read and which value must be used to set up the specified variable. When the object has the enough data, it will build the bytes array which will be sent to the spectrum analyzer via the U\+SB interface. The objects of this class are interchanged between the {\itshape Spectran configurator} and the {\itshape Spectran interface}. 
+\end{DoxyItemize}
+
+\subsection{Member Enumeration Documentation}
+\mbox{\Hypertarget{classCommand_a658ae4be30c6dd9b673e467908acaeb5}\label{classCommand_a658ae4be30c6dd9b673e467908acaeb5}} 
+\index{Command@{Command}!Command\+Type@{Command\+Type}}
+\index{Command\+Type@{Command\+Type}!Command@{Command}}
+\subsubsection{\texorpdfstring{Command\+Type}{CommandType}}
+{\footnotesize\ttfamily enum \hyperlink{classCommand_a658ae4be30c6dd9b673e467908acaeb5}{Command\+::\+Command\+Type} \+: char}
+
+
+
+An enumeration which contains the command types which can be sent to a spectrum analyzer Aaronia Spectran H\+F-\/60105 V4 X. 
+
+This enumeration contains just four commands from the Spectran U\+SB Protocol\+: {\itshape V\+E\+R\+I\+FY}, {\itshape L\+O\+G\+O\+UT}, {\itshape G\+E\+T\+S\+T\+P\+V\+AR} and {\itshape S\+E\+T\+S\+T\+P\+V\+AR}. There are other possible commands which are intended to modify or get information about the internal files of the spectrum analyzer, but they are not added because they will not be used. There is an extra command type which is {\itshape U\+N\+I\+N\+I\+T\+I\+A\+L\+I\+Z\+ED} whose purpose is to state that the object is still incomplete. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classCommand_a18df2d81039392daeb0b78c346a70537}\label{classCommand_a18df2d81039392daeb0b78c346a70537}} 
+\index{Command@{Command}!Command@{Command}}
+\index{Command@{Command}!Command@{Command}}
+\subsubsection{\texorpdfstring{Command()}{Command()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily Command\+::\+Command (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+The default constructor. 
+
+When this constructor is used, the programmer must provide the command data with the method {\ttfamily Set\+As(comm\+Type,variable,value)}, and even with the method {\ttfamily Set\+Parameters(variable,value)}. \mbox{\Hypertarget{classCommand_aa092997d602d3e2e4d0036ce2d4853c6}\label{classCommand_aa092997d602d3e2e4d0036ce2d4853c6}} 
+\index{Command@{Command}!Command@{Command}}
+\index{Command@{Command}!Command@{Command}}
+\subsubsection{\texorpdfstring{Command()}{Command()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily Command\+::\+Command (\begin{DoxyParamCaption}\item[{const \hyperlink{classCommand_a658ae4be30c6dd9b673e467908acaeb5}{Command\+Type}}]{type,  }\item[{const \hyperlink{Spectran_8h_a0411392c90f0c8f0d8e44a4e94259276}{Spec\+Variable}}]{variable = {\ttfamily SpecVariable\+:\+:UNINITIALIZED},  }\item[{const float}]{val = {\ttfamily 0.0} }\end{DoxyParamCaption})}
+
+
+
+The most complete constructor which allows to set the internal pointers and optionally the command type. 
+
+If this constructor is used just providing the first parameter, {\itshape command type}, then the method {\ttfamily \hyperlink{classCommand_a11e0a357319d12c7c29d41c1b6fcfbd6}{Set\+Parameters()}} should be used to set the variable name (for {\itshape G\+E\+T\+S\+T\+P\+V\+AR} and {\itshape S\+E\+T\+S\+T\+P\+V\+AR} commands) and the value that must be used to write it (just for {\itshape S\+E\+T\+S\+T\+P\+V\+AR} commands). 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em type} & The command type\+: V\+E\+R\+I\+FY, L\+O\+G\+O\+UT, G\+E\+T\+S\+T\+P\+V\+AR or S\+E\+T\+S\+T\+P\+V\+AR. \\
+\hline
+\mbox{\tt in}  & {\em variable} & An optional argument which determines which variable will be read or written. \\
+\hline
+\mbox{\tt in}  & {\em val} & An optional argument which represents the value which will be used to write the given variable. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classCommand_a8a7c0c91424400c15b4ce0ce92ce3064}\label{classCommand_a8a7c0c91424400c15b4ce0ce92ce3064}} 
+\index{Command@{Command}!Command@{Command}}
+\index{Command@{Command}!Command@{Command}}
+\subsubsection{\texorpdfstring{Command()}{Command()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily Command\+::\+Command (\begin{DoxyParamCaption}\item[{const \hyperlink{classCommand}{Command} \&}]{another\+Comm }\end{DoxyParamCaption})}
+
+
+
+The copy constructor. 
+
+This method takes an object of the same class as argument, and it copies its attributes. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em another\+Comm} & A {\itshape \hyperlink{classCommand}{Command}} object given to copy its attributes. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classCommand_a3bb0b48bb03f1fe5b32d119ebc64a71b}\label{classCommand_a3bb0b48bb03f1fe5b32d119ebc64a71b}} 
+\index{Command@{Command}!Get\+Bytes\+Pointer@{Get\+Bytes\+Pointer}}
+\index{Get\+Bytes\+Pointer@{Get\+Bytes\+Pointer}!Command@{Command}}
+\subsubsection{\texorpdfstring{Get\+Bytes\+Pointer()}{GetBytesPointer()}}
+{\footnotesize\ttfamily const std\+::uint8\+\_\+t$\ast$ Command\+::\+Get\+Bytes\+Pointer (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+A method to obtain the bytes vector but like a C-\/style array ({\ttfamily std\+::uint8\+\_\+t$\ast$}). 
+
+This method returns a pointer to {\ttfamily std\+::uint8\+\_\+t} so this allows to access directly to the memory addresses where the vector\textquotesingle{}s bytes are stored. The {\itshape Spectran Interface} object uses this method because it works internally with C-\/style arrays. \mbox{\Hypertarget{classCommand_ac3345fe77bca04644aaddcf2de835f34}\label{classCommand_ac3345fe77bca04644aaddcf2de835f34}} 
+\index{Command@{Command}!operator=@{operator=}}
+\index{operator=@{operator=}!Command@{Command}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily const \hyperlink{classCommand}{Command} \& Command\+::operator= (\begin{DoxyParamCaption}\item[{const \hyperlink{classCommand}{Command} \&}]{another\+Comm }\end{DoxyParamCaption})}
+
+
+
+An overloading of the assignment operator, adapted for this class. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em another\+Comm} & A {\itshape \hyperlink{classCommand}{Command}} object given to copy its attributes. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classCommand_ab49af30836fbeb1ec43a9814132889c8}\label{classCommand_ab49af30836fbeb1ec43a9814132889c8}} 
+\index{Command@{Command}!Set\+As@{Set\+As}}
+\index{Set\+As@{Set\+As}!Command@{Command}}
+\subsubsection{\texorpdfstring{Set\+As()}{SetAs()}}
+{\footnotesize\ttfamily void Command\+::\+Set\+As (\begin{DoxyParamCaption}\item[{const \hyperlink{classCommand_a658ae4be30c6dd9b673e467908acaeb5}{Command\+Type}}]{comm\+Type,  }\item[{const \hyperlink{Spectran_8h_a0411392c90f0c8f0d8e44a4e94259276}{Spec\+Variable}}]{variable = {\ttfamily SpecVariable\+:\+:UNINITIALIZED},  }\item[{const float}]{val = {\ttfamily 0.0} }\end{DoxyParamCaption})}
+
+
+
+This method is intended to provide to the object the enough data so this can configure itself to be ready to be sent. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em comm\+Type} & The command type\+: V\+E\+R\+I\+FY, L\+O\+G\+O\+UT, G\+E\+T\+S\+T\+P\+V\+AR or S\+E\+T\+S\+T\+P\+V\+AR. \\
+\hline
+\mbox{\tt in}  & {\em variable} & An optional argument which determines which variable will be read or written. \\
+\hline
+\mbox{\tt in}  & {\em val} & An optional argument which represents the value which will be used to write the given variable. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classCommand_a11e0a357319d12c7c29d41c1b6fcfbd6}\label{classCommand_a11e0a357319d12c7c29d41c1b6fcfbd6}} 
+\index{Command@{Command}!Set\+Parameters@{Set\+Parameters}}
+\index{Set\+Parameters@{Set\+Parameters}!Command@{Command}}
+\subsubsection{\texorpdfstring{Set\+Parameters()}{SetParameters()}}
+{\footnotesize\ttfamily void Command\+::\+Set\+Parameters (\begin{DoxyParamCaption}\item[{const \hyperlink{Spectran_8h_a0411392c90f0c8f0d8e44a4e94259276}{Spec\+Variable}}]{variable,  }\item[{const float}]{val = {\ttfamily 0.0} }\end{DoxyParamCaption})}
+
+
+
+This method is intended to set the command\textquotesingle{}s parameters, so it should be used when the command type has already been set. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em variable} & The variable which will be read or written, with the commands G\+E\+T\+S\+T\+P\+V\+AR and S\+E\+T\+S\+T\+P\+V\+AR. \\
+\hline
+\mbox{\tt in}  & {\em val} & An optional argument which determines the value which will be used to write the given variable. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/\hyperlink{Spectran_8h}{Spectran.\+h}\item 
+/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/\hyperlink{Command_8cpp}{Command.\+cpp}\end{DoxyCompactItemize}

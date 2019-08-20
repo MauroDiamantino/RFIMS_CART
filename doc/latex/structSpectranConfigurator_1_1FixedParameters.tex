@@ -1,0 +1,55 @@
+\hypertarget{structSpectranConfigurator_1_1FixedParameters}{}\section{Spectran\+Configurator\+:\+:Fixed\+Parameters Struct Reference}
+\label{structSpectranConfigurator_1_1FixedParameters}\index{Spectran\+Configurator\+::\+Fixed\+Parameters@{Spectran\+Configurator\+::\+Fixed\+Parameters}}
+
+
+This structure saves the fixed parameters of the spectrum analyzer, i.\+e. the parameters which do not change through the entire measurement cycle.  
+
+
+
+
+{\ttfamily \#include $<$Spectran.\+h$>$}
+
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structSpectranConfigurator_1_1FixedParameters_aa5eb199d61f2c5763e32b70d2bf7c368}\label{structSpectranConfigurator_1_1FixedParameters_aa5eb199d61f2c5763e32b70d2bf7c368}} 
+int \hyperlink{structSpectranConfigurator_1_1FixedParameters_aa5eb199d61f2c5763e32b70d2bf7c368}{atten\+Factor}
+\begin{DoxyCompactList}\small\item\em Attenuator factor \mbox{[}dB\mbox{]}\+: -\/10=auto, 0=off or a value between 1 to 30. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structSpectranConfigurator_1_1FixedParameters_ad8a37b8a7981c811f1e8f89770ba2a7d}\label{structSpectranConfigurator_1_1FixedParameters_ad8a37b8a7981c811f1e8f89770ba2a7d}} 
+unsigned int \hyperlink{structSpectranConfigurator_1_1FixedParameters_ad8a37b8a7981c811f1e8f89770ba2a7d}{display\+Unit}
+\begin{DoxyCompactList}\small\item\em Measurement unit\+: 0=d\+Bm (power), 1=d\+BuV (voltage), 2=V/m (electric field strength) or 3=A/m (magnetic field strength). \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structSpectranConfigurator_1_1FixedParameters_ad9255da208ff6b07f5a591f3dea22f84}\label{structSpectranConfigurator_1_1FixedParameters_ad9255da208ff6b07f5a591f3dea22f84}} 
+const unsigned int \hyperlink{structSpectranConfigurator_1_1FixedParameters_ad9255da208ff6b07f5a591f3dea22f84}{demod\+Mode} =0
+\begin{DoxyCompactList}\small\item\em Demodulator mode\+: 0=off, 1=am or 2=fm. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structSpectranConfigurator_1_1FixedParameters_a29f211747f28dc036ac1e8d894db7dd4}\label{structSpectranConfigurator_1_1FixedParameters_a29f211747f28dc036ac1e8d894db7dd4}} 
+unsigned int \hyperlink{structSpectranConfigurator_1_1FixedParameters_a29f211747f28dc036ac1e8d894db7dd4}{antenna\+Type}
+\begin{DoxyCompactList}\small\item\em Antenna type\+: 0=H\+L7025, 1=H\+L7040, 2=H\+L7060, 3=H\+L6080 or 4=H60100. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structSpectranConfigurator_1_1FixedParameters_af1eeef76fb85a2ccf937f3dd949d9980}\label{structSpectranConfigurator_1_1FixedParameters_af1eeef76fb85a2ccf937f3dd949d9980}} 
+int \hyperlink{structSpectranConfigurator_1_1FixedParameters_af1eeef76fb85a2ccf937f3dd949d9980}{cable\+Type}
+\begin{DoxyCompactList}\small\item\em Cable type\+: -\/1 is none, 0 is “1m standard cable”. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structSpectranConfigurator_1_1FixedParameters_a212370cc31cf311edf1ce71ca01f4b91}\label{structSpectranConfigurator_1_1FixedParameters_a212370cc31cf311edf1ce71ca01f4b91}} 
+const unsigned int \hyperlink{structSpectranConfigurator_1_1FixedParameters_a212370cc31cf311edf1ce71ca01f4b91}{recv\+Conf} =0
+\begin{DoxyCompactList}\small\item\em Receiver configuration\+: 0=spectrum, 1=broadband. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structSpectranConfigurator_1_1FixedParameters_aa86943c70f5c03d87fb78c05af17ac28}\label{structSpectranConfigurator_1_1FixedParameters_aa86943c70f5c03d87fb78c05af17ac28}} 
+bool \hyperlink{structSpectranConfigurator_1_1FixedParameters_aa86943c70f5c03d87fb78c05af17ac28}{intern\+Preamp}
+\begin{DoxyCompactList}\small\item\em Internal preamplifier enabling\+: 0=off, 1=on. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structSpectranConfigurator_1_1FixedParameters_ad835d567560a9fb3bf1f9469955c2363}\label{structSpectranConfigurator_1_1FixedParameters_ad835d567560a9fb3bf1f9469955c2363}} 
+bool \hyperlink{structSpectranConfigurator_1_1FixedParameters_ad835d567560a9fb3bf1f9469955c2363}{sweep\+Delay\+Acc}
+\begin{DoxyCompactList}\small\item\em \hyperlink{structSweep}{Sweep} delay for accuracy mode\+: 1=enable, 0=disable. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structSpectranConfigurator_1_1FixedParameters_a5d0c325f17d9e3efce429b187c833911}\label{structSpectranConfigurator_1_1FixedParameters_a5d0c325f17d9e3efce429b187c833911}} 
+const bool \hyperlink{structSpectranConfigurator_1_1FixedParameters_a5d0c325f17d9e3efce429b187c833911}{peak\+Level\+Audio\+Tone} =0
+\begin{DoxyCompactList}\small\item\em Peak Level Audio tone\+: 0=disable, 1=enable. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structSpectranConfigurator_1_1FixedParameters_ad20c44e63927366260399b4ffa5a32d9}\label{structSpectranConfigurator_1_1FixedParameters_ad20c44e63927366260399b4ffa5a32d9}} 
+const bool \hyperlink{structSpectranConfigurator_1_1FixedParameters_ad20c44e63927366260399b4ffa5a32d9}{back\+B\+B\+Detector} =0
+\begin{DoxyCompactList}\small\item\em Background Broadband detector\+: 0=disable, 1=enable. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structSpectranConfigurator_1_1FixedParameters_a4b30a0ba5199d6c6703838142da3bcdc}\label{structSpectranConfigurator_1_1FixedParameters_a4b30a0ba5199d6c6703838142da3bcdc}} 
+float \hyperlink{structSpectranConfigurator_1_1FixedParameters_a4b30a0ba5199d6c6703838142da3bcdc}{speaker\+Vol}
+\begin{DoxyCompactList}\small\item\em Speaker volume\+: range from 0.\+0 to 1.\+0. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This structure saves the fixed parameters of the spectrum analyzer, i.\+e. the parameters which do not change through the entire measurement cycle. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/\hyperlink{Spectran_8h}{Spectran.\+h}\end{DoxyCompactItemize}

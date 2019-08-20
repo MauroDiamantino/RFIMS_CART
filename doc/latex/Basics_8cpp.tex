@@ -1,0 +1,142 @@
+\hypertarget{Basics_8cpp}{}\section{/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/\+Basics.cpp File Reference}
+\label{Basics_8cpp}\index{/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/\+Basics.\+cpp@{/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/\+Basics.\+cpp}}
+
+
+This file contains the definitions of the functions and classes\textquotesingle{} methods which have been declared in file \hyperlink{Basics_8h}{Basics.\+h}.  
+
+
+{\ttfamily \#include \char`\"{}Basics.\+h\char`\"{}}\newline
+Include dependency graph for Basics.\+cpp\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{Basics_8cpp__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{Basics_8cpp_ab0cf00620947abc90fbfe36db36f8fc7}{approximately\+Equal} (float a, float b)
+\begin{DoxyCompactList}\small\item\em Function intended to compare floating-\/point numbers as approximately equal, taking into account the floating-\/point rounding errors. \end{DoxyCompactList}\item 
+bool \hyperlink{Basics_8cpp_adee734e43e4a9a5f4b9f610ccdd3f8e0}{approximately\+Equal} (std\+::vector$<$ float $>$ vectorA, std\+::vector$<$ float $>$ vectorB)
+\begin{DoxyCompactList}\small\item\em Function intended to compare {\ttfamily std\+::vector$<$float$>$} containers as approximately equal, taking into account the floating-\/point rounding errors. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{Basics_8cpp_abe6b1466ff5e3b09c33ca5dc9fc81c5a}\label{Basics_8cpp_abe6b1466ff5e3b09c33ca5dc9fc81c5a}} 
+void \hyperlink{Basics_8cpp_abe6b1466ff5e3b09c33ca5dc9fc81c5a}{Wait\+For\+Key} ()
+\begin{DoxyCompactList}\small\item\em This function stop the execution up to any key is pressed by the user and it was used for debugging purpose. \end{DoxyCompactList}\item 
+std\+::vector$<$ float $>$ \hyperlink{Basics_8cpp_ac744212c600f3f610807ec4add576822}{operator-\/} (const std\+::vector$<$ float $>$ \&\hyperlink{Spectran_8h_a16fa8eb91a19fde7a399d85c521f63fd}{vect})
+\begin{DoxyCompactList}\small\item\em An overloading of unary operator -\/ which negates the elements of a {\ttfamily std\+::vector$<$float$>$} container. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{Basics_8cpp_adb434b11769fc3a9acd409f2fe534395}\label{Basics_8cpp_adb434b11769fc3a9acd409f2fe534395}} 
+void \hyperlink{Basics_8cpp_adb434b11769fc3a9acd409f2fe534395}{Initialize\+G\+P\+IO} ()
+\begin{DoxyCompactList}\small\item\em This function initializes all G\+P\+IO pins which are used for the input and output signals, in the way it is described in structure {\itshape pi\+Pins}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{Basics_8cpp_a37d643c013d8e020715ec625553673e7}\label{Basics_8cpp_a37d643c013d8e020715ec625553673e7}} 
+void \hyperlink{Basics_8cpp_a37d643c013d8e020715ec625553673e7}{Turn\+Off\+Leds} ()
+\begin{DoxyCompactList}\small\item\em The aim of this function is to turn all L\+E\+Ds off. \end{DoxyCompactList}\item 
+void \hyperlink{Basics_8cpp_a2f7418278fcdac50f5c6a73744f8013c}{Turn\+On\+Front\+End} ()
+\begin{DoxyCompactList}\small\item\em The aim of this function is to turn on the RF front-\/end elements in a sequential manner, from the spectrum analyzer to the antenna.. \end{DoxyCompactList}\item 
+void \hyperlink{Basics_8cpp_a5ffe8b7dfe9c6702ed65b2b8b47bc3e1}{Turn\+Off\+Front\+End} ()
+\begin{DoxyCompactList}\small\item\em The aim of this function is to turn off the RF front-\/end elements in a sequential manner, from the antenna to the spectrum analyzer. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{Basics_8cpp_ae964ff8411b4fdcaf65cb5529aea4bef}\label{Basics_8cpp_ae964ff8411b4fdcaf65cb5529aea4bef}} 
+void \hyperlink{Basics_8cpp_ae964ff8411b4fdcaf65cb5529aea4bef}{Print\+Help} ()
+\begin{DoxyCompactList}\small\item\em This function prints in the {\ttfamily stdout} a message whit a software description and the descriptions of its arguments. \end{DoxyCompactList}\item 
+bool \hyperlink{Basics_8cpp_abab505eef94a08a9092f916c62637071}{Process\+Main\+Arguments} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em This function process the software\textquotesingle{}s arguments, which define the behavior of this one. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This file contains the definitions of the functions and classes\textquotesingle{} methods which have been declared in file \hyperlink{Basics_8h}{Basics.\+h}. 
+
+\begin{DoxyAuthor}{Author}
+Mauro Diamantino 
+\end{DoxyAuthor}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{Basics_8cpp_ab0cf00620947abc90fbfe36db36f8fc7}\label{Basics_8cpp_ab0cf00620947abc90fbfe36db36f8fc7}} 
+\index{Basics.\+cpp@{Basics.\+cpp}!approximately\+Equal@{approximately\+Equal}}
+\index{approximately\+Equal@{approximately\+Equal}!Basics.\+cpp@{Basics.\+cpp}}
+\subsubsection{\texorpdfstring{approximately\+Equal()}{approximatelyEqual()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily bool approximately\+Equal (\begin{DoxyParamCaption}\item[{float}]{a,  }\item[{float}]{b }\end{DoxyParamCaption})}
+
+
+
+Function intended to compare floating-\/point numbers as approximately equal, taking into account the floating-\/point rounding errors. 
+
+This function was copied from this \href{https://www.learncpp.com/cpp-tutorial/35-relational-operators-comparisons/}{\tt link}, but it was modified. It is based in the Knuth’s algorithm but it uses two epsilons, an absolute epsilon (A\+B\+S\+\_\+\+E\+P\+S\+I\+L\+ON) which is very small and is intended to compare near-\/zero floating-\/point numbers and a relative epsilon (R\+E\+L\+\_\+\+E\+P\+S\+I\+L\+ON, which is a percentage of the biggest operand) to compare the rest of the floating-\/point numbers. The function returns true if the difference between a and b is less than A\+B\+S\+\_\+\+E\+P\+S\+I\+L\+ON, or within R\+E\+L\+\_\+\+E\+P\+S\+I\+L\+ON percent of the larger of a and b. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em a} & The left-\/hand side argument. \\
+\hline
+\mbox{\tt in}  & {\em b} & The right-\/hand side argument. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{Basics_8cpp_adee734e43e4a9a5f4b9f610ccdd3f8e0}\label{Basics_8cpp_adee734e43e4a9a5f4b9f610ccdd3f8e0}} 
+\index{Basics.\+cpp@{Basics.\+cpp}!approximately\+Equal@{approximately\+Equal}}
+\index{approximately\+Equal@{approximately\+Equal}!Basics.\+cpp@{Basics.\+cpp}}
+\subsubsection{\texorpdfstring{approximately\+Equal()}{approximatelyEqual()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily bool approximately\+Equal (\begin{DoxyParamCaption}\item[{std\+::vector$<$ float $>$}]{vectorA,  }\item[{std\+::vector$<$ float $>$}]{vectorB }\end{DoxyParamCaption})}
+
+
+
+Function intended to compare {\ttfamily std\+::vector$<$float$>$} containers as approximately equal, taking into account the floating-\/point rounding errors. 
+
+This function is based on the function presented in this \href{https://www.learncpp.com/cpp-tutorial/35-relational-operators-comparisons/}{\tt link}.
+
+It is based in the Knuth’s algorithm but it uses two epsilons, an absolute epsilon (A\+B\+S\+\_\+\+E\+P\+S\+I\+L\+ON) which is very small and is intended to compare near-\/zero floating-\/point numbers and a relative epsilon (R\+E\+L\+\_\+\+E\+P\+S\+I\+L\+ON, which is a percentage of the biggest operand) to compare the rest of the floating-\/point numbers. The function returns true if the difference between a and b is less than A\+B\+S\+\_\+\+E\+P\+S\+I\+L\+ON, or within R\+E\+L\+\_\+\+E\+P\+S\+I\+L\+ON percent of the larger of a and b. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em vectorA} & The left-\/hand side argument. \\
+\hline
+\mbox{\tt in}  & {\em vectorB} & The right-\/hand side argument. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{Basics_8cpp_ac744212c600f3f610807ec4add576822}\label{Basics_8cpp_ac744212c600f3f610807ec4add576822}} 
+\index{Basics.\+cpp@{Basics.\+cpp}!operator-\/@{operator-\/}}
+\index{operator-\/@{operator-\/}!Basics.\+cpp@{Basics.\+cpp}}
+\subsubsection{\texorpdfstring{operator-\/()}{operator-()}}
+{\footnotesize\ttfamily std\+::vector$<$float$>$ operator-\/ (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ float $>$ \&}]{vect }\end{DoxyParamCaption})}
+
+
+
+An overloading of unary operator -\/ which negates the elements of a {\ttfamily std\+::vector$<$float$>$} container. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em vect} & A {\ttfamily std\+::vector$<$float$>$} container which must be negated. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{Basics_8cpp_abab505eef94a08a9092f916c62637071}\label{Basics_8cpp_abab505eef94a08a9092f916c62637071}} 
+\index{Basics.\+cpp@{Basics.\+cpp}!Process\+Main\+Arguments@{Process\+Main\+Arguments}}
+\index{Process\+Main\+Arguments@{Process\+Main\+Arguments}!Basics.\+cpp@{Basics.\+cpp}}
+\subsubsection{\texorpdfstring{Process\+Main\+Arguments()}{ProcessMainArguments()}}
+{\footnotesize\ttfamily bool Process\+Main\+Arguments (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+This function process the software\textquotesingle{}s arguments, which define the behavior of this one. 
+
+This function determines the values of the behavior flags (flag\+Cal\+Enabled, flag\+Plot, flag\+R\+FI, etc.) taking into account the arguments that were received and its values. The function returns a {\ttfamily true} value if the arguments were processed correctly and a {\ttfamily false} value if there was an argument which could not be recognized, and in that case it presents a message, in the {\ttfamily stdout}, explaining the correct use of the software arguments. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em argc} & The number of arguments that were received by the software. \\
+\hline
+\mbox{\tt in}  & {\em argv} & An array of C strings ({\ttfamily char$\ast$}) where each one is a software\textquotesingle{}s argument. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{Basics_8cpp_a5ffe8b7dfe9c6702ed65b2b8b47bc3e1}\label{Basics_8cpp_a5ffe8b7dfe9c6702ed65b2b8b47bc3e1}} 
+\index{Basics.\+cpp@{Basics.\+cpp}!Turn\+Off\+Front\+End@{Turn\+Off\+Front\+End}}
+\index{Turn\+Off\+Front\+End@{Turn\+Off\+Front\+End}!Basics.\+cpp@{Basics.\+cpp}}
+\subsubsection{\texorpdfstring{Turn\+Off\+Front\+End()}{TurnOffFrontEnd()}}
+{\footnotesize\ttfamily void Turn\+Off\+Front\+End (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+The aim of this function is to turn off the RF front-\/end elements in a sequential manner, from the antenna to the spectrum analyzer. 
+
+To turn off the RF front-\/end elements sequentially, this function begins ensuring the noise source is turned off, then it switches the input to that device, it waits 1 second, it turns the L\+N\+As off, it waits again 1 second and, finally, it turns the spectrum analyzer off. \mbox{\Hypertarget{Basics_8cpp_a2f7418278fcdac50f5c6a73744f8013c}\label{Basics_8cpp_a2f7418278fcdac50f5c6a73744f8013c}} 
+\index{Basics.\+cpp@{Basics.\+cpp}!Turn\+On\+Front\+End@{Turn\+On\+Front\+End}}
+\index{Turn\+On\+Front\+End@{Turn\+On\+Front\+End}!Basics.\+cpp@{Basics.\+cpp}}
+\subsubsection{\texorpdfstring{Turn\+On\+Front\+End()}{TurnOnFrontEnd()}}
+{\footnotesize\ttfamily void Turn\+On\+Front\+End (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+The aim of this function is to turn on the RF front-\/end elements in a sequential manner, from the spectrum analyzer to the antenna.. 
+
+To turn on the RF front-\/end elements in a sequential manner, first, this function turns the spectrum analyzer on, then it waits 5 seconds, it turns the L\+N\+As on, it waits again but this time just 1 second and, finally, it switches the input to the antenna. 
