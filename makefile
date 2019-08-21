@@ -12,8 +12,8 @@ CXX = g++
 CPPFLAGS = -std=c++11 -O3 -g0 -Wall -fmessage-length=0 -I/usr/local/include
 LDFLAGS = -g0
 
-#LDLIBS = -L/usr/local/lib -lftd2xx -lboost_filesystem -lboost_system -lboost_timer -lnmea -lwiringPi -lpthread
-LDLIBS = -L/usr/local/lib -lftd2xx -lboost_filesystem -lboost_system -lboost_timer -lnmea -lpthread
+#LDLIBS = -L/usr/local/lib -lftd2xx -lboost_filesystem -lboost_system -lboost_timer -lnmea -lwiringPi -lpthread #For Raspberry Pi boards
+LDLIBS = -L/usr/local/lib -lftd2xx -lboost_filesystem -lboost_system -lboost_timer -lnmea -lpthread #For non-Raspberry boards
 
 #######################FILES###########################
 HEADER_NAMES = AntennaPositioning.h TopLevel.h Basics.h Spectran.h SweepProcessing.h gnuplot_i.hpp
@@ -90,8 +90,7 @@ clean:
 	@echo "Cleaning..."
 	rm -f -r obj/ bin/
 
-copy-bin:
+copy-files:
 	cp -f $(TARGET) /usr/local/bin
-
-copy-py-script:
 	cp -f scripts/client.py /usr/local
+	cp -f -r data/RFIMS/ /home/pi/

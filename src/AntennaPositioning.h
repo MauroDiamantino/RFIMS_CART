@@ -13,9 +13,8 @@
  *	the "yaw" angle which represents the heading, the "pitch" angle which represents the elevation and the
  *	"roll" angle which models the bank angle. The yaw angle is used to represent the antenna's azimuth angle,
  *	the roll angle is used to represent the antenna polarization and the pitch angle is not used.
- *
- *	![The Cardan or nautical angles](cardan_angles.png)
- *
+ *	\image html cardan_angles.png "The Cardan or nautical angles"
+ *	\image latex cardan_angles.eps "The Cardan or nautical angles" width=10cm
  *	Moreover, the class GPSInterface allows to get data related with time and date, elevation (based on
  *	pressure), ambient pressure, among other things.
  *

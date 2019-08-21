@@ -62,7 +62,7 @@ const Sweep& SweepBuilder::CaptureSweep(BandParameters & bandParam)
 		{
 			interface.Read(swReply);
 		}
-		catch(CustomException & exc)
+		catch(rfims_exception & exc)
 		{
 			cerr << "Warning: " << exc.what() << endl;
 			if(++errorTimeCount < 3)
@@ -70,7 +70,7 @@ const Sweep& SweepBuilder::CaptureSweep(BandParameters & bandParam)
 			else
 			{
 				interface.DisableSweep();
-				CustomException exc("The capture of one sweep failed because the reading of measurements failed three times.");
+				rfims_exception exc("The capture of one sweep failed because the reading of measurements failed three times.");
 				throw(exc);
 			}
 		}
@@ -99,7 +99,7 @@ const Sweep& SweepBuilder::CaptureSweep(BandParameters & bandParam)
 			else
 			{
 				interface.DisableSweep();
-				CustomException exc("Too much out-of-range frequency values were captured.");
+				rfims_exception exc("Too much out-of-range frequency values were captured.");
 				throw(exc);
 			}
 		}

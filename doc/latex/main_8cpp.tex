@@ -6,7 +6,8 @@ This file contains the main function of the R\+F\+I\+M\+S-\/\+C\+A\+RT software.
 
 
 {\ttfamily \#include \char`\"{}Top\+Level.\+h\char`\"{}}\newline
-Include dependency graph for main.\+cpp\+:\nopagebreak
+Include dependency graph for main.\+cpp\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -64,7 +65,17 @@ Mauro Diamantino
 
 The main function of the R\+F\+I\+S\+M-\/\+C\+A\+RT software. 
 
-This function instantiates all the needed objects and performs the software tasks in the corresponding order. The objects and their relations can be observed in the following components diagram\+: The order of the operations which are performed in the main function follows the following flow diagram\+: 
+This function instantiates all the needed objects and performs the software tasks in the corresponding order. The objects and their relations can be observed in the following components diagram\+: 
+\begin{DoxyImage}
+\includegraphics[width=\textwidth,height=\textheight/2,keepaspectratio=true]{software_components_diagram}
+\doxyfigcaption{Software components diagram}
+\end{DoxyImage}
+The order of the operations which are performed in the main function follows the following flow diagram\+: 
+\begin{DoxyImage}
+\includegraphics[width=13cm]{high_level_flow_diagram}
+\doxyfigcaption{High-\/level flow diagram}
+\end{DoxyImage}
+ 
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\tt in}  & {\em argc} & The number of arguments that were received by the software. \\
 \hline

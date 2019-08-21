@@ -1,0 +1,7 @@
+Norm=ITU_RA769-2_VLBI
+//Frequency (MHz, float value), Harmful thresholds (dB[W*m^-2*Hz^-1], float value)
+611.0,-212.0
+1413.5,-211.0
+2695.0,-205.0
+4995.0,-200.0
+10650.0,-193.0

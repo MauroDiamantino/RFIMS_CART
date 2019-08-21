@@ -1,0 +1,75 @@
+//////////////////////////////////////////\+E\+N\+G\+L\+I\+S\+H///////////////////////////////////////////////
+
+This software is intended to run in the \char`\"{}\+R\+F Interference Measurement System (\+R\+F\+I\+M\+S)\char`\"{} which is going to be installed beside the China-\/\+Argentina Radio Telescope (C\+A\+RT) to analize the RF interference (\hyperlink{structRFI}{R\+FI}) which could reach the telescope, taking into account different azimuth angles and two antenna polarizations, horizontal and vertical.
+
+It was designed to capture RF power measurements from a spectrum analyzer Aaronia Spectran H\+F-\/60105 V4 X, using an antenna which is mounted on a structure that allow the antenna to be rotated to point the horizon with different azimuth angles and whose polarization could be changed between horizontal and vertical. A sweep from 1 G\+Hz (or maybe less) to 9.\+4 G\+Hz is captured in each antenna position and then it is calibrated, processed to identify the \hyperlink{structRFI}{R\+FI}, saved into memory, plotted with the detected \hyperlink{structRFI}{R\+FI} and finally the measurements are sent to a remote server. The initial and stop frequencies are configurable, as many other parameters, through the files which are accesed by the software to load those parameters and which are inside the directories /home/pi/\+R\+F\+I\+M\+S-\/\+C\+A\+R\+T/.
+
+To calibrate the measurements, at the beginning of each measurement cycle, which is the set of sweeps corresponding to a turning of 360° of the azimuth angle, a calibration of the RF front end is performed which consists in connecting a noise source (NS) at the input y an capturing two sweeps, one of them with the NS turned off and the other one with the NS turned on. With these sweeps, the curves of the front end parameters, total gain and total noise figure, versus frequency are estimated. Then, the sweeps captured with the antenna connected at the input are calibrated taking into account the estimated front end parameters, so that the distorsion produced by the front end beacuse of its no-\/flat frequency response, so that the power values represent the signals at the input and so that the internal noise of the front end which has been added to the measurements, to be removed.
+
+The software has been designed to this particual purpose so this can only be run in a Raspberry Pi 3 board o later version with Raspbian Stretch or later, y the software will only work with the spectrum analyzer Aaronia Spectran H\+F-\/60105 V4 X and with the Aaronia G\+PS receiver with integrated sensors.
+
+Before the installation of the software, it is necessary to install the following applications and libraries\+:
+
+
+\begin{DoxyItemize}
+\item Driver F\+T\+DI D2\+XX 2, versión 1.\+4.\+8 A\+R\+Mv7 hard-\/float\+: \href{https://www.ftdichip.com/Drivers/D2XX.htm}{\tt https\+://www.\+ftdichip.\+com/\+Drivers/\+D2\+X\+X.\+htm}
+\item Library libnmea\+: \href{http://nmea.io/}{\tt http\+://nmea.\+io/}
+\item Library Wiring\+Pi 4, versión 2.\+46 o later\+: \href{http://wiringpi.com/}{\tt http\+://wiringpi.\+com/}
+\item Software gnuplot 5 o later\+: \href{http://www.gnuplot.info/}{\tt http\+://www.\+gnuplot.\+info/}
+\item The set of C++ libraries “boost” (\href{https://www.boost.org/}{\tt https\+://www.\+boost.\+org/}), versión 1.\+69.\+0, of which the following ones were used\+:
+\begin{DoxyItemize}
+\item Library header-\/only Boost.\+Algorithm
+\item Library header-\/only Boost.\+Date\+\_\+\+Time
+\item Library Boost.\+Filesystem
+\item Library Boost.\+System
+\item Library header-\/only Boost.\+Bimap
+\item Library Boost.\+Timer
+\end{DoxyItemize}
+\end{DoxyItemize}
+
+To compile and install the software, a terminal must be opened, the current directory must be changed to the base directory of the project and the following commands must be run\+: \begin{DoxyVerb}make all
+make copy-files
+\end{DoxyVerb}
+
+
+The first instruction compiles the software and it generates the binay file ./bin/rfims-\/cart. The second instruction copies the previous binary file to the path /usr/local/bin/, which is inside the environment variable P\+A\+TH, so that the software could be run without writing the path where the binary file is; the python scritp ./scripts/client.py, which is used by the software to upload the data, is copied to the path /usr/local/; and, finally, the directory tree ./data/\+R\+F\+I\+M\+S-\/\+C\+A\+R\+T/, which contains several files which are accesed by the software, are copied to the path /home/pi/. These directories and files are accesed by the software to load the configuration parameters and to save there the measurements.
+
+To run the software, it must be typed \char`\"{}rfims-\/cart\char`\"{} in a terminal. The software has several arguments which define its behavior. To know the arguments and their usage it must be typed \char`\"{}rfims-\/cart -\/-\/help\char`\"{} or \char`\"{}rims-\/cart -\/h\char`\"{}.
+
+//////////////////////////////////////////\+E\+S\+P\+AÑ\+O\+L////////////////////////////////////////////////
+
+Este software está pensado para ser ejecutado en el \char`\"{}\+Sistema de Monitoreo de Interferencias de R\+F (\+R\+F\+I\+M\+S)\char`\"{} que será instalado junto al Radio\+Telescopio Chino-\/\+Argentino (C\+A\+RT) para analizar las interferencias de RF (\hyperlink{structRFI}{R\+FI}) que podrían alcanzar el telescopio, teniendo en cuenta diferentes ángulos azimutales y dos polarizaciones de la antena, horizontal y vertical.
+
+El mismo está diseñado para capturar las mediciones de potencia de RF de un analizador de espectro Aaronia Spectran H\+F-\/60105 V4 X, usando una antena montada sobre una estructura que le permite rotar para apuntar al horizonte con diferentes ángulos azimutales y que le permite cambiar su polarización entre vertical y horizontal. En cada posición de la antena se captura un barrido desde 1 G\+Hz (o quizás una menor frecuencia) hasta 9.\+4 G\+Hz y luego el barrido es calibrado, procesado para identificar la \hyperlink{structRFI}{R\+FI}, se almacena en memoria no volátil, es graficado en la pantalla con la \hyperlink{structRFI}{R\+FI} detectada y, finalmente, todos los datos recolectados son enviados a un servidor remoto. Las frecuencias inicial y final son configurables, al igual que muchos otros parámetros, mediante los archivos a los cuales el software accede para levantar estos datos y que se ubican dentro de los directorios /home/pi/\+R\+F\+I\+M\+S-\/\+C\+A\+R\+T/.
+
+Para calibrar las mediciones, al inicio de cada ciclo de medición, el conjunto de barridos que corresponden a un recorrido de 360° azimutal de la antena, se realiza una calibración del front end de RF que consiste en conectar un generador de ruido a la entrada y capturar dos barridos, uno con el generador apagado y otro con el generador encendido. Con estos barridos, se estiman las curvas de la ganancia total y la figura de ruido total del front end, ambas en función de la frecuencia. Luego, los barridos capturados con la antena son calibrados teniendo en cuenta los parameteros estimados anteriores, de modo que se elimine la distorsión introducida por el front end por su respuesta frecuencial no plana, las potencias estén referenciadas a la entrada del front end y de modo que se elimine el ruido interno del front end adicionado a las señales de entrada.
+
+El software está diseñado para esta aplicación particular por lo que solo puede executarse en una placa Raspberry Pi 3 o superior con Raspbian Stretch o superior, y solo funcionará con el analizador de espectro Aaronia Spectran H\+F-\/60105 V4 X y con el receptor G\+PS con sensores integrados de Aaronia.
+
+Antes de instalar este software, es necesario instalar las siguientes aplicaciones y bibliotecas\+:
+
+
+\begin{DoxyItemize}
+\item Driver F\+T\+DI D2\+XX 2, la versión 1.\+4.\+8 A\+R\+Mv7 hard-\/float\+: \href{https://www.ftdichip.com/Drivers/D2XX.htm}{\tt https\+://www.\+ftdichip.\+com/\+Drivers/\+D2\+X\+X.\+htm}
+\item Biblioteca libnmea\+: \href{http://nmea.io/}{\tt http\+://nmea.\+io/}
+\item Biblioteca Wiring\+Pi 4, versión 2.\+46 o superior\+: \href{http://wiringpi.com/}{\tt http\+://wiringpi.\+com/}
+\item Software gnuplot 5 o superior\+: \href{http://www.gnuplot.info/}{\tt http\+://www.\+gnuplot.\+info/}
+\item El paquete de bibliotecas de C++ “boost” (\href{https://www.boost.org/}{\tt https\+://www.\+boost.\+org/}), versión 1.\+69.\+0, de las que se utilizaron las siguientes\+:
+\begin{DoxyItemize}
+\item Biblioteca header-\/only Boost.\+Algorithm
+\item Biblioteca header-\/only Boost.\+Date\+\_\+\+Time
+\item Biblioteca Boost.\+Filesystem
+\item Biblioteca Boost.\+System
+\item Biblioteca header-\/only Boost.\+Bimap
+\item Biblioteca Boost.\+Timer
+\end{DoxyItemize}
+\end{DoxyItemize}
+
+Para compilar e instalar el software se debe abrir una terminal, ubicarse sobre el directorio base del proyecto y ejecutar los siguientes comandos\+: \begin{DoxyVerb}make all
+make copy-files
+\end{DoxyVerb}
+
+
+Con la primer instrucción se compila el programa y se genera el binario ./bin/rfims-\/cart. Con la segunda instrucción se copia el binario anterior a la ruta /usr/local/bin/, que está dentro de la variable de entorno P\+A\+TH, para que se puede ejecutar el mismo sin escribir la ruta donde se encuentra; se copia el script de python ./scripts/client.py, que es usado por el programa para enviar los datos al servidor remoto, a la ruta /usr/local/; y, por último, se copia el árbol de directorios con archivos ./data/\+R\+F\+I\+M\+S-\/\+C\+A\+R\+T/ a /home/pi/. Estos directorios y archivos son utilizados por el programa para cargar los parámetros de configuración y para almacenar las mediciones y datos capturados.
+
+Para ejecutar el programa se debe tipear \char`\"{}rfims-\/cart\char`\"{} en la terminal. El programa tiene multiples argumentos que permiten modificar su comportamiento. Para conocer los argumentos y cómo deben usarse, se debe tipear \char`\"{}rfims-\/cart -\/-\/help\char`\"{} o \char`\"{}rfims-\/cart -\/h\char`\"{}. 

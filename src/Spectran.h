@@ -343,12 +343,12 @@ public:
 		ftStatus=FT_Write(ftHandle, txBuffer, numOfBytes, &writtenBytes);
 		if (ftStatus!=FT_OK)
 		{
-			CustomException except("The Spectran Interface could not write a command, the function FT_Write() returned an error value.");
+			rfims_exception except("The Spectran Interface could not write a command, the function FT_Write() returned an error value.");
 			throw(except);
 		}
 		else if (writtenBytes!=numOfBytes)
 		{
-			CustomException except("The Spectran Interface could not write a command correctly, not all bytes were written");
+			rfims_exception except("The Spectran Interface could not write a command correctly, not all bytes were written");
 			throw(except);
 		}
 	}
@@ -376,7 +376,7 @@ public:
 		}
 		if(i>=20)
 		{
-			CustomException exc("In a reading operation, the input bytes were waited too much time.");
+			rfims_exception exc("In a reading operation, the input bytes were waited too much time.");
 			throw(exc);
 		}
 
@@ -385,12 +385,12 @@ public:
 		ftStatus=FT_Read(ftHandle, rxBuffer, numOfBytes, &receivedBytes);
 		if (ftStatus!=FT_OK)
 		{
-			CustomException except("The Spectran interface could not read a Spectran reply, the function FT_Read returned an error value.");
+			rfims_exception except("The Spectran interface could not read a Spectran reply, the function FT_Read returned an error value.");
 			throw(except);
 		}
 		else if (receivedBytes!=numOfBytes)
 		{
-			CustomException except("The Spectran interface tried to read a Spectran reply but not all bytes were read.");
+			rfims_exception except("The Spectran interface tried to read a Spectran reply but not all bytes were read.");
 			throw(except);
 		}
 

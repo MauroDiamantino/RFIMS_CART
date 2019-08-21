@@ -1,0 +1,7 @@
+Norm=SKA_MODE1
+//Frequency (MHz, float value), Harmful thresholds (dB[W*m^-2*Hz^-1], float value)
+550.0,-163.0
+880.0,-155.0
+1180.0,-168.0
+2200.0,-150.0
+12500.0,-158.0

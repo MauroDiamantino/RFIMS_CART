@@ -31,7 +31,7 @@
 
 // The must-have library which allows to use the objects `std::cout` and `std::cin` among a lot of other things.
 #include <iostream>
-// It is included to use base class `std::exception`. A specific class, called CustomException, is derived from that base class to manage the exceptions.
+// It is included to use base class `std::exception`.
 #include <exception>
 // It is included to use the famous container `std::vector`.
 #include <vector>
@@ -96,20 +96,23 @@ const std::string BASE_PATH = "/home/new-mauro/RFIMS-CART";
 /*! This class is customized to managed the exceptions in a desired way. This class has been
  * defined to ease the appending of data to the message carried by an exception object.
  */
-class CustomException : public std::exception
+class rfims_exception : public std::exception
 {
 	std::string message; //!< The internal message which contains the info of the exception.
 public:
-	//! The default constructor which can set the internal message.
-	/*! \param [in] msg The internal message of the exception, which can be of type `char*` or `std::string`.	*/
-	CustomException(const std::string& msg="Error") : message(msg) {}
-	//! The aim of this function is to modify the internal message of the exception.
-	/*! \param [in] msg The internal message of the exception, which can be of type `char*` or `std::string`.	*/
+	//! The default constructor, which can set the exception message.
+	/*! \param [in] msg The exception message, which can be of type `char*` or `std::string`.	*/
+	rfims_exception(const std::string& msg="Error") : message(msg) {}
+	//! The aim of this function is to modify the exception message.
+	/*! \param [in] msg The exception message, which can be of type `char*` or `std::string`.	*/
 	void SetMessage(const std::string& msg) {	message=msg;	}
-	//! This function is intended to add some text at the end of the internal message.
-	/*! \param [in] msg A sentence which must be appended to the internal message of the exception and which can be of type `char*` or `std::string`.	*/
-	void Append(const std::string& msg) {	message+=msg;	}
-	//! This is a generic function for classes which manage exceptions and is intended to return the internal message as a C string (`char*`).
+	//! This function is intended to add some text at the beginning of the exception message.
+	/*! \param [in] msg The sentence which must be prepended to the exception message and which can be of type `char*` or `std::string`.	*/
+	void Prepend(const std::string& msg) {	message.insert(0, msg);		}
+	//! This function is intended to add some text at the end of the exception message.
+	/*! \param [in] msg The sentence which must be appended to the exception message and which can be of type `char*` or `std::string`.	*/
+	void Append(const std::string& msg) {	message.append(msg);	}
+	//! This is a standard function for classes which manage exceptions and is intended to return the exception message as a C string (`char*`).
 	const char * what() const throw() {	return message.c_str();	}
 };
 

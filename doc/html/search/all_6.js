@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['gainploterptr',['gainPloterPtr',['../classSignalHandler.html#a1c6637986751faafe7cb5ffd58400f77',1,'SignalHandler']]],
+  ['gainplotterptr',['gainPlotterPtr',['../classSignalHandler.html#a040fa3711d4239933dd28a00b24965b2',1,'SignalHandler']]],
   ['getaccelerdata',['GetAccelerData',['../classGPSInterface.html#a675644b668df300d19afaefff9849886',1,'GPSInterface']]],
   ['getadjustedcurve',['GetAdjustedCurve',['../classCurveAdjuster.html#a613e815a190d44b7d64e70b08da82e1f',1,'CurveAdjuster']]],
   ['getazimposition',['GetAzimPosition',['../classAntennaPositioner.html#a72cb61d647eaad277f256b3ca9555f8a',1,'AntennaPositioner']]],

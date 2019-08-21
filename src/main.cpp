@@ -6,6 +6,7 @@
 #include "TopLevel.h"
 
 /////////////////////////Global variables//////////////////////////
+
 // Global variables which are used by the SignalHandler class
 SpectranInterface * SignalHandler::specInterfPtr; //!< The instantiation of the pointer to the _SpectranInterface_ object.
 SpectranConfigurator * SignalHandler::specConfiguratorPtr; //!< The instantiation of the pointer to the _SpectranConfigurator_ object.
@@ -16,9 +17,9 @@ RFIDetector * SignalHandler::rfiDetectorPtr; //!< The instantiation of the point
 DataLogger * SignalHandler::dataLoggerPtr; //!< The instantiation of the pointer to the _DataLogger_ object.
 GPSInterface * SignalHandler::gpsInterfacePtr; //!< The instantiation of the pointer to the _GPSInterface_ object.
 AntennaPositioner * SignalHandler::antPositionerPtr; //!< The instantiation of the pointer to the _AntennaPositioner_ object.
-RFPloter * SignalHandler::sweepPloterPtr; //!< The instantiation of the pointer to the _RFPlotter_ object which is responsible for the plotting of the last captured sweep.
-RFPloter * SignalHandler::gainPloterPtr; //!< The instantiation of the pointer to the _RFPlotter_ object which is responsible for the plotting of the last estimated gain curve.
-RFPloter * SignalHandler::nfPloterPtr; //!< The instantiation of the pointer to the _RFPlotter_ object which is responsible for the plotting of the last estimated noise figure curve.
+RFPlotter * SignalHandler::sweepPlotterPtr; //!< The instantiation of the pointer to the _RFPlotter_ object which is responsible for the plotting of the last captured sweep.
+RFPlotter * SignalHandler::gainPlotterPtr; //!< The instantiation of the pointer to the _RFPlotter_ object which is responsible for the plotting of the last estimated gain curve.
+RFPlotter * SignalHandler::nfPlotterPtr; //!< The instantiation of the pointer to the _RFPlotter_ object which is responsible for the plotting of the last estimated noise figure curve.
 
 // Flags which are defined by the software arguments and which indicates the way the software must behave.
 bool flagCalEnabled; //!< The declaration of an external flag which defines if the calibration of the RF front end must be done or not.
@@ -39,9 +40,11 @@ boost::timer::cpu_timer timer;
 //! The main function of the RFISM-CART software.
 /*!	This function instantiates all the needed objects and performs the software tasks in the corresponding order.
  * The objects and their relations can be observed in the following components diagram:
- * ![Software blocks diagram](software_components_diagram.png)
+ * \image html software_components_diagram.png "Software components diagram"
+ * \image latex software_components_diagram.eps "Software components diagram"
  * The order of the operations which are performed in the main function follows the following flow diagram:
- * ![High-level flow diagram](high_level_flow_diagram.png)
+ * \image html high_level_flow_diagram.png "High-level flow diagram"
+ * \image latex high_level_flow_diagram.eps "High-level flow diagram" width=13cm
  * \param [in] argc The number of arguments that were received by the software.
  * \param [in] argv An array of C strings (`char*`) where each one is a software's argument.
  */
@@ -74,11 +77,12 @@ int main(int argc, char * argv[])
 		//Starting timer
 		timer.start();
 
-	RFPloter sweepPloter;
-	RFPloter gainPloter, nfPloter;
+	RFPlotter sweepPlotter, gainPlotter, nfPlotter;
+
 	try
 	{
 		//////////////////////////////////////INITIALIZATIONS//////////////////////////////////////////
+
 		SpectranInterface specInterface;
 		SpectranConfigurator specConfigurator(specInterface);
 		SweepBuilder sweepBuilder(specInterface);
@@ -93,7 +97,7 @@ int main(int argc, char * argv[])
 		SignalHandler sigHandler;
 		sigHandler.SetupSignalHandler(&specInterface, &specConfigurator, &sweepBuilder, &curveAdjuster,
 				&frontEndCalibrator, &rfiDetector, &dataLogger, &gpsInterface, &antPositioner,
-				&sweepPloter, &gainPloter, &nfPloter);
+				&sweepPlotter, &gainPlotter, &nfPlotter);
 
 		//Initializing the spectrum analyzer
 		cout << "\nInitializing the spectrum analyzer Aaronia Spectran HF-60105 V4 X..." << endl;
@@ -108,10 +112,12 @@ int main(int argc, char * argv[])
 		//Putting the antenna in the initial position and polarization
 		antPositioner.Initialize();
 		cout << "The initial azimuth angle is " << antPositioner.GetAzimPosition() << "° N" << endl;
+
 		//////////////////////////////////END OF THE INITIALIZATION///////////////////////////////////////
 
 
 		////////////////////////////////////////GENERAL LOOP////////////////////////////////////////////
+
 		while(flagInfiniteLoop || !flagEndIterations)
 		{
 			Sweep uncalSweep;
@@ -119,6 +125,7 @@ int main(int argc, char * argv[])
 			if(flagNewMeasCycle)
 			{
 				////////////////////////LOADING OF THE SPECTRAN'S PARAMETERS//////////////////////////
+
 				//Loading by first time or reloading the Spectran parameters
 				cout << "\nLoading the Spectran's configuration parameters from the corresponding files" << endl;
 				//Loading the fixed parameters
@@ -135,6 +142,7 @@ int main(int argc, char * argv[])
 				cout << "Loading the frequency bands' parameters..." << endl;
 				flagBandsParamReloaded = specConfigurator.LoadBandsParameters();
 				cout << "The frequency bands' parameters were loaded successfully" << endl;
+
 				//////////////////////END OF THE LOADING OF THE SPECTRAN'S PARAMETERS////////////////
 			}
 
@@ -150,6 +158,7 @@ int main(int argc, char * argv[])
 			flagNewMeasCycle=false;
 
 			/////////////////////////////GETTING ANTENNA POSITIONS AND TIME DATA///////////////////////////
+
 			//The timestamp of each sweep is taking at the beginning. Also, the antenna position data are
 			//saved in the Sweep object here.
 			bool flagSuccess=false;
@@ -163,14 +172,15 @@ int main(int argc, char * argv[])
 					uncalSweep.azimuthAngle = antPositioner.GetAzimPosition();
 					uncalSweep.polarization = antPositioner.GetPolarizationString();
 				}
-				catch(CustomException & exc)
+				catch(rfims_exception & exc)
 				{
 					if( ++numOfErrors < 3)
 						cerr << "\nWarning: reading of time data and antenna position failed: " << exc.what() << endl;
 					else
-						throw( CustomException("The reading of time data and antenna position failed three times.") );
+						throw( rfims_exception("The reading of time data and antenna position failed three times.") );
 				}
 			}while(!flagSuccess);
+
 			//////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -240,10 +250,10 @@ int main(int argc, char * argv[])
 					if(flagPlot)
 						try
 						{
-							gainPloter.Clear();
-							gainPloter.Plot( frontEndCalibrator.GetGain(), "lines", "Total receiver gain");
-							nfPloter.Clear();
-							nfPloter.Plot( frontEndCalibrator.GetNoiseFigure(), "lines", "Total receiver noise figure");
+							gainPlotter.Clear();
+							gainPlotter.Plot( frontEndCalibrator.GetGain(), "lines", "Total receiver gain");
+							nfPlotter.Clear();
+							nfPlotter.Plot( frontEndCalibrator.GetNoiseFigure(), "lines", "Total receiver noise figure");
 						}
 						catch(std::exception & exc)
 						{
@@ -282,10 +292,10 @@ int main(int argc, char * argv[])
 						if(flagPlot)
 							try
 							{
-								gainPloter.Clear();
-								gainPloter.Plot( frontEndCalibrator.GetGain(), "lines", "Total receiver gain");
-								nfPloter.Clear();
-								nfPloter.Plot( frontEndCalibrator.GetNoiseFigure(), "lines", "Total receiver noise figure");
+								gainPlotter.Clear();
+								gainPlotter.Plot( frontEndCalibrator.GetGain(), "lines", "Total receiver gain");
+								nfPlotter.Clear();
+								nfPlotter.Plot( frontEndCalibrator.GetNoiseFigure(), "lines", "Total receiver noise figure");
 							}
 							catch(std::exception & exc)
 							{
@@ -346,12 +356,12 @@ int main(int argc, char * argv[])
 					{
 						//Plotting the current sweep and the detected RFI
 						cout << "\nThe calibrated sweep will be plotted" << endl;
-						sweepPloter.Clear();
-						sweepPloter.PlotSweep(calSweep);
+						sweepPlotter.Clear();
+						sweepPlotter.PlotSweep(calSweep);
 						if(flagRFI && rfiDetector.GetNumOfRFIBands()!=0)
 						{
 							cout << "The detected RFI will be plotted" << endl;
-							sweepPloter.PlotRFI(detectedRFI);
+							sweepPlotter.PlotRFI(detectedRFI);
 						}
 					}
 					catch(std::exception & exc)
@@ -416,7 +426,7 @@ int main(int argc, char * argv[])
 		}
 		//////////////////////////////////END OF THE GENERAL LOOP////////////////////////////////////
 	}
-	catch(CustomException & exc)
+	catch(rfims_exception & exc)
 	{
 		cerr << "\nError: " << exc.what() << endl;
 
@@ -425,8 +435,6 @@ int main(int argc, char * argv[])
 			//Showing the elapsed time since the beginning
 			timer.stop();
 			boost::timer::cpu_times times = timer.elapsed();
-			//double hours = double(times.wall)/(1e9*3600.0);
-			//cout << "\nThe elapsed time since the beginning is: " << hours << " hours" << endl;
 			boost::posix_time::time_duration td = boost::posix_time::microseconds(times.wall/1000);
 			cout << "\nThe elapsed time since the beginning is: " << boost::posix_time::to_simple_string(td) << endl;
 		}
@@ -445,8 +453,6 @@ int main(int argc, char * argv[])
 		//Showing the elapsed time since the beginning
 		timer.stop();
 		boost::timer::cpu_times times = timer.elapsed();
-		//double hours = double(times.wall)/(1e9*3600.0);
-		//cout << "\nThe elapsed time since the beginning is: " << hours << " hours" << endl;
 		boost::posix_time::time_duration td = boost::posix_time::microseconds(times.wall/1000);
 		cout << "\nThe elapsed time since the beginning is: " << boost::posix_time::to_simple_string(td) << endl;
 	}
@@ -454,7 +460,8 @@ int main(int argc, char * argv[])
 	TurnOffFrontEnd();
 	TurnOffLeds();
 
-	cout << "\nExiting" << endl;
+	cout << "\nExiting from the software" << endl;
 	return 0;
 }
+
 ////////////////////////////END OF MAIN FUNCTION/////////////////////////////////

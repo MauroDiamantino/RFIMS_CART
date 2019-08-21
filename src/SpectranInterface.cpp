@@ -18,7 +18,7 @@ SpectranInterface::SpectranInterface()
 
 	if (ftStatus!=FT_OK)
 	{
-		CustomException except("The Spectran Interface could not include the pair of values (PID,VID) of the Spectran device in the list of possible values.");
+		rfims_exception except("The Spectran Interface could not include the pair of values (PID,VID) of the Spectran device in the list of possible values.");
 		throw(except);
 	}
 	else
@@ -41,7 +41,7 @@ void SpectranInterface::OpenAndSetUp()
 
 	if (ftStatus!=FT_OK)
 	{
-		CustomException except;
+		rfims_exception except;
 		switch(ftStatus)
 		{
 		case 2:
@@ -59,53 +59,53 @@ void SpectranInterface::OpenAndSetUp()
 	}
 	else
 	{
-		//////////////Setting up the FTDI IC///////////////
+		//Setting up the FTDI IC//
 		ftStatus=FT_SetTimeouts(ftHandle, USB_RD_TIMEOUT_MS, USB_WR_TIMEOUT_MS);
 		if (ftStatus!=FT_OK)
 		{
-			CustomException except("The read and write timeouts could not be set up.");
+			rfims_exception except("The read and write timeouts could not be set up.");
 			throw(except);
 		}
 
 		ftStatus = FT_SetFlowControl(ftHandle, FT_FLOW_NONE, 0, 0);
 		if(ftStatus!=FT_OK)
 		{
-			CustomException exc("The flow control could not be set up.");
+			rfims_exception exc("The flow control could not be set up.");
 			throw(exc);
 		}
 
 		ftStatus = FT_SetDataCharacteristics(ftHandle, FT_BITS_8, FT_STOP_BITS_2, FT_PARITY_NONE);
 		if(ftStatus!=FT_OK)
 		{
-			CustomException exc("The data characteristics could not be set up.");
+			rfims_exception exc("The data characteristics could not be set up.");
 			throw(exc);
 		}
 
 		ftStatus = FT_SetBaudRate(ftHandle, BAUD_RATE);
 		if(ftStatus!=FT_OK)
 		{
-			CustomException exc("The baud rate could not be set up.");
+			rfims_exception exc("The baud rate could not be set up.");
 			throw(exc);
 		}
 
 		ftStatus = FT_SetLatencyTimer(ftHandle, 2);
 		if(ftStatus!=FT_OK)
 		{
-			CustomException exc("The latency timer could not be set up to 2ms.");
+			rfims_exception exc("The latency timer could not be set up to 2ms.");
 			throw(exc);
 		}
 
 		ftStatus = FT_SetChars(ftHandle, 0, 0, 0, 0);
 		if(ftStatus!=FT_OK)
 		{
-			CustomException exc("The special characters could not be disabled.");
+			rfims_exception exc("The special characters could not be disabled.");
 			throw(exc);
 		}
 
 		ftStatus = FT_SetUSBParameters(ftHandle, 4096, 0);
 		if(ftStatus!=FT_OK)
 		{
-			CustomException exc("The USB request transfer size could not be set up.");
+			rfims_exception exc("The USB request transfer size could not be set up.");
 			throw(exc);
 		}
 	}
@@ -176,7 +176,7 @@ void SpectranInterface::Initialize()
 			}
 			else
 			{
-				CustomException exc("The Spectran interface could not initialize the communication with the Spectran device.");
+				rfims_exception exc("The Spectran interface could not initialize the communication with the Spectran device.");
 				throw(exc);
 			}
 		}
@@ -214,9 +214,9 @@ void SpectranInterface::Initialize()
 	{
 		Purge();
 	}
-	catch(CustomException & exc)
+	catch(rfims_exception & exc)
 	{
-		CustomException exc1("Error at initialization: ");
+		rfims_exception exc1("Error at initialization: ");
 		exc1.Append( exc.what() );
 		throw(exc1);
 	}
@@ -229,7 +229,7 @@ unsigned int SpectranInterface::Available()
 	//DWORD numOfOutputBytes, events;
 	//ftStatus=FT_GetStatus(ftHandle, &numOfInputBytes, &numOfOutputBytes, &events);
 	if (ftStatus!=FT_OK){
-		CustomException except("The Spectran interface could not read the number of bytes in the receive queue.");
+		rfims_exception except("The Spectran interface could not read the number of bytes in the receive queue.");
 		throw(except);
 	}
 
@@ -248,9 +248,9 @@ void SpectranInterface::ResetSweep()
 		Write(comm);
 		Read(reply);
 		if(!reply.IsRight())
-			throw( CustomException("A wrong reply was received.") );
+			throw( rfims_exception("A wrong reply was received.") );
 	}
-	catch(CustomException & exc)
+	catch(rfims_exception & exc)
 	{
 		exc.Append("\nThe command to reset the current sweep failed.");
 		throw;
@@ -273,11 +273,11 @@ void SpectranInterface::EnableSweep()
 		Read(reply);
 		if(reply.IsRight()!=true)
 		{
-			CustomException exc("The reply to the command to enable the sending of measurements via USB was wrong.");
+			rfims_exception exc("The reply to the command to enable the sending of measurements via USB was wrong.");
 			throw(exc);
 		}
 	}
-	catch(CustomException & exc)
+	catch(rfims_exception & exc)
 	{
 		exc.Append("\nThe enabling of the sending of measurements via USB failed.");
 		throw;
@@ -309,12 +309,12 @@ void SpectranInterface::DisableSweep()
 			Read(reply);
 			if(reply.IsRight()!=true)
 			{
-				CustomException exc("The reply to the command to disable the sending of measurements via USB was wrong.");
+				rfims_exception exc("The reply to the command to disable the sending of measurements via USB was wrong.");
 				throw(exc);
 			}
 			flagSuccess=true;
 		}
-		catch(CustomException & exc)
+		catch(rfims_exception & exc)
 		{
 			//cerr << "Warning: one of the commands to disable the sending of measurements via USB failed." << endl;
 
@@ -342,7 +342,7 @@ void SpectranInterface::Purge()
 	//The input buffer is purged
 	ftStatus=FT_Purge(ftHandle, FT_PURGE_RX);
 	if (ftStatus!=FT_OK){
-		CustomException except("The Spectran Interface failed when it tried to purge the input buffer.");
+		rfims_exception except("The Spectran Interface failed when it tried to purge the input buffer.");
 		throw(except);
 	}
 }
@@ -358,7 +358,7 @@ void SpectranInterface::SoftReset()
 	ftStatus=FT_ResetDevice(ftHandle);
 	if(ftStatus!=FT_OK)
 	{
-		CustomException except("The USB device could not be restarted.");
+		rfims_exception except("The USB device could not be restarted.");
 		throw(except);
 	}
 
@@ -410,7 +410,7 @@ void SpectranInterface::LogOut()
 	{
 		Write(command);
 	}
-	catch(CustomException& exc)
+	catch(rfims_exception& exc)
 	{
 		exc.Append("\nThe command LOGOUT failed.");
 		throw;
@@ -480,11 +480,11 @@ void SpectranInterface::SoundNewSweep()
 		Read(reply);
 		if(reply.IsRight()!=true)
 		{
-			CustomException exc("The reply to the command to make the sound which indicates a new sweep was wrong.");
+			rfims_exception exc("The reply to the command to make the sound which indicates a new sweep was wrong.");
 			throw(exc);
 		}
 	}
-	catch(CustomException & exc)
+	catch(rfims_exception & exc)
 	{
 		cerr << "Warning: " << exc.what() << endl;
 	}

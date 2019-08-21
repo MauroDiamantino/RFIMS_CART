@@ -1,12 +1,12 @@
 <map id="SignalHandler" name="SignalHandler">
-<area shape="rect" id="node2" href="$classSweepBuilder.html" title="The aim of class SweepBuilder is to build the complete sweep from the individual sweep points which a..." alt="" coords="27,15,129,41"/>
-<area shape="rect" id="node3" href="$classGPSInterface.html" title="The class GPSInterace is intended to establish the communication with the Aaronia GPS receiver..." alt="" coords="27,65,129,92"/>
-<area shape="rect" id="node4" href="$classRFPloter.html" title="The class RFPloter is intended to plot sweeps, RF interference (RFI) and any frequency curve..." alt="" coords="41,132,115,159"/>
-<area shape="rect" id="node5" href="$classRFIDetector.html" title="The aim of this class is to compare each calibrated sweep with a threshold curve to determine where t..." alt="" coords="31,183,125,209"/>
-<area shape="rect" id="node6" href="$classSpectranConfigurator.html" title="The class SpectranConfigurator is intended to manage the process of configuring the Aaronia Spectran ..." alt="" coords="5,233,151,260"/>
-<area shape="rect" id="node7" href="$classCurveAdjuster.html" title="The aim of the class CurveAdjuster is to adjust any frequency curve, this is to interpolate and/or ex..." alt="" coords="25,284,131,311"/>
-<area shape="rect" id="node8" href="$classAntennaPositioner.html" title="The aim of the class AntennaPositioner is to handle the antenna positioning system. " alt="" coords="14,335,142,361"/>
-<area shape="rect" id="node9" href="$classDataLogger.html" title="The class DataLogger is intended to handle the storing of the generated data into memory..." alt="" coords="33,385,123,412"/>
-<area shape="rect" id="node10" href="$classFrontEndCalibrator.html" title="The aim of this class is to calculate the total gain and total noise figure curves versus frequency o..." alt="" coords="13,436,143,463"/>
-<area shape="rect" id="node11" href="$classSpectranInterface.html" title="The aim of this class is to manage the communication with the Aaronia Spectran device. " alt="" coords="15,487,141,513"/>
+<area shape="rect" id="node2" href="$classRFPlotter.html" title="The class RFPlotter is intended to plot sweeps, RF interference (RFI) and any frequency curve..." alt="" coords="39,43,117,69"/>
+<area shape="rect" id="node3" href="$classSweepBuilder.html" title="The aim of class SweepBuilder is to build the complete sweep from the individual sweep points which a..." alt="" coords="27,93,129,120"/>
+<area shape="rect" id="node4" href="$classGPSInterface.html" title="The class GPSInterace is intended to establish the communication with the Aaronia GPS receiver..." alt="" coords="27,144,129,171"/>
+<area shape="rect" id="node5" href="$classRFIDetector.html" title="The aim of this class is to compare each calibrated sweep with a threshold curve to determine where t..." alt="" coords="31,195,125,221"/>
+<area shape="rect" id="node6" href="$classSpectranConfigurator.html" title="The class SpectranConfigurator is intended to manage the process of configuring the Aaronia Spectran ..." alt="" coords="5,245,151,272"/>
+<area shape="rect" id="node7" href="$classCurveAdjuster.html" title="The aim of the class CurveAdjuster is to adjust any frequency curve, this is to interpolate and/or ex..." alt="" coords="25,296,131,323"/>
+<area shape="rect" id="node8" href="$classAntennaPositioner.html" title="The aim of the class AntennaPositioner is to handle the antenna positioning system. " alt="" coords="14,347,142,373"/>
+<area shape="rect" id="node9" href="$classDataLogger.html" title="The class DataLogger is intended to handle the storing of the generated data into memory..." alt="" coords="33,397,123,424"/>
+<area shape="rect" id="node10" href="$classFrontEndCalibrator.html" title="The aim of this class is to calculate the total gain and total noise figure curves versus frequency o..." alt="" coords="13,448,143,475"/>
+<area shape="rect" id="node11" href="$classSpectranInterface.html" title="The aim of this class is to manage the communication with the Aaronia Spectran device. " alt="" coords="15,499,141,525"/>
 </map>

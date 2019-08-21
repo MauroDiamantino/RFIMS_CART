@@ -1,0 +1,566 @@
+\begin{theindex}
+
+  \item {/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/scripts/client.\+py}, 
+		\hyperpage{93}
+  \item {/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/\+Antenna\+Positioner.\+cpp}, 
+		\hyperpage{97}
+  \item {/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/\+Antenna\+Positioning.\+h}, 
+		\hyperpage{98}
+  \item {/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/\+Basics.\+cpp}, 
+		\hyperpage{99}
+  \item {/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/\+Basics.\+h}, 
+		\hyperpage{103}
+  \item {/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/\+Command.\+cpp}, 
+		\hyperpage{108}
+  \item {/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/\+Curve\+Adjuster.\+cpp}, 
+		\hyperpage{108}
+  \item {/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/\+Data\+Logger.\+cpp}, 
+		\hyperpage{109}
+  \item {/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/\+Freq\+Values.\+cpp}, 
+		\hyperpage{109}
+  \item {/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/\+Front\+End\+Calibrator.\+cpp}, 
+		\hyperpage{124}
+  \item {/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/\+G\+P\+S\+Interface.\+cpp}, 
+		\hyperpage{124}
+  \item {/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/\+R\+F\+I\+Detector.\+cpp}, 
+		\hyperpage{129}
+  \item {/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/\+Reply.\+cpp}, 
+		\hyperpage{128}
+  \item {/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/\+Spectran.\+h}, 
+		\hyperpage{129}
+  \item {/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/\+Spectran\+Configurator.\+cpp}, 
+		\hyperpage{132}
+  \item {/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/\+Spectran\+Interface.\+cpp}, 
+		\hyperpage{132}
+  \item {/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/\+Sweep\+Builder.\+cpp}, 
+		\hyperpage{133}
+  \item {/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/\+Sweep\+Processing.\+h}, 
+		\hyperpage{133}
+  \item {/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/\+Time\+Data.\+cpp}, 
+		\hyperpage{135}
+  \item {/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/\+Top\+Level.\+h}, 
+		\hyperpage{136}
+  \item {/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/main.\+cpp}, 
+		\hyperpage{125}
+  \item {$\sim$\+Antenna\+Positioner}
+    \subitem {Antenna\+Positioner}, \hyperpage{12}
+  \item {$\sim$\+Curve\+Adjuster}
+    \subitem {Curve\+Adjuster}, \hyperpage{19}
+  \item {$\sim$\+Front\+End\+Calibrator}
+    \subitem {Front\+End\+Calibrator}, \hyperpage{40}
+  \item {$\sim$\+G\+P\+S\+Interface}
+    \subitem {G\+P\+S\+Interface}, \hyperpage{44}
+  \item {$\sim$\+R\+F\+I\+Detector}
+    \subitem {R\+F\+I\+Detector}, \hyperpage{53}
+  \item {$\sim$\+R\+F\+Plotter}
+    \subitem {R\+F\+Plotter}, \hyperpage{58}
+  \item {$\sim$\+Reply}
+    \subitem {Reply}, \hyperpage{48}
+  \item {$\sim$\+Spectran\+Interface}
+    \subitem {Spectran\+Interface}, \hyperpage{68}
+  \item {$\sim$\+Sweep\+Builder}
+    \subitem {Sweep\+Builder}, \hyperpage{85}
+
+  \indexspace
+
+  \item {Adjust\+Curve}
+    \subitem {Curve\+Adjuster}, \hyperpage{19}
+  \item {adjuster\+Ptr}
+    \subitem {Signal\+Handler}, \hyperpage{62}
+  \item {ant\+Positioner\+Ptr}
+    \subitem {Signal\+Handler}, \hyperpage{62}
+  \item {Antenna\+Positioner}, \hyperpage{11}
+    \subitem {$\sim$\+Antenna\+Positioner}, \hyperpage{12}
+    \subitem {Antenna\+Positioner}, \hyperpage{12}
+    \subitem {Change\+Polarization}, \hyperpage{12}
+    \subitem {Get\+Polarization\+String}, \hyperpage{12}
+    \subitem {Initialize}, \hyperpage{13}
+    \subitem {Next\+Azim\+Position}, \hyperpage{13}
+  \item {Append}
+    \subitem {rfims\+\_\+exception}, \hyperpage{56}
+  \item {approximately\+Equal}
+    \subitem {Basics.\+cpp}, \hyperpage{100, 101}
+    \subitem {Basics.\+h}, \hyperpage{105}
+  \item {Archive\+And\+Compress}
+    \subitem {Data\+Logger}, \hyperpage{22}
+  \item {Available}
+    \subitem {G\+P\+S\+Interface}, \hyperpage{44}
+
+  \indexspace
+
+  \item {Band\+Parameters}, \hyperpage{14}
+  \item {Basics.\+cpp}
+    \subitem {approximately\+Equal}, \hyperpage{100, 101}
+    \subitem {operator-\/}, \hyperpage{101}
+    \subitem {Process\+Main\+Arguments}, \hyperpage{102}
+    \subitem {Turn\+Off\+Front\+End}, \hyperpage{102}
+    \subitem {Turn\+On\+Front\+End}, \hyperpage{102}
+  \item {Basics.\+h}
+    \subitem {approximately\+Equal}, \hyperpage{105}
+    \subitem {num\+Of\+Meas\+Cycles}, \hyperpage{107}
+    \subitem {operator-\/}, \hyperpage{106}
+    \subitem {Process\+Main\+Arguments}, \hyperpage{106}
+    \subitem {rfi\+Norm}, \hyperpage{107}
+    \subitem {Turn\+Off\+Front\+End}, \hyperpage{107}
+    \subitem {Turn\+On\+Front\+End}, \hyperpage{107}
+
+  \indexspace
+
+  \item {Calibrate\+Sweep}
+    \subitem {Front\+End\+Calibrator}, \hyperpage{40}
+  \item {calibrator\+Ptr}
+    \subitem {Signal\+Handler}, \hyperpage{62}
+  \item {Capture\+Sweep}
+    \subitem {Sweep\+Builder}, \hyperpage{85}
+  \item {Change\+Polarization}
+    \subitem {Antenna\+Positioner}, \hyperpage{12}
+  \item {client.\+py}
+    \subitem {file\+\_\+name}, \hyperpage{95}
+    \subitem {file\+\_\+path}, \hyperpage{95}
+    \subitem {H\+O\+ST}, \hyperpage{95}
+    \subitem {Internet\+\_\+on}, \hyperpage{94}
+    \subitem {Name\+Extractor}, \hyperpage{94}
+    \subitem {P\+A\+S\+S\+W\+O\+RD}, \hyperpage{95}
+    \subitem {P\+O\+RT}, \hyperpage{96}
+    \subitem {R\+E\+M\+O\+T\+E\+\_\+\+F\+O\+L\+D\+ER}, \hyperpage{96}
+    \subitem {S\+E\+R\+V\+E\+R\+\_\+\+S\+C\+R\+I\+P\+T\+\_\+\+P\+A\+TH}, 
+		\hyperpage{96}
+    \subitem {Send\+Data}, \hyperpage{94}
+    \subitem {Server\+Wake\+Up}, \hyperpage{95}
+    \subitem {T\+R\+I\+ES}, \hyperpage{96}
+    \subitem {U\+S\+E\+R\+N\+A\+ME}, \hyperpage{96}
+    \subitem {W\+A\+I\+T\+\_\+\+M\+I\+NS}, \hyperpage{96}
+    \subitem {W\+A\+I\+T\+\_\+\+S\+E\+C\+O\+N\+DS}, \hyperpage{97}
+  \item {Command}, \hyperpage{14}
+    \subitem {Command}, \hyperpage{16, 17}
+    \subitem {Command\+Type}, \hyperpage{16}
+    \subitem {Get\+Bytes\+Pointer}, \hyperpage{17}
+    \subitem {operator=}, \hyperpage{17}
+    \subitem {Set\+As}, \hyperpage{18}
+    \subitem {Set\+Parameters}, \hyperpage{18}
+  \item {Command\+Type}
+    \subitem {Command}, \hyperpage{16}
+  \item {Configure\+Next\+Band}
+    \subitem {Spectran\+Configurator}, \hyperpage{65}
+  \item {Curve\+Adjuster}, \hyperpage{19}
+    \subitem {$\sim$\+Curve\+Adjuster}, \hyperpage{19}
+    \subitem {Adjust\+Curve}, \hyperpage{19}
+    \subitem {Set\+Bands\+Parameters}, \hyperpage{20}
+    \subitem {Set\+Ref\+Sweep}, \hyperpage{20}
+
+  \indexspace
+
+  \item {Data3D}, \hyperpage{20}
+  \item {Data\+Logger}, \hyperpage{21}
+    \subitem {Archive\+And\+Compress}, \hyperpage{22}
+    \subitem {Data\+Logger}, \hyperpage{22}
+    \subitem {Prepare\+And\+Upload\+Data}, \hyperpage{22}
+    \subitem {Save\+Bands\+Param\+As\+C\+SV}, \hyperpage{23}
+    \subitem {Save\+Front\+End\+Param}, \hyperpage{23}
+    \subitem {Save\+R\+FI}, \hyperpage{25}
+    \subitem {Save\+Sweep}, \hyperpage{25}
+    \subitem {Upload\+Data}, \hyperpage{25}
+  \item {data\+Logger\+Ptr}
+    \subitem {Signal\+Handler}, \hyperpage{62}
+  \item {Detect\+R\+FI}
+    \subitem {R\+F\+I\+Detector}, \hyperpage{54}
+  \item {Disable\+Streaming}
+    \subitem {G\+P\+S\+Interface}, \hyperpage{44}
+  \item {Disable\+Sweep}
+    \subitem {Spectran\+Interface}, \hyperpage{68}
+
+  \indexspace
+
+  \item {Enable\+Sweep}
+    \subitem {Spectran\+Interface}, \hyperpage{69}
+  \item {Estimate\+Parameters}
+    \subitem {Front\+End\+Calibrator}, \hyperpage{41}
+  \item {Exit\+Signal\+Handler}
+    \subitem {Signal\+Handler}, \hyperpage{61}
+
+  \indexspace
+
+  \item {file\+\_\+name}
+    \subitem {client.\+py}, \hyperpage{95}
+  \item {file\+\_\+path}
+    \subitem {client.\+py}, \hyperpage{95}
+  \item {Fill\+Bytes\+Vector}
+    \subitem {Reply}, \hyperpage{48}
+  \item {Float\+To\+Bytes}, \hyperpage{27}
+  \item {Freq\+Values}, \hyperpage{27}
+    \subitem {Freq\+Values}, \hyperpage{29, 30}
+    \subitem {log10}, \hyperpage{31}
+    \subitem {operator$\ast$}, \hyperpage{31, 32}
+    \subitem {operator+}, \hyperpage{33}
+    \subitem {operator+=}, \hyperpage{30}
+    \subitem {operator-\/}, \hyperpage{34, 35}
+    \subitem {operator/}, \hyperpage{35, 36}
+    \subitem {operator=}, \hyperpage{30}
+    \subitem {pow}, \hyperpage{37}
+    \subitem {Push\+Back}, \hyperpage{31}
+    \subitem {time\+Data}, \hyperpage{37}
+  \item {Freq\+Values.\+cpp}
+    \subitem {log10}, \hyperpage{110, 111}
+    \subitem {operator$\ast$}, \hyperpage{111--113}
+    \subitem {operator+}, \hyperpage{113--116}
+    \subitem {operator-\/}, \hyperpage{117--120}
+    \subitem {operator/}, \hyperpage{120--122}
+    \subitem {pow}, \hyperpage{122, 123}
+  \item {Front\+End\+Calibrator}, \hyperpage{38}
+    \subitem {$\sim$\+Front\+End\+Calibrator}, \hyperpage{40}
+    \subitem {Calibrate\+Sweep}, \hyperpage{40}
+    \subitem {Estimate\+Parameters}, \hyperpage{41}
+    \subitem {Front\+End\+Calibrator}, \hyperpage{39}
+    \subitem {Load\+E\+NR}, \hyperpage{41}
+    \subitem {Set\+Bands\+Parameters}, \hyperpage{41}
+
+  \indexspace
+
+  \item {G\+P\+S\+Coordinates}, \hyperpage{42}
+  \item {G\+P\+S\+Interface}, \hyperpage{42}
+    \subitem {$\sim$\+G\+P\+S\+Interface}, \hyperpage{44}
+    \subitem {Available}, \hyperpage{44}
+    \subitem {Disable\+Streaming}, \hyperpage{44}
+    \subitem {G\+P\+S\+Interface}, \hyperpage{44}
+    \subitem {Initialize}, \hyperpage{44}
+  \item {gain\+Plotter\+Ptr}
+    \subitem {Signal\+Handler}, \hyperpage{62}
+  \item {Get\+Bytes\+Pointer}
+    \subitem {Command}, \hyperpage{17}
+  \item {Get\+Polarization\+String}
+    \subitem {Antenna\+Positioner}, \hyperpage{12}
+  \item {gps\+Interface\+Ptr}
+    \subitem {Signal\+Handler}, \hyperpage{62}
+
+  \indexspace
+
+  \item {H\+O\+ST}
+    \subitem {client.\+py}, \hyperpage{95}
+  \item {Hard\+Reset}
+    \subitem {Spectran\+Interface}, \hyperpage{69}
+
+  \indexspace
+
+  \item {Initial\+Configuration}
+    \subitem {Spectran\+Configurator}, \hyperpage{66}
+  \item {Initialize}
+    \subitem {Antenna\+Positioner}, \hyperpage{13}
+    \subitem {G\+P\+S\+Interface}, \hyperpage{44}
+    \subitem {Spectran\+Interface}, \hyperpage{69}
+  \item {Insert\+Bytes}
+    \subitem {Reply}, \hyperpage{48}
+    \subitem {Sweep\+Reply}, \hyperpage{87}
+  \item {Internet\+\_\+on}
+    \subitem {client.\+py}, \hyperpage{94}
+  \item {Is\+Right}
+    \subitem {Reply}, \hyperpage{49}
+
+  \indexspace
+
+  \item {Load\+Bands\+Parameters}
+    \subitem {Spectran\+Configurator}, \hyperpage{66}
+  \item {Load\+E\+NR}
+    \subitem {Front\+End\+Calibrator}, \hyperpage{41}
+  \item {Load\+Fixed\+Parameters}
+    \subitem {Spectran\+Configurator}, \hyperpage{66}
+  \item {Load\+Thresh\+Curve}
+    \subitem {R\+F\+I\+Detector}, \hyperpage{54}
+  \item {log10}
+    \subitem {Freq\+Values}, \hyperpage{31}
+    \subitem {Freq\+Values.\+cpp}, \hyperpage{110, 111}
+    \subitem {Sweep}, \hyperpage{74}
+  \item {Log\+Out}
+    \subitem {Spectran\+Interface}, \hyperpage{69}
+
+  \indexspace
+
+  \item {main}
+    \subitem {main.\+cpp}, \hyperpage{126}
+  \item {main.\+cpp}
+    \subitem {main}, \hyperpage{126}
+    \subitem {num\+Of\+Meas\+Cycles}, \hyperpage{128}
+    \subitem {rfi\+Norm}, \hyperpage{128}
+
+  \indexspace
+
+  \item {Name\+Extractor}
+    \subitem {client.\+py}, \hyperpage{94}
+  \item {Next\+Azim\+Position}
+    \subitem {Antenna\+Positioner}, \hyperpage{13}
+  \item {nf\+Plotter\+Ptr}
+    \subitem {Signal\+Handler}, \hyperpage{63}
+  \item {num\+Of\+Meas\+Cycles}
+    \subitem {Basics.\+h}, \hyperpage{107}
+    \subitem {main.\+cpp}, \hyperpage{128}
+
+  \indexspace
+
+  \item {operator$<$}
+    \subitem {Time\+Data}, \hyperpage{91}
+    \subitem {Time\+Data.\+cpp}, \hyperpage{135}
+  \item {operator$>$}
+    \subitem {Time\+Data}, \hyperpage{92}
+    \subitem {Time\+Data.\+cpp}, \hyperpage{136}
+  \item {operator$\ast$}
+    \subitem {Freq\+Values}, \hyperpage{31, 32}
+    \subitem {Freq\+Values.\+cpp}, \hyperpage{111--113}
+    \subitem {Sweep}, \hyperpage{75, 76}
+  \item {operator+}
+    \subitem {Freq\+Values}, \hyperpage{33}
+    \subitem {Freq\+Values.\+cpp}, \hyperpage{113--116}
+    \subitem {Sweep}, \hyperpage{76--78}
+  \item {operator+=}
+    \subitem {Freq\+Values}, \hyperpage{30}
+  \item {operator-\/}
+    \subitem {Basics.\+cpp}, \hyperpage{101}
+    \subitem {Basics.\+h}, \hyperpage{106}
+    \subitem {Freq\+Values}, \hyperpage{34, 35}
+    \subitem {Freq\+Values.\+cpp}, \hyperpage{117--120}
+    \subitem {Sweep}, \hyperpage{79, 80}
+  \item {operator/}
+    \subitem {Freq\+Values}, \hyperpage{35, 36}
+    \subitem {Freq\+Values.\+cpp}, \hyperpage{120--122}
+    \subitem {Sweep}, \hyperpage{81}
+  \item {operator=}
+    \subitem {Command}, \hyperpage{17}
+    \subitem {Freq\+Values}, \hyperpage{30}
+    \subitem {R\+FI}, \hyperpage{52}
+    \subitem {Reply}, \hyperpage{49}
+    \subitem {Sweep}, \hyperpage{74}
+    \subitem {Sweep\+Reply}, \hyperpage{88}
+    \subitem {Time\+Data}, \hyperpage{90}
+  \item {operator==}
+    \subitem {Time\+Data}, \hyperpage{92}
+    \subitem {Time\+Data.\+cpp}, \hyperpage{135}
+
+  \indexspace
+
+  \item {P\+A\+S\+S\+W\+O\+RD}
+    \subitem {client.\+py}, \hyperpage{95}
+  \item {P\+O\+RT}
+    \subitem {client.\+py}, \hyperpage{96}
+  \item {Plot}
+    \subitem {R\+F\+Plotter}, \hyperpage{58}
+  \item {Plot\+R\+FI}
+    \subitem {R\+F\+Plotter}, \hyperpage{59}
+  \item {Plot\+Sweep}
+    \subitem {R\+F\+Plotter}, \hyperpage{59}
+  \item {polarization}
+    \subitem {Sweep}, \hyperpage{83}
+  \item {pow}
+    \subitem {Freq\+Values}, \hyperpage{37}
+    \subitem {Freq\+Values.\+cpp}, \hyperpage{122, 123}
+    \subitem {Sweep}, \hyperpage{82}
+  \item {Prepare\+And\+Upload\+Data}
+    \subitem {Data\+Logger}, \hyperpage{22}
+  \item {Prepare\+To}
+    \subitem {Reply}, \hyperpage{49}
+  \item {Prepend}
+    \subitem {rfims\+\_\+exception}, \hyperpage{56}
+  \item {Process\+Main\+Arguments}
+    \subitem {Basics.\+cpp}, \hyperpage{102}
+    \subitem {Basics.\+h}, \hyperpage{106}
+  \item {Push\+Back}
+    \subitem {Freq\+Values}, \hyperpage{31}
+
+  \indexspace
+
+  \item {R\+B\+W\+\_\+\+I\+N\+D\+EX}
+    \subitem {Spectran.\+h}, \hyperpage{131}
+  \item {R\+E\+M\+O\+T\+E\+\_\+\+F\+O\+L\+D\+ER}
+    \subitem {client.\+py}, \hyperpage{96}
+  \item {R\+F\+I\+Detector}, \hyperpage{52}
+    \subitem {$\sim$\+R\+F\+I\+Detector}, \hyperpage{53}
+    \subitem {Detect\+R\+FI}, \hyperpage{54}
+    \subitem {Load\+Thresh\+Curve}, \hyperpage{54}
+    \subitem {R\+F\+I\+Detector}, \hyperpage{53}
+  \item {R\+F\+Plotter}, \hyperpage{57}
+    \subitem {$\sim$\+R\+F\+Plotter}, \hyperpage{58}
+    \subitem {Plot}, \hyperpage{58}
+    \subitem {Plot\+R\+FI}, \hyperpage{59}
+    \subitem {Plot\+Sweep}, \hyperpage{59}
+    \subitem {R\+F\+Plotter}, \hyperpage{58}
+  \item {R\+FI}, \hyperpage{50}
+    \subitem {operator=}, \hyperpage{52}
+    \subitem {R\+FI}, \hyperpage{51}
+    \subitem {thresh\+Norm}, \hyperpage{52}
+  \item {Read}
+    \subitem {Spectran\+Interface}, \hyperpage{69}
+  \item {Reply}, \hyperpage{45}
+    \subitem {$\sim$\+Reply}, \hyperpage{48}
+    \subitem {Fill\+Bytes\+Vector}, \hyperpage{48}
+    \subitem {Insert\+Bytes}, \hyperpage{48}
+    \subitem {Is\+Right}, \hyperpage{49}
+    \subitem {operator=}, \hyperpage{49}
+    \subitem {Prepare\+To}, \hyperpage{49}
+    \subitem {Reply}, \hyperpage{47}
+    \subitem {Reply\+Type}, \hyperpage{47}
+  \item {Reply\+Type}
+    \subitem {Reply}, \hyperpage{47}
+  \item {Reset\+Sweep}
+    \subitem {Spectran\+Interface}, \hyperpage{70}
+  \item {rfi\+Detector\+Ptr}
+    \subitem {Signal\+Handler}, \hyperpage{63}
+  \item {rfi\+Norm}
+    \subitem {Basics.\+h}, \hyperpage{107}
+    \subitem {main.\+cpp}, \hyperpage{128}
+  \item {rfims\+\_\+exception}, \hyperpage{55}
+    \subitem {Append}, \hyperpage{56}
+    \subitem {Prepend}, \hyperpage{56}
+    \subitem {rfims\+\_\+exception}, \hyperpage{56}
+    \subitem {Set\+Message}, \hyperpage{57}
+
+  \indexspace
+
+  \item {S\+E\+R\+V\+E\+R\+\_\+\+S\+C\+R\+I\+P\+T\+\_\+\+P\+A\+TH}
+    \subitem {client.\+py}, \hyperpage{96}
+  \item {Save\+Bands\+Param\+As\+C\+SV}
+    \subitem {Data\+Logger}, \hyperpage{23}
+  \item {Save\+Front\+End\+Param}
+    \subitem {Data\+Logger}, \hyperpage{23}
+  \item {Save\+R\+FI}
+    \subitem {Data\+Logger}, \hyperpage{25}
+  \item {Save\+Sweep}
+    \subitem {Data\+Logger}, \hyperpage{25}
+  \item {Send\+Data}
+    \subitem {client.\+py}, \hyperpage{94}
+  \item {Server\+Wake\+Up}
+    \subitem {client.\+py}, \hyperpage{95}
+  \item {Set\+As}
+    \subitem {Command}, \hyperpage{18}
+  \item {Set\+Bands\+Parameters}
+    \subitem {Curve\+Adjuster}, \hyperpage{20}
+    \subitem {Front\+End\+Calibrator}, \hyperpage{41}
+  \item {Set\+Curr\+Band\+Parameters}
+    \subitem {Spectran\+Configurator}, \hyperpage{66}
+  \item {Set\+Date}
+    \subitem {Time\+Data}, \hyperpage{90}
+  \item {Set\+Message}
+    \subitem {rfims\+\_\+exception}, \hyperpage{57}
+  \item {Set\+Parameters}
+    \subitem {Command}, \hyperpage{18}
+  \item {Set\+Ref\+Sweep}
+    \subitem {Curve\+Adjuster}, \hyperpage{20}
+  \item {Set\+Time}
+    \subitem {Time\+Data}, \hyperpage{90}
+  \item {Set\+Timestamp}
+    \subitem {Time\+Data}, \hyperpage{91}
+  \item {Signal\+Handler}, \hyperpage{59}
+    \subitem {adjuster\+Ptr}, \hyperpage{62}
+    \subitem {ant\+Positioner\+Ptr}, \hyperpage{62}
+    \subitem {calibrator\+Ptr}, \hyperpage{62}
+    \subitem {data\+Logger\+Ptr}, \hyperpage{62}
+    \subitem {Exit\+Signal\+Handler}, \hyperpage{61}
+    \subitem {gain\+Plotter\+Ptr}, \hyperpage{62}
+    \subitem {gps\+Interface\+Ptr}, \hyperpage{62}
+    \subitem {nf\+Plotter\+Ptr}, \hyperpage{63}
+    \subitem {rfi\+Detector\+Ptr}, \hyperpage{63}
+    \subitem {spec\+Configurator\+Ptr}, \hyperpage{63}
+    \subitem {spec\+Interf\+Ptr}, \hyperpage{63}
+    \subitem {sweep\+Builder\+Ptr}, \hyperpage{63}
+    \subitem {sweep\+Plotter\+Ptr}, \hyperpage{63}
+  \item {Soft\+Reset}
+    \subitem {Spectran\+Interface}, \hyperpage{70}
+  \item {Sound\+New\+Sweep}
+    \subitem {Spectran\+Interface}, \hyperpage{70}
+  \item {spec\+Configurator\+Ptr}
+    \subitem {Signal\+Handler}, \hyperpage{63}
+  \item {spec\+Interf\+Ptr}
+    \subitem {Signal\+Handler}, \hyperpage{63}
+  \item {Spec\+Variable}
+    \subitem {Spectran.\+h}, \hyperpage{131}
+  \item {Spectran.\+h}
+    \subitem {R\+B\+W\+\_\+\+I\+N\+D\+EX}, \hyperpage{131}
+    \subitem {Spec\+Variable}, \hyperpage{131}
+  \item {Spectran\+Configurator}, \hyperpage{64}
+    \subitem {Configure\+Next\+Band}, \hyperpage{65}
+    \subitem {Initial\+Configuration}, \hyperpage{66}
+    \subitem {Load\+Bands\+Parameters}, \hyperpage{66}
+    \subitem {Load\+Fixed\+Parameters}, \hyperpage{66}
+    \subitem {Set\+Curr\+Band\+Parameters}, \hyperpage{66}
+    \subitem {Spectran\+Configurator}, \hyperpage{65}
+  \item {Spectran\+Configurator\+::\+Fixed\+Parameters}, \hyperpage{26}
+  \item {Spectran\+Interface}, \hyperpage{67}
+    \subitem {$\sim$\+Spectran\+Interface}, \hyperpage{68}
+    \subitem {Disable\+Sweep}, \hyperpage{68}
+    \subitem {Enable\+Sweep}, \hyperpage{69}
+    \subitem {Hard\+Reset}, \hyperpage{69}
+    \subitem {Initialize}, \hyperpage{69}
+    \subitem {Log\+Out}, \hyperpage{69}
+    \subitem {Read}, \hyperpage{69}
+    \subitem {Reset\+Sweep}, \hyperpage{70}
+    \subitem {Soft\+Reset}, \hyperpage{70}
+    \subitem {Sound\+New\+Sweep}, \hyperpage{70}
+    \subitem {Spectran\+Interface}, \hyperpage{68}
+    \subitem {Write}, \hyperpage{70}
+  \item {Sweep}, \hyperpage{71}
+    \subitem {log10}, \hyperpage{74}
+    \subitem {operator$\ast$}, \hyperpage{75, 76}
+    \subitem {operator+}, \hyperpage{76--78}
+    \subitem {operator-\/}, \hyperpage{79, 80}
+    \subitem {operator/}, \hyperpage{81}
+    \subitem {operator=}, \hyperpage{74}
+    \subitem {polarization}, \hyperpage{83}
+    \subitem {pow}, \hyperpage{82}
+    \subitem {Sweep}, \hyperpage{73, 74}
+  \item {Sweep\+Builder}, \hyperpage{83}
+    \subitem {$\sim$\+Sweep\+Builder}, \hyperpage{85}
+    \subitem {Capture\+Sweep}, \hyperpage{85}
+    \subitem {Sweep\+Builder}, \hyperpage{84}
+  \item {sweep\+Builder\+Ptr}
+    \subitem {Signal\+Handler}, \hyperpage{63}
+  \item {sweep\+Plotter\+Ptr}
+    \subitem {Signal\+Handler}, \hyperpage{63}
+  \item {Sweep\+Reply}, \hyperpage{86}
+    \subitem {Insert\+Bytes}, \hyperpage{87}
+    \subitem {operator=}, \hyperpage{88}
+    \subitem {Sweep\+Reply}, \hyperpage{87}
+
+  \indexspace
+
+  \item {T\+R\+I\+ES}
+    \subitem {client.\+py}, \hyperpage{96}
+  \item {thresh\+Norm}
+    \subitem {R\+FI}, \hyperpage{52}
+  \item {Time\+Data}, \hyperpage{88}
+    \subitem {operator$<$}, \hyperpage{91}
+    \subitem {operator$>$}, \hyperpage{92}
+    \subitem {operator=}, \hyperpage{90}
+    \subitem {operator==}, \hyperpage{92}
+    \subitem {Set\+Date}, \hyperpage{90}
+    \subitem {Set\+Time}, \hyperpage{90}
+    \subitem {Set\+Timestamp}, \hyperpage{91}
+    \subitem {Time\+Data}, \hyperpage{90}
+    \subitem {Turn\+Back\+Days}, \hyperpage{91}
+  \item {time\+Data}
+    \subitem {Freq\+Values}, \hyperpage{37}
+  \item {Time\+Data.\+cpp}
+    \subitem {operator$<$}, \hyperpage{135}
+    \subitem {operator$>$}, \hyperpage{136}
+    \subitem {operator==}, \hyperpage{135}
+  \item {Turn\+Back\+Days}
+    \subitem {Time\+Data}, \hyperpage{91}
+  \item {Turn\+Off\+Front\+End}
+    \subitem {Basics.\+cpp}, \hyperpage{102}
+    \subitem {Basics.\+h}, \hyperpage{107}
+  \item {Turn\+On\+Front\+End}
+    \subitem {Basics.\+cpp}, \hyperpage{102}
+    \subitem {Basics.\+h}, \hyperpage{107}
+
+  \indexspace
+
+  \item {U\+S\+E\+R\+N\+A\+ME}
+    \subitem {client.\+py}, \hyperpage{96}
+  \item {Upload\+Data}
+    \subitem {Data\+Logger}, \hyperpage{25}
+
+  \indexspace
+
+  \item {W\+A\+I\+T\+\_\+\+M\+I\+NS}
+    \subitem {client.\+py}, \hyperpage{96}
+  \item {W\+A\+I\+T\+\_\+\+S\+E\+C\+O\+N\+DS}
+    \subitem {client.\+py}, \hyperpage{97}
+  \item {Write}
+    \subitem {Spectran\+Interface}, \hyperpage{70}
+
+\end{theindex}

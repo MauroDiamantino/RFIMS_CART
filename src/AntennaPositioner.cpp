@@ -40,13 +40,13 @@ bool AntennaPositioner::Initialize()
 			azimuthAngle = gpsInterface.GetYaw();
 			flagSuccess = true;
 		}
-		catch(CustomException & exc)
+		catch(rfims_exception & exc)
 		{
 			if(++numOfErrors < 3)
 				cerr << "Warning: an error occurred when it was tried to read the initial azimuth angle: " << exc.what() << endl;
 			else
 			{
-				CustomException exc2("The initial azimuth angle could not be read: ");
+				rfims_exception exc2("The initial azimuth angle could not be read: ");
 				exc2.Append( exc.what() );
 				throw(exc2);
 			}
@@ -144,13 +144,13 @@ bool AntennaPositioner::ChangePolarization()
 
 				flagSuccessRead=true;
 			}
-			catch(CustomException & exc)
+			catch(rfims_exception & exc)
 			{
 				if(++numOfErrors < 3)
 					cerr << "Warning: an error occurred when it was tried to read the roll angle: " << exc.what() << endl;
 				else
 				{
-					CustomException exc2("The roll angle could not be read: ");
+					rfims_exception exc2("The roll angle could not be read: ");
 					exc2.Append( exc.what() );
 					throw(exc2);
 				}

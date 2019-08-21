@@ -11,14 +11,16 @@ This file contains the declarations of classes \hyperlink{classAntennaPositioner
 {\ttfamily \#include $<$nmea/gpgga.\+h$>$}\newline
 {\ttfamily \#include $<$ftd2xx.\+h$>$}\newline
 {\ttfamily \#include $<$dirent.\+h$>$}\newline
-Include dependency graph for Antenna\+Positioning.\+h\+:\nopagebreak
+Include dependency graph for Antenna\+Positioning.\+h\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{AntennaPositioning_8h__incl}
 \end{center}
 \end{figure}
-This graph shows which files directly or indirectly include this file\+:\nopagebreak
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -50,8 +52,11 @@ enum \hyperlink{AntennaPositioning_8h_a55887c7bc32d70c0308472ff4de3e282}{Polariz
 \subsection{Detailed Description}
 This file contains the declarations of classes \hyperlink{classAntennaPositioner}{Antenna\+Positioner} and \hyperlink{classGPSInterface}{G\+P\+S\+Interface}. 
 
-These classes are responsible for the positioning of the antenna, which can rotate its azimuth angle and its polarization. To model these rotations it were used the Cardan angles (or nautical angles)\+: the \char`\"{}yaw\char`\"{} angle which represents the heading, the \char`\"{}pitch\char`\"{} angle which represents the elevation and the \char`\"{}roll\char`\"{} angle which models the bank angle. The yaw angle is used to represent the antenna\textquotesingle{}s azimuth angle, the roll angle is used to represent the antenna polarization and the pitch angle is not used.
-
+These classes are responsible for the positioning of the antenna, which can rotate its azimuth angle and its polarization. To model these rotations it were used the Cardan angles (or nautical angles)\+: the \char`\"{}yaw\char`\"{} angle which represents the heading, the \char`\"{}pitch\char`\"{} angle which represents the elevation and the \char`\"{}roll\char`\"{} angle which models the bank angle. The yaw angle is used to represent the antenna\textquotesingle{}s azimuth angle, the roll angle is used to represent the antenna polarization and the pitch angle is not used. 
+\begin{DoxyImage}
+\includegraphics[width=10cm]{cardan_angles}
+\doxyfigcaption{The Cardan or nautical angles}
+\end{DoxyImage}
  Moreover, the class \hyperlink{classGPSInterface}{G\+P\+S\+Interface} allows to get data related with time and date, elevation (based on pressure), ambient pressure, among other things.
 
 Also, several structures are defined here which store data related with the mentioned classes. \begin{DoxyAuthor}{Author}

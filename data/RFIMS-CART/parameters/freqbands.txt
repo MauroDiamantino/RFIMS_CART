@@ -1,0 +1,41 @@
+Parameters Set=SKA_Mode1, RBW multiplied by 3 in some bands, sweep times divided by 20 in some bands.
+
+Band Index=1,		//Positive integer number, starting in one
+Enabled=y,			//’y’ or ‘n’
+Fstart=700e6,		//A value between 1e6 and 9.398e9 (Hz)
+Fstop=960e6,		//A value between 1e6 and 9.398e9 (Hz)
+RBW=100e3, 			//full(50e6), 200.0, 1e3, 3e3, 9e3, 10e3, 30e3, 100e3, 120e3, 200e3, 300e3, 1e6, 1.5e6, 3e6 or 5e6 (Hz)
+VBW=100e3, 			//full(50e6), 200.0, 1e3, 3e3, 9e3, 10e3, 30e3, 100e3, 120e3, 200e3, 300e3, 1e6, 1.5e6, 3e6 or 5e6 (Hz)
+Sweep Time=4334, 	//A value between 10 and 600000 (ms)
+Sample Points=0, 	//An integer value. If it is zero the parameter is not configured and the default number of samples is used.
+Detector=RMS; 		//”RMS” or “Min/Max”
+
+Band Index=2,		//Positive integer number, starting in one
+Enabled=y,			//’y’ or ‘n’
+Fstart=960e6,		//A value between 1e6 and 9.398e9 (Hz)
+Fstop=1400e6,		//A value between 1e6 and 9.398e9 (Hz)
+RBW=1e6, 			//full(50e6), 200.0, 1e3, 3e3, 9e3, 10e3, 30e3, 100e3, 120e3, 200e3, 300e3, 1e6, 1.5e6, 3e6 or 5e6 (Hz)
+VBW=1e6, 			//full(50e6), 200.0, 1e3, 3e3, 9e3, 10e3, 30e3, 100e3, 120e3, 200e3, 300e3, 1e6, 1.5e6, 3e6 or 5e6 (Hz)
+Sweep Time=10, 		//A value between 10 and 600000 (ms)
+Sample Points=0, 	//An integer value. If it is zero the parameter is not configured and the default number of samples is used.
+Detector=RMS; 		//”RMS” or “Min/Max”
+
+Band Index=3,		//Positive integer number, starting in one
+Enabled=y,			//’y’ or ‘n’
+Fstart=1400e6,		//A value between 1e6 and 9.398e9 (Hz)
+Fstop=3000e6,		//A value between 1e6 and 9.398e9 (Hz)
+RBW=100e3, 			//full(50e6), 200.0, 1e3, 3e3, 9e3, 10e3, 30e3, 100e3, 120e3, 200e3, 300e3, 1e6, 1.5e6, 3e6 or 5e6 (Hz)
+VBW=100e3, 			//full(50e6), 200.0, 1e3, 3e3, 9e3, 10e3, 30e3, 100e3, 120e3, 200e3, 300e3, 1e6, 1.5e6, 3e6 or 5e6 (Hz)
+Sweep Time=26667, 	//A value between 10 and 600000 (ms)
+Sample Points=0, 	//An integer value. If it is zero the parameter is not configured and the default number of samples is used.
+Detector=RMS; 		//”RMS” or “Min/Max”
+
+Band Index=4,		//Positive integer number, starting in one
+Enabled=y,			//’y’ or ‘n’
+Fstart=3000e6,		//A value between 1e6 and 9.398e9 (Hz)
+Fstop=9400e6,		//A value between 1e6 and 9.398e9 (Hz)
+RBW=1e6, 			//full(50e6), 200.0, 1e3, 3e3, 9e3, 10e3, 30e3, 100e3, 120e3, 200e3, 300e3, 1e6, 1.5e6, 3e6 or 5e6 (Hz)
+VBW=1e6, 			//full(50e6), 200.0, 1e3, 3e3, 9e3, 10e3, 30e3, 100e3, 120e3, 200e3, 300e3, 1e6, 1.5e6, 3e6 or 5e6 (Hz)
+Sweep Time=3200, 	//A value between 10 and 600000 (ms)
+Sample Points=0, 	//An integer value. If it is zero the parameter is not configured and the default number of samples is used.
+Detector=RMS; 		//”RMS” or “Min/Max”

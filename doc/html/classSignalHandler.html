@@ -79,25 +79,25 @@ Collaboration diagram for SignalHandler:</div>
 <div class="dyncontent">
 <div class="center"><img src="classSignalHandler__coll__graph.png" border="0" usemap="#SignalHandler_coll__map" alt="Collaboration graph"/></div>
 <map name="SignalHandler_coll__map" id="SignalHandler_coll__map">
-<area shape="rect" id="node2" href="classSweepBuilder.html" title="The aim of class SweepBuilder is to build the complete sweep from the individual sweep points which a..." alt="" coords="27,15,129,41"/>
-<area shape="rect" id="node3" href="classGPSInterface.html" title="The class GPSInterace is intended to establish the communication with the Aaronia GPS receiver..." alt="" coords="27,65,129,92"/>
-<area shape="rect" id="node4" href="classRFPloter.html" title="The class RFPloter is intended to plot sweeps, RF interference (RFI) and any frequency curve..." alt="" coords="41,132,115,159"/>
-<area shape="rect" id="node5" href="classRFIDetector.html" title="The aim of this class is to compare each calibrated sweep with a threshold curve to determine where t..." alt="" coords="31,183,125,209"/>
-<area shape="rect" id="node6" href="classSpectranConfigurator.html" title="The class SpectranConfigurator is intended to manage the process of configuring the Aaronia Spectran ..." alt="" coords="5,233,151,260"/>
-<area shape="rect" id="node7" href="classCurveAdjuster.html" title="The aim of the class CurveAdjuster is to adjust any frequency curve, this is to interpolate and/or ex..." alt="" coords="25,284,131,311"/>
-<area shape="rect" id="node8" href="classAntennaPositioner.html" title="The aim of the class AntennaPositioner is to handle the antenna positioning system. " alt="" coords="14,335,142,361"/>
-<area shape="rect" id="node9" href="classDataLogger.html" title="The class DataLogger is intended to handle the storing of the generated data into memory..." alt="" coords="33,385,123,412"/>
-<area shape="rect" id="node10" href="classFrontEndCalibrator.html" title="The aim of this class is to calculate the total gain and total noise figure curves versus frequency o..." alt="" coords="13,436,143,463"/>
-<area shape="rect" id="node11" href="classSpectranInterface.html" title="The aim of this class is to manage the communication with the Aaronia Spectran device. " alt="" coords="15,487,141,513"/>
+<area shape="rect" id="node2" href="classRFPlotter.html" title="The class RFPlotter is intended to plot sweeps, RF interference (RFI) and any frequency curve..." alt="" coords="39,43,117,69"/>
+<area shape="rect" id="node3" href="classSweepBuilder.html" title="The aim of class SweepBuilder is to build the complete sweep from the individual sweep points which a..." alt="" coords="27,93,129,120"/>
+<area shape="rect" id="node4" href="classGPSInterface.html" title="The class GPSInterace is intended to establish the communication with the Aaronia GPS receiver..." alt="" coords="27,144,129,171"/>
+<area shape="rect" id="node5" href="classRFIDetector.html" title="The aim of this class is to compare each calibrated sweep with a threshold curve to determine where t..." alt="" coords="31,195,125,221"/>
+<area shape="rect" id="node6" href="classSpectranConfigurator.html" title="The class SpectranConfigurator is intended to manage the process of configuring the Aaronia Spectran ..." alt="" coords="5,245,151,272"/>
+<area shape="rect" id="node7" href="classCurveAdjuster.html" title="The aim of the class CurveAdjuster is to adjust any frequency curve, this is to interpolate and/or ex..." alt="" coords="25,296,131,323"/>
+<area shape="rect" id="node8" href="classAntennaPositioner.html" title="The aim of the class AntennaPositioner is to handle the antenna positioning system. " alt="" coords="14,347,142,373"/>
+<area shape="rect" id="node9" href="classDataLogger.html" title="The class DataLogger is intended to handle the storing of the generated data into memory..." alt="" coords="33,397,123,424"/>
+<area shape="rect" id="node10" href="classFrontEndCalibrator.html" title="The aim of this class is to calculate the total gain and total noise figure curves versus frequency o..." alt="" coords="13,448,143,475"/>
+<area shape="rect" id="node11" href="classSpectranInterface.html" title="The aim of this class is to manage the communication with the Aaronia Spectran device. " alt="" coords="15,499,141,525"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aac189962a11b36ed582bd837b99e503b"><td class="memItemLeft" align="right" valign="top"><a id="aac189962a11b36ed582bd837b99e503b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSignalHandler.html#aac189962a11b36ed582bd837b99e503b">SetupSignalHandler</a> (<a class="el" href="classSpectranInterface.html">SpectranInterface</a> *specInterfPt, <a class="el" href="classSpectranConfigurator.html">SpectranConfigurator</a> *specConfiguratorPt, <a class="el" href="classSweepBuilder.html">SweepBuilder</a> *sweepBuilderPt, <a class="el" href="classCurveAdjuster.html">CurveAdjuster</a> *adjusterPt, <a class="el" href="classFrontEndCalibrator.html">FrontEndCalibrator</a> *calibratorPt, <a class="el" href="classRFIDetector.html">RFIDetector</a> *rfiDetectorPt=nullptr, <a class="el" href="classDataLogger.html">DataLogger</a> *dataLoggerPt=nullptr, <a class="el" href="classGPSInterface.html">GPSInterface</a> *gpsInterfacePt=nullptr, <a class="el" href="classAntennaPositioner.html">AntennaPositioner</a> *antPositionerPt=nullptr, <a class="el" href="classRFPloter.html">RFPloter</a> *sweepPloterPt=nullptr, <a class="el" href="classRFPloter.html">RFPloter</a> *gainPloterPt=nullptr, <a class="el" href="classRFPloter.html">RFPloter</a> *nfPloterPt=nullptr)</td></tr>
-<tr class="memdesc:aac189962a11b36ed582bd837b99e503b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method is intended to set the pointers to the high-level objects and to set handler functions. <br /></td></tr>
-<tr class="separator:aac189962a11b36ed582bd837b99e503b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d6599351f7c8b007410145cb23f18f4"><td class="memItemLeft" align="right" valign="top"><a id="a9d6599351f7c8b007410145cb23f18f4"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSignalHandler.html#a9d6599351f7c8b007410145cb23f18f4">SetupSignalHandler</a> (<a class="el" href="classSpectranInterface.html">SpectranInterface</a> *specInterfPt, <a class="el" href="classSpectranConfigurator.html">SpectranConfigurator</a> *specConfiguratorPt, <a class="el" href="classSweepBuilder.html">SweepBuilder</a> *sweepBuilderPt, <a class="el" href="classCurveAdjuster.html">CurveAdjuster</a> *adjusterPt, <a class="el" href="classFrontEndCalibrator.html">FrontEndCalibrator</a> *calibratorPt, <a class="el" href="classRFIDetector.html">RFIDetector</a> *rfiDetectorPt=nullptr, <a class="el" href="classDataLogger.html">DataLogger</a> *dataLoggerPt=nullptr, <a class="el" href="classGPSInterface.html">GPSInterface</a> *gpsInterfacePt=nullptr, <a class="el" href="classAntennaPositioner.html">AntennaPositioner</a> *antPositionerPt=nullptr, <a class="el" href="classRFPlotter.html">RFPlotter</a> *sweepPlotterPt=nullptr, <a class="el" href="classRFPlotter.html">RFPlotter</a> *gainPlotterPt=nullptr, <a class="el" href="classRFPlotter.html">RFPlotter</a> *nfPlotterPt=nullptr)</td></tr>
+<tr class="memdesc:a9d6599351f7c8b007410145cb23f18f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method is intended to set the pointers to the high-level objects and to set handler functions. <br /></td></tr>
+<tr class="separator:a9d6599351f7c8b007410145cb23f18f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -134,15 +134,15 @@ Static Public Attributes</h2></td></tr>
 <tr class="memitem:a04f82481d0f5795308e6e2cef7bb0f88"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classAntennaPositioner.html">AntennaPositioner</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSignalHandler.html#a04f82481d0f5795308e6e2cef7bb0f88">antPositionerPtr</a></td></tr>
 <tr class="memdesc:a04f82481d0f5795308e6e2cef7bb0f88"><td class="mdescLeft">&#160;</td><td class="mdescRight">A pointer to the <em><a class="el" href="classAntennaPositioner.html" title="The aim of the class AntennaPositioner is to handle the antenna positioning system. ">AntennaPositioner</a></em> object.  <a href="#a04f82481d0f5795308e6e2cef7bb0f88">More...</a><br /></td></tr>
 <tr class="separator:a04f82481d0f5795308e6e2cef7bb0f88"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a15d34535b8684c5988ff1af1bf6062f6"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classRFPloter.html">RFPloter</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSignalHandler.html#a15d34535b8684c5988ff1af1bf6062f6">sweepPloterPtr</a></td></tr>
-<tr class="memdesc:a15d34535b8684c5988ff1af1bf6062f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">A pointer to the <em>RFPlotter</em> object which is responsible for the plotting of the last captured sweep.  <a href="#a15d34535b8684c5988ff1af1bf6062f6">More...</a><br /></td></tr>
-<tr class="separator:a15d34535b8684c5988ff1af1bf6062f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1c6637986751faafe7cb5ffd58400f77"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classRFPloter.html">RFPloter</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSignalHandler.html#a1c6637986751faafe7cb5ffd58400f77">gainPloterPtr</a></td></tr>
-<tr class="memdesc:a1c6637986751faafe7cb5ffd58400f77"><td class="mdescLeft">&#160;</td><td class="mdescRight">A pointer to the <em>RFPlotter</em> object which is responsible for the plotting of the last estimated gain curve.  <a href="#a1c6637986751faafe7cb5ffd58400f77">More...</a><br /></td></tr>
-<tr class="separator:a1c6637986751faafe7cb5ffd58400f77"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada606b8ef692809838f1e5464871742c"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classRFPloter.html">RFPloter</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSignalHandler.html#ada606b8ef692809838f1e5464871742c">nfPloterPtr</a></td></tr>
-<tr class="memdesc:ada606b8ef692809838f1e5464871742c"><td class="mdescLeft">&#160;</td><td class="mdescRight">A pointer to the <em>RFPlotter</em> object which is responsible for the plotting of the last estimated noise figure curve.  <a href="#ada606b8ef692809838f1e5464871742c">More...</a><br /></td></tr>
-<tr class="separator:ada606b8ef692809838f1e5464871742c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ec978dc8c16c31aa8faefe4e350302c"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classRFPlotter.html">RFPlotter</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSignalHandler.html#a7ec978dc8c16c31aa8faefe4e350302c">sweepPlotterPtr</a></td></tr>
+<tr class="memdesc:a7ec978dc8c16c31aa8faefe4e350302c"><td class="mdescLeft">&#160;</td><td class="mdescRight">A pointer to the <em><a class="el" href="classRFPlotter.html" title="The class RFPlotter is intended to plot sweeps, RF interference (RFI) and any frequency curve...">RFPlotter</a></em> object which is responsible for the plotting of the last captured sweep.  <a href="#a7ec978dc8c16c31aa8faefe4e350302c">More...</a><br /></td></tr>
+<tr class="separator:a7ec978dc8c16c31aa8faefe4e350302c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a040fa3711d4239933dd28a00b24965b2"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classRFPlotter.html">RFPlotter</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSignalHandler.html#a040fa3711d4239933dd28a00b24965b2">gainPlotterPtr</a></td></tr>
+<tr class="memdesc:a040fa3711d4239933dd28a00b24965b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">A pointer to the <em><a class="el" href="classRFPlotter.html" title="The class RFPlotter is intended to plot sweeps, RF interference (RFI) and any frequency curve...">RFPlotter</a></em> object which is responsible for the plotting of the last estimated gain curve.  <a href="#a040fa3711d4239933dd28a00b24965b2">More...</a><br /></td></tr>
+<tr class="separator:a040fa3711d4239933dd28a00b24965b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5f57e0f7a4ca52357bdd00c358d3a3a"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classRFPlotter.html">RFPlotter</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSignalHandler.html#ad5f57e0f7a4ca52357bdd00c358d3a3a">nfPlotterPtr</a></td></tr>
+<tr class="memdesc:ad5f57e0f7a4ca52357bdd00c358d3a3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">A pointer to the <em><a class="el" href="classRFPlotter.html" title="The class RFPlotter is intended to plot sweeps, RF interference (RFI) and any frequency curve...">RFPlotter</a></em> object which is responsible for the plotting of the last estimated noise figure curve.  <a href="#ad5f57e0f7a4ca52357bdd00c358d3a3a">More...</a><br /></td></tr>
+<tr class="separator:ad5f57e0f7a4ca52357bdd00c358d3a3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The class <em><a class="el" href="classSignalHandler.html" title="The class SignalHandler is intended to handle the interprocess signals (IPC) which terminates the sof...">SignalHandler</a></em> is intended to handle the interprocess signals (IPC) which terminates the software. </p>
@@ -283,8 +283,8 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a1c6637986751faafe7cb5ffd58400f77"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1c6637986751faafe7cb5ffd58400f77">&#9670;&nbsp;</a></span>gainPloterPtr</h2>
+<a id="a040fa3711d4239933dd28a00b24965b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a040fa3711d4239933dd28a00b24965b2">&#9670;&nbsp;</a></span>gainPlotterPtr</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -293,7 +293,7 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classRFPloter.html">RFPloter</a> * SignalHandler::gainPloterPtr</td>
+          <td class="memname"><a class="el" href="classRFPlotter.html">RFPlotter</a> * SignalHandler::gainPlotterPtr</td>
         </tr>
       </table>
   </td>
@@ -303,8 +303,8 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>A pointer to the <em>RFPlotter</em> object which is responsible for the plotting of the last estimated gain curve. </p>
-<p>The instantiation of the pointer to the <em>RFPlotter</em> object which is responsible for the plotting of the last estimated gain curve. </p>
+<p>A pointer to the <em><a class="el" href="classRFPlotter.html" title="The class RFPlotter is intended to plot sweeps, RF interference (RFI) and any frequency curve...">RFPlotter</a></em> object which is responsible for the plotting of the last estimated gain curve. </p>
+<p>The instantiation of the pointer to the <em><a class="el" href="classRFPlotter.html" title="The class RFPlotter is intended to plot sweeps, RF interference (RFI) and any frequency curve...">RFPlotter</a></em> object which is responsible for the plotting of the last estimated gain curve. </p>
 
 </div>
 </div>
@@ -333,8 +333,8 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ada606b8ef692809838f1e5464871742c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ada606b8ef692809838f1e5464871742c">&#9670;&nbsp;</a></span>nfPloterPtr</h2>
+<a id="ad5f57e0f7a4ca52357bdd00c358d3a3a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5f57e0f7a4ca52357bdd00c358d3a3a">&#9670;&nbsp;</a></span>nfPlotterPtr</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -343,7 +343,7 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classRFPloter.html">RFPloter</a> * SignalHandler::nfPloterPtr</td>
+          <td class="memname"><a class="el" href="classRFPlotter.html">RFPlotter</a> * SignalHandler::nfPlotterPtr</td>
         </tr>
       </table>
   </td>
@@ -353,8 +353,8 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>A pointer to the <em>RFPlotter</em> object which is responsible for the plotting of the last estimated noise figure curve. </p>
-<p>The instantiation of the pointer to the <em>RFPlotter</em> object which is responsible for the plotting of the last estimated noise figure curve. </p>
+<p>A pointer to the <em><a class="el" href="classRFPlotter.html" title="The class RFPlotter is intended to plot sweeps, RF interference (RFI) and any frequency curve...">RFPlotter</a></em> object which is responsible for the plotting of the last estimated noise figure curve. </p>
+<p>The instantiation of the pointer to the <em><a class="el" href="classRFPlotter.html" title="The class RFPlotter is intended to plot sweeps, RF interference (RFI) and any frequency curve...">RFPlotter</a></em> object which is responsible for the plotting of the last estimated noise figure curve. </p>
 
 </div>
 </div>
@@ -458,8 +458,8 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a15d34535b8684c5988ff1af1bf6062f6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a15d34535b8684c5988ff1af1bf6062f6">&#9670;&nbsp;</a></span>sweepPloterPtr</h2>
+<a id="a7ec978dc8c16c31aa8faefe4e350302c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ec978dc8c16c31aa8faefe4e350302c">&#9670;&nbsp;</a></span>sweepPlotterPtr</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -468,7 +468,7 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classRFPloter.html">RFPloter</a> * SignalHandler::sweepPloterPtr</td>
+          <td class="memname"><a class="el" href="classRFPlotter.html">RFPlotter</a> * SignalHandler::sweepPlotterPtr</td>
         </tr>
       </table>
   </td>
@@ -478,8 +478,8 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>A pointer to the <em>RFPlotter</em> object which is responsible for the plotting of the last captured sweep. </p>
-<p>The instantiation of the pointer to the <em>RFPlotter</em> object which is responsible for the plotting of the last captured sweep. </p>
+<p>A pointer to the <em><a class="el" href="classRFPlotter.html" title="The class RFPlotter is intended to plot sweeps, RF interference (RFI) and any frequency curve...">RFPlotter</a></em> object which is responsible for the plotting of the last captured sweep. </p>
+<p>The instantiation of the pointer to the <em><a class="el" href="classRFPlotter.html" title="The class RFPlotter is intended to plot sweeps, RF interference (RFI) and any frequency curve...">RFPlotter</a></em> object which is responsible for the plotting of the last captured sweep. </p>
 
 </div>
 </div>

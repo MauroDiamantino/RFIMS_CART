@@ -31,8 +31,8 @@ public:
 	void SetupSignalHandler(SpectranInterface * specInterfPt, SpectranConfigurator * specConfiguratorPt,
 			SweepBuilder * sweepBuilderPt, CurveAdjuster * adjusterPt, FrontEndCalibrator * calibratorPt,
 			RFIDetector * rfiDetectorPt=nullptr, DataLogger * dataLoggerPt=nullptr, GPSInterface * gpsInterfacePt=nullptr,
-			AntennaPositioner * antPositionerPt=nullptr, RFPloter * sweepPloterPt=nullptr,
-			RFPloter * gainPloterPt=nullptr, RFPloter * nfPloterPt=nullptr )
+			AntennaPositioner * antPositionerPt=nullptr, RFPlotter * sweepPlotterPt=nullptr,
+			RFPlotter * gainPlotterPt=nullptr, RFPlotter * nfPlotterPt=nullptr )
 	{
 		specInterfPtr=specInterfPt;
 		specConfiguratorPtr=specConfiguratorPt;
@@ -43,19 +43,19 @@ public:
 		dataLoggerPtr=dataLoggerPt;
 		gpsInterfacePtr=gpsInterfacePt;
 		antPositionerPtr=antPositionerPt;
-		sweepPloterPtr=sweepPloterPt;
-		gainPloterPtr=gainPloterPt;
-		nfPloterPtr=nfPloterPt;
+		sweepPlotterPtr=sweepPlotterPt;
+		gainPlotterPtr=gainPlotterPt;
+		nfPlotterPtr=nfPlotterPt;
 
 		if( signal(int(SIGINT), (__sighandler_t) SignalHandler::ExitSignalHandler)==SIG_ERR )
 		{
-			CustomException exc("The SIGINT signal handler could not be set.");
+			rfims_exception exc("The SIGINT signal handler could not be set.");
 			throw(exc);
 		}
 
 		if( signal(int(SIGTERM),  (__sighandler_t) SignalHandler::ExitSignalHandler)==SIG_ERR )
 		{
-			CustomException exc("The SIGTERM signal handler could not be set.");
+			rfims_exception exc("The SIGTERM signal handler could not be set.");
 			throw(exc);
 		}
 	}
@@ -69,9 +69,9 @@ public:
 	static DataLogger * dataLoggerPtr; //!< A pointer to the _DataLogger_ object.
 	static GPSInterface * gpsInterfacePtr; //!< A pointer to the _GPSInterface_ object.
 	static AntennaPositioner * antPositionerPtr; //!< A pointer to the _AntennaPositioner_ object.
-	static RFPloter * sweepPloterPtr; //!< A pointer to the _RFPlotter_ object which is responsible for the plotting of the last captured sweep.
-	static RFPloter * gainPloterPtr; //!< A pointer to the _RFPlotter_ object which is responsible for the plotting of the last estimated gain curve.
-	static RFPloter * nfPloterPtr; //!< A pointer to the _RFPlotter_ object which is responsible for the plotting of the last estimated noise figure curve.
+	static RFPlotter * sweepPlotterPtr; //!< A pointer to the _RFPlotter_ object which is responsible for the plotting of the last captured sweep.
+	static RFPlotter * gainPlotterPtr; //!< A pointer to the _RFPlotter_ object which is responsible for the plotting of the last estimated gain curve.
+	static RFPlotter * nfPlotterPtr; //!< A pointer to the _RFPlotter_ object which is responsible for the plotting of the last estimated noise figure curve.
 
 	//! This function is executed when a SIGINT or a SIGTERM signal arrives.
 	/*! The function calls the destructor of almost all the high-level objects (defined in the main function)
@@ -94,12 +94,12 @@ public:
 			gpsInterfacePtr->~GPSInterface();
 		if(antPositionerPtr!=nullptr)
 			antPositionerPtr->~AntennaPositioner();
-		if(sweepPloterPtr!=nullptr)
-			sweepPloterPtr->~RFPloter();
-		if(gainPloterPtr!=nullptr)
-			gainPloterPtr->~RFPloter();
-		if(nfPloterPtr!=nullptr)
-			nfPloterPtr->~RFPloter();
+		if(sweepPlotterPtr!=nullptr)
+			sweepPlotterPtr->~RFPlotter();
+		if(gainPlotterPtr!=nullptr)
+			gainPlotterPtr->~RFPlotter();
+		if(nfPlotterPtr!=nullptr)
+			nfPlotterPtr->~RFPlotter();
 
 		TurnOffFrontEnd();
 

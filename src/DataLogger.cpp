@@ -53,7 +53,7 @@ DataLogger::DataLogger()
 	}
 	catch(boost::filesystem::filesystem_error & exc)
 	{
-		CustomException customExc("The creation of a directory failed: ");
+		rfims_exception customExc("The creation of a directory failed: ");
 		customExc.Append( exc.what() );
 		throw(customExc);
 	}
@@ -110,7 +110,7 @@ void DataLogger::SaveBandsParamAsCSV(const std::vector<BandParameters> & bandsPa
 		}
 		catch(std::ofstream::failure& exc)
 		{
-			CustomException customExc("The file " + filePath.string() + " could not be opened: ");
+			rfims_exception customExc("The file " + filePath.string() + " could not be opened: ");
 			customExc.Append( exc.what() );
 			throw( customExc );
 		}
@@ -142,7 +142,7 @@ void DataLogger::SaveBandsParamAsCSV(const std::vector<BandParameters> & bandsPa
 		flagNewBandsParam=true;
 	}
 	else
-		throw( CustomException("The data logger was asked to save an empty bands parameters vector.") );
+		throw( rfims_exception("The data logger was asked to save an empty bands parameters vector.") );
 }
 
 /*! The given front end parameters are saved in two different files:
@@ -178,7 +178,7 @@ void DataLogger::SaveFrontEndParam(const FreqValues & gain, const FreqValues & n
 		}
 		catch(std::ofstream::failure& exc)
 		{
-			CustomException customExc("The file " + filePath.string() + " could not be opened: ");
+			rfims_exception customExc("The file " + filePath.string() + " could not be opened: ");
 			customExc.Append( exc.what() );
 			throw( customExc );
 		}
@@ -205,7 +205,7 @@ void DataLogger::SaveFrontEndParam(const FreqValues & gain, const FreqValues & n
 		}
 		catch(std::ofstream::failure& exc)
 		{
-			CustomException customExc("The file " + filePath.string() + " could not be opened: ");
+			rfims_exception customExc("The file " + filePath.string() + " could not be opened: ");
 			customExc.Append( exc.what() );
 			throw( customExc );
 		}
@@ -226,7 +226,7 @@ void DataLogger::SaveFrontEndParam(const FreqValues & gain, const FreqValues & n
 		flagNewFrontEndParam=true;
 	}
 	else
-		throw( CustomException("The data logger was asked to save empty front end parameters curves.") );
+		throw( rfims_exception("The data logger was asked to save empty front end parameters curves.") );
 }
 
 /*!	The given sweep is saved in [BASE_PATH](\ref BASE_PATH)/measurements/ with the filename format
@@ -262,7 +262,7 @@ void DataLogger::SaveSweep(const Sweep & sweep)
 			}
 			catch(std::ofstream::failure& exc)
 			{
-				CustomException customExc("The file " + filePath.string() + " could not be created: ");
+				rfims_exception customExc("The file " + filePath.string() + " could not be created: ");
 				customExc.Append( exc.what() );
 				throw(customExc);
 			}
@@ -284,7 +284,7 @@ void DataLogger::SaveSweep(const Sweep & sweep)
 			}
 			catch(std::ofstream::failure& exc)
 			{
-				CustomException customExc("The file " + filePath.string() + " could not be opened: ");
+				rfims_exception customExc("The file " + filePath.string() + " could not be opened: ");
 				customExc.Append( exc.what() );
 				throw( customExc );
 			}
@@ -304,7 +304,7 @@ void DataLogger::SaveSweep(const Sweep & sweep)
 		ofs.close();
 	}
 	else
-		throw( CustomException("The data logger was asked to save an empty sweep.") );
+		throw( rfims_exception("The data logger was asked to save an empty sweep.") );
 }
 
 /*! Each given structure with the RFI detected in the last sweep is saved in a different file with the filename format
@@ -357,7 +357,7 @@ void DataLogger::SaveRFI(const RFI& rfi)
 		flagStoredRFI=true;
 	}
 	else
-		throw( CustomException("The data logger was asked to save an empty RFI structure.") );
+		throw( rfims_exception("The data logger was asked to save an empty RFI structure.") );
 }
 
 /*!	To archive the data files the utility 'tar' is used and thr utility 'lzma' is used to compress to resulting archive file.
@@ -375,7 +375,7 @@ void DataLogger::ArchiveAndCompress()
 	if( boost::filesystem::exists(sweepsFilePath) )
 		boost::filesystem::copy_file(sweepsFilePath, (destPath / sweepFilename), boost::filesystem::copy_option::overwrite_if_exists);
 	else
-		throw( CustomException("The sweep file does not exist.") );
+		throw( rfims_exception("The sweep file does not exist.") );
 
 	boost::filesystem::path gainFilePath(FRONT_END_PARAM_PATH);
 	boost::filesystem::path noiseFigFilePath(FRONT_END_PARAM_PATH);
@@ -401,12 +401,12 @@ void DataLogger::ArchiveAndCompress()
 	if( boost::filesystem::exists(gainFilePath) )
 		boost::filesystem::copy_file(gainFilePath, (destPath / gainFilename), boost::filesystem::copy_option::overwrite_if_exists);
 	else
-		throw( CustomException("The gain file does not exist.") );
+		throw( rfims_exception("The gain file does not exist.") );
 
 	if( boost::filesystem::exists(noiseFigFilePath) )
 		boost::filesystem::copy_file(noiseFigFilePath, (destPath / noiseFigFilename), boost::filesystem::copy_option::overwrite_if_exists);
 	else
-		throw( CustomException("The noise figure file does not exist.") );
+		throw( rfims_exception("The noise figure file does not exist.") );
 
 	if(flagNewBandsParam)
 	{
@@ -415,7 +415,7 @@ void DataLogger::ArchiveAndCompress()
 		if( boost::filesystem::exists(bandsParamFilePath) )
 			boost::filesystem::copy_file(bandsParamFilePath, (destPath / "freqbands.csv"), boost::filesystem::copy_option::overwrite_if_exists);
 		else
-			throw( CustomException("The bands parameters file (CSV) does not exist.") );
+			throw( rfims_exception("The bands parameters file (CSV) does not exist.") );
 	}
 
 	std::string rfiFolderName = "RFI_" + currMeasCycleDate;
@@ -431,7 +431,7 @@ void DataLogger::ArchiveAndCompress()
 				boost::filesystem::copy_file(rfiFile.path(), (destRFIFolderPath / rfiFile.path().filename()), boost::filesystem::copy_option::overwrite_if_exists);
 		}
 		else
-			throw( CustomException("The folder with RFI files does not exist or there is an error in the path.") );
+			throw( rfims_exception("The folder with RFI files does not exist or there is an error in the path.") );
 	}
 
 	/////////////////////////////////////////////////////////////////////////////
@@ -459,7 +459,7 @@ void DataLogger::ArchiveAndCompress()
 
 	//Calling the utility 'tar'
 	if( system( command.c_str() ) < 0 )
-		throw( CustomException("The calling to the utility 'tar', using system(), to archive the data files failed.") );
+		throw( rfims_exception("The calling to the utility 'tar', using system(), to archive the data files failed.") );
 	//////////////////////////////////////////////////////////////
 
 	/////////////Compressing the archive with the utility 'lzma'/////////////////
@@ -478,7 +478,7 @@ void DataLogger::ArchiveAndCompress()
 
 	//Calling the utility 'lzma'
 	if( system( command.c_str() ) < 0 )
-		throw( CustomException("The calling to the utility 'lzma', using system(), to compress the archive file failed.") );
+		throw( rfims_exception("The calling to the utility 'lzma', using system(), to compress the archive file failed.") );
 	///////////////////////////////////////////////////////////////
 
 	////////Deleting the files which were copied to the uploads folder//////////
@@ -561,7 +561,7 @@ void DataLogger::UploadData()
 		{
 			std::ostringstream oss;
 			oss << "The calling to the utility client.py to upload the data failed.";
-			throw( CustomException( oss.str() ) );
+			throw( rfims_exception( oss.str() ) );
 		}
 
 		if(retValue==0)
@@ -585,7 +585,7 @@ void DataLogger::UploadData()
 				default:
 					oss << "unknown error";
 			}
-			throw( CustomException( oss.str() ) );
+			throw( rfims_exception( oss.str() ) );
 		}
 	}
 }
@@ -606,7 +606,7 @@ void DataLogger::PrepareAndUploadData()
 	//Checking if the last operation finished wrongly or if the thread does not exist
 	if(retValueJoin!=0 && retValueJoin!=ESRCH)
 	{
-		CustomException exc("The checking of finishing of last thread to upload data failed.");
+		rfims_exception exc("The checking of finishing of last thread to upload data failed.");
 		throw(exc);
 	}
 	//Checking the value returned by the thread if that existed
@@ -617,7 +617,7 @@ void DataLogger::PrepareAndUploadData()
 			cerr << "\nWarning: the last thread to upload data was cancelled." << endl;
 		else if(retval!=NULL)
 		{
-			CustomException exc( (char*) (*retval) );
+			rfims_exception exc( (char*) (*retval) );
 			throw(exc);
 		}
 	}
@@ -626,7 +626,7 @@ void DataLogger::PrepareAndUploadData()
 	int retValueCreate = pthread_create(&uploadThread, NULL, UploadThreadFunc, (void*)this);
 	if(retValueCreate!=0)
 	{
-		CustomException exc("The creation of the thread to prepare and upload data failed");
+		rfims_exception exc("The creation of the thread to prepare and upload data failed");
 		if(retValueCreate==EAGAIN)
 			exc.Append(": insufficient resources to create a thread.");
 		else

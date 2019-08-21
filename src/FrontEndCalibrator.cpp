@@ -136,7 +136,7 @@ void FrontEndCalibrator::LoadENR()
 		std::getline(ifs, line);
 		devNamePos = line.find('=');
 		if( devNamePos++ == std::string::npos )
-			throw( CustomException("No device name in ENR file") );
+			throw( rfims_exception("No device name in ENR file") );
 
 		deviceName = line.substr(devNamePos, line.size()-devNamePos);
 		boost::algorithm::to_lower(deviceName);
@@ -268,7 +268,7 @@ void FrontEndCalibrator::SetSweep(const FreqValues & sweep)
 void FrontEndCalibrator::EstimateParameters()
 {
 	if( powerNSon_w.Empty() || powerNSoff_w.Empty() )
-		throw( CustomException("The Front End calibrator cannot calculate parameters because one sweep (or both) is lacking.") );
+		throw( rfims_exception("The Front End calibrator cannot calculate parameters because one sweep (or both) is lacking.") );
 
 	FreqValues tson("noise temperature"), yFactor("y-factor"), gainPowersRatio("gain");
 
@@ -281,7 +281,7 @@ void FrontEndCalibrator::EstimateParameters()
 	//Checking the mean value of noise figure
 	float meanNoiseFig = noiseFigure.MeanValue();
 	if( 0.5 > meanNoiseFig || meanNoiseFig > 20.0 )
-		throw( CustomException("A ridiculous mean noise figure was got during estimation.") );
+		throw( rfims_exception("A ridiculous mean noise figure was got during estimation.") );
 
 	//Correcting negative values of
 	for(auto nf : noiseFigure.values)
@@ -295,7 +295,7 @@ void FrontEndCalibrator::EstimateParameters()
 
 	//Checking the mean value of gain
 	if( 10.0 > meanGain || meanGain > 100.0 )
-		throw( CustomException("A ridiculous mean gain was got during estimation.") );
+		throw( rfims_exception("A ridiculous mean gain was got during estimation.") );
 }
 
 /*!	The calibration of sweeps with output power values implies the following tasks:
@@ -350,9 +350,9 @@ const Sweep& FrontEndCalibrator::CalibrateSweep(const Sweep& powerOut)
 		//The input power is saved as the calibrated sweep
 		calSweep = powerIn;
 	}
-	catch(CustomException & exc)
+	catch(rfims_exception & exc)
 	{
-		CustomException exc1("A sweep could not be calibrated: ");
+		rfims_exception exc1("A sweep could not be calibrated: ");
 		exc1.Append( exc.what() );
 		throw exc1;
 	}
@@ -432,7 +432,7 @@ void FrontEndCalibrator::LoadDefaultParameters()
 	}
 	else
 	{
-		CustomException exc("At least one of the files with the default front end parameters were not found.");
+		rfims_exception exc("At least one of the files with the default front end parameters were not found.");
 		throw(exc);
 	}
 }

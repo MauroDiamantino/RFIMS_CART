@@ -11,7 +11,8 @@ The class {\itshape \hyperlink{classSignalHandler}{Signal\+Handler}} is intended
 
 
 
-Collaboration diagram for Signal\+Handler\+:\nopagebreak
+Collaboration diagram for Signal\+Handler\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -21,8 +22,8 @@ Collaboration diagram for Signal\+Handler\+:\nopagebreak
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{classSignalHandler_aac189962a11b36ed582bd837b99e503b}\label{classSignalHandler_aac189962a11b36ed582bd837b99e503b}} 
-void \hyperlink{classSignalHandler_aac189962a11b36ed582bd837b99e503b}{Setup\+Signal\+Handler} (\hyperlink{classSpectranInterface}{Spectran\+Interface} $\ast$spec\+Interf\+Pt, \hyperlink{classSpectranConfigurator}{Spectran\+Configurator} $\ast$spec\+Configurator\+Pt, \hyperlink{classSweepBuilder}{Sweep\+Builder} $\ast$sweep\+Builder\+Pt, \hyperlink{classCurveAdjuster}{Curve\+Adjuster} $\ast$adjuster\+Pt, \hyperlink{classFrontEndCalibrator}{Front\+End\+Calibrator} $\ast$calibrator\+Pt, \hyperlink{classRFIDetector}{R\+F\+I\+Detector} $\ast$rfi\+Detector\+Pt=nullptr, \hyperlink{classDataLogger}{Data\+Logger} $\ast$data\+Logger\+Pt=nullptr, \hyperlink{classGPSInterface}{G\+P\+S\+Interface} $\ast$gps\+Interface\+Pt=nullptr, \hyperlink{classAntennaPositioner}{Antenna\+Positioner} $\ast$ant\+Positioner\+Pt=nullptr, \hyperlink{classRFPloter}{R\+F\+Ploter} $\ast$sweep\+Ploter\+Pt=nullptr, \hyperlink{classRFPloter}{R\+F\+Ploter} $\ast$gain\+Ploter\+Pt=nullptr, \hyperlink{classRFPloter}{R\+F\+Ploter} $\ast$nf\+Ploter\+Pt=nullptr)
+\mbox{\Hypertarget{classSignalHandler_a9d6599351f7c8b007410145cb23f18f4}\label{classSignalHandler_a9d6599351f7c8b007410145cb23f18f4}} 
+void \hyperlink{classSignalHandler_a9d6599351f7c8b007410145cb23f18f4}{Setup\+Signal\+Handler} (\hyperlink{classSpectranInterface}{Spectran\+Interface} $\ast$spec\+Interf\+Pt, \hyperlink{classSpectranConfigurator}{Spectran\+Configurator} $\ast$spec\+Configurator\+Pt, \hyperlink{classSweepBuilder}{Sweep\+Builder} $\ast$sweep\+Builder\+Pt, \hyperlink{classCurveAdjuster}{Curve\+Adjuster} $\ast$adjuster\+Pt, \hyperlink{classFrontEndCalibrator}{Front\+End\+Calibrator} $\ast$calibrator\+Pt, \hyperlink{classRFIDetector}{R\+F\+I\+Detector} $\ast$rfi\+Detector\+Pt=nullptr, \hyperlink{classDataLogger}{Data\+Logger} $\ast$data\+Logger\+Pt=nullptr, \hyperlink{classGPSInterface}{G\+P\+S\+Interface} $\ast$gps\+Interface\+Pt=nullptr, \hyperlink{classAntennaPositioner}{Antenna\+Positioner} $\ast$ant\+Positioner\+Pt=nullptr, \hyperlink{classRFPlotter}{R\+F\+Plotter} $\ast$sweep\+Plotter\+Pt=nullptr, \hyperlink{classRFPlotter}{R\+F\+Plotter} $\ast$gain\+Plotter\+Pt=nullptr, \hyperlink{classRFPlotter}{R\+F\+Plotter} $\ast$nf\+Plotter\+Pt=nullptr)
 \begin{DoxyCompactList}\small\item\em This method is intended to set the pointers to the high-\/level objects and to set handler functions. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Static Public Member Functions}
 \begin{DoxyCompactItemize}
@@ -50,12 +51,12 @@ static \hyperlink{classGPSInterface}{G\+P\+S\+Interface} $\ast$ \hyperlink{class
 \begin{DoxyCompactList}\small\item\em A pointer to the {\itshape \hyperlink{classGPSInterface}{G\+P\+S\+Interface}} object. \end{DoxyCompactList}\item 
 static \hyperlink{classAntennaPositioner}{Antenna\+Positioner} $\ast$ \hyperlink{classSignalHandler_a04f82481d0f5795308e6e2cef7bb0f88}{ant\+Positioner\+Ptr}
 \begin{DoxyCompactList}\small\item\em A pointer to the {\itshape \hyperlink{classAntennaPositioner}{Antenna\+Positioner}} object. \end{DoxyCompactList}\item 
-static \hyperlink{classRFPloter}{R\+F\+Ploter} $\ast$ \hyperlink{classSignalHandler_a15d34535b8684c5988ff1af1bf6062f6}{sweep\+Ploter\+Ptr}
-\begin{DoxyCompactList}\small\item\em A pointer to the {\itshape R\+F\+Plotter} object which is responsible for the plotting of the last captured sweep. \end{DoxyCompactList}\item 
-static \hyperlink{classRFPloter}{R\+F\+Ploter} $\ast$ \hyperlink{classSignalHandler_a1c6637986751faafe7cb5ffd58400f77}{gain\+Ploter\+Ptr}
-\begin{DoxyCompactList}\small\item\em A pointer to the {\itshape R\+F\+Plotter} object which is responsible for the plotting of the last estimated gain curve. \end{DoxyCompactList}\item 
-static \hyperlink{classRFPloter}{R\+F\+Ploter} $\ast$ \hyperlink{classSignalHandler_ada606b8ef692809838f1e5464871742c}{nf\+Ploter\+Ptr}
-\begin{DoxyCompactList}\small\item\em A pointer to the {\itshape R\+F\+Plotter} object which is responsible for the plotting of the last estimated noise figure curve. \end{DoxyCompactList}\end{DoxyCompactItemize}
+static \hyperlink{classRFPlotter}{R\+F\+Plotter} $\ast$ \hyperlink{classSignalHandler_a7ec978dc8c16c31aa8faefe4e350302c}{sweep\+Plotter\+Ptr}
+\begin{DoxyCompactList}\small\item\em A pointer to the {\itshape \hyperlink{classRFPlotter}{R\+F\+Plotter}} object which is responsible for the plotting of the last captured sweep. \end{DoxyCompactList}\item 
+static \hyperlink{classRFPlotter}{R\+F\+Plotter} $\ast$ \hyperlink{classSignalHandler_a040fa3711d4239933dd28a00b24965b2}{gain\+Plotter\+Ptr}
+\begin{DoxyCompactList}\small\item\em A pointer to the {\itshape \hyperlink{classRFPlotter}{R\+F\+Plotter}} object which is responsible for the plotting of the last estimated gain curve. \end{DoxyCompactList}\item 
+static \hyperlink{classRFPlotter}{R\+F\+Plotter} $\ast$ \hyperlink{classSignalHandler_ad5f57e0f7a4ca52357bdd00c358d3a3a}{nf\+Plotter\+Ptr}
+\begin{DoxyCompactList}\small\item\em A pointer to the {\itshape \hyperlink{classRFPlotter}{R\+F\+Plotter}} object which is responsible for the plotting of the last estimated noise figure curve. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
@@ -122,17 +123,17 @@ The instantiation of the pointer to the {\itshape \hyperlink{classFrontEndCalibr
 
 A pointer to the {\itshape \hyperlink{classDataLogger}{Data\+Logger}} object. 
 
-The instantiation of the pointer to the {\itshape \hyperlink{classDataLogger}{Data\+Logger}} object. \mbox{\Hypertarget{classSignalHandler_a1c6637986751faafe7cb5ffd58400f77}\label{classSignalHandler_a1c6637986751faafe7cb5ffd58400f77}} 
-\index{Signal\+Handler@{Signal\+Handler}!gain\+Ploter\+Ptr@{gain\+Ploter\+Ptr}}
-\index{gain\+Ploter\+Ptr@{gain\+Ploter\+Ptr}!Signal\+Handler@{Signal\+Handler}}
-\subsubsection{\texorpdfstring{gain\+Ploter\+Ptr}{gainPloterPtr}}
-{\footnotesize\ttfamily \hyperlink{classRFPloter}{R\+F\+Ploter} $\ast$ Signal\+Handler\+::gain\+Ploter\+Ptr\hspace{0.3cm}{\ttfamily [static]}}
+The instantiation of the pointer to the {\itshape \hyperlink{classDataLogger}{Data\+Logger}} object. \mbox{\Hypertarget{classSignalHandler_a040fa3711d4239933dd28a00b24965b2}\label{classSignalHandler_a040fa3711d4239933dd28a00b24965b2}} 
+\index{Signal\+Handler@{Signal\+Handler}!gain\+Plotter\+Ptr@{gain\+Plotter\+Ptr}}
+\index{gain\+Plotter\+Ptr@{gain\+Plotter\+Ptr}!Signal\+Handler@{Signal\+Handler}}
+\subsubsection{\texorpdfstring{gain\+Plotter\+Ptr}{gainPlotterPtr}}
+{\footnotesize\ttfamily \hyperlink{classRFPlotter}{R\+F\+Plotter} $\ast$ Signal\+Handler\+::gain\+Plotter\+Ptr\hspace{0.3cm}{\ttfamily [static]}}
 
 
 
-A pointer to the {\itshape R\+F\+Plotter} object which is responsible for the plotting of the last estimated gain curve. 
+A pointer to the {\itshape \hyperlink{classRFPlotter}{R\+F\+Plotter}} object which is responsible for the plotting of the last estimated gain curve. 
 
-The instantiation of the pointer to the {\itshape R\+F\+Plotter} object which is responsible for the plotting of the last estimated gain curve. \mbox{\Hypertarget{classSignalHandler_ac6bc3decceefdff9d3e5c15e4125fe08}\label{classSignalHandler_ac6bc3decceefdff9d3e5c15e4125fe08}} 
+The instantiation of the pointer to the {\itshape \hyperlink{classRFPlotter}{R\+F\+Plotter}} object which is responsible for the plotting of the last estimated gain curve. \mbox{\Hypertarget{classSignalHandler_ac6bc3decceefdff9d3e5c15e4125fe08}\label{classSignalHandler_ac6bc3decceefdff9d3e5c15e4125fe08}} 
 \index{Signal\+Handler@{Signal\+Handler}!gps\+Interface\+Ptr@{gps\+Interface\+Ptr}}
 \index{gps\+Interface\+Ptr@{gps\+Interface\+Ptr}!Signal\+Handler@{Signal\+Handler}}
 \subsubsection{\texorpdfstring{gps\+Interface\+Ptr}{gpsInterfacePtr}}
@@ -142,17 +143,17 @@ The instantiation of the pointer to the {\itshape R\+F\+Plotter} object which is
 
 A pointer to the {\itshape \hyperlink{classGPSInterface}{G\+P\+S\+Interface}} object. 
 
-The instantiation of the pointer to the {\itshape \hyperlink{classGPSInterface}{G\+P\+S\+Interface}} object. \mbox{\Hypertarget{classSignalHandler_ada606b8ef692809838f1e5464871742c}\label{classSignalHandler_ada606b8ef692809838f1e5464871742c}} 
-\index{Signal\+Handler@{Signal\+Handler}!nf\+Ploter\+Ptr@{nf\+Ploter\+Ptr}}
-\index{nf\+Ploter\+Ptr@{nf\+Ploter\+Ptr}!Signal\+Handler@{Signal\+Handler}}
-\subsubsection{\texorpdfstring{nf\+Ploter\+Ptr}{nfPloterPtr}}
-{\footnotesize\ttfamily \hyperlink{classRFPloter}{R\+F\+Ploter} $\ast$ Signal\+Handler\+::nf\+Ploter\+Ptr\hspace{0.3cm}{\ttfamily [static]}}
+The instantiation of the pointer to the {\itshape \hyperlink{classGPSInterface}{G\+P\+S\+Interface}} object. \mbox{\Hypertarget{classSignalHandler_ad5f57e0f7a4ca52357bdd00c358d3a3a}\label{classSignalHandler_ad5f57e0f7a4ca52357bdd00c358d3a3a}} 
+\index{Signal\+Handler@{Signal\+Handler}!nf\+Plotter\+Ptr@{nf\+Plotter\+Ptr}}
+\index{nf\+Plotter\+Ptr@{nf\+Plotter\+Ptr}!Signal\+Handler@{Signal\+Handler}}
+\subsubsection{\texorpdfstring{nf\+Plotter\+Ptr}{nfPlotterPtr}}
+{\footnotesize\ttfamily \hyperlink{classRFPlotter}{R\+F\+Plotter} $\ast$ Signal\+Handler\+::nf\+Plotter\+Ptr\hspace{0.3cm}{\ttfamily [static]}}
 
 
 
-A pointer to the {\itshape R\+F\+Plotter} object which is responsible for the plotting of the last estimated noise figure curve. 
+A pointer to the {\itshape \hyperlink{classRFPlotter}{R\+F\+Plotter}} object which is responsible for the plotting of the last estimated noise figure curve. 
 
-The instantiation of the pointer to the {\itshape R\+F\+Plotter} object which is responsible for the plotting of the last estimated noise figure curve. \mbox{\Hypertarget{classSignalHandler_a9ce3533694e1e412496dc5a9b339ccc3}\label{classSignalHandler_a9ce3533694e1e412496dc5a9b339ccc3}} 
+The instantiation of the pointer to the {\itshape \hyperlink{classRFPlotter}{R\+F\+Plotter}} object which is responsible for the plotting of the last estimated noise figure curve. \mbox{\Hypertarget{classSignalHandler_a9ce3533694e1e412496dc5a9b339ccc3}\label{classSignalHandler_a9ce3533694e1e412496dc5a9b339ccc3}} 
 \index{Signal\+Handler@{Signal\+Handler}!rfi\+Detector\+Ptr@{rfi\+Detector\+Ptr}}
 \index{rfi\+Detector\+Ptr@{rfi\+Detector\+Ptr}!Signal\+Handler@{Signal\+Handler}}
 \subsubsection{\texorpdfstring{rfi\+Detector\+Ptr}{rfiDetectorPtr}}
@@ -192,17 +193,17 @@ The instantiation of the pointer to the {\itshape \hyperlink{classSpectranInterf
 
 A pointer to the {\itshape \hyperlink{classSweepBuilder}{Sweep\+Builder}} object. 
 
-The instantiation of the pointer to the {\itshape \hyperlink{classSweepBuilder}{Sweep\+Builder}} object. \mbox{\Hypertarget{classSignalHandler_a15d34535b8684c5988ff1af1bf6062f6}\label{classSignalHandler_a15d34535b8684c5988ff1af1bf6062f6}} 
-\index{Signal\+Handler@{Signal\+Handler}!sweep\+Ploter\+Ptr@{sweep\+Ploter\+Ptr}}
-\index{sweep\+Ploter\+Ptr@{sweep\+Ploter\+Ptr}!Signal\+Handler@{Signal\+Handler}}
-\subsubsection{\texorpdfstring{sweep\+Ploter\+Ptr}{sweepPloterPtr}}
-{\footnotesize\ttfamily \hyperlink{classRFPloter}{R\+F\+Ploter} $\ast$ Signal\+Handler\+::sweep\+Ploter\+Ptr\hspace{0.3cm}{\ttfamily [static]}}
+The instantiation of the pointer to the {\itshape \hyperlink{classSweepBuilder}{Sweep\+Builder}} object. \mbox{\Hypertarget{classSignalHandler_a7ec978dc8c16c31aa8faefe4e350302c}\label{classSignalHandler_a7ec978dc8c16c31aa8faefe4e350302c}} 
+\index{Signal\+Handler@{Signal\+Handler}!sweep\+Plotter\+Ptr@{sweep\+Plotter\+Ptr}}
+\index{sweep\+Plotter\+Ptr@{sweep\+Plotter\+Ptr}!Signal\+Handler@{Signal\+Handler}}
+\subsubsection{\texorpdfstring{sweep\+Plotter\+Ptr}{sweepPlotterPtr}}
+{\footnotesize\ttfamily \hyperlink{classRFPlotter}{R\+F\+Plotter} $\ast$ Signal\+Handler\+::sweep\+Plotter\+Ptr\hspace{0.3cm}{\ttfamily [static]}}
 
 
 
-A pointer to the {\itshape R\+F\+Plotter} object which is responsible for the plotting of the last captured sweep. 
+A pointer to the {\itshape \hyperlink{classRFPlotter}{R\+F\+Plotter}} object which is responsible for the plotting of the last captured sweep. 
 
-The instantiation of the pointer to the {\itshape R\+F\+Plotter} object which is responsible for the plotting of the last captured sweep. 
+The instantiation of the pointer to the {\itshape \hyperlink{classRFPlotter}{R\+F\+Plotter}} object which is responsible for the plotting of the last captured sweep. 
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 

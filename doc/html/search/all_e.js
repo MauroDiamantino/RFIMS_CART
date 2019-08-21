@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['rfims_5fcart',['RFIMS_CART',['../md__home_new-mauro_eclipse-cdt_workspace_RFIMS_CART_README.html',1,'']]],
   ['rbw',['rbw',['../structBandParameters.html#a467e21d5bd9dd59fd57d6e43f5fa3dcb',1,'BandParameters']]],
   ['rbw_5fbimap',['RBW_bimap',['../Spectran_8h.html#a39a3a5436da634ac5816e79f8a29d25c',1,'Spectran.h']]],
   ['rbw_5findex',['RBW_INDEX',['../Spectran_8h.html#ae551a6824a7df7b10dedc4b8743f36f5',1,'Spectran.h']]],
@@ -15,6 +16,7 @@ var searchData=
   ['rfidetector',['RFIDetector',['../classRFIDetector.html',1,'RFIDetector'],['../classRFIDetector.html#a1943c00a5ab657a24cdacaf2b0d550f1',1,'RFIDetector::RFIDetector()']]],
   ['rfidetector_2ecpp',['RFIDetector.cpp',['../RFIDetector_8cpp.html',1,'']]],
   ['rfidetectorptr',['rfiDetectorPtr',['../classSignalHandler.html#a9ce3533694e1e412496dc5a9b339ccc3',1,'SignalHandler']]],
+  ['rfims_5fexception',['rfims_exception',['../classrfims__exception.html',1,'rfims_exception'],['../classrfims__exception.html#aed3788a57bce5b92083bf52994c588bb',1,'rfims_exception::rfims_exception()']]],
   ['rfinorm',['rfiNorm',['../Basics_8h.html#a5fca012de3aeabad258f4f0fa6877334',1,'rfiNorm():&#160;main.cpp'],['../main_8cpp.html#a5fca012de3aeabad258f4f0fa6877334',1,'rfiNorm():&#160;main.cpp']]],
-  ['rfploter',['RFPloter',['../classRFPloter.html',1,'RFPloter'],['../classRFPloter.html#ab7b36c6de3e288b7ab88238b16a0816a',1,'RFPloter::RFPloter()']]]
+  ['rfplotter',['RFPlotter',['../classRFPlotter.html',1,'RFPlotter'],['../classRFPlotter.html#af6924d7315d5c41390be12c329566579',1,'RFPlotter::RFPlotter()']]]
 ];

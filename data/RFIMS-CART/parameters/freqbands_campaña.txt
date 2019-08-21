@@ -1,0 +1,131 @@
+Parameters Set=2da campaña
+
+Band Index=1, 		//Positive integer number, starting in one
+Enabled=y, 			//’y’ or ‘n’
+Fstart=1e9, 		//A value between 1e6 and 9.398e9 (Hz)
+Fstop=1.37e9, 		//A value between 1e6 and 9.398e9 (Hz)
+RBW=300e3, 			//full(50e6), 200.0, 1e3, 3e3, 9e3, 10e3, 30e3, 100e3, 120e3, 200e3, 300e3, 1e6, 1.5e6, 3e6 or 5e6 (Hz)
+VBW=1e6, 			//full(50e6), 200.0, 1e3, 3e3, 9e3, 10e3, 30e3, 100e3, 120e3, 200e3, 300e3, 1e6, 1.5e6, 3e6 or 5e6 (Hz)
+Sweep Time=7400, 	//A value between 10 and 600000 (ms)
+Sample Points=0, 	//An integer value. If it is zero the parameter is not configured
+Detector=RMS; 		//”RMS” or “Min/Max”
+
+Band Index=2, 		//Positive integer number, starting in one
+Enabled=y, 			//’y’ or ‘n’
+Fstart=1.37e9, 		//A value between 1e6 and 9.398e9 (Hz)
+Fstop=1.427e9, 		//A value between 1e6 and 9.398e9 (Hz)
+RBW=300e3,			//full(50e6), 200.0, 1e3, 3e3, 9e3, 10e3, 30e3, 100e3, 120e3, 200e3, 300e3, 1e6, 1.5e6, 3e6 or 5e6 (Hz)
+VBW=1e6, 			//full(50e6), 200.0, 1e3, 3e3, 9e3, 10e3, 30e3, 100e3, 120e3, 200e3, 300e3, 1e6, 1.5e6, 3e6 or 5e6 (Hz)
+Sweep Time=3800, 	//A value between 10 and 600000 (ms)
+Sample Points=0, 	//An integer value. If it is zero the parameter is not configured
+Detector=RMS; 		//”RMS” or “Min/Max”
+
+Band Index=3, 		//Positive integer number, starting in one
+Enabled=y, 			//’y’ or ‘n’
+Fstart=1.427e9, 	//A value between 1e6 and 9.398e9 (Hz)
+Fstop=1.606e9, 		//A value between 1e6 and 9.398e9 (Hz)
+RBW=300e3, 			//full(50e6), 200.0, 1e3, 3e3, 9e3, 10e3, 30e3, 100e3, 120e3, 200e3, 300e3, 1e6, 1.5e6, 3e6 or 5e6 (Hz)
+VBW=1e6, 			//full(50e6), 200.0, 1e3, 3e3, 9e3, 10e3, 30e3, 100e3, 120e3, 200e3, 300e3, 1e6, 1.5e6, 3e6 or 5e6 (Hz)
+Sweep Time=1194, 	//A value between 10 and 600000 (ms)
+Sample Points=0, 	//An integer value. If it is zero the parameter is not configured
+Detector=RMS; 		//”RMS” or “Min/Max”
+
+Band Index=4, 		//Positive integer number, starting in one
+Enabled=y, 			//’y’ or ‘n’
+Fstart=1.606e9, 	//A value between 1e6 and 9.398e9 (Hz)
+Fstop=1.723e9, 		//A value between 1e6 and 9.398e9 (Hz)
+RBW=300e3, 			//full(50e6), 200.0, 1e3, 3e3, 9e3, 10e3, 30e3, 100e3, 120e3, 200e3, 300e3, 1e6, 1.5e6, 3e6 or 5e6 (Hz)
+VBW=1e6, 			//full(50e6), 200.0, 1e3, 3e3, 9e3, 10e3, 30e3, 100e3, 120e3, 200e3, 300e3, 1e6, 1.5e6, 3e6 or 5e6 (Hz)
+Sweep Time=7800, 	//A value between 10 and 600000 (ms)
+Sample Points=0, 	//An integer value. If it is zero the parameter is not configured
+Detector=RMS; 		//”RMS” or “Min/Max”
+
+Band Index=5, 		//Positive integer number, starting in one
+Enabled=y, 			//’y’ or ‘n’
+Fstart=1.723e9, 	//A value between 1e6 and 9.398e9 (Hz)
+Fstop=2.655e9, 		//A value between 1e6 and 9.398e9 (Hz)
+RBW=300e3, 			//full(50e6), 200.0, 1e3, 3e3, 9e3, 10e3, 30e3, 100e3, 120e3, 200e3, 300e3, 1e6, 1.5e6, 3e6 or 5e6 (Hz)
+VBW=1e6, 			//full(50e6), 200.0, 1e3, 3e3, 9e3, 10e3, 30e3, 100e3, 120e3, 200e3, 300e3, 1e6, 1.5e6, 3e6 or 5e6 (Hz)
+Sweep Time=622, 	//A value between 10 and 600000 (ms)
+Sample Points=0, 	//An integer value. If it is zero the parameter is not configured
+Detector=RMS; 		//”RMS” or “Min/Max”
+
+Band Index=6, 		//Positive integer number, starting in one
+Enabled=y, 			//’y’ or ‘n’
+Fstart=2.655e9, 	//A value between 1e6 and 9.398e9 (Hz)
+Fstop=2.7e9, 		//A value between 1e6 and 9.398e9 (Hz)
+RBW=1e6, 			//full(50e6), 200.0, 1e3, 3e3, 9e3, 10e3, 30e3, 100e3, 120e3, 200e3, 300e3, 1e6, 1.5e6, 3e6 or 5e6 (Hz)
+VBW=1.5e6, 			//full(50e6), 200.0, 1e3, 3e3, 9e3, 10e3, 30e3, 100e3, 120e3, 200e3, 300e3, 1e6, 1.5e6, 3e6 or 5e6 (Hz)
+Sweep Time=900, 	//A value between 10 and 600000 (ms)
+Sample Points=0, 	//An integer value. If it is zero the parameter is not configured
+Detector=RMS; 		//”RMS” or “Min/Max”
+
+Band Index=7, 		//Positive integer number, starting in one
+Enabled=y, 			//’y’ or ‘n’
+Fstart=2.7e9, 		//A value between 1e6 and 9.398e9 (Hz)
+Fstop=3.3e9, 		//A value between 1e6 and 9.398e9 (Hz)
+RBW=1e6, 			//full(50e6), 200.0, 1e3, 3e3, 9e3, 10e3, 30e3, 100e3, 120e3, 200e3, 300e3, 1e6, 1.5e6, 3e6 or 5e6 (Hz)
+VBW=1.5e6, 			//full(50e6), 200.0, 1e3, 3e3, 9e3, 10e3, 30e3, 100e3, 120e3, 200e3, 300e3, 1e6, 1.5e6, 3e6 or 5e6 (Hz)
+Sweep Time=120, 	//A value between 10 and 600000 (ms)
+Sample Points=0, 	//An integer value. If it is zero the parameter is not configured
+Detector=RMS; 		//”RMS” or “Min/Max”
+
+Band Index=8, 		//Positive integer number, starting in one
+Enabled=y, 			//’y’ or ‘n’
+Fstart=3.3e9, 		//A value between 1e6 and 9.398e9 (Hz)
+Fstop=3.4e9, 		//A value between 1e6 and 9.398e9 (Hz)
+RBW=1e6, 			//full(50e6), 200.0, 1e3, 3e3, 9e3, 10e3, 30e3, 100e3, 120e3, 200e3, 300e3, 1e6, 1.5e6, 3e6 or 5e6 (Hz)
+VBW=1.5e6, 			//full(50e6), 200.0, 1e3, 3e3, 9e3, 10e3, 30e3, 100e3, 120e3, 200e3, 300e3, 1e6, 1.5e6, 3e6 or 5e6 (Hz)
+Sweep Time=2000, 	//A value between 10 and 600000 (ms)
+Sample Points=0, 	//An integer value. If it is zero the parameter is not configured
+Detector=RMS; 		//”RMS” or “Min/Max”
+
+Band Index=9, 		//Positive integer number, starting in one
+Enabled=y, 			//’y’ or ‘n’
+Fstart=3.4e9, 		//A value between 1e6 and 9.398e9 (Hz)
+Fstop=4.8e9, 		//A value between 1e6 and 9.398e9 (Hz)
+RBW=1e6, 			//full(50e6), 200.0, 1e3, 3e3, 9e3, 10e3, 30e3, 100e3, 120e3, 200e3, 300e3, 1e6, 1.5e6, 3e6 or 5e6 (Hz)
+VBW=1.5e6, 			//full(50e6), 200.0, 1e3, 3e3, 9e3, 10e3, 30e3, 100e3, 120e3, 200e3, 300e3, 1e6, 1.5e6, 3e6 or 5e6 (Hz)
+Sweep Time=280, 	//A value between 10 and 600000 (ms)
+Sample Points=0, 	//An integer value. If it is zero the parameter is not configured
+Detector=RMS; 		//”RMS” or “Min/Max”
+
+Band Index=10, 		//Positive integer number, starting in one
+Enabled=y, 			//’y’ or ‘n’
+Fstart=4.8e9, 		//A value between 1e6 and 9.398e9 (Hz)
+Fstop=5e9, 			//A value between 1e6 and 9.398e9 (Hz)
+RBW=1e6, 			//full(50e6), 200.0, 1e3, 3e3, 9e3, 10e3, 30e3, 100e3, 120e3, 200e3, 300e3, 1e6, 1.5e6, 3e6 or 5e6 (Hz)
+VBW=1.5e6, 			//full(50e6), 200.0, 1e3, 3e3, 9e3, 10e3, 30e3, 100e3, 120e3, 200e3, 300e3, 1e6, 1.5e6, 3e6 or 5e6 (Hz)
+Sweep Time=4000, 	//A value between 10 and 600000 (ms)
+Sample Points=0, 	//An integer value. If it is zero the parameter is not configured
+Detector=RMS; 		//”RMS” or “Min/Max”
+
+Band Index=11, 		//Positive integer number, starting in one
+Enabled=y, 			//’y’ or ‘n’
+Fstart=5e9, 		//A value between 1e6 and 9.398e9 (Hz)
+Fstop=6.6e9, 		//A value between 1e6 and 9.398e9 (Hz)
+RBW=3e6, 			//full(50e6), 200.0, 1e3, 3e3, 9e3, 10e3, 30e3, 100e3, 120e3, 200e3, 300e3, 1e6, 1.5e6, 3e6 or 5e6 (Hz)
+VBW=3e6, 			//full(50e6), 200.0, 1e3, 3e3, 9e3, 10e3, 30e3, 100e3, 120e3, 200e3, 300e3, 1e6, 1.5e6, 3e6 or 5e6 (Hz)
+Sweep Time=107, 	//A value between 10 and 600000 (ms)
+Sample Points=0, 	//An integer value. If it is zero the parameter is not configured
+Detector=RMS; 		//”RMS” or “Min/Max”
+
+Band Index=12, 		//Positive integer number, starting in one
+Enabled=y, 			//’y’ or ‘n’
+Fstart=6.6e9, 		//A value between 1e6 and 9.398e9 (Hz)
+Fstop=6.7e9, 		//A value between 1e6 and 9.398e9 (Hz)
+RBW=3e6, 			//full(50e6), 200.0, 1e3, 3e3, 9e3, 10e3, 30e3, 100e3, 120e3, 200e3, 300e3, 1e6, 1.5e6, 3e6 or 5e6 (Hz)
+VBW=3e6, 			//full(50e6), 200.0, 1e3, 3e3, 9e3, 10e3, 30e3, 100e3, 120e3, 200e3, 300e3, 1e6, 1.5e6, 3e6 or 5e6 (Hz)
+Sweep Time=667, 	//A value between 10 and 600000 (ms)
+Sample Points=0, 	//An integer value. If it is zero the parameter is not configured
+Detector=RMS; 		//”RMS” or “Min/Max”
+
+Band Index=13, 		//Positive integer number, starting in one
+Enabled=y, 			//’y’ or ‘n’
+Fstart=6.7e9, 		//A value between 1e6 and 9.398e9 (Hz)
+Fstop=8e9, 			//A value between 1e6 and 9.398e9 (Hz)
+RBW=3e6, 			//full(50e6), 200.0, 1e3, 3e3, 9e3, 10e3, 30e3, 100e3, 120e3, 200e3, 300e3, 1e6, 1.5e6, 3e6 or 5e6 (Hz)
+VBW=3e6, 			//full(50e6), 200.0, 1e3, 3e3, 9e3, 10e3, 30e3, 100e3, 120e3, 200e3, 300e3, 1e6, 1.5e6, 3e6 or 5e6 (Hz)
+Sweep Time=127, 	//A value between 10 and 600000 (ms)
+Sample Points=0, 	//An integer value. If it is zero the parameter is not configured
+Detector=RMS; 		//”RMS” or “Min/Max”

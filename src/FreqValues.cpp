@@ -53,13 +53,13 @@ const FreqValues& FreqValues::operator+=(const FreqValues& rhs)
 {
 	if( rhs.frequencies!=frequencies )
 	{
-		CustomException exc("A sum could not be performed because the frequencies do not match");
+		rfims_exception exc("A sum could not be performed because the frequencies do not match");
 		throw(exc);
 	}
 
 	if( frequencies.size()!=values.size() && rhs.frequencies.size()!=rhs.values.size() )
 	{
-		CustomException exc("A sum could not be performed because one (or both) \"values\" vector has a different size with respect to the \"frequencies\" vector.");
+		rfims_exception exc("A sum could not be performed because one (or both) \"values\" vector has a different size with respect to the \"frequencies\" vector.");
 		throw(exc);
 	}
 
@@ -115,13 +115,13 @@ FreqValues operator+(const FreqValues & lhs, const FreqValues & rhs)
 {
 	if( lhs.frequencies!=rhs.frequencies )
 	{
-		CustomException exc("A sum could not be performed because the frequencies do not match");
+		rfims_exception exc("A sum could not be performed because the frequencies do not match");
 		throw(exc);
 	}
 
 	if( lhs.frequencies.size()!=lhs.values.size() && rhs.frequencies.size()!=rhs.values.size() )
 	{
-		CustomException exc("A sum (or subtraction) could not be performed because one (or both) \"values\" vector has a different size with respect to the \"frequencies\" vector.");
+		rfims_exception exc("A sum (or subtraction) could not be performed because one (or both) \"values\" vector has a different size with respect to the \"frequencies\" vector.");
 		throw(exc);
 	}
 
@@ -214,13 +214,13 @@ FreqValues operator*(const FreqValues & lhs, const FreqValues & rhs)
 {
 	if( lhs.frequencies!=rhs.frequencies )
 	{
-		CustomException exc("A multiplication could not be performed because the frequencies do not match.");
+		rfims_exception exc("A multiplication could not be performed because the frequencies do not match.");
 		throw(exc);
 	}
 
 	if( lhs.frequencies.size()!=lhs.values.size() && rhs.frequencies.size()!=rhs.values.size() )
 	{
-		CustomException exc("A multiplication (or division) could not be performed because one (or both) \"values\" vector has a different size with respect to the \"frequencies\" vector.");
+		rfims_exception exc("A multiplication (or division) could not be performed because one (or both) \"values\" vector has a different size with respect to the \"frequencies\" vector.");
 		throw(exc);
 	}
 
@@ -284,13 +284,13 @@ FreqValues operator/(const FreqValues & lhs, const FreqValues & rhs)
 {
 	if( lhs.frequencies!=rhs.frequencies )
 	{
-		CustomException exc("A division could not be performed because the frequencies do not match");
+		rfims_exception exc("A division could not be performed because the frequencies do not match");
 		throw(exc);
 	}
 
 	if( lhs.frequencies.size()!=lhs.values.size() && rhs.frequencies.size()!=rhs.values.size() )
 	{
-		CustomException exc("A division could not be performed because one (or both) \"values\" vector has a different size with respect to the \"frequencies\" vector.");
+		rfims_exception exc("A division could not be performed because one (or both) \"values\" vector has a different size with respect to the \"frequencies\" vector.");
 		throw(exc);
 	}
 
@@ -448,13 +448,13 @@ Sweep operator+(const Sweep & lhs, const Sweep & rhs)
 {
 	if( lhs.frequencies!=rhs.frequencies )
 	{
-		CustomException exc("A sum could not be performed because the frequencies do not match");
+		rfims_exception exc("A sum could not be performed because the frequencies do not match");
 		throw(exc);
 	}
 
 	if( lhs.frequencies.size()!=lhs.values.size() && rhs.frequencies.size()!=rhs.values.size() )
 	{
-		CustomException exc("A sum (or subtraction) could not be performed because one (or both) \"values\" vector has a different size with respect to the \"frequencies\" vector.");
+		rfims_exception exc("A sum (or subtraction) could not be performed because one (or both) \"values\" vector has a different size with respect to the \"frequencies\" vector.");
 		throw(exc);
 	}
 
@@ -487,7 +487,7 @@ Sweep operator+(const Sweep & lhs, const std::vector<float> & rhs)
 {
 	if( lhs.values.size() != rhs.size() )
 	{
-		CustomException exc("A sum (or subtraction) could not be performed because the values vectors do not match");
+		rfims_exception exc("A sum (or subtraction) could not be performed because the values vectors do not match");
 		throw(exc);
 	}
 

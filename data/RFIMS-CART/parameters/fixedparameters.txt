@@ -1,0 +1,7 @@
+Attenuator factor=auto, 	//auto or an integer value between 0 and 30 (dBm)
+Display unit=dBm, 			//dBm or dBuV or V/m or A/m
+Antenna type=H60100, 		//HL7025, HL7040, HL7060, HL6080 or H60100
+Cable type=-1, 				//-1 is none, 0 is “1m standard cable”
+Internal preamplifier=on, 	//off or on
+Sweep delay accuracy=off, 	//Sweep delay for accuracy, off or on
+Speaker volume=0.6; 		//A float value between 0.0 and 1.0

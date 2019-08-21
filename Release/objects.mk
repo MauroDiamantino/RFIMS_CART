@@ -4,5 +4,5 @@
 
 USER_OBJS :=
 
-LIBS := -lftd2xx -lnmea -lboost_filesystem -lboost_system -lboost_timer -lpthread
+LIBS := -lftd2xx -lboost_system -lboost_filesystem -lboost_timer -lnmea -lpthread
 

@@ -11,6 +11,6 @@ var searchData=
   ['stopfreq',['stopFreq',['../structBandParameters.html#a16b27f71c4d551562078b583eb603a75',1,'BandParameters']]],
   ['sweepbuilderptr',['sweepBuilderPtr',['../classSignalHandler.html#a23ec28699521fb435a5eb90f2c36bccb',1,'SignalHandler']]],
   ['sweepdelayacc',['sweepDelayAcc',['../structSpectranConfigurator_1_1FixedParameters.html#ad835d567560a9fb3bf1f9469955c2363',1,'SpectranConfigurator::FixedParameters']]],
-  ['sweepploterptr',['sweepPloterPtr',['../classSignalHandler.html#a15d34535b8684c5988ff1af1bf6062f6',1,'SignalHandler']]],
+  ['sweepplotterptr',['sweepPlotterPtr',['../classSignalHandler.html#a7ec978dc8c16c31aa8faefe4e350302c',1,'SignalHandler']]],
   ['sweeptime',['sweepTime',['../structBandParameters.html#a184931085fad14897c5639c5a321fd1d',1,'BandParameters']]]
 ];

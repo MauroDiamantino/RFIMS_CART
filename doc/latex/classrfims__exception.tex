@@ -1,0 +1,121 @@
+\hypertarget{classrfims__exception}{}\section{rfims\+\_\+exception Class Reference}
+\label{classrfims__exception}\index{rfims\+\_\+exception@{rfims\+\_\+exception}}
+
+
+A class derived from standard class {\ttfamily std\+::exception}.  
+
+
+
+
+{\ttfamily \#include $<$Basics.\+h$>$}
+
+
+
+Inheritance diagram for rfims\+\_\+exception\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=166pt]{classrfims__exception__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for rfims\+\_\+exception\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=166pt]{classrfims__exception__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classrfims__exception_aed3788a57bce5b92083bf52994c588bb}{rfims\+\_\+exception} (const std\+::string \&msg=\char`\"{}Error\char`\"{})
+\begin{DoxyCompactList}\small\item\em The default constructor, which can set the exception message. \end{DoxyCompactList}\item 
+void \hyperlink{classrfims__exception_a4c1650baf96931af97f24ad532ba0742}{Set\+Message} (const std\+::string \&msg)
+\begin{DoxyCompactList}\small\item\em The aim of this function is to modify the exception message. \end{DoxyCompactList}\item 
+void \hyperlink{classrfims__exception_a78d047f0755c52e6717f32a159addb75}{Prepend} (const std\+::string \&msg)
+\begin{DoxyCompactList}\small\item\em This function is intended to add some text at the beginning of the exception message. \end{DoxyCompactList}\item 
+void \hyperlink{classrfims__exception_a5a90261ca9eba0f0b365e4f61fa60df2}{Append} (const std\+::string \&msg)
+\begin{DoxyCompactList}\small\item\em This function is intended to add some text at the end of the exception message. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classrfims__exception_a6c118ef3179c20e25cff1151a6ed9567}\label{classrfims__exception_a6c118ef3179c20e25cff1151a6ed9567}} 
+const char $\ast$ \hyperlink{classrfims__exception_a6c118ef3179c20e25cff1151a6ed9567}{what} () const  throw ()
+\begin{DoxyCompactList}\small\item\em This is a standard function for classes which manage exceptions and is intended to return the exception message as a C string ({\ttfamily char$\ast$}). \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A class derived from standard class {\ttfamily std\+::exception}. 
+
+This class is customized to managed the exceptions in a desired way. This class has been defined to ease the appending of data to the message carried by an exception object. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classrfims__exception_aed3788a57bce5b92083bf52994c588bb}\label{classrfims__exception_aed3788a57bce5b92083bf52994c588bb}} 
+\index{rfims\+\_\+exception@{rfims\+\_\+exception}!rfims\+\_\+exception@{rfims\+\_\+exception}}
+\index{rfims\+\_\+exception@{rfims\+\_\+exception}!rfims\+\_\+exception@{rfims\+\_\+exception}}
+\subsubsection{\texorpdfstring{rfims\+\_\+exception()}{rfims\_exception()}}
+{\footnotesize\ttfamily rfims\+\_\+exception\+::rfims\+\_\+exception (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{msg = {\ttfamily \char`\"{}Error\char`\"{}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+The default constructor, which can set the exception message. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em msg} & The exception message, which can be of type {\ttfamily char$\ast$} or {\ttfamily std\+::string}. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classrfims__exception_a5a90261ca9eba0f0b365e4f61fa60df2}\label{classrfims__exception_a5a90261ca9eba0f0b365e4f61fa60df2}} 
+\index{rfims\+\_\+exception@{rfims\+\_\+exception}!Append@{Append}}
+\index{Append@{Append}!rfims\+\_\+exception@{rfims\+\_\+exception}}
+\subsubsection{\texorpdfstring{Append()}{Append()}}
+{\footnotesize\ttfamily void rfims\+\_\+exception\+::\+Append (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{msg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+This function is intended to add some text at the end of the exception message. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em msg} & The sentence which must be appended to the exception message and which can be of type {\ttfamily char$\ast$} or {\ttfamily std\+::string}. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classrfims__exception_a78d047f0755c52e6717f32a159addb75}\label{classrfims__exception_a78d047f0755c52e6717f32a159addb75}} 
+\index{rfims\+\_\+exception@{rfims\+\_\+exception}!Prepend@{Prepend}}
+\index{Prepend@{Prepend}!rfims\+\_\+exception@{rfims\+\_\+exception}}
+\subsubsection{\texorpdfstring{Prepend()}{Prepend()}}
+{\footnotesize\ttfamily void rfims\+\_\+exception\+::\+Prepend (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{msg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+This function is intended to add some text at the beginning of the exception message. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em msg} & The sentence which must be prepended to the exception message and which can be of type {\ttfamily char$\ast$} or {\ttfamily std\+::string}. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classrfims__exception_a4c1650baf96931af97f24ad532ba0742}\label{classrfims__exception_a4c1650baf96931af97f24ad532ba0742}} 
+\index{rfims\+\_\+exception@{rfims\+\_\+exception}!Set\+Message@{Set\+Message}}
+\index{Set\+Message@{Set\+Message}!rfims\+\_\+exception@{rfims\+\_\+exception}}
+\subsubsection{\texorpdfstring{Set\+Message()}{SetMessage()}}
+{\footnotesize\ttfamily void rfims\+\_\+exception\+::\+Set\+Message (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{msg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+The aim of this function is to modify the exception message. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em msg} & The exception message, which can be of type {\ttfamily char$\ast$} or {\ttfamily std\+::string}. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/\hyperlink{Basics_8h}{Basics.\+h}\end{DoxyCompactItemize}
