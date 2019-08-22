@@ -94,3 +94,4 @@ copy-files:
 	cp -f $(TARGET) /usr/local/bin
 	cp -f scripts/client.py /usr/local
 	cp -f -r data/RFIMS/ /home/pi/
+	cp -f data/99-aaronia-spectran.rules /etc/udev/rules.d

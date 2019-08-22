@@ -1,6 +1,6 @@
 # RFIMS_CART
 
-//////////////////////////////////////////ENGLISH///////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////ENGLISH/////////////////////////////////////////////////////////////////////////
 
 This software is intended to run in the "RF Interference Measurement System (RFIMS)" which is going to be installed beside the China-Argentina Radio Telescope (CART) to analize the RF interference (RFI) which could reach the telescope, taking into account different azimuth angles and two antenna polarizations, horizontal and vertical.
 
@@ -29,11 +29,13 @@ To compile and install the software, a terminal must be opened, the current dire
 	make all
 	make copy-files
 
-The first instruction compiles the software and it generates the binay file ./bin/rfims-cart. The second instruction copies the previous binary file to the path /usr/local/bin/, which is inside the environment variable PATH, so that the software could be run without writing the path where the binary file is; the python scritp ./scripts/client.py, which is used by the software to upload the data, is copied to the path /usr/local/; and, finally, the directory tree ./data/RFIMS-CART/, which contains several files which are accesed by the software, are copied to the path /home/pi/. These directories and files are accesed by the software to load the configuration parameters and to save there the measurements.
+The first instruction compiles the software and it generates the binay file ./bin/rfims-cart. The second instruction copies the previous binary file to the path /usr/local/bin/, which is inside the environment variable PATH, so that the software could be run without writing the path where the binary file is; the python scritp ./scripts/client.py, which is used by the software to upload the data, is copied to the path /usr/local/; the file ./data/99-aaronia-spectran.rules is copied to the path /etc/udev/rules.d/, which allows a non-root user to run the software; and, finally, the directory tree ./data/RFIMS-CART/, which contains several files which are accesed by the software, are copied to the path /home/pi/. These directories and files are accesed by the software to load the configuration parameters and to save there the measurements.
 
 To run the software, it must be typed "rfims-cart" in a terminal. The software has several arguments which define its behavior. To know the arguments and their usage it must be typed "rfims-cart --help" or "rims-cart -h".
 
-//////////////////////////////////////////ESPAÑOL////////////////////////////////////////////////
+To avoid interferences produced by the Raspberry Pi itself, it is very important to disable the Wi-Fi and Bluetooth interfaces, which is done editing the file /boot/config.txt.
+
+///////////////////////////////////////////////////////////////////////ESPAÑOL////////////////////////////////////////////////////////////////////////////
 
 Este software está pensado para ser ejecutado en el "Sistema de Monitoreo de Interferencias de RF (RFIMS)" que será instalado junto al RadioTelescopio Chino-Argentino (CART) para analizar las interferencias de RF (RFI) que podrían alcanzar el telescopio, teniendo en cuenta diferentes ángulos azimutales y dos polarizaciones de la antena, horizontal y vertical.
 
@@ -63,8 +65,9 @@ Para compilar e instalar el software se debe abrir una terminal, ubicarse sobre 
 	make copy-files
 
 Con la primer instrucción se compila el programa y se genera el binario ./bin/rfims-cart. Con la segunda instrucción se copia el binario anterior a la ruta
-/usr/local/bin/, que está dentro de la variable de entorno PATH, para que se puede ejecutar el mismo sin escribir la ruta donde se encuentra; se copia el script de python ./scripts/client.py, que es usado por el programa para enviar los datos al servidor remoto, a la ruta /usr/local/; y, por último, se copia el árbol de directorios con archivos ./data/RFIMS-CART/ a /home/pi/. Estos directorios y archivos son utilizados por el programa para cargar los parámetros de configuración y para almacenar las mediciones y datos capturados.
+/usr/local/bin/, que está dentro de la variable de entorno PATH, para que se puede ejecutar el mismo sin escribir la ruta donde se encuentra; se copia el script de python ./scripts/client.py, que es usado por el programa para enviar los datos al servidor remoto, a la ruta /usr/local/; se copia el archivo con udev rules ./data/99-aaronia-spectran.rules a la ruta /etc/udev/rules.d/, que permite que un usuario no root pueda ejecutar el software; y, por último, se copia el árbol de directorios con archivos ./data/RFIMS-CART/ a /home/pi/. Estos directorios y archivos son utilizados por el programa para cargar los parámetros de configuración y para almacenar las mediciones y datos capturados.
 
 Para ejecutar el programa se debe tipear "rfims-cart" en la terminal. El programa tiene multiples argumentos que permiten modificar su comportamiento. Para conocer los argumentos y cómo deben usarse, se debe tipear "rfims-cart --help" o "rfims-cart -h".
 
+Para evitar interferencias producidas por la misma placa Raspberry Pi, resulta trascendental desactivar las interfaces Wi-Fi y Bluetooth, lo cual se realiza modificando el archivo /boot/config.txt.
 

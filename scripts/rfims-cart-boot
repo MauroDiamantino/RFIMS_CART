@@ -1,5 +1,5 @@
 #! /bin/sh
-# Start/stop the RF Interference Monitoring System software, of the China-Argentina RadioTelescope
+# Start/stop the RF Interference Monitoring System software (RFIMS), of the China-Argentina RadioTelescope (CART)
 
 ### BEGIN INIT INFO
 # Provides:          rfims-cart
@@ -8,40 +8,22 @@
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
 # Short-Description: Simple script to start the program rfims-cart
-# Description:       rfims-cart is a software intended to get RF power measurements
-#					 from a spectrum analyzer which has to be connected to an antenna
-#					 which is able to change its azimuth angle and its polarization,
-#					 to analize the RF interference which is present around the
+# Description:       rfims-cart is a software intended to get RF power measurements from a spectrum analyzer
+#					 which is connected to an antenna that is able to change its azimuth angle and its
+#					 polarization, to analize the RF interferences (RFI) which are present around the
 #					 China-Argentina RadiosTelescope.
 ### END INIT INFO
-
-sleep 10
 
 # Carry out specific functions when asked to by the system
 case "$1" in
   start)
-    echo "Starting rfims-cart"
+	echo "Before running the software rfims-cart, it will be waited 30 s to ensure the USB devices to be ready."
+	
+	sleep 30 #30 s
 
-    #nice -n -20 /usr/local/bin/rfims-cart --plot --rfi=ska-mode1
-	/usr/local/bin/rfims-cart --plot --rfi=ska-mode1
-
-    for i in 1 2 3
-    do
-      sleep 300 #5 minutes
-      RFIMS_CART_PID="$(pidof rfims-cart)"
-      if [ ! ${RFIMS_CART_PID} ]
-      then
-		if [ $i -eq 3 ]
-		then
-          	echo "\nIt was tried to execute the program rfims-cart three times, but all times this failed."
-        else
-	  		echo "\nThe program rfims-cart failed. It will be tried to execute it again."
-	  		#nice -n -20 /usr/local/bin/rfims-cart --plot --rfi=ska-mode1
-	  		/usr/local/bin/rfims-cart --plot --rfi=ska-mode1
-		fi
-      fi
-    done
-
+	echo "\nStarting rfims-cart..."
+	nice -n -10 /usr/local/bin/rfims-cart --plot --rfi=ska-mode1
+	#/usr/local/bin/rfims-cart --plot --rfi=ska-mode1
     ;;
   stop)
     echo "Stopping rfims-cart"
