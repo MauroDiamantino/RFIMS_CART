@@ -258,35 +258,32 @@ bool Reply::IsRight() const
 {
 	bool flagRight;
 
-	switch(replyType){
+	switch(replyType)
+	{
 	case ReplyType::VERIFY:
 		if ( bytes[0]==ReplyType::VERIFY && bytes[1]==0x51 && bytes[2]==0x1A
-				&& bytes[3]==0xF5 && bytes[4]==0xAF ){
+				&& bytes[3]==0xF5 && bytes[4]==0xAF )
 			flagRight=true;
-		}else{
+		else
 			flagRight=false;
-		}
 		break;
 	case ReplyType::GETSTPVAR:
-		if( bytes[0]==ReplyType::GETSTPVAR && bytes[1]==0){
+		if( bytes[0]==ReplyType::GETSTPVAR && bytes[1]==0)
 			flagRight=true;
-		}else{
+		else
 			flagRight=false;
-		}
 		break;
 	case ReplyType::SETSTPVAR:
-		if( bytes[0]==ReplyType::SETSTPVAR && bytes[1]==0){
+		if( bytes[0]==ReplyType::SETSTPVAR && bytes[1]==0)
 			flagRight=true;
-		}else{
+		else
 			flagRight=false;
-		}
 		break;
 	case ReplyType::AMPFREQDAT:
-		if( bytes[0]==ReplyType::AMPFREQDAT ){
+		if( bytes[0]==ReplyType::AMPFREQDAT )
 			flagRight=true;
-		}else{
+		else
 			flagRight=false;
-		}
 		break;
 	default:
 		//! By default the method indicates that the reply is incorrect.

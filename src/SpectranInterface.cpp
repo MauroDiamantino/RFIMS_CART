@@ -18,7 +18,7 @@ SpectranInterface::SpectranInterface()
 
 	if (ftStatus!=FT_OK)
 	{
-		rfims_exception except("The Spectran Interface could not include the pair of values (PID,VID) of the Spectran device in the list of possible values.");
+		rfims_exception except("the Spectran Interface could not include the pair of values (PID,VID) of the Spectran device in the list of possible values.");
 		throw(except);
 	}
 	else
@@ -45,14 +45,14 @@ void SpectranInterface::OpenAndSetUp()
 		switch(ftStatus)
 		{
 		case 2:
-			except.SetMessage("The Spectran device was not found.");
+			except.SetMessage("the Spectran device was not found.");
 			throw(except);
 		case 3:
-			except.SetMessage("The Spectran device could not be opened.");
+			except.SetMessage("the Spectran device could not be opened.");
 			throw(except);
 		default:
 			std::ostringstream oss;
-			oss << "The function FT_OpenEx(), of the D2XX library, returned a ftStatus value of " << ftStatus;
+			oss << "the function FT_OpenEx(), of the D2XX library, returned a ftStatus value of " << ftStatus << '.';
 			except.SetMessage( oss.str() );
 			throw(except);
 		}
@@ -62,52 +62,31 @@ void SpectranInterface::OpenAndSetUp()
 		//Setting up the FTDI IC//
 		ftStatus=FT_SetTimeouts(ftHandle, USB_RD_TIMEOUT_MS, USB_WR_TIMEOUT_MS);
 		if (ftStatus!=FT_OK)
-		{
-			rfims_exception except("The read and write timeouts could not be set up.");
-			throw(except);
-		}
+			throw rfims_exception("the read and write timeouts could not be set up.");
 
 		ftStatus = FT_SetFlowControl(ftHandle, FT_FLOW_NONE, 0, 0);
 		if(ftStatus!=FT_OK)
-		{
-			rfims_exception exc("The flow control could not be set up.");
-			throw(exc);
-		}
+			throw rfims_exception("the flow control could not be set up.");
 
 		ftStatus = FT_SetDataCharacteristics(ftHandle, FT_BITS_8, FT_STOP_BITS_2, FT_PARITY_NONE);
 		if(ftStatus!=FT_OK)
-		{
-			rfims_exception exc("The data characteristics could not be set up.");
-			throw(exc);
-		}
+			throw rfims_exception("the data characteristics could not be set up.");
 
 		ftStatus = FT_SetBaudRate(ftHandle, BAUD_RATE);
 		if(ftStatus!=FT_OK)
-		{
-			rfims_exception exc("The baud rate could not be set up.");
-			throw(exc);
-		}
+			throw rfims_exception("the baud rate could not be set up.");
 
 		ftStatus = FT_SetLatencyTimer(ftHandle, 2);
 		if(ftStatus!=FT_OK)
-		{
-			rfims_exception exc("The latency timer could not be set up to 2ms.");
-			throw(exc);
-		}
+			throw rfims_exception("the latency timer could not be set up to 2ms.");
 
 		ftStatus = FT_SetChars(ftHandle, 0, 0, 0, 0);
 		if(ftStatus!=FT_OK)
-		{
-			rfims_exception exc("The special characters could not be disabled.");
-			throw(exc);
-		}
+			throw rfims_exception("the special characters could not be disabled.");
 
 		ftStatus = FT_SetUSBParameters(ftHandle, 4096, 0);
 		if(ftStatus!=FT_OK)
-		{
-			rfims_exception exc("The USB request transfer size could not be set up.");
-			throw(exc);
-		}
+			throw rfims_exception("the USB request transfer size could not be set up.");
 	}
 }
 
@@ -116,7 +95,7 @@ void SpectranInterface::OpenAndSetUp()
  */
 SpectranInterface::~SpectranInterface()
 {
-	cout << "Closing the communication with the Spectran device." << endl;
+	cout << "\nClosing the communication with the Spectran device." << endl;
 
 	try
 	{
@@ -124,12 +103,12 @@ SpectranInterface::~SpectranInterface()
 	}
 	catch(std::exception & exc)
 	{
-		cerr << "Error: " << exc.what() << " During destruction of class SpectraInterface." << endl;
+		cerr << "\nError: the logging out failed during destruction of object SpectranInterface: " << exc.what() << endl;
 	}
 
 	ftStatus = FT_Close(ftHandle);
 	if(ftStatus!=FT_OK)
-		cerr << "Error: The communication with the Spectran device could not be closed." << endl;
+		cerr << "Error: the communication with the Spectran device could not be closed." << endl;
 }
 
 /*! Firstly, this method sends two VERIFY commands to log in with the spectrum analyzer. If that operation failed, it resets the
@@ -175,10 +154,7 @@ void SpectranInterface::Initialize()
 				HardReset();
 			}
 			else
-			{
-				rfims_exception exc("The Spectran interface could not initialize the communication with the Spectran device.");
-				throw(exc);
-			}
+				throw rfims_exception("the Spectran interface could not initialize the communication with the Spectran device.");
 		}
 	}while(flagSuccess==false);
 
@@ -197,13 +173,11 @@ void SpectranInterface::Initialize()
 	}
 	catch (std::exception& exc)
 	{
-		cerr << "Warning: There was an error when the Spectran interface tried to set up the speaker volume to its default value, " << DEFAULT_SPK_VOLUME << '.' << endl;
+		cerr << "Warning: the setting of the speaker volume to the value of " << DEFAULT_SPK_VOLUME << " failed: " << exc.what() << endl;
 	}
 
 	if (reply.IsRight()!=true)
-	{
-		cerr << "Warning: The Spectran Interface tried to set the speaker volume to its default value, " << DEFAULT_SPK_VOLUME << ", but the reply was not right.";
-	}
+		cerr << "Warning: the reply to the command to set the speaker volume was wrong." << endl;
 
 	flagLogIn=true; //To remember the session has been started
 
@@ -216,9 +190,8 @@ void SpectranInterface::Initialize()
 	}
 	catch(rfims_exception & exc)
 	{
-		rfims_exception exc1("Error at initialization: ");
-		exc1.Append( exc.what() );
-		throw(exc1);
+		exc.Prepend("the purging failed during initialization");
+		throw;
 	}
 }
 
@@ -228,10 +201,8 @@ unsigned int SpectranInterface::Available()
 	ftStatus=FT_GetQueueStatus(ftHandle, &numOfInputBytes);
 	//DWORD numOfOutputBytes, events;
 	//ftStatus=FT_GetStatus(ftHandle, &numOfInputBytes, &numOfOutputBytes, &events);
-	if (ftStatus!=FT_OK){
-		rfims_exception except("The Spectran interface could not read the number of bytes in the receive queue.");
-		throw(except);
-	}
+	if (ftStatus!=FT_OK)
+		throw rfims_exception("the Spectran interface could not read the number of bytes in the receive queue.");
 
 	return numOfInputBytes;
 }
@@ -248,11 +219,11 @@ void SpectranInterface::ResetSweep()
 		Write(comm);
 		Read(reply);
 		if(!reply.IsRight())
-			throw( rfims_exception("A wrong reply was received.") );
+			throw rfims_exception("a wrong reply was received.");
 	}
 	catch(rfims_exception & exc)
 	{
-		exc.Append("\nThe command to reset the current sweep failed.");
+		exc.Prepend("the command to reset the current sweep failed");
 		throw;
 	}
 }
@@ -272,14 +243,11 @@ void SpectranInterface::EnableSweep()
 		reply.PrepareTo(Reply::SETSTPVAR);
 		Read(reply);
 		if(reply.IsRight()!=true)
-		{
-			rfims_exception exc("The reply to the command to enable the sending of measurements via USB was wrong.");
-			throw(exc);
-		}
+			throw rfims_exception("the reply to the command to enable the sending of measurements via USB was wrong.");
 	}
 	catch(rfims_exception & exc)
 	{
-		exc.Append("\nThe enabling of the sending of measurements via USB failed.");
+		exc.Prepend("the enabling of the sending of measurements via USB failed");
 		throw;
 	}
 
@@ -308,10 +276,8 @@ void SpectranInterface::DisableSweep()
 			reply.PrepareTo(Reply::SETSTPVAR);
 			Read(reply);
 			if(reply.IsRight()!=true)
-			{
-				rfims_exception exc("The reply to the command to disable the sending of measurements via USB was wrong.");
-				throw(exc);
-			}
+				throw rfims_exception("the reply to the command to disable the sending of measurements via USB was wrong.");
+
 			flagSuccess=true;
 		}
 		catch(rfims_exception & exc)
@@ -325,7 +291,7 @@ void SpectranInterface::DisableSweep()
 			}
 			else
 			{
-				exc.Append("\nThe disabling of the sending of measurements via USB failed.");
+				exc.Prepend("the disabling of the sending of measurements via USB failed");
 				throw;
 			}
 		}
@@ -341,10 +307,8 @@ void SpectranInterface::Purge()
 {
 	//The input buffer is purged
 	ftStatus=FT_Purge(ftHandle, FT_PURGE_RX);
-	if (ftStatus!=FT_OK){
-		rfims_exception except("The Spectran Interface failed when it tried to purge the input buffer.");
-		throw(except);
-	}
+	if (ftStatus!=FT_OK)
+		throw rfims_exception("the Spectran Interface failed when it tried to purge the input buffer.");
 }
 
 /*! First, a logout is performed, then the communication is restarted using the function FT_ResetDevice() and,
@@ -357,10 +321,7 @@ void SpectranInterface::SoftReset()
 
 	ftStatus=FT_ResetDevice(ftHandle);
 	if(ftStatus!=FT_OK)
-	{
-		rfims_exception except("The USB device could not be restarted.");
-		throw(except);
-	}
+		throw rfims_exception("the USB device could not be restarted.");
 
 	sleep(3);
 }
@@ -412,7 +373,7 @@ void SpectranInterface::LogOut()
 	}
 	catch(rfims_exception& exc)
 	{
-		exc.Append("\nThe command LOGOUT failed.");
+		exc.Prepend("the command LOGOUT failed");
 		throw;
 	}
 
@@ -457,12 +418,11 @@ void SpectranInterface::SoundLogOut()
 		Write(command);
 		Read(reply);
 		if( reply.IsRight()!=true )
-			cerr << "Warning: The reply of the command to produce the beep which sound in the logout was wrong." << endl;
+			throw rfims_exception("the reply to the command to produce the beep was wrong.");
 	}
 	catch(std::exception& exc)
 	{
-		cerr << "Warning: " << exc.what() << endl;
-		cerr << "There was a failure with the command to produce the beep which sound in the logout failed." << endl;
+		cerr << "Warning: the command to produce the log-out sound failed: " << exc.what() << endl;
 	}
 }
 
@@ -479,13 +439,10 @@ void SpectranInterface::SoundNewSweep()
 		Write(comm);
 		Read(reply);
 		if(reply.IsRight()!=true)
-		{
-			rfims_exception exc("The reply to the command to make the sound which indicates a new sweep was wrong.");
-			throw(exc);
-		}
+			throw rfims_exception("the reply to the command to make the beep was wrong.");
 	}
 	catch(rfims_exception & exc)
 	{
-		cerr << "Warning: " << exc.what() << endl;
+		cerr << "Warning: the command to produce the new-sweep sound failed: " << exc.what() << endl;
 	}
 }

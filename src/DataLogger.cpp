@@ -7,7 +7,6 @@
 
 ////////////////////Friends functions////////////////////////
 
-//! The function which is executed by the thread which is responsible for the concurrent uploading of the data files.
 void *UploadThreadFunc(void *arg)
 {
 	auto * dataLoggerPtr = (DataLogger*) arg;
@@ -29,7 +28,7 @@ void *UploadThreadFunc(void *arg)
 //////////////////Class' methods////////////////////
 
 /*! The constructor initializes all the internal attributes, checks if the corresponding folders exist and if
- * any folder does not exist so it is created. Also, it checks if there is a shell available to be able to
+ * any folder does not exist then it is created. Also, it checks if there is a shell available to be able to
  * execute the external python script "client.py" to upload the data.
  */
 DataLogger::DataLogger()
@@ -53,9 +52,9 @@ DataLogger::DataLogger()
 	}
 	catch(boost::filesystem::filesystem_error & exc)
 	{
-		rfims_exception customExc("The creation of a directory failed: ");
-		customExc.Append( exc.what() );
-		throw(customExc);
+		rfims_exception rfimsExc("the creation of a directory failed");
+		rfimsExc.Append( exc.what() );
+		throw(rfimsExc);
 	}
 
 	ofs.exceptions( std::ofstream::failbit | std::ofstream::badbit );
@@ -86,14 +85,14 @@ DataLogger::~DataLogger()
 		cerr << "\nWarning: " << (char*) (*retval) << endl;
 }
 
-/*! This method should be called each time the bands' parameters are reloaded (or loaded by first time)
+/*! This method should be called each time the bands' parameters are reloaded (or loaded by first time),
  * because of the file [BASE_PATH](\ref BASE_PATH)/parameters/freqbands.txt was modified, to update the
  * file [BASE_PATH](\ref BASE_PATH)/parameters/csv/freqbands.csv to that has the same parameters, just
  * in a different format. The CSV file is generated because it is easier the bands' parameters to be
  * loaded from a file with CSV format than from a file with a more human-readable format like
- * freqbands.txt. Each time this method is called the file freqbands.csv is regenerated and then it
- * is incorporated in the archive file which will be uploaded at the end of the measurement cycle.
- * \param [in] bandsParamVector A vector with the parameters of all the frequency bands.
+ * freqbands.txt. Each time this method is called the file freqbands.csv is regenerated. This file is then
+ * incorporated in the archive file, in the method ArchiveAndCompress().
+ * \param [in] bandsParamVector A vector with the parameters of all frequency bands.
  */
 void DataLogger::SaveBandsParamAsCSV(const std::vector<BandParameters> & bandsParamVector)
 {
@@ -110,9 +109,9 @@ void DataLogger::SaveBandsParamAsCSV(const std::vector<BandParameters> & bandsPa
 		}
 		catch(std::ofstream::failure& exc)
 		{
-			rfims_exception customExc("The file " + filePath.string() + " could not be opened: ");
-			customExc.Append( exc.what() );
-			throw( customExc );
+			rfims_exception rfimsExc("the file " + filePath.string() + " could not be opened");
+			rfimsExc.Append( exc.what() );
+			throw( rfimsExc );
 		}
 
 		//Saving the header row
@@ -142,7 +141,7 @@ void DataLogger::SaveBandsParamAsCSV(const std::vector<BandParameters> & bandsPa
 		flagNewBandsParam=true;
 	}
 	else
-		throw( rfims_exception("The data logger was asked to save an empty bands parameters vector.") );
+		throw( rfims_exception("the data logger was asked to save an empty bands parameters vector.") );
 }
 
 /*! The given front end parameters are saved in two different files:
@@ -164,13 +163,12 @@ void DataLogger::SaveFrontEndParam(const FreqValues & gain, const FreqValues & n
 {
 	if( !gain.Empty() && !noiseFigure.Empty() )
 	{
-		currMeasCycleDate = gain.timeData.GetDate();
-		std::string timestamp = gain.timeData.GetTimestamp();
+		std::string timestamp = currMeasCycleTimestamp = gain.timeData.GetTimestamp();
 
 		boost::filesystem::path filePath(FRONT_END_PARAM_PATH);
 
 		std::string filename("noisefigure_");
-		filename += currMeasCycleDate + ".csv";
+		filename += currMeasCycleTimestamp + ".csv";
 		filePath /= filename;
 		try
 		{
@@ -178,9 +176,9 @@ void DataLogger::SaveFrontEndParam(const FreqValues & gain, const FreqValues & n
 		}
 		catch(std::ofstream::failure& exc)
 		{
-			rfims_exception customExc("The file " + filePath.string() + " could not be opened: ");
-			customExc.Append( exc.what() );
-			throw( customExc );
+			rfims_exception rfimsExc("the file " + filePath.string() + " could not be opened");
+			rfimsExc.Append( exc.what() );
+			throw( rfimsExc );
 		}
 
 		//Saving the noise figure data
@@ -196,7 +194,7 @@ void DataLogger::SaveFrontEndParam(const FreqValues & gain, const FreqValues & n
 		ofs.flush();
 		ofs.close();
 
-		filename = "gain_" + currMeasCycleDate + ".csv";
+		filename = "gain_" + currMeasCycleTimestamp + ".csv";
 		filePath.remove_filename();
 		filePath /= filename;
 		try
@@ -205,9 +203,9 @@ void DataLogger::SaveFrontEndParam(const FreqValues & gain, const FreqValues & n
 		}
 		catch(std::ofstream::failure& exc)
 		{
-			rfims_exception customExc("The file " + filePath.string() + " could not be opened: ");
-			customExc.Append( exc.what() );
-			throw( customExc );
+			rfims_exception rfimsExc("the file " + filePath.string() + " could not be opened");
+			rfimsExc.Append( exc.what() );
+			throw( rfimsExc );
 		}
 
 		//Saving the gain data
@@ -226,12 +224,12 @@ void DataLogger::SaveFrontEndParam(const FreqValues & gain, const FreqValues & n
 		flagNewFrontEndParam=true;
 	}
 	else
-		throw( rfims_exception("The data logger was asked to save empty front end parameters curves.") );
+		throw( rfims_exception("the data logger was asked to save empty front end parameters curves.") );
 }
 
 /*!	The given sweep is saved in [BASE_PATH](\ref BASE_PATH)/measurements/ with the filename format
  * "sweep_DD-MM-YYYYTHH:MM:SS.csv" where the last part is the timestamp of the measurement cycle,
- * which correspond to the beginning of this.
+ * which correspond to the beginning of this one.
  *
  * All sweeps which corresponds to the same measurement cycle are saved in the same file and the method
  * automatically create a new file or reopen the corresponding file each time a new sweep must be saved.
@@ -251,20 +249,20 @@ void DataLogger::SaveSweep(const Sweep & sweep)
 
 			//Updating the first sweep date if the method SaveFrontEndParam() has not been called before
 			if(!flagNewFrontEndParam)
-				currMeasCycleDate=sweep.timeData.GetDate();
+				currMeasCycleTimestamp=sweep.timeData.GetTimestamp();
 
 			//Creating the new sweeps file
 			boost::filesystem::path filePath(MEASUREMENTS_PATH);
-			filePath /= ( "sweeps_" + currMeasCycleDate + ".csv" );
+			filePath /= ( "sweeps_" + currMeasCycleTimestamp + ".csv" );
 			try
 			{
 				ofs.open( filePath.string() );
 			}
 			catch(std::ofstream::failure& exc)
 			{
-				rfims_exception customExc("The file " + filePath.string() + " could not be created: ");
-				customExc.Append( exc.what() );
-				throw(customExc);
+				rfims_exception rfimsExc("the file " + filePath.string() + " could not be created");
+				rfimsExc.Append( exc.what() );
+				throw(rfimsExc);
 			}
 			
 			//Writing header with frequency values
@@ -277,16 +275,16 @@ void DataLogger::SaveSweep(const Sweep & sweep)
 		{
 			//Opening an existing sweeps file
 			boost::filesystem::path filePath(MEASUREMENTS_PATH);
-			filePath /= ( "sweeps_" + currMeasCycleDate + ".csv" );
+			filePath /= ( "sweeps_" + currMeasCycleTimestamp + ".csv" );
 			try
 			{
 				ofs.open( filePath.string(), std::ofstream::out | std::ofstream::app );
 			}
 			catch(std::ofstream::failure& exc)
 			{
-				rfims_exception customExc("The file " + filePath.string() + " could not be opened: ");
-				customExc.Append( exc.what() );
-				throw( customExc );
+				rfims_exception rfimsExc("the file " + filePath.string() + " could not be opened");
+				rfimsExc.Append( exc.what() );
+				throw( rfimsExc );
 			}
 		}
 		
@@ -304,7 +302,7 @@ void DataLogger::SaveSweep(const Sweep & sweep)
 		ofs.close();
 	}
 	else
-		throw( rfims_exception("The data logger was asked to save an empty sweep.") );
+		throw( rfims_exception("the data logger was asked to save an empty sweep.") );
 }
 
 /*! Each given structure with the RFI detected in the last sweep is saved in a different file with the filename format
@@ -321,7 +319,7 @@ void DataLogger::SaveRFI(const RFI& rfi)
 		boost::filesystem::path filePath(MEASUREMENTS_PATH);
 
 		//Adding the folder's name to the path
-		filePath /= ("RFI_" + currMeasCycleDate); //This variable is controlled in SaveSweep() or SaveFrontEndParam()
+		filePath /= ("RFI_" + currMeasCycleTimestamp); //This variable is controlled in SaveSweep() or SaveFrontEndParam()
 
 		if(sweepIndex==0) //This variables is controlled in SaveSweep()
 			//Creating a new folder to save there the RFI files corresponding to a new measurement cycle
@@ -357,12 +355,12 @@ void DataLogger::SaveRFI(const RFI& rfi)
 		flagStoredRFI=true;
 	}
 	else
-		throw( rfims_exception("The data logger was asked to save an empty RFI structure.") );
+		throw( rfims_exception("the data logger was asked to save an empty RFI structure.") );
 }
 
-/*!	To archive the data files the utility 'tar' is used and thr utility 'lzma' is used to compress to resulting archive file.
- * The resulting compressed archive file is name as "rfims_data_DD-MM-YYYYTHH:MM:SS.tar.lzma", where the last part, before the
- * extension is the timestamp of the corresponding measurement cycle.
+/*!	To archive the data files the utility 'tar' is used and thr utility 'lzma' is used to compress to resulting archive
+ * file. The resulting compressed archive file is name as "rfims_data_DD-MM-YYYYTHH:MM:SS.tar.lzma", where the last
+ * part, before the extension is the timestamp of the corresponding measurement cycle.
  */
 void DataLogger::ArchiveAndCompress()
 {
@@ -370,12 +368,12 @@ void DataLogger::ArchiveAndCompress()
 	boost::filesystem::path destPath(UPLOADS_PATH);
 
 	boost::filesystem::path sweepsFilePath(MEASUREMENTS_PATH);
-	std::string sweepFilename = "sweeps_" + currMeasCycleDate + ".csv";
+	std::string sweepFilename = "sweeps_" + currMeasCycleTimestamp + ".csv";
 	sweepsFilePath /= sweepFilename;
 	if( boost::filesystem::exists(sweepsFilePath) )
 		boost::filesystem::copy_file(sweepsFilePath, (destPath / sweepFilename), boost::filesystem::copy_option::overwrite_if_exists);
 	else
-		throw( rfims_exception("The sweep file does not exist.") );
+		throw( rfims_exception("the sweep file does not exist.") );
 
 	boost::filesystem::path gainFilePath(FRONT_END_PARAM_PATH);
 	boost::filesystem::path noiseFigFilePath(FRONT_END_PARAM_PATH);
@@ -383,9 +381,9 @@ void DataLogger::ArchiveAndCompress()
 	std::string noiseFigFilename;
 	if(flagNewFrontEndParam)
 	{
-		gainFilename = "gain_" + currMeasCycleDate + ".csv";
+		gainFilename = "gain_" + currMeasCycleTimestamp + ".csv";
 		gainFilePath /= gainFilename;
-		noiseFigFilename = "noisefigure_" + currMeasCycleDate + ".csv";
+		noiseFigFilename = "noisefigure_" + currMeasCycleTimestamp + ".csv";
 		noiseFigFilePath /= noiseFigFilename;
 	}
 	else
@@ -401,12 +399,12 @@ void DataLogger::ArchiveAndCompress()
 	if( boost::filesystem::exists(gainFilePath) )
 		boost::filesystem::copy_file(gainFilePath, (destPath / gainFilename), boost::filesystem::copy_option::overwrite_if_exists);
 	else
-		throw( rfims_exception("The gain file does not exist.") );
+		throw( rfims_exception("the gain file does not exist.") );
 
 	if( boost::filesystem::exists(noiseFigFilePath) )
 		boost::filesystem::copy_file(noiseFigFilePath, (destPath / noiseFigFilename), boost::filesystem::copy_option::overwrite_if_exists);
 	else
-		throw( rfims_exception("The noise figure file does not exist.") );
+		throw( rfims_exception("the noise figure file does not exist.") );
 
 	if(flagNewBandsParam)
 	{
@@ -415,10 +413,10 @@ void DataLogger::ArchiveAndCompress()
 		if( boost::filesystem::exists(bandsParamFilePath) )
 			boost::filesystem::copy_file(bandsParamFilePath, (destPath / "freqbands.csv"), boost::filesystem::copy_option::overwrite_if_exists);
 		else
-			throw( rfims_exception("The bands parameters file (CSV) does not exist.") );
+			throw( rfims_exception("the bands parameters file (CSV) does not exist.") );
 	}
 
-	std::string rfiFolderName = "RFI_" + currMeasCycleDate;
+	std::string rfiFolderName = "RFI_" + currMeasCycleTimestamp;
 	if(flagStoredRFI)
 	{
 		boost::filesystem::path rfiPath(MEASUREMENTS_PATH);
@@ -431,13 +429,13 @@ void DataLogger::ArchiveAndCompress()
 				boost::filesystem::copy_file(rfiFile.path(), (destRFIFolderPath / rfiFile.path().filename()), boost::filesystem::copy_option::overwrite_if_exists);
 		}
 		else
-			throw( rfims_exception("The folder with RFI files does not exist or there is an error in the path.") );
+			throw( rfims_exception("the folder with RFI files does not exist or there is an error in the path.") );
 	}
 
 	/////////////////////////////////////////////////////////////////////////////
 
 	///////////////////Archiving the files//////////////////////
-	std::string archiveName = "rfims_data_" + currMeasCycleDate + ".tar";
+	std::string archiveName = "rfims_data_" + currMeasCycleTimestamp + ".tar";
 
 	//If there is an archive file with the same name is removed
 	boost::filesystem::path archivePath(UPLOADS_PATH);
@@ -459,7 +457,7 @@ void DataLogger::ArchiveAndCompress()
 
 	//Calling the utility 'tar'
 	if( system( command.c_str() ) < 0 )
-		throw( rfims_exception("The calling to the utility 'tar', using system(), to archive the data files failed.") );
+		throw( rfims_exception("the calling to the utility 'tar', using system(), to archive the data files failed.") );
 	//////////////////////////////////////////////////////////////
 
 	/////////////Compressing the archive with the utility 'lzma'/////////////////
@@ -478,7 +476,7 @@ void DataLogger::ArchiveAndCompress()
 
 	//Calling the utility 'lzma'
 	if( system( command.c_str() ) < 0 )
-		throw( rfims_exception("The calling to the utility 'lzma', using system(), to compress the archive file failed.") );
+		throw( rfims_exception("the calling to the utility 'lzma', using system(), to compress the archive file failed.") );
 	///////////////////////////////////////////////////////////////
 
 	////////Deleting the files which were copied to the uploads folder//////////
@@ -502,7 +500,7 @@ void DataLogger::DeleteOldFiles() const
 {
 	//Getting the date 30 days back
 	TimeData oneMonthBackDate;
-	oneMonthBackDate.SetDate(currMeasCycleDate);
+	oneMonthBackDate.SetTimestamp(currMeasCycleTimestamp);
 	oneMonthBackDate.TurnBackDays(30);
 
 	//Deleting old sweeps files and directories with old rfi files
@@ -544,7 +542,7 @@ void DataLogger::DeleteOldFiles() const
 }
 
 /*! To upload the files the script /usr/local/client.py is called. This script try to send the archive
- * file many times through one hour, taking into account the possibility that there is no internet
+ * file many times through one hour, taking into account the possibility that there is no Internet
  * connection in the first try. If the script achieves the sending, then it wakes up the remote server
  * to that one to read the files, and finally the script removes the local archive file. If the script
  * ends with errors, the file is not deleted and remains in a queue waiting to be send. The idea is the
@@ -560,7 +558,7 @@ void DataLogger::UploadData()
 		if( ( retValue = system( command.c_str() ) ) < 0 )
 		{
 			std::ostringstream oss;
-			oss << "The calling to the utility client.py to upload the data failed.";
+			oss << "the calling to the utility client.py to upload the data failed.";
 			throw( rfims_exception( oss.str() ) );
 		}
 
@@ -569,23 +567,22 @@ void DataLogger::UploadData()
 		else
 		{
 			procRetValue = retValue >> 8;
-			std::ostringstream oss;
-			oss << "The utility client.py was executed but this failed to upload data: ";
+			std::string str = "the utility client.py was executed but this failed to upload data: ";
 			switch(procRetValue)
 			{
 				case 3:
-					oss << "there is no Internet connection.";
+					str += "there is no Internet connection.";
 					break;
 				case 4:
-					oss << "the remote server did not wake up.";
+					str += "the remote server did not wake up.";
 					break;
 				case 5:
-					oss << "the archive file could not be transmitted to the remote server.";
+					str += "the archive file could not be transmitted to the remote server.";
 					break;
 				default:
-					oss << "unknown error";
+					str += "unknown error";
 			}
-			throw( rfims_exception( oss.str() ) );
+			throw( rfims_exception( str ) );
 		}
 	}
 }
@@ -605,10 +602,8 @@ void DataLogger::PrepareAndUploadData()
 	int retValueJoin = pthread_join(uploadThread, retval);
 	//Checking if the last operation finished wrongly or if the thread does not exist
 	if(retValueJoin!=0 && retValueJoin!=ESRCH)
-	{
-		rfims_exception exc("The checking of finishing of last thread to upload data failed.");
-		throw(exc);
-	}
+		throw rfims_exception("the checking of the finishing of the last thread to upload data failed.");
+
 	//Checking the value returned by the thread if that existed
 	if(retValueJoin==0)
 	{
@@ -616,21 +611,18 @@ void DataLogger::PrepareAndUploadData()
 		if(retval==PTHREAD_CANCELED)
 			cerr << "\nWarning: the last thread to upload data was cancelled." << endl;
 		else if(retval!=NULL)
-		{
-			rfims_exception exc( (char*) (*retval) );
-			throw(exc);
-		}
+			throw rfims_exception( (char*) (*retval) );
 	}
 
 	//Creating a new thread to prepare data (archive and compress) and to upload the data
 	int retValueCreate = pthread_create(&uploadThread, NULL, UploadThreadFunc, (void*)this);
 	if(retValueCreate!=0)
 	{
-		rfims_exception exc("The creation of the thread to prepare and upload data failed");
+		rfims_exception exc("the creation of the thread to prepare and upload data failed");
 		if(retValueCreate==EAGAIN)
-			exc.Append(": insufficient resources to create a thread.");
+			exc.Append("insufficient resources to create a thread.");
 		else
-			exc.Append(": unknown error.");
+			exc.Append("unknown error.");
 		throw(exc);
 	}
 }

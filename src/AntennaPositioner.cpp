@@ -46,9 +46,8 @@ bool AntennaPositioner::Initialize()
 				cerr << "Warning: an error occurred when it was tried to read the initial azimuth angle: " << exc.what() << endl;
 			else
 			{
-				rfims_exception exc2("The initial azimuth angle could not be read: ");
-				exc2.Append( exc.what() );
-				throw(exc2);
+				exc.Prepend("the initial azimuth angle could not be read");
+				throw;
 			}
 		}
 	}while(!flagSuccess);
@@ -150,9 +149,8 @@ bool AntennaPositioner::ChangePolarization()
 					cerr << "Warning: an error occurred when it was tried to read the roll angle: " << exc.what() << endl;
 				else
 				{
-					rfims_exception exc2("The roll angle could not be read: ");
-					exc2.Append( exc.what() );
-					throw(exc2);
+					exc.Prepend("the roll angle could not be read");
+					throw;
 				}
 			}
 		}while(!flagSuccessRead);

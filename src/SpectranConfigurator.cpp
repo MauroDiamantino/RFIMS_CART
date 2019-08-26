@@ -55,8 +55,7 @@ bool SpectranConfigurator::LoadFixedParameters()
 			else
 			{
 				//The definition is incomplete
-				std::string str = "The parameter's definition \"" + line + "\" does not have a comma or semicolon in the end.";
-				rfims_exception exc(str);
+				rfims_exception exc("the parameter's definition \"" + line + "\" does not have a comma or semicolon in the end.");
 				throw(exc);
 			}
 
@@ -81,8 +80,7 @@ bool SpectranConfigurator::LoadFixedParameters()
 					iss >> fixedParam.attenFactor;
 					if(fixedParam.attenFactor<0 || fixedParam.attenFactor>30)
 					{
-						std::string str = "The given value to configure variable " + paramName + " is invalid.";
-						rfims_exception exc(str);
+						rfims_exception exc("the given value to configure variable " + paramName + " is invalid.");
 						throw(exc);
 					}
 				}
@@ -107,8 +105,7 @@ bool SpectranConfigurator::LoadFixedParameters()
 				}
 				else
 				{
-					std::string str = "The given value to configure variable " + paramName + " is invalid.";
-					rfims_exception exc(str);
+					rfims_exception exc("the given value to configure variable " + paramName + " is invalid.");
 					throw(exc);
 				}
 			}
@@ -136,8 +133,7 @@ bool SpectranConfigurator::LoadFixedParameters()
 				}
 				else
 				{
-					std::string str = "The given value to configure variable " + paramName + " is invalid.";
-					rfims_exception exc(str);
+					rfims_exception exc("the given value to configure variable " + paramName + " is invalid.");
 					throw(exc);
 				}
 			}
@@ -147,8 +143,7 @@ bool SpectranConfigurator::LoadFixedParameters()
 				iss >> fixedParam.cableType;
 				if(fixedParam.cableType!=-1 && fixedParam.cableType!=0)
 				{
-					std::string str = "The given value to configure variable " + paramName + " is invalid.";
-					rfims_exception exc(str);
+					rfims_exception exc("the given value to configure variable " + paramName + " is invalid.");
 					throw(exc);
 				}
 			}
@@ -164,8 +159,7 @@ bool SpectranConfigurator::LoadFixedParameters()
 				}
 				else
 				{
-					std::string str = "The given value to configure variable " + paramName + " is invalid.";
-					rfims_exception exc(str);
+					rfims_exception exc("the given value to configure variable " + paramName + " is invalid.");
 					throw(exc);
 				}
 			}
@@ -181,8 +175,7 @@ bool SpectranConfigurator::LoadFixedParameters()
 				}
 				else
 				{
-					std::string str = "The given value to configure variable " + paramName + " is invalid.";
-					rfims_exception exc(str);
+					rfims_exception exc("the given value to configure variable " + paramName + " is invalid.");
 					throw(exc);
 				}
 			}
@@ -192,15 +185,13 @@ bool SpectranConfigurator::LoadFixedParameters()
 				iss >> fixedParam.speakerVol;
 				if(fixedParam.speakerVol<0.0 || fixedParam.speakerVol>1.0)
 				{
-					std::string str = "The given value to configure variable " + paramName + " is invalid.";
-					rfims_exception exc(str);
+					rfims_exception exc("the given value to configure variable " + paramName + " is invalid.");
 					throw(exc);
 				}
 			}
 			else
 			{
-				std::string str = "The parameter " + paramName + " is not a valid parameter.";
-				rfims_exception exc(str);
+				rfims_exception exc("the parameter " + paramName + " is not a valid parameter.");
 				throw(exc);
 			}
 		}while( endChar!=';' );
@@ -267,8 +258,7 @@ bool SpectranConfigurator::LoadBandsParameters()
 			else
 			{
 				//The definition is incomplete
-				std::string str = "The parameter's definition \"" + line + "\" does not have a comma or semicolon in the end.";
-				rfims_exception exc(str);
+				rfims_exception exc("the parameter's definition \"" + line + "\" does not have a comma or semicolon in the end.");
 				throw(exc);
 			}
 
@@ -297,7 +287,7 @@ bool SpectranConfigurator::LoadBandsParameters()
 				else
 				{
 					std::ostringstream oss;
-					oss << "It is not clear if the band " << oneBandParam.bandNumber << " is enabled or not.";
+					oss << "it is not clear if the band " << oneBandParam.bandNumber << " is enabled or not.";
 					rfims_exception exc( oss.str() );
 					throw(exc);
 				}
@@ -309,7 +299,7 @@ bool SpectranConfigurator::LoadBandsParameters()
 				if(oneBandParam.startFreq<1e6 || oneBandParam.startFreq>9.4e9)
 				{
 					std::ostringstream oss;
-					oss << "The given value, " << oneBandParam.startFreq << ", to configure parameter Fstart is out of range.";
+					oss << "the given value, " << oneBandParam.startFreq << ", to configure parameter Fstart is out of range.";
 					rfims_exception exc( oss.str() );
 					throw(exc);
 				}
@@ -321,7 +311,7 @@ bool SpectranConfigurator::LoadBandsParameters()
 				if(oneBandParam.stopFreq<1e6 || oneBandParam.stopFreq>9.4e9)
 				{
 					std::ostringstream oss;
-					oss << "The given value, " << oneBandParam.stopFreq << ", to configure parameter Fstop is out of range.";
+					oss << "the given value, " << oneBandParam.stopFreq << ", to configure parameter Fstop is out of range.";
 					rfims_exception exc( oss.str() );
 					throw(exc);
 				}
@@ -343,7 +333,7 @@ bool SpectranConfigurator::LoadBandsParameters()
 							oneBandParam.rbw!=200e3 && oneBandParam.rbw!=1.5e6 && oneBandParam.rbw!=50e6)
 					{
 						std::ostringstream oss;
-						oss << "The given value, " << oneBandParam.rbw << ", to configure parameter RBW is invalid.";
+						oss << "the given value, " << oneBandParam.rbw << ", to configure parameter RBW is invalid.";
 						rfims_exception exc( oss.str() );
 						throw(exc);
 					}
@@ -366,7 +356,7 @@ bool SpectranConfigurator::LoadBandsParameters()
 							oneBandParam.vbw!=200e3 && oneBandParam.vbw!=1.5e6 && oneBandParam.vbw!=50e6)
 					{
 						std::ostringstream oss;
-						oss << "The given value, " << oneBandParam.vbw << ", to configure parameter VBW is invalid.";
+						oss << "the given value, " << oneBandParam.vbw << ", to configure parameter VBW is invalid.";
 						rfims_exception exc( oss.str() );
 						throw(exc);
 					}
@@ -379,7 +369,7 @@ bool SpectranConfigurator::LoadBandsParameters()
 				if(oneBandParam.sweepTime<10 || oneBandParam.sweepTime>600000)
 				{
 					std::ostringstream oss;
-					oss << "The given value, " << oneBandParam.sweepTime << ", to configure parameter Sweep Time is invalid.";
+					oss << "the given value, " << oneBandParam.sweepTime << ", to configure parameter Sweep Time is invalid.";
 					rfims_exception exc( oss.str() );
 					throw(exc);
 				}
@@ -408,15 +398,13 @@ bool SpectranConfigurator::LoadBandsParameters()
 				}
 				else
 				{
-					std::string str = "The given value, " + valueString + ", to configure parameter Detector is invalid.";
-					rfims_exception exc(str);
+					rfims_exception exc("the given value, " + valueString + ", to configure parameter Detector is invalid.");
 					throw(exc);
 				}
 			}
 			else
 			{
-				std::string str = "The parameter " + paramName + " is not a valid parameter.";
-				rfims_exception exc(str);
+				rfims_exception exc("the parameter " + paramName + " is not a valid parameter.");
 				throw(exc);
 			}
 
@@ -498,14 +486,13 @@ void SpectranConfigurator::SetVariable(const SpecVariable variable, const float 
 		interface.Read(reply);
 		if(reply.IsRight()!=true)
 		{
-			std::string str = "The reply to the command to set up the variable \"" + reply.GetVariableNameString() + "\" was wrong.";
-			rfims_exception exc(str);
+			rfims_exception exc("the reply to the command to set up the variable \"" + reply.GetVariableNameString() + "\" was wrong.");
 			throw(exc);
 		}
 	}
 	catch(rfims_exception & exc)
 	{
-		exc.Append("\nThe setting of the variable \"" + reply.GetVariableNameString() + "\" failed.");
+		exc.Append("the setting of the variable \"" + reply.GetVariableNameString() + "\" failed.");
 		throw;
 	}
 }
@@ -525,21 +512,20 @@ void SpectranConfigurator::CheckEqual(const SpecVariable variable, const float v
 		interface.Read(reply);
 		if( reply.IsRight()!=true )
 		{
-			std::string str = "The reply to the command to get the current value of the \"" + reply.GetVariableNameString() + "\" was wrong.";
-			rfims_exception exc(str);
+			rfims_exception exc("the reply to the command to get the current value of the \"" + reply.GetVariableNameString() + "\" was wrong.");
 			throw(exc);
 		}
 		else if( reply.GetValue()!=value )
 		{
 			std::ostringstream oss;
-			oss << "The reply to the command to get the current value of the \"" + reply.GetVariableNameString() + "\" stated the value " << reply.GetValue() << " which is different to the one which was used to configure it, " << value << '.';
+			oss << "the reply to the command to get the current value of the \"" + reply.GetVariableNameString() + "\" stated the value " << reply.GetValue() << " which is different to the one which was used to configure it, " << value << '.';
 			rfims_exception exc( oss.str() );
 			throw(exc);
 		}
 	}
 	catch(rfims_exception & exc)
 	{
-		exc.Append("\nThe checking of the configured variable \"" + reply.GetVariableNameString() + "\" failed.");
+		exc.Append("the checking of the configured variable \"" + reply.GetVariableNameString() + "\" failed.");
 		throw;
 	}
 }
@@ -560,14 +546,13 @@ void SpectranConfigurator::CheckApproxEqual(const SpecVariable variable, float &
 		interface.Read(reply);
 		if( reply.IsRight()!=true )
 		{
-			std::string str = "The reply to the command to get the current value of the \"" + reply.GetVariableNameString() + "\" was wrong.";
-			rfims_exception exc(str);
+			rfims_exception exc("the reply to the command to get the current value of the \"" + reply.GetVariableNameString() + "\" was wrong.");
 			throw(exc);
 		}
 		else if( reply.GetValue()<(0.9*value) || reply.GetValue()>(1.1*value) )
 		{
 			std::ostringstream oss;
-			oss << "The reply to the command to get the current value of the \"" + reply.GetVariableNameString() + "\" stated the value " << reply.GetValue() << " which is different to the one which was used to configure it, " << value << '.';
+			oss << "the reply to the command to get the current value of the \"" + reply.GetVariableNameString() + "\" stated the value " << reply.GetValue() << " which is different to the one which was used to configure it, " << value << '.';
 			rfims_exception exc( oss.str() );
 			throw(exc);
 		}
@@ -576,7 +561,7 @@ void SpectranConfigurator::CheckApproxEqual(const SpecVariable variable, float &
 	}
 	catch(rfims_exception & exc)
 	{
-		exc.Append("\nThe checking of the configured variable \"" + reply.GetVariableNameString() + "\" failed.");
+		exc.Append("the checking of the configured variable \"" + reply.GetVariableNameString() + "\" failed.");
 		throw;
 	}
 }
@@ -663,13 +648,13 @@ BandParameters SpectranConfigurator::ConfigureNextBand()
 				interface.Read(reply);
 				if( !reply.IsRight() )
 				{
-					rfims_exception exc("The reply to the command to get the current value of the \"sweep time\" was wrong.");
+					rfims_exception exc("the reply to the command to get the current value of the \"sweep time\" was wrong.");
 					throw(exc);
 				}
 				if( subBandsParamVector[bandIndex].sweepTime > (unsigned int) reply.GetValue() )
 				{
 					std::ostringstream oss;
-					oss << "The sweep time value which was taken by the spectrum analyzer, " << reply.GetValue() << "ms, is lesser than the original one, " << subBandsParamVector[bandIndex].sweepTime << "ms.";
+					oss << "the sweep time value which was taken by the spectrum analyzer, " << reply.GetValue() << "ms, is lesser than the original one, " << subBandsParamVector[bandIndex].sweepTime << "ms.";
 					rfims_exception exc( oss.str() );
 					throw(exc);
 				}
@@ -677,10 +662,8 @@ BandParameters SpectranConfigurator::ConfigureNextBand()
 			}
 			catch(rfims_exception & exc)
 			{
-				std::string str = "The assignment of the actual sweep time value which was taken by the spectrum analyzer to the internal variable failed: ";
-				str += exc.what();
-				rfims_exception exc1(str);
-				throw exc1;
+				exc.Prepend("the reading of the sweep time which was taken by the spectrum analyzer failed");
+				throw;
 			}
 			cerr << "\nWarning: The band N " << bandIndex << " (Fstart=" << subBandsParamVector[bandIndex].startFreq << ", Fstop=";
 			cerr << subBandsParamVector[bandIndex].stopFreq << ") will have the sweep time " << subBandsParamVector[bandIndex].sweepTime;

@@ -30,7 +30,7 @@ GPSInterface::GPSInterface()
 	ftStatus=FT_SetVIDPID(VID, PID);
 	if(ftStatus!=FT_OK)
 	{
-		rfims_exception exc("The custom VID and PID combinations of the Aaronia GPS receiver could not be included.");
+		rfims_exception exc("the custom VID and PID combinations of the Aaronia GPS receiver could not be included.");
 		throw(exc);
 	}
 
@@ -41,14 +41,14 @@ GPSInterface::GPSInterface()
 		switch(ftStatus)
 		{
 		case 2:
-			exc.SetMessage("The Aaronia GPS receiver was not found.");
+			exc.SetMessage("the Aaronia GPS receiver was not found.");
 			throw(exc);
 		case 3:
-			exc.SetMessage("The Aaronia GPS receiver could not be opened.");
+			exc.SetMessage("the Aaronia GPS receiver could not be opened.");
 			throw(exc);
 		default:
 			std::ostringstream oss;
-			oss << "The function FT_OpenEx() returned a FT_STATUS value of " << ftStatus;
+			oss << "the function FT_OpenEx() returned a FT_STATUS value of " << ftStatus << '.';
 			exc.SetMessage( oss.str() );
 			throw(exc);
 		}
@@ -56,39 +56,24 @@ GPSInterface::GPSInterface()
 
 	ftStatus=FT_SetTimeouts(ftHandle, RD_TIMEOUT_MS, WR_TIMEOUT_MS);
 	if(ftStatus!=FT_OK)
-	{
-		rfims_exception exc("The read and write timeouts could not be set up.");
-		throw(exc);
-	}
+		throw rfims_exception("the read and write timeouts could not be set up.");
 
 	ftStatus=FT_SetBaudRate(ftHandle, 625000);
 	if(ftStatus!=FT_OK)
 	{
 		if(ftStatus==7)
-		{
-			rfims_exception exc("The given value of baud rate is not valid.");
-			throw(exc);
-		}
+			throw rfims_exception("the given value of baud rate is not valid.");
 		else
-		{
-			rfims_exception exc("The baud rate could not be set up");
-			throw(exc);
-		}
+			throw rfims_exception("the baud rate could not be set up");
 	}
 
 	ftStatus = FT_SetDataCharacteristics(ftHandle, FT_BITS_8, FT_STOP_BITS_2, FT_PARITY_NONE);
 	if(ftStatus!=FT_OK)
-	{
-		rfims_exception exc("The data characteristics could not be set up.");
-		throw(exc);
-	}
+		throw rfims_exception("the data characteristics could not be set up.");
 
 	ftStatus = FT_SetFlowControl(ftHandle, FT_FLOW_NONE, 0, 0);
 	if(ftStatus!=FT_OK)
-	{
-		rfims_exception exc("Error: the flow control could not be set up.");
-		throw(exc);
-	}
+		throw rfims_exception("the flow control could not be set up.");
 
 	DIR * dir;
 	struct dirent * ent;
@@ -100,10 +85,7 @@ GPSInterface::GPSInterface()
 
 	dir=opendir( SENSORS_FILES_PATH.c_str() );
 	if( dir==NULL )
-	{
-		rfims_exception exc("The directory where files with sensors data are saved could not be opened.");
-		throw(exc);
-	}
+		throw rfims_exception("the directory where files with sensors data are saved could not be opened.");
 
 	while( (ent=readdir(dir)) != NULL )
 	{
@@ -149,7 +131,7 @@ GPSInterface::GPSInterface()
  */
 GPSInterface::~GPSInterface()
 {
-	cout << "Closing the communication with the GPS interface." << endl;
+	cout << "\nClosing the communication with the GPS interface." << endl;
 
 	//Disabling the data streaming
 	try
@@ -207,15 +189,9 @@ inline void GPSInterface::Write(const std::string& command)
 
 	ftStatus=FT_Write(ftHandle, txBuffer, numOfBytes, &writtenBytes);
 	if(ftStatus!=FT_OK)
-	{
-		rfims_exception exc("The GPS interface tried to send a command but the function FT_Write() returned an error value.");
-		throw(exc);
-	}
+		throw rfims_exception("the GPS interface tried to send a command but the function FT_Write() returned an error value.");
 	else if(writtenBytes!=numOfBytes)
-	{
-		rfims_exception exc("The GPS interface tried to send a command but not all bytes were written.");
-		throw(exc);
-	}
+		throw rfims_exception("the GPS interface tried to send a command but not all bytes were written.");
 }
 
 /*! This method reads a reply from the Aaronia GPS receiver, using the D2XX library, and stores it in a `std::string`
@@ -245,17 +221,13 @@ inline void GPSInterface::Read(std::string& reply, const unsigned int numOfBytes
 			usleep(10000); //10ms
 
 		if(i>=20)
-		{
-			rfims_exception exc("The data set (GPRMC, GPGGA and PAAG replies) was waited too much time.");
-			throw(exc);
-		}
+			throw rfims_exception("the data set (GPRMC, GPGGA and PAAG replies) was waited too much time.");
+
 		usleep(30000); //An additional delay to wait for some additional bytes
 	}
 	else
-	{
 		//A fixed time interval to wait for the bytes
 		usleep(150000);
-	}
 
 	//Loop where the characters are read until a '\n' character is read
 	do
@@ -263,12 +235,12 @@ inline void GPSInterface::Read(std::string& reply, const unsigned int numOfBytes
 		ftStatus=FT_Read(ftHandle, &rxBuffer, 1, &receivedBytes);
 		if(ftStatus!=FT_OK)
 		{
-			rfims_exception exc("The GPS interface tried to read a reply, but the function FT_Read() returned an error value.");
+			rfims_exception exc("the GPS interface tried to read a reply, but the function FT_Read() returned an error value.");
 			throw(exc);
 		}
 		else if(receivedBytes!=1)
 		{
-			rfims_exception exc("The GPS interface tried to read a reply, but one character could not be read.");
+			rfims_exception exc("the GPS interface tried to read a reply, but one character could not be read.");
 			throw(exc);
 		}
 		reply += rxBuffer;
@@ -328,15 +300,13 @@ void GPSInterface::ConfigureVariable(const std::string& variable, const unsigned
 	}
 	catch(rfims_exception& exc)
 	{
-		exc.Append("\nThe setting of the variable " + variable + " failed.");
+		exc.Prepend("the setting of the variable " + variable + " failed");
 		throw;
 	}
 
 	if( !ControlChecksum(reply) )
-	{
-		rfims_exception exc( "The reply of the command to set up the variable " + variable + " was wrong." );
-		throw(exc);
-	}
+		throw rfims_exception( "the reply of the command to set up the variable " + variable + " was wrong." );
+
 	size_t valuePos = reply.find(variable) + variable.size() + 1; //The position of the current value of the accelerometer range
 	size_t delPos = reply.find('*'); //The position of the delimiter *
 	std::string valueString = reply.substr(valuePos, delPos-valuePos);
@@ -347,7 +317,7 @@ void GPSInterface::ConfigureVariable(const std::string& variable, const unsigned
 	if(currentValue!=value)
 	{
 		std::ostringstream oss;
-		oss << "The reply of the command to set up the variable " << variable;
+		oss << "the reply of the command to set up the variable " << variable;
 		oss << " stated that the range was not configured with the desired value, " << value;
 		rfims_exception exc( oss.str() );
 		throw(exc);
@@ -391,19 +361,15 @@ unsigned int GPSInterface::FindAndCheckDataReply(const std::vector<std::string>&
 	{
 		rfims_exception exc;
 		if(sensor=='\0')
-		{
-			exc.SetMessage("The reply " + replyType + " was not found between the data replies.");
-		}
+			exc.SetMessage("the reply " + replyType + " was not found between the data replies.");
 		else
-		{
-			exc.SetMessage("The reply " + replyType + " with the data of sensor " + sensor + " was not found between the data replies.");
-		}
+			exc.SetMessage("the reply " + replyType + " with the data of sensor " + sensor + " was not found between the data replies.");
 		throw(exc);
 	}
 
 	if( !ControlChecksum(replies[i]) )
 	{
-		rfims_exception exc("The PAAG reply with the gyroscope data was wrong because the checksum was wrong.");
+		rfims_exception exc("the PAAG reply with the gyroscope data was received with a wrong checksum.");
 		throw(exc);
 	}
 
@@ -437,10 +403,7 @@ void GPSInterface::ProcessDataReplies(const std::vector<std::string>& replies)
 	//Parsing GPRMC reply
 	data = nmea_parse(auxString, replies[i].size(), 0);
 	if(data==NULL)
-	{
-		rfims_exception exc("It was not possible to parse the GPRMC reply.");
-		throw(exc);
-	}
+		throw rfims_exception("it was not possible to parse the GPRMC reply.");
 
 	nmea_gprmc_s * gprmc = (nmea_gprmc_s*) data;
 
@@ -456,10 +419,8 @@ void GPSInterface::ProcessDataReplies(const std::vector<std::string>& replies)
 	//Parsing GPGGA reply
 	data = nmea_parse((char*)replies[i].c_str(), replies[i].size(), 0);
 	if(data==NULL)
-	{
-		rfims_exception exc("It was not possible to parse the GPGGA reply.");
-		throw(exc);
-	}
+		throw rfims_exception("it was not possible to parse the GPGGA reply.");
+
 	nmea_gpgga_s * gpgga = (nmea_gpgga_s*) data;
 	gpsElevation = gpgga->altitude;
 	numOfSatellites = gpgga->n_satellites;
@@ -472,10 +433,8 @@ void GPSInterface::ProcessDataReplies(const std::vector<std::string>& replies)
 	//Parsing PAAG reply with Gyroscope data
 	size_t statusPos = replies[i].find('*') - 1;
 	if( replies[i].at(statusPos)!='A' )
-	{
-		rfims_exception exc("The PAAG reply with the gyroscope data stated an invalid status.");
-		throw(exc);
-	}
+		throw rfims_exception("the PAAG reply with the gyroscope data stated an invalid status.");
+
 	size_t xPos = replies[i].find(',', 13) + 1;
 	char delimiter[2];
 	ss.clear();
@@ -493,10 +452,8 @@ void GPSInterface::ProcessDataReplies(const std::vector<std::string>& replies)
 	//Parsing PAAG reply with compass data
 	statusPos = replies[i].find('*') - 1;
 	if( replies[i].at(statusPos)!='A' )
-	{
-		rfims_exception exc("The PAAG reply with the compass data stated an invalid status.");
-		throw(exc);
-	}
+		throw rfims_exception("the PAAG reply with the compass data stated an invalid status.");
+
 	xPos = replies[i].find(',', 13) + 1;
 	ss.clear();
 	aux.clear();
@@ -514,10 +471,8 @@ void GPSInterface::ProcessDataReplies(const std::vector<std::string>& replies)
 	//Parsing the PAAG reply with the accelerometer data
 	statusPos = replies[i].find('*') - 1;
 	if( replies[i].at(statusPos)!='A' )
-	{
-		rfims_exception exc("The PAAG reply with the accelerometer data stated an invalid status.");
-		throw(exc);
-	}
+		throw rfims_exception("the PAAG reply with the accelerometer data stated an invalid status.");
+
 	xPos = replies[i].find(',', 13) + 1;
 	ss.clear();
 	aux.clear();
@@ -535,10 +490,8 @@ void GPSInterface::ProcessDataReplies(const std::vector<std::string>& replies)
 	//Parsing PAAG reply with the barometer data
 	statusPos = replies[i].find('*') - 1;
 	if( replies[i].at(statusPos)!='A' )
-	{
-		rfims_exception exc("The PAAG reply with the barometer data stated an invalid status.");
-		throw(exc);
-	}
+		throw rfims_exception("the PAAG reply with the barometer data stated an invalid status.");
+
 	size_t valuePos = replies[i].find(',', 13) + 1;
 	size_t nextDelimPos = replies[i].find(',', valuePos);
 	ss.clear();
@@ -561,10 +514,8 @@ void GPSInterface::Purge()
 {
 	//The input and output buffers are purged
 	ftStatus=FT_Purge(ftHandle, FT_PURGE_RX | FT_PURGE_TX);
-	if (ftStatus!=FT_OK){
-		rfims_exception except("The GPS interface failed when it tried to purge the input and output buffers.");
-		throw(except);
-	}
+	if (ftStatus!=FT_OK)
+		throw rfims_exception("the GPS interface failed when it tried to purge the input and output buffers.");
 }
 
 /*! First, this method tries the communication with an ID command, and if the reply is right it shows the hardware
@@ -581,7 +532,7 @@ void GPSInterface::Initialize()
 	}
 	catch(rfims_exception& exc)
 	{
-		exc.Append("\nThe GPS interface could not disable the streaming at initialization.");
+		exc.Prepend("the GPS interface could not disable the streaming at initialization");
 		throw;
 	}
 
@@ -598,10 +549,7 @@ void GPSInterface::Initialize()
 			Read(reply);
 
 			if( !ControlChecksum(reply) )
-			{
-				rfims_exception exc("The reply of the ID command was wrong.");
-				throw(exc);
-			}
+				throw rfims_exception("the reply of the ID command was wrong.");
 
 			//Showing the reply of the ID command
 			std::string hardVersion, firmVersion, protocolVersion;
@@ -625,9 +573,8 @@ void GPSInterface::Initialize()
 			cerr << "Warning: one of the ID commands failed: " << exc.what() << endl;
 			if(++i >= 3)
 			{
-				rfims_exception exc2("\nThe ID commands failed: ");
-				exc2.Append( exc.what() );
-				throw(exc2);
+				exc.Prepend("the ID commands failed");
+				throw;
 			}
 		}
 	}
@@ -641,7 +588,7 @@ void GPSInterface::Initialize()
 	}
 	catch(rfims_exception& exc)
 	{
-		exc.Append("\nThe GPS interface could not disable the data logging into the microSD card.");
+		exc.Prepend("the GPS interface could not disable the data logging into the microSD card");
 		throw;
 	}
 
@@ -681,7 +628,7 @@ void GPSInterface::Initialize()
 		}
 		catch(rfims_exception& exc)
 		{
-			exc.Append("\nThe GPS interface could not determine if the GPS receiver had established communication with a minimum number of satellites.");
+			exc.Prepend("it could not be determined if the GPS receiver has established communication with a minimum number of satellites");
 			throw;
 		}
 		unsigned int i = FindAndCheckDataReply(dataReplies, "GPGGA");
@@ -689,7 +636,7 @@ void GPSInterface::Initialize()
 		nmea_s * data = nmea_parse((char*)dataReplies[i].c_str(), dataReplies[i].size(), 0);
 		if(data==NULL)
 		{
-			rfims_exception exc("It was not possible to parse the GPGGA reply when the GPS interface was determining the number of satellites at initialization.");
+			rfims_exception exc("it was not possible to parse the GPGGA reply when the GPS interface was determining the number of satellites at initialization.");
 			throw(exc);
 		}
 		nmea_gpgga_s * gpgga = (nmea_gpgga_s*) data;
@@ -710,7 +657,7 @@ unsigned int GPSInterface::Available()
 	ftStatus=FT_GetStatus(ftHandle, &numOfInputBytes, &numOfOutputBytes, &numOfEvents);
 	if(ftStatus!=FT_OK)
 	{
-		rfims_exception exc("The GPS interface failed when it tried to determine the number of bytes in the input buffer.");
+		rfims_exception exc("the GPS interface failed when it tried to determine the number of bytes in the input buffer.");
 		throw(exc);
 	}
 	return numOfInputBytes;
@@ -725,7 +672,7 @@ void GPSInterface::ReadOneDataSet()
 	}
 	catch(rfims_exception& exc)
 	{
-		exc.Append("\nThe GPS interface failed when it tried to send a command to get just one data set.");
+		exc.Prepend("the GPS interface failed when it tried to send a command to get just one data set");
 		throw;
 	}
 
@@ -740,7 +687,7 @@ void GPSInterface::ReadOneDataSet()
 	}
 	catch(rfims_exception& exc)
 	{
-		exc.Append("\nThe GPS interface failed when it tried to read the data replies or when it tried to process those replies.");
+		exc.Prepend("the GPS interface failed when it tried to read or process a set of data replies");
 		throw;
 	}
 }
@@ -760,7 +707,7 @@ void GPSInterface::ReadOneDataSet()
 //	}
 //	catch(rfims_exception& exc)
 //	{
-//		exc.Append("\nThe command to enable the data streaming failed.");
+//		exc.Prepend("the command to enable the data streaming failed");
 //		throw;
 //	}
 //}
@@ -782,7 +729,7 @@ void GPSInterface::ReadOneDataSet()
 //	}
 //	catch(rfims_exception& exc)
 //	{
-//		exc.Append("\nThe GPS interface failed when it tried to capture the stream data or when it tried to process them.");
+//		exc.Prepend("the GPS interface failed when it tried to capture the stream data or when it tried to process them");
 //		throw;
 //	}
 //}
@@ -796,7 +743,7 @@ void GPSInterface::DisableStreaming()
 	}
 	catch(rfims_exception& exc)
 	{
-		exc.Append("\nThe command to disable the data streaming failed.");
+		exc.Prepend("the command to disable the data streaming failed");
 		throw;
 	}
 

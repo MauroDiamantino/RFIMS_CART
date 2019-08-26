@@ -125,10 +125,7 @@ public:
 				plotter.plot_xy(freqMHz, rfi.values, "Detected RFI");
 			}
 			else
-			{
-				rfims_exception exc("The RFI which was given to be plotted is not related to the plotted sweep.");
-				throw(exc);
-			}
+				throw rfims_exception("The RFI which was given to be plotted is not related to the plotted sweep.");
 		}
 	}
 	//! This method cleans completely the plot, but the corresponding window will not be closed.
@@ -346,7 +343,7 @@ class DataLogger
 	//Variables
 	std::ofstream ofs; //!< This object is used to write the data into the different files, following a specific format.
 	unsigned int sweepIndex; //!< An index which allows to know which is the current sweep in the entire measurement cycle, and how many sweeps remain until the end.
-	std::string currMeasCycleDate; //!< The date of the current measurement cycle, which is taken as the date at the beginning.
+	std::string currMeasCycleTimestamp; //!< The timestamp of the current measurement cycle, which is taken as the date at the beginning.
 	bool flagNewBandsParam; //!< A flag which indicates if new bands parameters were loaded and inserted to this object to save them in a CSV file, in the current measurement cycle.
 	bool flagNewFrontEndParam; //!< A flag which indicates if new front end parameters were estimated and inserted to this object to save them into memory, in the current measurement cycle.
 	bool flagStoredRFI; //!< A flag which indicates if the object was asked to store RFI in the current measurement cycle.
@@ -361,11 +358,11 @@ public:
 	~DataLogger();
 	//! This method is intended to save the bands parameters in a CSV file which is more adequately to be read in the remote server.
 	void SaveBandsParamAsCSV(const std::vector<BandParameters> & bandsParamVector);
-	//! This method is intended to save the estimated front end parameters, gain and noise figure, into the memory.
+	//! This method is intended to save the estimated front end parameters, gain and noise figure, into the non-volatile memory.
 	void SaveFrontEndParam(const FreqValues & gain, const FreqValues & noiseFigure);
-	//! This method is intended to save a calibrated sweep into the memory.
+	//! This method is intended to save a calibrated sweep into the non-volatile memory.
 	void SaveSweep(const Sweep& sweep);
-	//! This method is intended to save the detected RFI into the last sweep, into the memory.
+	//! This method is intended to save the detected RFI in the last sweep, into the non-volatile memory.
 	void SaveRFI(const RFI& rfi);
 	//! The aim of this method is to delete the old files.
 	void DeleteOldFiles() const;
@@ -373,9 +370,10 @@ public:
 	void ArchiveAndCompress();
 	//! This method is responsible for the uploading of the data files to the remote server.
 	void UploadData();
-	//! This method allows to create a thread where the data files will be uploaded to the remote server, in parallel with the capture of a new sweep.
+	//! This method creates a thread where the data files will be uploaded, in parallel with the capture of a new sweep.
 	void PrepareAndUploadData();
 	//Friend functions//
+	//! The function which is executed by the thread which is responsible for the concurrent uploading of the data files.
 	friend void *UploadThreadFunc(void*);
 };
 

@@ -42,10 +42,7 @@ void TimeData::SetTimestamp(const std::string & timestamp)
 {
 	std::size_t delimiterPos = timestamp.find('T');
 	if( delimiterPos==std::string::npos )
-	{
-		rfims_exception exc("The timestamp has an unexpected format.");
-		throw(exc);
-	}
+		throw rfims_exception("the timestamp has an unexpected format.");
 	else
 	{
 		SetDate( timestamp.substr(0, delimiterPos) );

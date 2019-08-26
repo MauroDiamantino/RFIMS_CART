@@ -342,57 +342,50 @@ public:
 
 		ftStatus=FT_Write(ftHandle, txBuffer, numOfBytes, &writtenBytes);
 		if (ftStatus!=FT_OK)
-		{
-			rfims_exception except("The Spectran Interface could not write a command, the function FT_Write() returned an error value.");
-			throw(except);
-		}
+			throw rfims_exception("a Spectran command could not be written, the function FT_Write() returned an error value.");
 		else if (writtenBytes!=numOfBytes)
-		{
-			rfims_exception except("The Spectran Interface could not write a command correctly, not all bytes were written");
-			throw(except);
-		}
+			throw rfims_exception("a Spectran command could not be written correctly because not all bytes were written");
 	}
 	//! This method is intended to perform all the reading operations.
 	/*! Before the calling of the function `FT_Read()`, there is a loop where it is queried if the number of waited bytes are available.
 	 * 	After each query which states less bytes than what are waited, the method waits 70 ms. Once the desired number bytes are available,
 	 * 	the method waits 70 ms to avoid an error which was observed during the tests and which consists in a reading failure when this operation
-	 * 	is performed immediately after the needed number of bytes are available. After that waitng, the function `FT_Read()` is called.
+	 * 	is performed immediately after the needed number of bytes are available. After that waiting, the function `FT_Read()` is called.
 	 * 	Later, it is checked if the operation finished with errors and if all bytes were read and, finally, the read bytes are inserted in
 	 * 	the _Reply_ object.
 	 * 	\param [in,out] reply A _Reply_ object which states the number of bytes must be read and which receives these bytes to the extract the info from them.
 	 */
 	void Read(Reply& reply)
 	{
+		const unsigned int WAITING_TIME_MS = 1500; //1.5 s
+		const unsigned int DELAY_US = 15000; //10 ms
+		const unsigned int NUM_OF_ITERS = ceil( WAITING_TIME_MS / (double(DELAY_US)/1000.0) );
 		DWORD receivedBytes;
 		unsigned int numOfBytes=reply.GetNumOfBytes();
 		std::uint8_t rxBuffer[numOfBytes];
 
 		unsigned int i=0;
-		unsigned int currNumOfBytes=0;
-		while ( currNumOfBytes<numOfBytes && i++<20 )
-		{
-			currNumOfBytes = Available();
-			usleep(70000); //70 ms
-		}
-		if(i>=20)
-		{
-			rfims_exception exc("In a reading operation, the input bytes were waited too much time.");
-			throw(exc);
-		}
+
+//		unsigned int currNumOfBytes=0;
+//		while ( currNumOfBytes<numOfBytes && i++<NUM_OF_ITERS )
+//		{
+//			currNumOfBytes = Available();
+//			usleep(DELAY_US);
+//		}
+
+		while( Available()<numOfBytes && i++<NUM_OF_ITERS )
+			usleep(DELAY_US);
+
+		if(i>=NUM_OF_ITERS)
+			throw rfims_exception("in a reading operation, the input bytes were waited too much time.");
 
 		//usleep(200000);
 
 		ftStatus=FT_Read(ftHandle, rxBuffer, numOfBytes, &receivedBytes);
 		if (ftStatus!=FT_OK)
-		{
-			rfims_exception except("The Spectran interface could not read a Spectran reply, the function FT_Read returned an error value.");
-			throw(except);
-		}
+			throw rfims_exception("a Spectran reply could not be read, the function FT_Read() returned an error value.");
 		else if (receivedBytes!=numOfBytes)
-		{
-			rfims_exception except("The Spectran interface tried to read a Spectran reply but not all bytes were read.");
-			throw(except);
-		}
+			throw rfims_exception("it was tried to read a Spectran reply but not all bytes were read.");
 
 		reply.InsertBytes(rxBuffer); //The received bytes are inserted in the given Reply object
 	}

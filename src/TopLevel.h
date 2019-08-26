@@ -48,16 +48,10 @@ public:
 		nfPlotterPtr=nfPlotterPt;
 
 		if( signal(int(SIGINT), (__sighandler_t) SignalHandler::ExitSignalHandler)==SIG_ERR )
-		{
-			rfims_exception exc("The SIGINT signal handler could not be set.");
-			throw(exc);
-		}
+			throw rfims_exception("The SIGINT signal handler could not be set.");
 
 		if( signal(int(SIGTERM),  (__sighandler_t) SignalHandler::ExitSignalHandler)==SIG_ERR )
-		{
-			rfims_exception exc("The SIGTERM signal handler could not be set.");
-			throw(exc);
-		}
+			throw rfims_exception("The SIGTERM signal handler could not be set.");
 	}
 	//Static methods and objects
 	static SpectranInterface * specInterfPtr; //!< A pointer to the _SpectranInterface_ object.

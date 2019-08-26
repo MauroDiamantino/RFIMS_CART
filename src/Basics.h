@@ -108,10 +108,10 @@ public:
 	void SetMessage(const std::string& msg) {	message=msg;	}
 	//! This function is intended to add some text at the beginning of the exception message.
 	/*! \param [in] msg The sentence which must be prepended to the exception message and which can be of type `char*` or `std::string`.	*/
-	void Prepend(const std::string& msg) {	message.insert(0, msg);		}
+	void Prepend(const std::string& msg) {	message.insert(0, ": "); message.insert(0, msg);	}
 	//! This function is intended to add some text at the end of the exception message.
 	/*! \param [in] msg The sentence which must be appended to the exception message and which can be of type `char*` or `std::string`.	*/
-	void Append(const std::string& msg) {	message.append(msg);	}
+	void Append(const std::string& msg) {	message.append(": "); message.append(msg);	}
 	//! This is a standard function for classes which manage exceptions and is intended to return the exception message as a C string (`char*`).
 	const char * what() const throw() {	return message.c_str();	}
 };
@@ -368,7 +368,7 @@ bool approximatelyEqual(std::vector<float> vectorA, std::vector<float> vectorB);
 //! An overloading of unary operator - which negates the elements of a `std::vector<float>` container.
 std::vector<float> operator-(const std::vector<float> & vect); //defined in Basics.cpp
 
-//! This function stop the execution up to any key is pressed by the user and it was used for debugging purpose.
+//! This function stop the execution until any key is pressed by the user and it was used for debugging purpose.
 void WaitForKey();
 
 //! This function initializes all GPIO pins which are used for the input and output signals, in the way it is described in structure _piPins_.
@@ -383,7 +383,7 @@ void TurnOnFrontEnd();
 //! The aim of this function is to turn off the RF front-end elements in a sequential manner, from the antenna to the spectrum analyzer.
 void TurnOffFrontEnd();
 
-//! This function prints in the `stdout` a message whit a software description and the descriptions of its arguments.
+//! This function prints a message, in the `stdout`, with a software description and the descriptions of its arguments.
 void PrintHelp();
 
 //! This function process the software's arguments, which define the behavior of this one.

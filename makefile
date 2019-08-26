@@ -12,8 +12,8 @@ CXX = g++
 CPPFLAGS = -std=c++11 -O3 -g0 -Wall -fmessage-length=0 -I/usr/local/include
 LDFLAGS = -g0
 
-#LDLIBS = -L/usr/local/lib -lftd2xx -lboost_filesystem -lboost_system -lboost_timer -lnmea -lwiringPi -lpthread #For Raspberry Pi boards
-LDLIBS = -L/usr/local/lib -lftd2xx -lboost_filesystem -lboost_system -lboost_timer -lnmea -lpthread #For non-Raspberry boards
+LDLIBS = -L/usr/local/lib -lftd2xx -lboost_filesystem -lboost_system -lboost_timer -lnmea -lwiringPi -lpthread #For Raspberry Pi boards
+#LDLIBS = -L/usr/local/lib -lftd2xx -lboost_filesystem -lboost_system -lboost_timer -lnmea -lpthread #For non-Raspberry boards
 
 #######################FILES###########################
 HEADER_NAMES = AntennaPositioning.h TopLevel.h Basics.h Spectran.h SweepProcessing.h gnuplot_i.hpp
@@ -33,57 +33,71 @@ all: $(TARGET)
 
 $(TARGET): $(OBJECTS)
 	@echo "Linking..."
-	mkdir -p bin/
+	@mkdir -p bin/
 	$(CXX) $(LDFLAGS) -o $(TARGET) $(OBJECTS) $(LDLIBS)
 
 obj/main.o: src/main.cpp $(HEADERS)
-	@echo "Compiling..."
-	mkdir -p obj/
+	@mkdir -p obj/
 	$(CXX) $(CPPFLAGS) -o obj/main.o -c src/main.cpp
 
 obj/AntennaPositioner.o: $(addprefix src/, AntennaPositioner.cpp Basics.h AntennaPositioning.h)
+	@mkdir -p obj/
 	$(CXX) $(CPPFLAGS) -o obj/AntennaPositioner.o -c src/AntennaPositioner.cpp
 
 obj/Command.o: $(addprefix src/, Command.cpp Basics.h Spectran.h)
+	@mkdir -p obj/
 	$(CXX) $(CPPFLAGS) -o obj/Command.o -c src/Command.cpp
 
 obj/CurveAdjuster.o: $(addprefix src/, CurveAdjuster.cpp Basics.h SweepProcessing.h)
+	@mkdir -p obj/
 	$(CXX) $(CPPFLAGS) -o obj/CurveAdjuster.o -c src/CurveAdjuster.cpp
 
 obj/DataLogger.o: $(addprefix src/, DataLogger.cpp Basics.h SweepProcessing.h)
+	@mkdir -p obj/
 	$(CXX) $(CPPFLAGS) -o obj/DataLogger.o -c src/DataLogger.cpp
 
 obj/Basics.o: $(addprefix src/, Basics.cpp Basics.h)
+	@mkdir -p obj/
 	$(CXX) $(CPPFLAGS) -o obj/Basics.o -c src/Basics.cpp
 
 obj/FreqValues.o: $(addprefix src/, FreqValues.cpp Basics.h)
+	@mkdir -p obj/
 	$(CXX) $(CPPFLAGS) -o obj/FreqValues.o -c src/FreqValues.cpp
 
 obj/FrontEndCalibrator.o: $(addprefix src/, FrontEndCalibrator.cpp Basics.h SweepProcessing.h)
+	@mkdir -p obj/
 	$(CXX) $(CPPFLAGS) -o obj/FrontEndCalibrator.o -c src/FrontEndCalibrator.cpp
 
 obj/gnuplot_i.o: $(addprefix src/, gnuplot_i.cpp Basics.h gnuplot_i.hpp)
+	@mkdir -p obj/
 	$(CXX) $(CPPFLAGS) -o obj/gnuplot_i.o -c src/gnuplot_i.cpp
 
 obj/GPSInterface.o: $(addprefix src/, GPSInterface.cpp Basics.h AntennaPositioning.h)
+	@mkdir -p obj/
 	$(CXX) $(CPPFLAGS) -o obj/GPSInterface.o -c src/GPSInterface.cpp
 
 obj/Reply.o: $(addprefix src/, Reply.cpp Basics.h Spectran.h)
+	@mkdir -p obj/
 	$(CXX) $(CPPFLAGS) -o obj/Reply.o -c src/Reply.cpp
 
 obj/RFIDetector.o: $(addprefix src/, RFIDetector.cpp SweepProcessing.h Basics.h)
+	@mkdir -p obj/
 	$(CXX) $(CPPFLAGS) -o obj/RFIDetector.o -c src/RFIDetector.cpp
 
 obj/SpectranConfigurator.o: $(addprefix src/, SpectranConfigurator.cpp Basics.h Spectran.h)
+	@mkdir -p obj/
 	$(CXX) $(CPPFLAGS) -o obj/SpectranConfigurator.o -c src/SpectranConfigurator.cpp
 
 obj/SpectranInterface.o: $(addprefix src/, SpectranInterface.cpp Basics.h Spectran.h)
+	@mkdir -p obj/
 	$(CXX) $(CPPFLAGS) -o obj/SpectranInterface.o -c src/SpectranInterface.cpp
 
 obj/SweepBuilder.o: $(addprefix src/, SweepBuilder.cpp Basics.h Spectran.h)
+	@mkdir -p obj/
 	$(CXX) $(CPPFLAGS) -o obj/SweepBuilder.o -c src/SweepBuilder.cpp
 
 obj/TimeData.o: $(addprefix src/, TimeData.cpp Basics.h)
+	@mkdir -p obj/
 	$(CXX) $(CPPFLAGS) -o obj/TimeData.o -c src/TimeData.cpp
 
 clean:
@@ -91,6 +105,7 @@ clean:
 	rm -f -r obj/ bin/
 
 copy-files:
+	@echo "Copying the program binary, the scripts and the program data files..."
 	cp -f $(TARGET) /usr/local/bin
 	cp -f scripts/client.py /usr/local
 	cp -f -r data/RFIMS/ /home/pi/

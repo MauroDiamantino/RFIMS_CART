@@ -5,7 +5,7 @@
 
 #include "TopLevel.h"
 
-/////////////////////////Global variables//////////////////////////
+//#//////////////////////Global variables//////////////////////////
 
 // Global variables which are used by the SignalHandler class
 SpectranInterface * SignalHandler::specInterfPtr; //!< The instantiation of the pointer to the _SpectranInterface_ object.
@@ -35,7 +35,8 @@ RFI::ThresholdsNorm rfiNorm = RFI::SKA_MODE1;
 //! A timer which is used to measure the execution time when the number of iterations is finite.
 boost::timer::cpu_timer timer;
 
-///////////////////////////////MAIN FUNCTION///////////////////////////////
+
+//#////////////////////////////MAIN FUNCTION//////////////////////////////////
 
 //! The main function of the RFISM-CART software.
 /*!	This function instantiates all the needed objects and performs the software tasks in the corresponding order.
@@ -50,7 +51,7 @@ boost::timer::cpu_timer timer;
  */
 int main(int argc, char * argv[])
 {
-	///////////Local variables/////////////
+	//#////////Local variables/////////////
 
 	// A flag which states if the bands parameters have been loaded by first time or they have been reloaded.
 	bool flagBandsParamReloaded=false;
@@ -59,7 +60,7 @@ int main(int argc, char * argv[])
 	// A flag which is used when the user executes the software to realize a finite number of iterations (measurement cycles), to states the requested measurements cycles have already been done.
 	bool flagEndIterations = false;
 
-	////////////////////////////////////////
+	//#/////////////////////////////////////
 
 	// The checking of the program's arguments.
 	if( !ProcessMainArguments(argc, argv) )
@@ -81,7 +82,7 @@ int main(int argc, char * argv[])
 
 	try
 	{
-		//////////////////////////////////////INITIALIZATIONS//////////////////////////////////////////
+		//#///////////////////////////////////INITIALIZATIONS//////////////////////////////////////////
 
 		SpectranInterface specInterface;
 		SpectranConfigurator specConfigurator(specInterface);
@@ -113,10 +114,10 @@ int main(int argc, char * argv[])
 		antPositioner.Initialize();
 		cout << "The initial azimuth angle is " << antPositioner.GetAzimPosition() << "° N" << endl;
 
-		//////////////////////////////////END OF THE INITIALIZATION///////////////////////////////////////
+		//#///////////////////////////////END OF THE INITIALIZATION///////////////////////////////////////
 
 
-		////////////////////////////////////////GENERAL LOOP////////////////////////////////////////////
+		//#/////////////////////////////////////GENERAL LOOP////////////////////////////////////////////
 
 		while(flagInfiniteLoop || !flagEndIterations)
 		{
@@ -124,7 +125,7 @@ int main(int argc, char * argv[])
 
 			if(flagNewMeasCycle)
 			{
-				////////////////////////LOADING OF THE SPECTRAN'S PARAMETERS//////////////////////////
+				//#/////////////////////LOADING OF THE SPECTRAN'S PARAMETERS//////////////////////////
 
 				//Loading by first time or reloading the Spectran parameters
 				cout << "\nLoading the Spectran's configuration parameters from the corresponding files" << endl;
@@ -143,7 +144,7 @@ int main(int argc, char * argv[])
 				flagBandsParamReloaded = specConfigurator.LoadBandsParameters();
 				cout << "The frequency bands' parameters were loaded successfully" << endl;
 
-				//////////////////////END OF THE LOADING OF THE SPECTRAN'S PARAMETERS////////////////
+				//#///////////////////END OF THE LOADING OF THE SPECTRAN'S PARAMETERS////////////////
 			}
 
 			//Determining if the front end calibration must be done or not
@@ -157,7 +158,7 @@ int main(int argc, char * argv[])
 			//This flag is pulled down here because it is just not needed from here to down.
 			flagNewMeasCycle=false;
 
-			/////////////////////////////GETTING ANTENNA POSITIONS AND TIME DATA///////////////////////////
+			//#//////////////////////////GETTING ANTENNA POSITIONS AND TIME DATA///////////////////////////
 
 			//The timestamp of each sweep is taking at the beginning. Also, the antenna position data are
 			//saved in the Sweep object here.
@@ -177,14 +178,14 @@ int main(int argc, char * argv[])
 					if( ++numOfErrors < 3)
 						cerr << "\nWarning: reading of time data and antenna position failed: " << exc.what() << endl;
 					else
-						throw( rfims_exception("The reading of time data and antenna position failed three times.") );
+						throw rfims_exception("the reading of time data and antenna position failed three times.");
 				}
 			}while(!flagSuccess);
 
-			//////////////////////////////////////////////////////////////////////////////////////////////////
+			//#///////////////////////////////////////////////////////////////////////////////////////////////
 
 
-			///////////////////////////////////CAPTURE LOOP OF A WHOLE SWEEP////////////////////////////////////
+			//#////////////////////////////////CAPTURE LOOP OF A WHOLE SWEEP////////////////////////////////////
 
 			cout << "\nStarting the capturing of a whole sweep" << endl;
 #ifdef RASPBERRY_PI
@@ -197,6 +198,7 @@ int main(int argc, char * argv[])
 				FreqValues currFreqBand;
 
 				currBandParam = specConfigurator.ConfigureNextBand();
+
 				cout << "\nFrequency band N° " << i+1 << endl;
 				cout << "Fstart=" << (currBandParam.startFreq/1e6) << " MHz, Fstop=" << (currBandParam.stopFreq/1e6) << " MHz, ";
 				cout << "RBW=" << (currBandParam.rbw/1e3) << " KHz, Sweep time=" << currBandParam.sweepTime << " ms" << endl;
@@ -217,10 +219,10 @@ int main(int argc, char * argv[])
 			specInterface.SoundNewSweep();
 			cout << "\nThe capturing of a whole sweep finished" << endl;
 
-			////////////////////////////END OF THE CAPTURE LOOP OF A WHOLE SWEEP////////////////////////////////
+			//#/////////////////////////END OF THE CAPTURE LOOP OF A WHOLE SWEEP////////////////////////////////
 
 
-			//////////////TRANSFERRING OF THE NEW FREQ BANDS PARAMETERS AND (RE)LOADING OF OTHER PARAMETERS///////////////
+			//#///////////TRANSFERRING OF THE NEW FREQ BANDS PARAMETERS AND (RE)LOADING OF OTHER PARAMETERS///////////////
 
 			if(flagBandsParamReloaded)
 			{
@@ -261,14 +263,14 @@ int main(int argc, char * argv[])
 						}
 				}
 			}
-			//////////////////////////////END OF TRANSFERRING OF THE BANDS PARAMETERS//////////////////////////////
+			//#///////////////////////////END OF TRANSFERRING OF THE BANDS PARAMETERS//////////////////////////////
 
 
-			/////////////////////////////////SWEEP PROCESSING/////////////////////////////////////
+			//#//////////////////////////////SWEEP PROCESSING/////////////////////////////////////
 
 			if( frontEndCalibrator.IsCalibStarted() )
 			{
-				/////////////////////////////FRONT END CALIBRATION////////////////////////////////////
+				//#//////////////////////////FRONT END CALIBRATION////////////////////////////////////
 
 				//Estimating the front end parameters, gain and noise figure curves versus frequency////////////////////
 				try
@@ -320,11 +322,11 @@ int main(int argc, char * argv[])
 					else
 						cout << "The last estimated front end parameters will be used." << endl;
 				}
-				///////////////////////////END OF THE FRONT END CALIBRATION////////////////////////////////
+				//#////////////////////////END OF THE FRONT END CALIBRATION////////////////////////////////
 			}
 			else
 			{
-				///////////////////////////////////NORMAL PROCESSING///////////////////////////////////////
+				//#////////////////////////////////NORMAL PROCESSING///////////////////////////////////////
 
 				//Processing of sweeps which were captured with the antenna connected to the input////////////
 
@@ -377,10 +379,10 @@ int main(int argc, char * argv[])
 #ifdef RASPBERRY_PI
 				digitalWrite(piPins.LED_SWEEP_PROCESS, LOW);
 #endif
-				////////////////////////////////END OF NORMAL PROCESSING///////////////////////////////////
+				//#/////////////////////////////END OF NORMAL PROCESSING///////////////////////////////////
 
 
-				/////////////////////////////////ANTENNA POSITIONING////////////////////////////////////////
+				//#//////////////////////////////ANTENNA POSITIONING////////////////////////////////////////
 
 				//Checking if the current measurement cycle has finished and if the software should or not starts a new one.
 				if( antPositioner.IsLastPosition() && antPositioner.GetPolarization()==Polarization::VERTICAL)
@@ -421,10 +423,10 @@ int main(int argc, char * argv[])
 				cout << "The new antenna position is: Azimuth=" << antPositioner.GetAzimPosition();
 				cout << ", Polarization=" << antPositioner.GetPolarizationString() << endl;
 
-				////////////////////////////END OF THE ANTENNA POSITIONING/////////////////////////////////////
+				//#/////////////////////////END OF THE ANTENNA POSITIONING/////////////////////////////////////
 			}
 		}
-		//////////////////////////////////END OF THE GENERAL LOOP////////////////////////////////////
+		//#///////////////////////////////END OF THE GENERAL LOOP////////////////////////////////////
 	}
 	catch(rfims_exception & exc)
 	{
@@ -464,4 +466,4 @@ int main(int argc, char * argv[])
 	return 0;
 }
 
-////////////////////////////END OF MAIN FUNCTION/////////////////////////////////
+//#/////////////////////////END OF MAIN FUNCTION/////////////////////////////////
