@@ -7,10 +7,14 @@ var searchData=
   ['speakervol',['speakerVol',['../structSpectranConfigurator_1_1FixedParameters.html#a4b30a0ba5199d6c6703838142da3bcdc',1,'SpectranConfigurator::FixedParameters']]],
   ['specconfiguratorptr',['specConfiguratorPtr',['../classSignalHandler.html#a0b9c75b3e3c928c01cc5e44d42e5ac38',1,'SignalHandler']]],
   ['specinterfptr',['specInterfPtr',['../classSignalHandler.html#a855d0b79fcbacf50e4a1d12bd5d1bf53',1,'SignalHandler']]],
+  ['spectran',['SPECTRAN',['../Basics_8h.html#a237073109a5bfa275095a6997d994c39',1,'Basics.h']]],
   ['startfreq',['startFreq',['../structBandParameters.html#a5967170b243cbea1116fef7359a6d76b',1,'BandParameters']]],
   ['stopfreq',['stopFreq',['../structBandParameters.html#a16b27f71c4d551562078b583eb603a75',1,'BandParameters']]],
   ['sweepbuilderptr',['sweepBuilderPtr',['../classSignalHandler.html#a23ec28699521fb435a5eb90f2c36bccb',1,'SignalHandler']]],
   ['sweepdelayacc',['sweepDelayAcc',['../structSpectranConfigurator_1_1FixedParameters.html#ad835d567560a9fb3bf1f9469955c2363',1,'SpectranConfigurator::FixedParameters']]],
   ['sweepplotterptr',['sweepPlotterPtr',['../classSignalHandler.html#a7ec978dc8c16c31aa8faefe4e350302c',1,'SignalHandler']]],
-  ['sweeptime',['sweepTime',['../structBandParameters.html#a184931085fad14897c5639c5a321fd1d',1,'BandParameters']]]
+  ['sweeptime',['sweepTime',['../structBandParameters.html#a184931085fad14897c5639c5a321fd1d',1,'BandParameters']]],
+  ['switch',['SWITCH',['../Basics_8h.html#a88cf59242b5a2ace3d90704ab4d2bcda',1,'Basics.h']]],
+  ['switch_5fto_5fantenna',['SWITCH_TO_ANTENNA',['../Basics_8h.html#a56077ad545aede44679ea2a7ab3a4d6f',1,'Basics.h']]],
+  ['switch_5fto_5fns',['SWITCH_TO_NS',['../Basics_8h.html#adb83e5ae147752bdfbfec131998b1b41',1,'Basics.h']]]
 ];

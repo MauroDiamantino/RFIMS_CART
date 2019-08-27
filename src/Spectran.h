@@ -358,7 +358,7 @@ public:
 	void Read(Reply& reply)
 	{
 		const unsigned int WAITING_TIME_MS = 1500; //1.5 s
-		const unsigned int DELAY_US = 15000; //10 ms
+		const unsigned int DELAY_US = 5000; //5 ms
 		const unsigned int NUM_OF_ITERS = ceil( WAITING_TIME_MS / (double(DELAY_US)/1000.0) );
 		DWORD receivedBytes;
 		unsigned int numOfBytes=reply.GetNumOfBytes();
@@ -366,15 +366,15 @@ public:
 
 		unsigned int i=0;
 
-//		unsigned int currNumOfBytes=0;
-//		while ( currNumOfBytes<numOfBytes && i++<NUM_OF_ITERS )
-//		{
-//			currNumOfBytes = Available();
-//			usleep(DELAY_US);
-//		}
-
-		while( Available()<numOfBytes && i++<NUM_OF_ITERS )
+		unsigned int currNumOfBytes=0;
+		while ( currNumOfBytes<numOfBytes && i++<NUM_OF_ITERS )
+		{
+			currNumOfBytes = Available();
 			usleep(DELAY_US);
+		}
+
+//		while( Available()<numOfBytes && i++<NUM_OF_ITERS )
+//			usleep(DELAY_US);
 
 		if(i>=NUM_OF_ITERS)
 			throw rfims_exception("in a reading operation, the input bytes were waited too much time.");

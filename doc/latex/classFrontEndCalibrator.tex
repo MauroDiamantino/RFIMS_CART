@@ -165,6 +165,8 @@ This is one of the central methods. It estimates the front end parameters once t
 
 This method must be called once the calibration process finished, i.\+e. the method {\ttfamily \hyperlink{classFrontEndCalibrator_a4ba6971b00b7736b80e04a5f9ca784dc}{End\+Calibration()}} must be called first. The front end parameters, total gain and total noise figure, are estimated using the Y-\/\+Factor method, which is exposed in the Application Note \char`\"{}\+Noise Figure Measurement Accuracy – The Y-\/\+Factor Method\char`\"{} of Keysight Technologies.
 
+To perform the estimation of the front end parameters the following equations are used\+: \[ ENR_{CORR}=ENR_{CAL}+\frac{T_{O}-T_{CORR}}{T_{O}} \] \[ T_{SON}=T_{O}*ENR_{CORR}+T_{SOFF} \] \[ Y=\frac{N_{OUT_{ON}}}{N_{OUT_{OFF}}} \] \[ T_{receiver}=\frac{T_{SON}-Y*T_{SOFF}}{Y-1} \] \[ F_{receiver}=1+\frac{T_{receiver}}{T_O} \] \[ NF_{receiver}=10*\log_{10}(F_{receiver}) \] \[ G_{receiver}=\frac{1}{2*k*RBW}*\left[\frac{N_{OUT_{ON}}}{T_{SON}+T_{receiver}}+\frac{N_{OUT_{OFF}}}{T_{SOFF}+T_{receiver}}\right] \]
+
 Once the parameters\textquotesingle{} curves have been estimated, their mean values are checked to be reasonable. \mbox{\Hypertarget{classFrontEndCalibrator_af166e90f4fe0dfd7cdf825b88d33a479}\label{classFrontEndCalibrator_af166e90f4fe0dfd7cdf825b88d33a479}} 
 \index{Front\+End\+Calibrator@{Front\+End\+Calibrator}!Load\+E\+NR@{Load\+E\+NR}}
 \index{Load\+E\+NR@{Load\+E\+NR}!Front\+End\+Calibrator@{Front\+End\+Calibrator}}
@@ -176,9 +178,7 @@ Once the parameters\textquotesingle{} curves have been estimated, their mean val
 This method load the curve of E\+NR values versus frequency of the noise generator, from the corresponding file. 
 
 The E\+NR values versus frequency of the noise generator are loaded from the file \hyperlink{Basics_8h_a0423f4cb393331ce0b9f6b3a43adcaae}{B\+A\+S\+E\+\_\+\+P\+A\+TH}/calibration/enr.txt, then those values are corrected taking into account a statistical mean physical temperature of the noise source at time of the factory calibration. That technique is exposed in the Application Note \char`\"{}\+Noise Figure Measurement Accuracy – The Y-\/\+Factor
-\+Method\char`\"{} of Keysight Technologies. To finish, the corrected E\+NR curve is adjusted to be used in the mathematical operations with the captured sweeps.
-
-To perform the estimation of the front end parameters the following equations are used\+: \[ ENR_{CORR}=ENR_{CAL}+\frac{T_{O}-T_{CORR}}{T_{O}} \] \[ T_{SON}=T_{O}*ENR_{CORR}+T_{SOFF} \] \[ Y=\frac{N_{OUT_{ON}}}{N_{OUT_{OFF}}} \] \[ T_{receiver}=\frac{T_{SON}-Y*T_{SOFF}}{Y-1} \] \[ F_{receiver}=1+\frac{T_{receiver}}{T_O} \] \[ NF_{receiver}=10*\log_{10}(F_{receiver}) \] \[ G_{receiver}=\frac{1}{2*k*RBW}*\left[\frac{N_{OUT_{ON}}}{T_{SON}+T_{receiver}}+\frac{N_{OUT_{OFF}}}{T_{SOFF}+T_{receiver}}\right] \] \mbox{\Hypertarget{classFrontEndCalibrator_a6fcf8e8343878614d1b03910bb97a3d6}\label{classFrontEndCalibrator_a6fcf8e8343878614d1b03910bb97a3d6}} 
+\+Method\char`\"{} of Keysight Technologies. To finish, the corrected E\+NR curve is adjusted to be used in the mathematical operations with the captured sweeps. \mbox{\Hypertarget{classFrontEndCalibrator_a6fcf8e8343878614d1b03910bb97a3d6}\label{classFrontEndCalibrator_a6fcf8e8343878614d1b03910bb97a3d6}} 
 \index{Front\+End\+Calibrator@{Front\+End\+Calibrator}!Set\+Bands\+Parameters@{Set\+Bands\+Parameters}}
 \index{Set\+Bands\+Parameters@{Set\+Bands\+Parameters}!Front\+End\+Calibrator@{Front\+End\+Calibrator}}
 \subsubsection{\texorpdfstring{Set\+Bands\+Parameters()}{SetBandsParameters()}}

@@ -10,7 +10,7 @@
  */
 SpectranConfigurator::SpectranConfigurator(SpectranInterface& interf) : interface(interf)
 {
-	bandIndex=10000;
+	bandIndex=1000;
 	lastWriteTimes[0]=lastWriteTimes[1]=0;
 }
 
@@ -670,9 +670,7 @@ BandParameters SpectranConfigurator::ConfigureNextBand()
 			cerr << "ms which is bigger than original one";
 		}
 		else
-		{
 			throw;
-		}
 	}
 
 	if(subBandsParamVector[bandIndex].flagDefaultSamplePoints)

@@ -29,6 +29,7 @@ var searchData=
   ['speakervol',['speakerVol',['../structSpectranConfigurator_1_1FixedParameters.html#a4b30a0ba5199d6c6703838142da3bcdc',1,'SpectranConfigurator::FixedParameters']]],
   ['specconfiguratorptr',['specConfiguratorPtr',['../classSignalHandler.html#a0b9c75b3e3c928c01cc5e44d42e5ac38',1,'SignalHandler']]],
   ['specinterfptr',['specInterfPtr',['../classSignalHandler.html#a855d0b79fcbacf50e4a1d12bd5d1bf53',1,'SignalHandler']]],
+  ['spectran',['SPECTRAN',['../Basics_8h.html#a237073109a5bfa275095a6997d994c39',1,'Basics.h']]],
   ['spectran_2eh',['Spectran.h',['../Spectran_8h.html',1,'']]],
   ['spectranconfigurator',['SpectranConfigurator',['../classSpectranConfigurator.html',1,'SpectranConfigurator'],['../classSpectranConfigurator.html#af6a9f524ea5625e6e30be0e843c17c8a',1,'SpectranConfigurator::SpectranConfigurator()']]],
   ['spectranconfigurator_2ecpp',['SpectranConfigurator.cpp',['../SpectranConfigurator_8cpp.html',1,'']]],
@@ -46,5 +47,8 @@ var searchData=
   ['sweepplotterptr',['sweepPlotterPtr',['../classSignalHandler.html#a7ec978dc8c16c31aa8faefe4e350302c',1,'SignalHandler']]],
   ['sweepprocessing_2eh',['SweepProcessing.h',['../SweepProcessing_8h.html',1,'']]],
   ['sweepreply',['SweepReply',['../classSweepReply.html',1,'SweepReply'],['../classSweepReply.html#a27d588db63e7c9d5374cfbfc88d9bc4f',1,'SweepReply::SweepReply()'],['../classSweepReply.html#a64fa7237d721d3dc95a06f145a0e7a7d',1,'SweepReply::SweepReply(const std::uint8_t *bytesPtr)']]],
-  ['sweeptime',['sweepTime',['../structBandParameters.html#a184931085fad14897c5639c5a321fd1d',1,'BandParameters']]]
+  ['sweeptime',['sweepTime',['../structBandParameters.html#a184931085fad14897c5639c5a321fd1d',1,'BandParameters']]],
+  ['switch',['SWITCH',['../Basics_8h.html#a88cf59242b5a2ace3d90704ab4d2bcda',1,'Basics.h']]],
+  ['switch_5fto_5fantenna',['SWITCH_TO_ANTENNA',['../Basics_8h.html#a56077ad545aede44679ea2a7ab3a4d6f',1,'Basics.h']]],
+  ['switch_5fto_5fns',['SWITCH_TO_NS',['../Basics_8h.html#adb83e5ae147752bdfbfec131998b1b41',1,'Basics.h']]]
 ];

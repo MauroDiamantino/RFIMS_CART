@@ -95,29 +95,6 @@ void FrontEndCalibrator::SetBandsParameters(const std::vector<BandParameters> & 
  * That technique is exposed in the Application Note "Noise Figure Measurement Accuracy – The Y-Factor
  * Method" of Keysight Technologies. To finish, the corrected ENR curve is adjusted to be used in the
  * mathematical operations with the captured sweeps.
- *
- * To perform the estimation of the front end parameters the following equations are used:
- * \f[
- * 		ENR_{CORR}=ENR_{CAL}+\frac{T_{O}-T_{CORR}}{T_{O}}
- * \f]
- * \f[
- * 		T_{SON}=T_{O}*ENR_{CORR}+T_{SOFF}
- * \f]
- * \f[
- * 		Y=\frac{N_{OUT_{ON}}}{N_{OUT_{OFF}}}
- * \f]
- * \f[
- * 		T_{receiver}=\frac{T_{SON}-Y*T_{SOFF}}{Y-1}
- * \f]
- * \f[
- * 		F_{receiver}=1+\frac{T_{receiver}}{T_O}
- * \f]
- * \f[
- * 		NF_{receiver}=10*\log_{10}(F_{receiver})
- * \f]
- * \f[
- * 		G_{receiver}=\frac{1}{2*k*RBW}*\left[\frac{N_{OUT_{ON}}}{T_{SON}+T_{receiver}}+\frac{N_{OUT_{OFF}}}{T_{SOFF}+T_{receiver}}\right]
- * \f]
  */
 void FrontEndCalibrator::LoadENR()
 {
@@ -263,7 +240,30 @@ void FrontEndCalibrator::SetSweep(const FreqValues & sweep)
  * 	The front end parameters, total gain and total noise figure, are estimated using the Y-Factor method, which is exposed in
  * 	the Application Note "Noise Figure Measurement Accuracy – The Y-Factor Method" of Keysight Technologies.
  *
- * 	Once the parameters' curves have been estimated, their mean values are checked to be reasonable.
+ * 	To perform the estimation of the front end parameters the following equations are used:
+ * \f[
+ * 		ENR_{CORR}=ENR_{CAL}+\frac{T_{O}-T_{CORR}}{T_{O}}
+ * \f]
+ * \f[
+ * 		T_{SON}=T_{O}*ENR_{CORR}+T_{SOFF}
+ * \f]
+ * \f[
+ * 		Y=\frac{N_{OUT_{ON}}}{N_{OUT_{OFF}}}
+ * \f]
+ * \f[
+ * 		T_{receiver}=\frac{T_{SON}-Y*T_{SOFF}}{Y-1}
+ * \f]
+ * \f[
+ * 		F_{receiver}=1+\frac{T_{receiver}}{T_O}
+ * \f]
+ * \f[
+ * 		NF_{receiver}=10*\log_{10}(F_{receiver})
+ * \f]
+ * \f[
+ * 		G_{receiver}=\frac{1}{2*k*RBW}*\left[\frac{N_{OUT_{ON}}}{T_{SON}+T_{receiver}}+\frac{N_{OUT_{OFF}}}{T_{SOFF}+T_{receiver}}\right]
+ * \f]
+ *
+ * Once the parameters' curves have been estimated, their mean values are checked to be reasonable.
  */
 void FrontEndCalibrator::EstimateParameters()
 {
@@ -400,7 +400,7 @@ void FrontEndCalibrator::LoadDefaultParameters()
 
 		ifs.open( pathNoiseFig.string() );
 
-		//Exctracting the frequency values of noise figure curve
+		//Extracting the frequency values of noise figure curve
 		while( ifs.get()!=',' );
 		do
 		{

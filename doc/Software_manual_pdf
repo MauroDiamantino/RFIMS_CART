@@ -1,0 +1,17 @@
+#! /bin/bash
+
+if command -v atril > /dev/null;
+then
+	if [ -f ./latex/refman.pdf ]
+	then
+		atril ./latex/refman.pdf
+	else
+		echo "The document does not exist. Please regenerate the document with doxygen and latex."
+		read -n 1000 -t 0
+		read -s -p "Press Enter to finish..."
+	fi
+else
+	echo "Please install the pdf reader \"atril\""
+	read -t 0 -n 1000
+	read -s -p "Press Enter to finish..."
+fi

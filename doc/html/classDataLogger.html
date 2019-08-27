@@ -87,13 +87,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a2ffe9fb45883c2880e1c45a4406fc22b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method is intended to save the bands parameters in a CSV file which is more adequately to be read in the remote server.  <a href="#a2ffe9fb45883c2880e1c45a4406fc22b">More...</a><br /></td></tr>
 <tr class="separator:a2ffe9fb45883c2880e1c45a4406fc22b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a058ed66d04269e7d37501ecfe775c067"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataLogger.html#a058ed66d04269e7d37501ecfe775c067">SaveFrontEndParam</a> (const <a class="el" href="structFreqValues.html">FreqValues</a> &amp;gain, const <a class="el" href="structFreqValues.html">FreqValues</a> &amp;noiseFigure)</td></tr>
-<tr class="memdesc:a058ed66d04269e7d37501ecfe775c067"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method is intended to save the estimated front end parameters, gain and noise figure, into the memory.  <a href="#a058ed66d04269e7d37501ecfe775c067">More...</a><br /></td></tr>
+<tr class="memdesc:a058ed66d04269e7d37501ecfe775c067"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method is intended to save the estimated front end parameters, gain and noise figure, into the non-volatile memory.  <a href="#a058ed66d04269e7d37501ecfe775c067">More...</a><br /></td></tr>
 <tr class="separator:a058ed66d04269e7d37501ecfe775c067"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2063fcd87971520a5bfa5aef6d73fea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataLogger.html#ab2063fcd87971520a5bfa5aef6d73fea">SaveSweep</a> (const <a class="el" href="structSweep.html">Sweep</a> &amp;sweep)</td></tr>
-<tr class="memdesc:ab2063fcd87971520a5bfa5aef6d73fea"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method is intended to save a calibrated sweep into the memory.  <a href="#ab2063fcd87971520a5bfa5aef6d73fea">More...</a><br /></td></tr>
+<tr class="memdesc:ab2063fcd87971520a5bfa5aef6d73fea"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method is intended to save a calibrated sweep into the non-volatile memory.  <a href="#ab2063fcd87971520a5bfa5aef6d73fea">More...</a><br /></td></tr>
 <tr class="separator:ab2063fcd87971520a5bfa5aef6d73fea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c772c3529adc3759ba0e1e596500f65"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataLogger.html#a0c772c3529adc3759ba0e1e596500f65">SaveRFI</a> (const <a class="el" href="structRFI.html">RFI</a> &amp;rfi)</td></tr>
-<tr class="memdesc:a0c772c3529adc3759ba0e1e596500f65"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method is intended to save the detected <a class="el" href="structRFI.html" title="The aim of this structure is to store the data related with the detected RF interference (RFI): frequ...">RFI</a> into the last sweep, into the memory.  <a href="#a0c772c3529adc3759ba0e1e596500f65">More...</a><br /></td></tr>
+<tr class="memdesc:a0c772c3529adc3759ba0e1e596500f65"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method is intended to save the detected <a class="el" href="structRFI.html" title="The aim of this structure is to store the data related with the detected RF interference (RFI): frequ...">RFI</a> in the last sweep, into the non-volatile memory.  <a href="#a0c772c3529adc3759ba0e1e596500f65">More...</a><br /></td></tr>
 <tr class="separator:a0c772c3529adc3759ba0e1e596500f65"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4fd6e432dd4348cbe3b02a0fd6969ab5"><td class="memItemLeft" align="right" valign="top"><a id="a4fd6e432dd4348cbe3b02a0fd6969ab5"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataLogger.html#a4fd6e432dd4348cbe3b02a0fd6969ab5">DeleteOldFiles</a> () const</td></tr>
@@ -106,7 +106,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:ab58f4cc05f738ef757c884fe9ef131eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method is responsible for the uploading of the data files to the remote server.  <a href="#ab58f4cc05f738ef757c884fe9ef131eb">More...</a><br /></td></tr>
 <tr class="separator:ab58f4cc05f738ef757c884fe9ef131eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a98ea7aaa941bbddea8069415e1652759"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataLogger.html#a98ea7aaa941bbddea8069415e1652759">PrepareAndUploadData</a> ()</td></tr>
-<tr class="memdesc:a98ea7aaa941bbddea8069415e1652759"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method allows to create a thread where the data files will be uploaded to the remote server, in parallel with the capture of a new sweep.  <a href="#a98ea7aaa941bbddea8069415e1652759">More...</a><br /></td></tr>
+<tr class="memdesc:a98ea7aaa941bbddea8069415e1652759"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method creates a thread where the data files will be uploaded, in parallel with the capture of a new sweep.  <a href="#a98ea7aaa941bbddea8069415e1652759">More...</a><br /></td></tr>
 <tr class="separator:a98ea7aaa941bbddea8069415e1652759"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
@@ -135,7 +135,7 @@ void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 </div><div class="memdoc">
 
 <p>The unique class constructor. </p>
-<p>The constructor initializes all the internal attributes, checks if the corresponding folders exist and if any folder does not exist so it is created. Also, it checks if there is a shell available to be able to execute the external python script "client.py" to upload the data. </p>
+<p>The constructor initializes all the internal attributes, checks if the corresponding folders exist and if any folder does not exist then it is created. Also, it checks if there is a shell available to be able to execute the external python script "client.py" to upload the data. </p>
 
 </div>
 </div>
@@ -175,7 +175,7 @@ void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
       </table>
 </div><div class="memdoc">
 
-<p>This method allows to create a thread where the data files will be uploaded to the remote server, in parallel with the capture of a new sweep. </p>
+<p>This method creates a thread where the data files will be uploaded, in parallel with the capture of a new sweep. </p>
 <p>This method creates a thread where the methods <code><a class="el" href="classDataLogger.html#a147fb7eaee1c38bbf57ef2d6cddf70d5" title="The aim of this method is to prepare, archive and compress, the files which will be send to the remot...">ArchiveAndCompress()</a></code> and <code><a class="el" href="classDataLogger.html#ab58f4cc05f738ef757c884fe9ef131eb" title="This method is responsible for the uploading of the data files to the remote server. ">UploadData()</a></code> are called. After the creation of the thread, the method ends and the main thread can continues with the next operations, like the moving of the antenna, the capture of a new sweep, etc. The next time this method is called, it will control if the last thread has finished, if not, the method will wait to the thread to finish, and then it will create a new thread for the uploading of the new data. </p>
 
 </div>
@@ -197,9 +197,9 @@ void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 </div><div class="memdoc">
 
 <p>This method is intended to save the bands parameters in a CSV file which is more adequately to be read in the remote server. </p>
-<p>This method should be called each time the bands' parameters are reloaded (or loaded by first time) because of the file <a class="el" href="Basics_8h.html#a0423f4cb393331ce0b9f6b3a43adcaae">BASE_PATH</a>/parameters/freqbands.txt was modified, to update the file <a class="el" href="Basics_8h.html#a0423f4cb393331ce0b9f6b3a43adcaae">BASE_PATH</a>/parameters/csv/freqbands.csv to that has the same parameters, just in a different format. The CSV file is generated because it is easier the bands' parameters to be loaded from a file with CSV format than from a file with a more human-readable format like freqbands.txt. Each time this method is called the file freqbands.csv is regenerated and then it is incorporated in the archive file which will be uploaded at the end of the measurement cycle. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>This method should be called each time the bands' parameters are reloaded (or loaded by first time), because of the file <a class="el" href="Basics_8h.html#a0423f4cb393331ce0b9f6b3a43adcaae">BASE_PATH</a>/parameters/freqbands.txt was modified, to update the file <a class="el" href="Basics_8h.html#a0423f4cb393331ce0b9f6b3a43adcaae">BASE_PATH</a>/parameters/csv/freqbands.csv to that has the same parameters, just in a different format. The CSV file is generated because it is easier the bands' parameters to be loaded from a file with CSV format than from a file with a more human-readable format like freqbands.txt. Each time this method is called the file freqbands.csv is regenerated. This file is then incorporated in the archive file, in the method <a class="el" href="classDataLogger.html#a147fb7eaee1c38bbf57ef2d6cddf70d5" title="The aim of this method is to prepare, archive and compress, the files which will be send to the remot...">ArchiveAndCompress()</a>. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">bandsParamVector</td><td>A vector with the parameters of all the frequency bands. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">bandsParamVector</td><td>A vector with the parameters of all frequency bands. </td></tr>
   </table>
   </dd>
 </dl>
@@ -232,7 +232,7 @@ void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
       </table>
 </div><div class="memdoc">
 
-<p>This method is intended to save the estimated front end parameters, gain and noise figure, into the memory. </p>
+<p>This method is intended to save the estimated front end parameters, gain and noise figure, into the non-volatile memory. </p>
 <p>The given front end parameters are saved in two different files:</p><ul>
 <li><a class="el" href="Basics_8h.html#a0423f4cb393331ce0b9f6b3a43adcaae">BASE_PATH</a>/calibration/frontendparam/gain_DD-MM-YYYYTHH:MM:SS.csv</li>
 <li><a class="el" href="Basics_8h.html#a0423f4cb393331ce0b9f6b3a43adcaae">BASE_PATH</a>/calibration/frontendparam/noisefigure_DD-MM-YYYYTHH:MM:SS.csv where DD-MM-YYYYTHH:MM:SS is the timestamp of the current measurement cycle.</li>
@@ -267,7 +267,7 @@ void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
       </table>
 </div><div class="memdoc">
 
-<p>This method is intended to save the detected <a class="el" href="structRFI.html" title="The aim of this structure is to store the data related with the detected RF interference (RFI): frequ...">RFI</a> into the last sweep, into the memory. </p>
+<p>This method is intended to save the detected <a class="el" href="structRFI.html" title="The aim of this structure is to store the data related with the detected RF interference (RFI): frequ...">RFI</a> in the last sweep, into the non-volatile memory. </p>
 <p>Each given structure with the <a class="el" href="structRFI.html" title="The aim of this structure is to store the data related with the detected RF interference (RFI): frequ...">RFI</a> detected in the last sweep is saved in a different file with the filename format RFI_x.csv, where 'x' is an integer number between 1 and 2*(number of azimuth positions). So each file corresponds to a sweep of the measurement cycle and all the files of determined measurement cycle are in the same folder, <a class="el" href="Basics_8h.html#a0423f4cb393331ce0b9f6b3a43adcaae">BASE_PATH</a>/measurement/RFI_DD-MM-YYYYTHH:MM:SS/ where the last part of the folder's name is the timestamp of the measurement cycle. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">rfi</td><td>A structure with <a class="el" href="structRFI.html" title="The aim of this structure is to store the data related with the detected RF interference (RFI): frequ...">RFI</a> to be saved. </td></tr>
@@ -293,8 +293,8 @@ void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
       </table>
 </div><div class="memdoc">
 
-<p>This method is intended to save a calibrated sweep into the memory. </p>
-<p>The given sweep is saved in <a class="el" href="Basics_8h.html#a0423f4cb393331ce0b9f6b3a43adcaae">BASE_PATH</a>/measurements/ with the filename format "sweep_DD-MM-YYYYTHH:MM:SS.csv" where the last part is the timestamp of the measurement cycle, which correspond to the beginning of this.</p>
+<p>This method is intended to save a calibrated sweep into the non-volatile memory. </p>
+<p>The given sweep is saved in <a class="el" href="Basics_8h.html#a0423f4cb393331ce0b9f6b3a43adcaae">BASE_PATH</a>/measurements/ with the filename format "sweep_DD-MM-YYYYTHH:MM:SS.csv" where the last part is the timestamp of the measurement cycle, which correspond to the beginning of this one.</p>
 <p>All sweeps which corresponds to the same measurement cycle are saved in the same file and the method automatically create a new file or reopen the corresponding file each time a new sweep must be saved. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">sweep</td><td>A structure with the sweep to be saved. </td></tr>
@@ -320,7 +320,7 @@ void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 </div><div class="memdoc">
 
 <p>This method is responsible for the uploading of the data files to the remote server. </p>
-<p>To upload the files the script /usr/local/client.py is called. This script try to send the archive file many times through one hour, taking into account the possibility that there is no internet connection in the first try. If the script achieves the sending, then it wakes up the remote server to that one to read the files, and finally the script removes the local archive file. If the script ends with errors, the file is not deleted and remains in a queue waiting to be send. The idea is the uploading to perform at the end of each measurement cycle. </p>
+<p>To upload the files the script /usr/local/client.py is called. This script try to send the archive file many times through one hour, taking into account the possibility that there is no Internet connection in the first try. If the script achieves the sending, then it wakes up the remote server to that one to read the files, and finally the script removes the local archive file. If the script ends with errors, the file is not deleted and remains in a queue waiting to be send. The idea is the uploading to perform at the end of each measurement cycle. </p>
 
 </div>
 </div>

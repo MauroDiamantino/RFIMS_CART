@@ -27,13 +27,22 @@ Before the installation of the software, it is necessary to install the followin
 To compile and install the software, a terminal must be opened, the current directory must be changed to the base directory of the project and the following commands must be run:
 
 	make all
-	make copy-files
+	sudo make copy-files
 
 The first instruction compiles the software and it generates the binay file ./bin/rfims-cart. The second instruction copies the previous binary file to the path /usr/local/bin/, which is inside the environment variable PATH, so that the software could be run without writing the path where the binary file is; the python scritp ./scripts/client.py, which is used by the software to upload the data, is copied to the path /usr/local/; the file ./data/99-aaronia-spectran.rules is copied to the path /etc/udev/rules.d/, which allows a non-root user to run the software; and, finally, the directory tree ./data/RFIMS-CART/, which contains several files which are accesed by the software, are copied to the path /home/pi/. These directories and files are accesed by the software to load the configuration parameters and to save there the measurements.
 
 To run the software, it must be typed "rfims-cart" in a terminal. The software has several arguments which define its behavior. To know the arguments and their usage it must be typed "rfims-cart --help" or "rims-cart -h".
 
 To avoid interferences produced by the Raspberry Pi itself, it is very important to disable the Wi-Fi and Bluetooth interfaces, which is done editing the file /boot/config.txt.
+
+To genearate/regenerate the software manual, you must run the following commands in a terminal:
+
+	cd doc
+	doxygen Doxyfile
+	cd latex
+	make pdf
+
+After that, the scripts "Software_manual_pdf" and "Software_manual_html", which are in the folder doc/, will allow you to access the corresponding files.
 
 ///////////////////////////////////////////////////////////////////////ESPAÑOL////////////////////////////////////////////////////////////////////////////
 
@@ -62,7 +71,7 @@ Antes de instalar este software, es necesario instalar las siguientes aplicacion
 Para compilar e instalar el software se debe abrir una terminal, ubicarse sobre el directorio base del proyecto y ejecutar los siguientes comandos:
 
 	make all
-	make copy-files
+	sudo make copy-files
 
 Con la primer instrucción se compila el programa y se genera el binario ./bin/rfims-cart. Con la segunda instrucción se copia el binario anterior a la ruta
 /usr/local/bin/, que está dentro de la variable de entorno PATH, para que se puede ejecutar el mismo sin escribir la ruta donde se encuentra; se copia el script de python ./scripts/client.py, que es usado por el programa para enviar los datos al servidor remoto, a la ruta /usr/local/; se copia el archivo con udev rules ./data/99-aaronia-spectran.rules a la ruta /etc/udev/rules.d/, que permite que un usuario no root pueda ejecutar el software; y, por último, se copia el árbol de directorios con archivos ./data/RFIMS-CART/ a /home/pi/. Estos directorios y archivos son utilizados por el programa para cargar los parámetros de configuración y para almacenar las mediciones y datos capturados.
@@ -70,4 +79,13 @@ Con la primer instrucción se compila el programa y se genera el binario ./bin/r
 Para ejecutar el programa se debe tipear "rfims-cart" en la terminal. El programa tiene multiples argumentos que permiten modificar su comportamiento. Para conocer los argumentos y cómo deben usarse, se debe tipear "rfims-cart --help" o "rfims-cart -h".
 
 Para evitar interferencias producidas por la misma placa Raspberry Pi, resulta trascendental desactivar las interfaces Wi-Fi y Bluetooth, lo cual se realiza modificando el archivo /boot/config.txt.
+
+Para generar/regenerar el manual del software, ejecutar en una terminal los siguientes comandos:
+
+	cd doc
+	doxygen Doxyfile
+	cd latex
+	make pdf
+
+Luego los scripts "Software_manual_pdf" y "Software_manual_html" de la carpeta doc/ permitirán abrir los archivos correspondientes.
 

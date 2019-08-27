@@ -1,0 +1,10 @@
+#! /bin/bash
+
+if [ -f ./html/index.html ]
+then
+	x-www-browser ./html/index.html
+else
+	echo "The document does not exist. Please regenerate the document with doxygen."
+	read -n 1000 -t 0
+	read -s -p "Press Enter to finish..."
+fi

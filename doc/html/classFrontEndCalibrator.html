@@ -324,28 +324,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 <p>This is one of the central methods. It estimates the front end parameters once the two sweeps were captured. </p>
 <p>This method must be called once the calibration process finished, i.e. the method <code><a class="el" href="classFrontEndCalibrator.html#a4ba6971b00b7736b80e04a5f9ca784dc" title="The calibration process is finished turning it off the noise generator and switching the input to the...">EndCalibration()</a></code> must be called first. The front end parameters, total gain and total noise figure, are estimated using the Y-Factor method, which is exposed in the Application Note "Noise Figure Measurement Accuracy – The Y-Factor Method" of Keysight Technologies.</p>
-<p>Once the parameters' curves have been estimated, their mean values are checked to be reasonable. </p>
-
-</div>
-</div>
-<a id="af166e90f4fe0dfd7cdf825b88d33a479"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af166e90f4fe0dfd7cdf825b88d33a479">&#9670;&nbsp;</a></span>LoadENR()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void FrontEndCalibrator::LoadENR </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>This method load the curve of ENR values versus frequency of the noise generator, from the corresponding file. </p>
-<p>The ENR values versus frequency of the noise generator are loaded from the file <a class="el" href="Basics_8h.html#a0423f4cb393331ce0b9f6b3a43adcaae">BASE_PATH</a>/calibration/enr.txt, then those values are corrected taking into account a statistical mean physical temperature of the noise source at time of the factory calibration. That technique is exposed in the Application Note "Noise Figure Measurement Accuracy – The Y-Factor
-Method" of Keysight Technologies. To finish, the corrected ENR curve is adjusted to be used in the mathematical operations with the captured sweeps.</p>
 <p>To perform the estimation of the front end parameters the following equations are used: </p><p class="formulaDsp">
 <img class="formulaDsp" alt="\[ ENR_{CORR}=ENR_{CAL}+\frac{T_{O}-T_{CORR}}{T_{O}} \]" src="form_0.png"/>
 </p>
@@ -367,7 +345,29 @@ Method" of Keysight Technologies. To finish, the corrected ENR curve is adjusted
  <p class="formulaDsp">
 <img class="formulaDsp" alt="\[ G_{receiver}=\frac{1}{2*k*RBW}*\left[\frac{N_{OUT_{ON}}}{T_{SON}+T_{receiver}}+\frac{N_{OUT_{OFF}}}{T_{SOFF}+T_{receiver}}\right] \]" src="form_6.png"/>
 </p>
- 
+<p>Once the parameters' curves have been estimated, their mean values are checked to be reasonable. </p>
+
+</div>
+</div>
+<a id="af166e90f4fe0dfd7cdf825b88d33a479"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af166e90f4fe0dfd7cdf825b88d33a479">&#9670;&nbsp;</a></span>LoadENR()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void FrontEndCalibrator::LoadENR </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This method load the curve of ENR values versus frequency of the noise generator, from the corresponding file. </p>
+<p>The ENR values versus frequency of the noise generator are loaded from the file <a class="el" href="Basics_8h.html#a0423f4cb393331ce0b9f6b3a43adcaae">BASE_PATH</a>/calibration/enr.txt, then those values are corrected taking into account a statistical mean physical temperature of the noise source at time of the factory calibration. That technique is exposed in the Application Note "Noise Figure Measurement Accuracy – The Y-Factor
+Method" of Keysight Technologies. To finish, the corrected ENR curve is adjusted to be used in the mathematical operations with the captured sweeps. </p>
+
 </div>
 </div>
 <a id="a6fcf8e8343878614d1b03910bb97a3d6"></a>

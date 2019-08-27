@@ -373,7 +373,6 @@ public:
 	//! This method creates a thread where the data files will be uploaded, in parallel with the capture of a new sweep.
 	void PrepareAndUploadData();
 	//Friend functions//
-	//! The function which is executed by the thread which is responsible for the concurrent uploading of the data files.
 	friend void *UploadThreadFunc(void*);
 };
 

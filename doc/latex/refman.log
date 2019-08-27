@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016/Debian) (preloaded format=pdflatex 2019.3.26)  21 AUG 2019 20:25
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016/Debian) (preloaded format=pdflatex 2019.3.26)  27 AUG 2019 18:01
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1333,9 +1333,9 @@ LaTeX Font Warning: Font shape `T1/pcr/bc/n' undefined
 
 [16] [17]) (./classCurveAdjuster.tex [18] [19]) (./structData3D.tex [20])
 (./classDataLogger.tex [21] [22]
-Underfull \hbox (badness 1400) in paragraph at lines 92--93
+Underfull \hbox (badness 1226) in paragraph at lines 92--93
 []\T1/phv/m/n/10 This method should be called each time the bands\TS1/phv/m/n/1
-0 ' \T1/phv/m/n/10 pa-ram-e-ters are reloaded (or loaded by first time)
+0 ' \T1/phv/m/n/10 pa-ram-e-ters are reloaded (or loaded by first time),
  []
 
 
@@ -1345,37 +1345,37 @@ s/freqbands.txt was mod-i-fied, to up-date the file [][]B[]A[]S[]E[]_[][]P[]A[]
 
  []
 
-[23] [24] [25]) (./structSpectranConfigurator_1_1FixedParameters.tex)
-(./unionFloatToBytes.tex [26]) (./structFreqValues.tex
-<structFreqValues__inherit__graph.pdf, id=2587, 178.6675pt x 156.585pt>
+[23] [24]) (./structSpectranConfigurator_1_1FixedParameters.tex)
+(./unionFloatToBytes.tex [25]) (./structFreqValues.tex
+<structFreqValues__inherit__graph.pdf, id=2584, 178.6675pt x 156.585pt>
 File: structFreqValues__inherit__graph.pdf Graphic file (type pdf)
 
 <use structFreqValues__inherit__graph.pdf>
 Package pdftex.def Info: structFreqValues__inherit__graph.pdf used on input lin
-e 19.
+e 18.
 (pdftex.def)             Requested size: 178.0pt x 156.00879pt.
 
-<structFreqValues__coll__graph.pdf, id=2588, 156.585pt x 167.62625pt>
+<structFreqValues__coll__graph.pdf, id=2585, 156.585pt x 167.62625pt>
 File: structFreqValues__coll__graph.pdf Graphic file (type pdf)
 
 <use structFreqValues__coll__graph.pdf>
 Package pdftex.def Info: structFreqValues__coll__graph.pdf used on input line 2
-9.
+7.
 (pdftex.def)             Requested size: 156.0pt x 167.00684pt.
- [27 <./structFreqValues__inherit__graph.pdf>] [28 <./structFreqValues__coll__g
-raph.pdf>] [29] [30] [31]
+ [26 <./structFreqValues__inherit__graph.pdf>] [27 <./structFreqValues__coll__g
+raph.pdf>] [28] [29] [30]
 Overfull \vbox (2.5933pt too high) has occurred while \output is active []
 
 
-[32] [33]
+[31] [32]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [34]
-[35]
+ [33]
+[34]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [36]
-[37]) (./classFrontEndCalibrator.tex [38] [39]
+ [35]
+[36]) (./classFrontEndCalibrator.tex [37] [38]
 
 LaTeX Warning: Command \textdegree invalid in math mode on input line 147.
 
@@ -1390,39 +1390,39 @@ LaTeX Warning: Command \textdegree invalid in math mode on input line 147.
 
 Missing character: There is no ° in font cmr7!
 Missing character: There is no ° in font cmr7!
-[40]
+[39]
 Underfull \hbox (badness 10000) detected at line 152
 [][][]
  []
 
-[41]) (./structGPSCoordinates.tex) (./classGPSInterface.tex [42] [43] [44])
+[40]) (./structGPSCoordinates.tex) (./classGPSInterface.tex [41] [42] [43])
 (./classReply.tex
-<classReply__inherit__graph.pdf, id=3102, 152.57pt x 156.585pt>
+<classReply__inherit__graph.pdf, id=3099, 152.57pt x 156.585pt>
 File: classReply__inherit__graph.pdf Graphic file (type pdf)
 
 <use classReply__inherit__graph.pdf>
-Package pdftex.def Info: classReply__inherit__graph.pdf used on input line 19.
+Package pdftex.def Info: classReply__inherit__graph.pdf used on input line 18.
 (pdftex.def)             Requested size: 152.0pt x 156.0064pt.
- [45 <./classReply__inherit__graph.pdf>]
-[46] [47] [48]
+ [44 <./classReply__inherit__graph.pdf>]
+[45] [46] [47]
 Overfull \vbox (8.86064pt too high) has occurred while \output is active []
 
 
-[49]) (./structRFI.tex
-<structRFI__inherit__graph.pdf, id=3212, 146.5475pt x 156.585pt>
+[48]) (./structRFI.tex
+<structRFI__inherit__graph.pdf, id=3209, 146.5475pt x 156.585pt>
 File: structRFI__inherit__graph.pdf Graphic file (type pdf)
 
 <use structRFI__inherit__graph.pdf>
-Package pdftex.def Info: structRFI__inherit__graph.pdf used on input line 19.
+Package pdftex.def Info: structRFI__inherit__graph.pdf used on input line 18.
 (pdftex.def)             Requested size: 146.0pt x 155.99922pt.
 
-<structRFI__coll__graph.pdf, id=3213, 156.585pt x 224.84pt>
+<structRFI__coll__graph.pdf, id=3210, 156.585pt x 224.84pt>
 File: structRFI__coll__graph.pdf Graphic file (type pdf)
 
 <use structRFI__coll__graph.pdf>
-Package pdftex.def Info: structRFI__coll__graph.pdf used on input line 29.
+Package pdftex.def Info: structRFI__coll__graph.pdf used on input line 27.
 (pdftex.def)             Requested size: 156.0pt x 224.00919pt.
- [50 <./structRFI__inherit__graph.pdf> <./structRFI__coll__graph.pdf
+ [49 <./structRFI__inherit__graph.pdf> <./structRFI__coll__graph.pdf
 
 pdfTeX warning: pdflatex (file ./structRFI__coll__graph.pdf): PDF inclusion: mu
 ltiple pdfs with page group included in a single page
@@ -1430,104 +1430,106 @@ ltiple pdfs with page group included in a single page
 Overfull \vbox (2.37898pt too high) has occurred while \output is active []
 
 
-[51]) (./classRFIDetector.tex [52] [53]
+[50]) (./classRFIDetector.tex [51] [52]
 Underfull \hbox (badness 10000) detected at line 84
 [][][]
  []
 
-) (./classrfims__exception.tex [54]
-<classrfims__exception__inherit__graph.pdf, id=3345, 166.6225pt x 156.585pt>
+) (./classrfims__exception.tex [53]
+<classrfims__exception__inherit__graph.pdf, id=3342, 166.6225pt x 156.585pt>
 File: classrfims__exception__inherit__graph.pdf Graphic file (type pdf)
 
 <use classrfims__exception__inherit__graph.pdf>
 Package pdftex.def Info: classrfims__exception__inherit__graph.pdf used on inpu
-t line 19.
+t line 18.
 (pdftex.def)             Requested size: 166.0pt x 156.01117pt.
 
-<classrfims__exception__coll__graph.pdf, id=3346, 166.6225pt x 156.585pt>
+<classrfims__exception__coll__graph.pdf, id=3343, 166.6225pt x 156.585pt>
 File: classrfims__exception__coll__graph.pdf Graphic file (type pdf)
 
 <use classrfims__exception__coll__graph.pdf>
 Package pdftex.def Info: classrfims__exception__coll__graph.pdf used on input l
-ine 29.
+ine 27.
 (pdftex.def)             Requested size: 166.0pt x 156.01117pt.
- [55 <./classrfims__exception__inherit__graph.pdf> <./classrfims__exception__co
+ [54 <./classrfims__exception__inherit__graph.pdf> <./classrfims__exception__co
 ll__graph.pdf
 
 pdfTeX warning: pdflatex (file ./classrfims__exception__coll__graph.pdf): PDF i
 nclusion: multiple pdfs with page group included in a single page
->] [56]) (./classRFPlotter.tex [57]
+>] [55]) (./classRFPlotter.tex [56]
 Overfull \vbox (25.33649pt too high) has occurred while \output is active []
 
 
-[58]) (./classSignalHandler.tex
-<classSignalHandler__coll__graph.pdf, id=3430, 394.47375pt x 471.7625pt>
+[57]) (./classSignalHandler.tex
+<classSignalHandler__coll__graph.pdf, id=3427, 394.47375pt x 471.7625pt>
 File: classSignalHandler__coll__graph.pdf Graphic file (type pdf)
 
 <use classSignalHandler__coll__graph.pdf>
 Package pdftex.def Info: classSignalHandler__coll__graph.pdf used on input line
- 19.
+ 18.
 (pdftex.def)             Requested size: 350.0pt x 418.57877pt.
- [59]
-Underfull \hbox (badness 968) in paragraph at lines 25--27
+ [58]
+Underfull \hbox (badness 968) in paragraph at lines 24--26
 [][] \T1/phv/m/n/10 void [][]Setup[]Signal[]Handler[][] ([][]Spectran[]Interfac
 e[][] $\OMS/cmsy/m/n/10 ^^C$\T1/phv/m/n/10 spec[]Interf[]Pt, [][]Spectran[]Conf
 igurator[][] $\OMS/cmsy/m/n/10 ^^C$\T1/phv/m/n/10 spec[]Configurator[]Pt,
  []
 
 
-Underfull \hbox (badness 1377) in paragraph at lines 25--27
+Underfull \hbox (badness 1377) in paragraph at lines 24--26
 \T1/phv/m/n/10 Positioner[][] $\OMS/cmsy/m/n/10 ^^C$\T1/phv/m/n/10 ant[]Positio
 ner[]Pt=nullptr, [][]R[]F[]Plotter[][] $\OMS/cmsy/m/n/10 ^^C$\T1/phv/m/n/10 swe
 ep[]Plotter[]Pt=nullptr, [][]R[]F[]Plotter[][] $\OMS/cmsy/m/n/10 ^^C$\T1/phv/m/
 n/10 gain[]Plotter[]Pt=nullptr,
  []
 
-[60 <./classSignalHandler__coll__graph.pdf>] [61] [62])
-(./classSpectranConfigurator.tex [63] [64] [65] [66])
-(./classSpectranInterface.tex [67] [68] [69] [70]) (./structSweep.tex
-<structSweep__inherit__graph.pdf, id=3716, 146.5475pt x 156.585pt>
+[59 <./classSignalHandler__coll__graph.pdf>] [60] [61])
+(./classSpectranConfigurator.tex [62] [63] [64] [65])
+(./classSpectranInterface.tex [66] [67] [68] [69]) (./structSweep.tex
+<structSweep__inherit__graph.pdf, id=3713, 146.5475pt x 156.585pt>
 File: structSweep__inherit__graph.pdf Graphic file (type pdf)
 
 <use structSweep__inherit__graph.pdf>
-Package pdftex.def Info: structSweep__inherit__graph.pdf used on input line 19.
+Package pdftex.def Info: structSweep__inherit__graph.pdf used on input line 18.
 
 (pdftex.def)             Requested size: 146.0pt x 155.99922pt.
 
-<structSweep__coll__graph.pdf, id=3717, 156.585pt x 224.84pt>
+<structSweep__coll__graph.pdf, id=3714, 156.585pt x 224.84pt>
 File: structSweep__coll__graph.pdf Graphic file (type pdf)
 
 <use structSweep__coll__graph.pdf>
-Package pdftex.def Info: structSweep__coll__graph.pdf used on input line 29.
+Package pdftex.def Info: structSweep__coll__graph.pdf used on input line 27.
 (pdftex.def)             Requested size: 156.0pt x 224.00919pt.
- [71 <./structSweep__inherit__graph.pdf>]
-[72 <./structSweep__coll__graph.pdf>] [73] [74] [75] [76] [77]
+ [70 <./structSweep__inherit__graph.pdf>]
+[71 <./structSweep__coll__graph.pdf>] [72] [73] [74] [75] [76]
 Overfull \vbox (2.5933pt too high) has occurred while \output is active []
 
 
-[78] [79] [80] [81] [82]) (./classSweepBuilder.tex [83] [84])
-(./classSweepReply.tex [85]
-<classSweepReply__inherit__graph.pdf, id=4130, 152.57pt x 156.585pt>
+[77] [78] [79] [80] [81]) (./classSweepBuilder.tex [82] [83])
+(./classSweepReply.tex [84]
+<classSweepReply__inherit__graph.pdf, id=4127, 152.57pt x 156.585pt>
 File: classSweepReply__inherit__graph.pdf Graphic file (type pdf)
 
 <use classSweepReply__inherit__graph.pdf>
 Package pdftex.def Info: classSweepReply__inherit__graph.pdf used on input line
- 19.
+ 18.
 (pdftex.def)             Requested size: 152.0pt x 156.0064pt.
 
-<classSweepReply__coll__graph.pdf, id=4131, 152.57pt x 156.585pt>
+<classSweepReply__coll__graph.pdf, id=4128, 152.57pt x 156.585pt>
 File: classSweepReply__coll__graph.pdf Graphic file (type pdf)
 
 <use classSweepReply__coll__graph.pdf>
-Package pdftex.def Info: classSweepReply__coll__graph.pdf used on input line 29
+Package pdftex.def Info: classSweepReply__coll__graph.pdf used on input line 27
 .
 (pdftex.def)             Requested size: 152.0pt x 156.0064pt.
- [86 <./classSweepReply__inherit__graph.pdf> <./classSweepReply__coll__graph.pd
+ [85 <./classSweepReply__inherit__graph.pdf> <./classSweepReply__coll__graph.pd
 f
 
 pdfTeX warning: pdflatex (file ./classSweepReply__coll__graph.pdf): PDF inclusi
 on: multiple pdfs with page group included in a single page
->] [87]) (./structTimeData.tex [88] [89] [90] [91]) [92]
+>] [86]) (./structTimeData.tex [87] [88] [89] [90]) [91] [92
+
+]
 Chapter 6.
 (./client_8py.tex
 Underfull \hbox (badness 3312) in paragraph at lines 1--1
@@ -1535,9 +1537,7 @@ Underfull \hbox (badness 3312) in paragraph at lines 1--1
 ]C[]A[]R[]T/scripts/client.py File Ref-er-
  []
 
-[93
-
-]
+[93]
 Underfull \hbox (badness 10000) detected at line 51
 [][][]
  []
@@ -1568,15 +1568,15 @@ Underfull \hbox (badness 10000) in paragraph at lines 1--1
 ]C[]A[]R[]T/src/[]Antenna[]Positioner.cpp
  []
 
-[96] <AntennaPositioner_8cpp__incl.pdf, id=4361, 1299.85625pt x 302.12875pt>
+[96] <AntennaPositioner_8cpp__incl.pdf, id=4362, 1377.145pt x 302.12875pt>
 File: AntennaPositioner_8cpp__incl.pdf Graphic file (type pdf)
 
 <use AntennaPositioner_8cpp__incl.pdf>
-Package pdftex.def Info: AntennaPositioner_8cpp__incl.pdf used on input line 14
+Package pdftex.def Info: AntennaPositioner_8cpp__incl.pdf used on input line 13
 .
-(pdftex.def)             Requested size: 350.0pt x 81.34995pt.
+(pdftex.def)             Requested size: 350.0pt x 76.78595pt.
 
-Underfull \hbox (badness 10000) detected at line 22
+Underfull \hbox (badness 10000) detected at line 21
 [][][]
  []
 
@@ -1586,20 +1586,20 @@ Underfull \hbox (badness 10000) in paragraph at lines 1--1
 ]C[]A[]R[]T/src/[]Antenna[]Positioning.h
  []
 
-<AntennaPositioning_8h__incl.pdf, id=4365, 1299.85625pt x 245.91875pt>
+<AntennaPositioning_8h__incl.pdf, id=4366, 1377.145pt x 245.91875pt>
 File: AntennaPositioning_8h__incl.pdf Graphic file (type pdf)
 
 <use AntennaPositioning_8h__incl.pdf>
-Package pdftex.def Info: AntennaPositioning_8h__incl.pdf used on input line 19.
+Package pdftex.def Info: AntennaPositioning_8h__incl.pdf used on input line 18.
 
-(pdftex.def)             Requested size: 350.0pt x 66.21507pt.
+(pdftex.def)             Requested size: 350.0pt x 62.50018pt.
  [97 <./AntennaPositioner_8cpp__incl.pdf>] <AntennaPositioning_8h__dep__incl.pd
-f, id=4378, 571.13374pt x 279.0425pt>
+f, id=4379, 571.13374pt x 279.0425pt>
 File: AntennaPositioning_8h__dep__incl.pdf Graphic file (type pdf)
 
 <use AntennaPositioning_8h__dep__incl.pdf>
 Package pdftex.def Info: AntennaPositioning_8h__dep__incl.pdf used on input lin
-e 27.
+e 25.
 (pdftex.def)             Requested size: 350.0pt x 171.00337pt.
  [98 <./AntennaPositioning_8h__incl.pdf> <./AntennaPositioning_8h__dep__incl.pd
 f
@@ -1610,13 +1610,13 @@ lusion: multiple pdfs with page group included in a single page
 
 pdfTeX warning: pdflatex (file ./cardan_angles.pdf): PDF inclusion: found PDF v
 ersion <1.7>, but at most version <1.5> allowed
-<cardan_angles.pdf, id=4405, 199.74625pt x 150.5625pt>
+<cardan_angles.pdf, id=4407, 199.74625pt x 150.5625pt>
 File: cardan_angles.pdf Graphic file (type pdf)
  <use cardan_angles.pdf>
-Package pdftex.def Info: cardan_angles.pdf used on input line 57.
+Package pdftex.def Info: cardan_angles.pdf used on input line 55.
 (pdftex.def)             Requested size: 284.52756pt x 214.49634pt.
 
-Underfull \hbox (badness 10000) detected at line 62
+Underfull \hbox (badness 10000) detected at line 60
 [][][]
  []
 
@@ -1626,49 +1626,49 @@ Underfull \hbox (badness 10000) in paragraph at lines 1--1
 ]C[]A[]R[]T/src/[]Basics.cpp File Ref-er-
  []
 
-<Basics_8cpp__incl.pdf, id=4408, 1299.85625pt x 245.91875pt>
+<Basics_8cpp__incl.pdf, id=4410, 1377.145pt x 245.91875pt>
 File: Basics_8cpp__incl.pdf Graphic file (type pdf)
 
 <use Basics_8cpp__incl.pdf>
-Package pdftex.def Info: Basics_8cpp__incl.pdf used on input line 14.
-(pdftex.def)             Requested size: 350.0pt x 66.21507pt.
- [99 <./cardan_angles.pdf>]
-Underfull \hbox (badness 10000) detected at line 49
+Package pdftex.def Info: Basics_8cpp__incl.pdf used on input line 13.
+(pdftex.def)             Requested size: 350.0pt x 62.50018pt.
+ [99 <./cardan_angles.pdf> <./Basics_8cpp__incl.pdf>]
+Underfull \hbox (badness 10000) detected at line 48
 [][][]
  []
 
-[100 <./Basics_8cpp__incl.pdf>] [101]) (./Basics_8h.tex
-<Basics_8h__incl.pdf, id=4464, 1299.85625pt x 189.70876pt>
+[100] [101]) (./Basics_8h.tex
+<Basics_8h__incl.pdf, id=4466, 1377.145pt x 189.70876pt>
 File: Basics_8h__incl.pdf Graphic file (type pdf)
 
 <use Basics_8h__incl.pdf>
 Package pdftex.def Info: Basics_8h__incl.pdf used on input line 28.
-(pdftex.def)             Requested size: 350.0pt x 51.0802pt.
+(pdftex.def)             Requested size: 350.0pt x 48.21443pt.
  [102]
-<Basics_8h__dep__incl.pdf, id=4471, 2097.8375pt x 357.335pt>
+<Basics_8h__dep__incl.pdf, id=4472, 2097.8375pt x 357.335pt>
 File: Basics_8h__dep__incl.pdf Graphic file (type pdf)
 
 <use Basics_8h__dep__incl.pdf>
-Package pdftex.def Info: Basics_8h__dep__incl.pdf used on input line 36.
+Package pdftex.def Info: Basics_8h__dep__incl.pdf used on input line 35.
 (pdftex.def)             Requested size: 350.0pt x 59.61748pt.
  [103 <./Basics_8h__incl.pdf> <./Basics_8h__dep__incl.pdf
 
 pdfTeX warning: pdflatex (file ./Basics_8h__dep__incl.pdf): PDF inclusion: mult
 iple pdfs with page group included in a single page
 >] [104]
-Underfull \hbox (badness 10000) detected at line 119
+Underfull \hbox (badness 10000) detected at line 151
 [][][]
  []
 
-[105] [106]) (./Command_8cpp.tex
-<Command_8cpp__incl.pdf, id=4558, 1299.85625pt x 302.12875pt>
+[105] [106] [107]) (./Command_8cpp.tex [108]
+<Command_8cpp__incl.pdf, id=4594, 1377.145pt x 302.12875pt>
 File: Command_8cpp__incl.pdf Graphic file (type pdf)
 
 <use Command_8cpp__incl.pdf>
-Package pdftex.def Info: Command_8cpp__incl.pdf used on input line 14.
-(pdftex.def)             Requested size: 350.0pt x 81.34995pt.
- [107]
-Underfull \hbox (badness 10000) detected at line 22
+Package pdftex.def Info: Command_8cpp__incl.pdf used on input line 13.
+(pdftex.def)             Requested size: 350.0pt x 76.78595pt.
+
+Underfull \hbox (badness 10000) detected at line 21
 [][][]
  []
 
@@ -1678,72 +1678,72 @@ Underfull \hbox (badness 10000) in paragraph at lines 1--1
 ]C[]A[]R[]T/src/[]Curve[]Adjuster.cpp File
  []
 
-<CurveAdjuster_8cpp__incl.pdf, id=4566, 1300.86pt x 302.12875pt>
+<CurveAdjuster_8cpp__incl.pdf, id=4597, 1378.14874pt x 302.12875pt>
 File: CurveAdjuster_8cpp__incl.pdf Graphic file (type pdf)
 
 <use CurveAdjuster_8cpp__incl.pdf>
-Package pdftex.def Info: CurveAdjuster_8cpp__incl.pdf used on input line 14.
-(pdftex.def)             Requested size: 350.0pt x 81.28542pt.
-
-Underfull \hbox (badness 10000) detected at line 22
-[][][]
- []
-
-) (./DataLogger_8cpp.tex
-<DataLogger_8cpp__incl.pdf, id=4569, 1299.85625pt x 302.12875pt>
-File: DataLogger_8cpp__incl.pdf Graphic file (type pdf)
-
-<use DataLogger_8cpp__incl.pdf>
-Package pdftex.def Info: DataLogger_8cpp__incl.pdf used on input line 14.
-(pdftex.def)             Requested size: 350.0pt x 81.34995pt.
- [108 <./Command_8cpp__incl.pdf> <./CurveAdjuster_8cpp__incl.pdf
+Package pdftex.def Info: CurveAdjuster_8cpp__incl.pdf used on input line 13.
+(pdftex.def)             Requested size: 350.0pt x 76.73062pt.
+ [109 <./Command_8cpp__incl.pdf> <./CurveAdjuster_8cpp__incl.pdf
 
 pdfTeX warning: pdflatex (file ./CurveAdjuster_8cpp__incl.pdf): PDF inclusion: 
 multiple pdfs with page group included in a single page
 >]
-Underfull \hbox (badness 10000) detected at line 28
+Underfull \hbox (badness 10000) detected at line 21
+[][][]
+ []
+
+) (./DataLogger_8cpp.tex
+<DataLogger_8cpp__incl.pdf, id=4617, 1377.145pt x 302.12875pt>
+File: DataLogger_8cpp__incl.pdf Graphic file (type pdf)
+
+<use DataLogger_8cpp__incl.pdf>
+Package pdftex.def Info: DataLogger_8cpp__incl.pdf used on input line 13.
+(pdftex.def)             Requested size: 350.0pt x 76.78595pt.
+
+Underfull \hbox (badness 10000) detected at line 27
 [][][]
  []
 
 ) (./FreqValues_8cpp.tex
-<FreqValues_8cpp__incl.pdf, id=4590, 1299.85625pt x 245.91875pt>
+<FreqValues_8cpp__incl.pdf, id=4621, 1377.145pt x 245.91875pt>
 File: FreqValues_8cpp__incl.pdf Graphic file (type pdf)
 
 <use FreqValues_8cpp__incl.pdf>
-Package pdftex.def Info: FreqValues_8cpp__incl.pdf used on input line 14.
-(pdftex.def)             Requested size: 350.0pt x 66.21507pt.
- [109 <./DataLogger_8cpp__incl.pdf> <./FreqValues_8cpp__incl.pdf
+Package pdftex.def Info: FreqValues_8cpp__incl.pdf used on input line 13.
+(pdftex.def)             Requested size: 350.0pt x 62.50018pt.
+ [110 <./DataLogger_8cpp__incl.pdf> <./FreqValues_8cpp__incl.pdf
 
 pdfTeX warning: pdflatex (file ./FreqValues_8cpp__incl.pdf): PDF inclusion: mul
 tiple pdfs with page group included in a single page
 >]
-Underfull \hbox (badness 10000) detected at line 97
+Underfull \hbox (badness 10000) detected at line 96
 [][][]
  []
 
-[110] [111] [112] [113]
+[111] [112] [113] [114]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [114]
-[115] [116] [117] [118] [119] [120]
+ [115]
+[116] [117] [118] [119] [120] [121]
 Overfull \vbox (21.65372pt too high) has occurred while \output is active []
 
 
-[121] [122] [123]) (./FrontEndCalibrator_8cpp.tex
+[122] [123] [124]) (./FrontEndCalibrator_8cpp.tex
 Underfull \hbox (badness 10000) in paragraph at lines 1--1
 []\T1/phv/bc/n/14.4 /home/new-mauro/eclipse-cdt/workspace/[]R[]F[]I[]M[]S[]_[][
 ]C[]A[]R[]T/src/[]Front[]End[]Calibrator.cpp
  []
 
-<FrontEndCalibrator_8cpp__incl.pdf, id=5032, 1299.85625pt x 302.12875pt>
+<FrontEndCalibrator_8cpp__incl.pdf, id=5063, 1377.145pt x 302.12875pt>
 File: FrontEndCalibrator_8cpp__incl.pdf Graphic file (type pdf)
 
 <use FrontEndCalibrator_8cpp__incl.pdf>
 Package pdftex.def Info: FrontEndCalibrator_8cpp__incl.pdf used on input line 1
-4.
-(pdftex.def)             Requested size: 350.0pt x 81.34995pt.
+3.
+(pdftex.def)             Requested size: 350.0pt x 76.78595pt.
 
-Underfull \hbox (badness 10000) detected at line 22
+Underfull \hbox (badness 10000) detected at line 21
 [][][]
  []
 
@@ -1753,29 +1753,29 @@ Underfull \hbox (badness 10000) in paragraph at lines 1--1
 ]C[]A[]R[]T/src/[]G[]P[]S[]Interface.cpp File
  []
 
-<GPSInterface_8cpp__incl.pdf, id=5035, 1299.85625pt x 302.12875pt>
+<GPSInterface_8cpp__incl.pdf, id=5066, 1377.145pt x 302.12875pt>
 File: GPSInterface_8cpp__incl.pdf Graphic file (type pdf)
 
 <use GPSInterface_8cpp__incl.pdf>
-Package pdftex.def Info: GPSInterface_8cpp__incl.pdf used on input line 14.
-(pdftex.def)             Requested size: 350.0pt x 81.34995pt.
- [124 <./FrontEndCalibrator_8cpp__incl.pdf> <./GPSInterface_8cpp__incl.pdf
+Package pdftex.def Info: GPSInterface_8cpp__incl.pdf used on input line 13.
+(pdftex.def)             Requested size: 350.0pt x 76.78595pt.
+ [125 <./FrontEndCalibrator_8cpp__incl.pdf> <./GPSInterface_8cpp__incl.pdf
 
 pdfTeX warning: pdflatex (file ./GPSInterface_8cpp__incl.pdf): PDF inclusion: m
 ultiple pdfs with page group included in a single page
 >]
-Underfull \hbox (badness 10000) detected at line 22
+Underfull \hbox (badness 10000) detected at line 21
 [][][]
  []
 
-) (./main_8cpp.tex <main_8cpp__incl.pdf, id=5055, 1299.85625pt x 369.38pt>
+) (./main_8cpp.tex <main_8cpp__incl.pdf, id=5086, 1377.145pt x 369.38pt>
 File: main_8cpp__incl.pdf Graphic file (type pdf)
 
 <use main_8cpp__incl.pdf>
-Package pdftex.def Info: main_8cpp__incl.pdf used on input line 14.
-(pdftex.def)             Requested size: 350.0pt x 99.45775pt.
- [125 <./main_8cpp__incl.pdf>]
-Underfull \hbox (badness 10000) detected at line 52
+Package pdftex.def Info: main_8cpp__incl.pdf used on input line 13.
+(pdftex.def)             Requested size: 350.0pt x 93.87784pt.
+ [126 <./main_8cpp__incl.pdf>]
+Underfull \hbox (badness 10000) detected at line 51
 [][][]
  []
 
@@ -1783,38 +1783,38 @@ Underfull \hbox (badness 10000) detected at line 52
 
 pdfTeX warning: pdflatex (file ./software_components_diagram.pdf): PDF inclusio
 n: found PDF version <1.7>, but at most version <1.5> allowed
-<software_components_diagram.pdf, id=5089, 299.1175pt x 250.9375pt>
+<software_components_diagram.pdf, id=5120, 299.1175pt x 250.9375pt>
 File: software_components_diagram.pdf Graphic file (type pdf)
 
 <use software_components_diagram.pdf>
-Package pdftex.def Info: software_components_diagram.pdf used on input line 70.
+Package pdftex.def Info: software_components_diagram.pdf used on input line 69.
 
 (pdftex.def)             Requested size: 418.90768pt x 351.43262pt.
 
 
 pdfTeX warning: pdflatex (file ./high_level_flow_diagram.pdf): PDF inclusion: f
 ound PDF version <1.7>, but at most version <1.5> allowed
-<high_level_flow_diagram.pdf, id=5090, 371.3875pt x 599.23875pt>
+<high_level_flow_diagram.pdf, id=5121, 371.3875pt x 599.23875pt>
 File: high_level_flow_diagram.pdf Graphic file (type pdf)
 
 <use high_level_flow_diagram.pdf>
-Package pdftex.def Info: high_level_flow_diagram.pdf used on input line 75.
+Package pdftex.def Info: high_level_flow_diagram.pdf used on input line 74.
 (pdftex.def)             Requested size: 369.88582pt x 596.8325pt.
- [126 <./software_components_diagram.pdf>]
-[127 <./high_level_flow_diagram.pdf>]) (./Reply_8cpp.tex
+ [127 <./software_components_diagram.pdf>]
+[128 <./high_level_flow_diagram.pdf>]) (./Reply_8cpp.tex
 Underfull \hbox (badness 10000) in paragraph at lines 1--1
 []\T1/phv/bc/n/14.4 /home/new-mauro/eclipse-cdt/workspace/[]R[]F[]I[]M[]S[]_[][
 ]C[]A[]R[]T/src/[]Reply.cpp File Ref-er-
  []
 
-<Reply_8cpp__incl.pdf, id=5113, 1299.85625pt x 302.12875pt>
+<Reply_8cpp__incl.pdf, id=5145, 1377.145pt x 302.12875pt>
 File: Reply_8cpp__incl.pdf Graphic file (type pdf)
 
 <use Reply_8cpp__incl.pdf>
-Package pdftex.def Info: Reply_8cpp__incl.pdf used on input line 14.
-(pdftex.def)             Requested size: 350.0pt x 81.34995pt.
+Package pdftex.def Info: Reply_8cpp__incl.pdf used on input line 13.
+(pdftex.def)             Requested size: 350.0pt x 76.78595pt.
 
-Underfull \hbox (badness 10000) detected at line 22
+Underfull \hbox (badness 10000) detected at line 21
 [][][]
  []
 
@@ -1824,15 +1824,15 @@ Underfull \hbox (badness 10000) in paragraph at lines 1--1
 ]C[]A[]R[]T/src/[]R[]F[]I[]Detector.cpp File
  []
 
-[128 <./Reply_8cpp__incl.pdf>]
-<RFIDetector_8cpp__incl.pdf, id=5129, 1299.85625pt x 302.12875pt>
+[129 <./Reply_8cpp__incl.pdf>]
+<RFIDetector_8cpp__incl.pdf, id=5161, 1377.145pt x 302.12875pt>
 File: RFIDetector_8cpp__incl.pdf Graphic file (type pdf)
 
 <use RFIDetector_8cpp__incl.pdf>
-Package pdftex.def Info: RFIDetector_8cpp__incl.pdf used on input line 14.
-(pdftex.def)             Requested size: 350.0pt x 81.34995pt.
+Package pdftex.def Info: RFIDetector_8cpp__incl.pdf used on input line 13.
+(pdftex.def)             Requested size: 350.0pt x 76.78595pt.
 
-Underfull \hbox (badness 10000) detected at line 22
+Underfull \hbox (badness 10000) detected at line 21
 [][][]
  []
 
@@ -1842,38 +1842,38 @@ Underfull \hbox (badness 4303) in paragraph at lines 1--1
 ]C[]A[]R[]T/src/[]Spectran.h File Ref-er-
  []
 
-<Spectran_8h__incl.pdf, id=5131, 1299.85625pt x 245.91875pt>
+<Spectran_8h__incl.pdf, id=5163, 1377.145pt x 245.91875pt>
 File: Spectran_8h__incl.pdf Graphic file (type pdf)
 
 <use Spectran_8h__incl.pdf>
-Package pdftex.def Info: Spectran_8h__incl.pdf used on input line 17.
-(pdftex.def)             Requested size: 350.0pt x 66.21507pt.
+Package pdftex.def Info: Spectran_8h__incl.pdf used on input line 16.
+(pdftex.def)             Requested size: 350.0pt x 62.50018pt.
 
-<Spectran_8h__dep__incl.pdf, id=5132, 1080.035pt x 279.0425pt>
+<Spectran_8h__dep__incl.pdf, id=5164, 1080.035pt x 279.0425pt>
 File: Spectran_8h__dep__incl.pdf Graphic file (type pdf)
 
 <use Spectran_8h__dep__incl.pdf>
-Package pdftex.def Info: Spectran_8h__dep__incl.pdf used on input line 25.
+Package pdftex.def Info: Spectran_8h__dep__incl.pdf used on input line 23.
 (pdftex.def)             Requested size: 350.0pt x 90.42374pt.
- [129 <./RFIDetector_8cpp__incl.pdf> <./Spectran_8h__incl.pdf
+ [130 <./RFIDetector_8cpp__incl.pdf> <./Spectran_8h__incl.pdf
 
 pdfTeX warning: pdflatex (file ./Spectran_8h__incl.pdf): PDF inclusion: multipl
 e pdfs with page group included in a single page
->] [130 <./Spectran_8h__dep__incl.pdf>]
-Underfull \hbox (badness 10000) detected at line 131
+>] [131 <./Spectran_8h__dep__incl.pdf>]
+Underfull \hbox (badness 10000) detected at line 129
 [][][]
  []
 
-) (./SpectranConfigurator_8cpp.tex [131]
-<SpectranConfigurator_8cpp__incl.pdf, id=5194, 1299.85625pt x 302.12875pt>
+) (./SpectranConfigurator_8cpp.tex [132]
+<SpectranConfigurator_8cpp__incl.pdf, id=5225, 1377.145pt x 302.12875pt>
 File: SpectranConfigurator_8cpp__incl.pdf Graphic file (type pdf)
 
 <use SpectranConfigurator_8cpp__incl.pdf>
 Package pdftex.def Info: SpectranConfigurator_8cpp__incl.pdf used on input line
- 14.
-(pdftex.def)             Requested size: 350.0pt x 81.34995pt.
+ 13.
+(pdftex.def)             Requested size: 350.0pt x 76.78595pt.
 
-Underfull \hbox (badness 10000) detected at line 22
+Underfull \hbox (badness 10000) detected at line 21
 [][][]
  []
 
@@ -1883,20 +1883,20 @@ Underfull \hbox (badness 10000) in paragraph at lines 1--1
 ]C[]A[]R[]T/src/[]Spectran[]Interface.cpp
  []
 
-<SpectranInterface_8cpp__incl.pdf, id=5197, 1299.85625pt x 302.12875pt>
+<SpectranInterface_8cpp__incl.pdf, id=5228, 1377.145pt x 302.12875pt>
 File: SpectranInterface_8cpp__incl.pdf Graphic file (type pdf)
 
 <use SpectranInterface_8cpp__incl.pdf>
-Package pdftex.def Info: SpectranInterface_8cpp__incl.pdf used on input line 14
+Package pdftex.def Info: SpectranInterface_8cpp__incl.pdf used on input line 13
 .
-(pdftex.def)             Requested size: 350.0pt x 81.34995pt.
- [132 <./SpectranConfigurator_8cpp__incl.pdf> <./SpectranInterface_8cpp__incl.p
+(pdftex.def)             Requested size: 350.0pt x 76.78595pt.
+ [133 <./SpectranConfigurator_8cpp__incl.pdf> <./SpectranInterface_8cpp__incl.p
 df
 
 pdfTeX warning: pdflatex (file ./SpectranInterface_8cpp__incl.pdf): PDF inclusi
 on: multiple pdfs with page group included in a single page
 >]
-Underfull \hbox (badness 10000) detected at line 22
+Underfull \hbox (badness 10000) detected at line 21
 [][][]
  []
 
@@ -1906,38 +1906,38 @@ Underfull \hbox (badness 10000) in paragraph at lines 1--1
 ]C[]A[]R[]T/src/[]Sweep[]Builder.cpp File
  []
 
-<SweepBuilder_8cpp__incl.pdf, id=5218, 1299.85625pt x 302.12875pt>
+<SweepBuilder_8cpp__incl.pdf, id=5249, 1377.145pt x 302.12875pt>
 File: SweepBuilder_8cpp__incl.pdf Graphic file (type pdf)
 
 <use SweepBuilder_8cpp__incl.pdf>
-Package pdftex.def Info: SweepBuilder_8cpp__incl.pdf used on input line 14.
-(pdftex.def)             Requested size: 350.0pt x 81.34995pt.
+Package pdftex.def Info: SweepBuilder_8cpp__incl.pdf used on input line 13.
+(pdftex.def)             Requested size: 350.0pt x 76.78595pt.
 
-Underfull \hbox (badness 10000) detected at line 22
+Underfull \hbox (badness 10000) detected at line 21
 [][][]
  []
 
 ) (./SweepProcessing_8h.tex
-<SweepProcessing_8h__incl.pdf, id=5220, 1299.85625pt x 245.91875pt>
+<SweepProcessing_8h__incl.pdf, id=5251, 1377.145pt x 245.91875pt>
 File: SweepProcessing_8h__incl.pdf Graphic file (type pdf)
 
 <use SweepProcessing_8h__incl.pdf>
-Package pdftex.def Info: SweepProcessing_8h__incl.pdf used on input line 16.
-(pdftex.def)             Requested size: 350.0pt x 66.21507pt.
+Package pdftex.def Info: SweepProcessing_8h__incl.pdf used on input line 15.
+(pdftex.def)             Requested size: 350.0pt x 62.50018pt.
 
-<SweepProcessing_8h__dep__incl.pdf, id=5221, 910.40125pt x 279.0425pt>
+<SweepProcessing_8h__dep__incl.pdf, id=5252, 910.40125pt x 279.0425pt>
 File: SweepProcessing_8h__dep__incl.pdf Graphic file (type pdf)
 
 <use SweepProcessing_8h__dep__incl.pdf>
 Package pdftex.def Info: SweepProcessing_8h__dep__incl.pdf used on input line 2
-4.
+2.
 (pdftex.def)             Requested size: 350.0pt x 107.27628pt.
- [133 <./SweepBuilder_8cpp__incl.pdf> <./SweepProcessing_8h__incl.pdf
+ [134 <./SweepBuilder_8cpp__incl.pdf> <./SweepProcessing_8h__incl.pdf
 
 pdfTeX warning: pdflatex (file ./SweepProcessing_8h__incl.pdf): PDF inclusion: 
 multiple pdfs with page group included in a single page
 >]
-Underfull \hbox (badness 10000) detected at line 51
+Underfull \hbox (badness 10000) detected at line 49
 [][][]
  []
 
@@ -1947,44 +1947,42 @@ Underfull \hbox (badness 905) in paragraph at lines 1--1
 ]C[]A[]R[]T/src/[]Time[]Data.cpp File Ref-
  []
 
-<TimeData_8cpp__incl.pdf, id=5252, 1299.85625pt x 245.91875pt>
+<TimeData_8cpp__incl.pdf, id=5283, 1377.145pt x 245.91875pt>
 File: TimeData_8cpp__incl.pdf Graphic file (type pdf)
 
 <use TimeData_8cpp__incl.pdf>
-Package pdftex.def Info: TimeData_8cpp__incl.pdf used on input line 14.
-(pdftex.def)             Requested size: 350.0pt x 66.21507pt.
- [134 <./SweepProcessing_8h__dep__incl.pdf>]
-Underfull \hbox (badness 10000) detected at line 31
+Package pdftex.def Info: TimeData_8cpp__incl.pdf used on input line 13.
+(pdftex.def)             Requested size: 350.0pt x 62.50018pt.
+ [135 <./SweepProcessing_8h__dep__incl.pdf>]
+Underfull \hbox (badness 10000) detected at line 30
 [][][]
  []
 
-[135 <./TimeData_8cpp__incl.pdf>]) (./TopLevel_8h.tex
+[136 <./TimeData_8cpp__incl.pdf>]) (./TopLevel_8h.tex
 Underfull \hbox (badness 4108) in paragraph at lines 1--1
 []\T1/phv/bc/n/14.4 /home/new-mauro/eclipse-cdt/workspace/[]R[]F[]I[]M[]S[]_[][
 ]C[]A[]R[]T/src/[]Top[]Level.h File Ref-er-
  []
 
-<TopLevel_8h__incl.pdf, id=5298, 1299.85625pt x 313.17pt>
+<TopLevel_8h__incl.pdf, id=5330, 1377.145pt x 313.17pt>
 File: TopLevel_8h__incl.pdf Graphic file (type pdf)
 
 <use TopLevel_8h__incl.pdf>
-Package pdftex.def Info: TopLevel_8h__incl.pdf used on input line 19.
-(pdftex.def)             Requested size: 350.0pt x 84.32288pt.
+Package pdftex.def Info: TopLevel_8h__incl.pdf used on input line 18.
+(pdftex.def)             Requested size: 350.0pt x 79.59207pt.
 
-<TopLevel_8h__dep__incl.pdf, id=5299, 231.86626pt x 200.75pt>
+<TopLevel_8h__dep__incl.pdf, id=5331, 231.86626pt x 200.75pt>
 File: TopLevel_8h__dep__incl.pdf Graphic file (type pdf)
 
 <use TopLevel_8h__dep__incl.pdf>
-Package pdftex.def Info: TopLevel_8h__dep__incl.pdf used on input line 27.
+Package pdftex.def Info: TopLevel_8h__dep__incl.pdf used on input line 25.
 (pdftex.def)             Requested size: 231.0pt x 200.00513pt.
- [136 <./TopLevel_8h__incl.pdf>]
-Underfull \hbox (badness 10000) detected at line 46
+ [137 <./TopLevel_8h__incl.pdf>]
+Underfull \hbox (badness 10000) detected at line 44
 [][][]
  []
 
-) [137 <./TopLevel_8h__dep__incl.pdf>] [138
-
-] (./refman.ind
+) [138 <./TopLevel_8h__dep__incl.pdf>] (./refman.ind
 Underfull \hbox (badness 10000) in paragraph at lines 3--5
 []\T1/phv/m/n/10 /home/new-mauro/eclipse-cdt/workspace/[]R[]F[]I[]M[]S[]_[][]C[
 ]A[]
@@ -2113,6 +2111,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 43--45
 [139
 
 
+
 ] [140] [141] [142] [143])
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 208.
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 208.
@@ -2128,15 +2127,45 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 208.
  ) 
 Here is how much of TeX's memory you used:
- 17384 strings out of 494945
- 282396 string characters out of 6181032
- 357026 words of memory out of 5000000
- 19037 multiletter control sequences out of 15000+600000
+ 17400 strings out of 494945
+ 283090 string characters out of 6181032
+ 357140 words of memory out of 5000000
+ 19040 multiletter control sequences out of 15000+600000
  70203 words of font info for 95 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  53i,16n,92p,2182b,694s stack positions out of 5000i,500n,10000p,200000b,80000s
-pdfTeX warning (dest): name{client_8py_a6f84214513663541fb5aa9e953658668} has
- been referenced but does not exist, replaced by a fixed one
+pdfTeX warning (dest): name{Basics_8h_a95f3adabd348cd13ff295c9edce98d38} has 
+been referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{Basics_8h_a916b908a0652e7d442ecf8f1383a6b5f} has be
+en referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{Basics_8h_af304626609da54cf58c8e0a46dac817c} has be
+en referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{Basics_8h_a2b7714e3fe4c2724a3954fedefe07d39} has be
+en referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{Basics_8h_ad2b6181fa6a423c60c574fa713cbe6cd} has be
+en referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{Basics_8h_a1f3aea83acb94fb9385c520e133172cc} has be
+en referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{Basics_8h_a237073109a5bfa275095a6997d994c39} has be
+en referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{Basics_8h_a3082ce7a3469a197735f0df330c1db7f} has be
+en referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{Basics_8h_ac49574191d7b969a384f488bf156f074} has be
+en referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{Basics_8h_a88cf59242b5a2ace3d90704ab4d2bcda} has be
+en referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{client_8py_a6f84214513663541fb5aa9e953658668} has b
+een referenced but does not exist, replaced by a fixed one
 
 pdfTeX warning (dest): name{client_8py_a686381b8278fc354359e6df546e999c9} has b
 een referenced but does not exist, replaced by a fixed one
@@ -2198,10 +2227,10 @@ rw/courier/ucrro8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/
 uhvb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvb8ac.pfb>
 </usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/share/
 texlive/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb>
-Output written on refman.pdf (159 pages, 922846 bytes).
+Output written on refman.pdf (159 pages, 930811 bytes).
 PDF statistics:
- 6075 PDF objects out of 6186 (max. 8388607)
- 5672 compressed objects within 57 object streams
- 1244 named destinations out of 1440 (max. 500000)
+ 6107 PDF objects out of 6186 (max. 8388607)
+ 5703 compressed objects within 58 object streams
+ 1257 named destinations out of 1440 (max. 500000)
  3281 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -7,6 +7,7 @@
 
 ////////////////////Friends functions////////////////////////
 
+//! The function which is executed by the thread which is responsible for the concurrent uploading of the data files.
 void *UploadThreadFunc(void *arg)
 {
 	auto * dataLoggerPtr = (DataLogger*) arg;

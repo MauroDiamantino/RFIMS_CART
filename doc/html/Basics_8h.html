@@ -66,6 +66,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
@@ -90,12 +91,11 @@ $(function() {
 <code>#include &lt;cstdint&gt;</code><br />
 <code>#include &lt;cstdlib&gt;</code><br />
 <code>#include &lt;pthread.h&gt;</code><br />
+<code>#include &lt;wiringPi.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for Basics.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="Basics_8h__incl.png" border="0" usemap="#_2home_2new-mauro_2eclipse-cdt_2workspace_2RFIMS__CART_2src_2Basics_8h" alt=""/></div>
-<map name="_2home_2new-mauro_2eclipse-cdt_2workspace_2RFIMS__CART_2src_2Basics_8h" id="_2home_2new-mauro_2eclipse-cdt_2workspace_2RFIMS__CART_2src_2Basics_8h">
-</map>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -160,7 +160,7 @@ Functions</h2></td></tr>
 <tr class="separator:ac744212c600f3f610807ec4add576822"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe6b1466ff5e3b09c33ca5dc9fc81c5a"><td class="memItemLeft" align="right" valign="top"><a id="abe6b1466ff5e3b09c33ca5dc9fc81c5a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8h.html#abe6b1466ff5e3b09c33ca5dc9fc81c5a">WaitForKey</a> ()</td></tr>
-<tr class="memdesc:abe6b1466ff5e3b09c33ca5dc9fc81c5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function stop the execution up to any key is pressed by the user and it was used for debugging purpose. <br /></td></tr>
+<tr class="memdesc:abe6b1466ff5e3b09c33ca5dc9fc81c5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function stop the execution until any key is pressed by the user and it was used for debugging purpose. <br /></td></tr>
 <tr class="separator:abe6b1466ff5e3b09c33ca5dc9fc81c5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb434b11769fc3a9acd409f2fe534395"><td class="memItemLeft" align="right" valign="top"><a id="adb434b11769fc3a9acd409f2fe534395"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8h.html#adb434b11769fc3a9acd409f2fe534395">InitializeGPIO</a> ()</td></tr>
@@ -178,7 +178,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basi
 <tr class="separator:a5ffe8b7dfe9c6702ed65b2b8b47bc3e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae964ff8411b4fdcaf65cb5529aea4bef"><td class="memItemLeft" align="right" valign="top"><a id="ae964ff8411b4fdcaf65cb5529aea4bef"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8h.html#ae964ff8411b4fdcaf65cb5529aea4bef">PrintHelp</a> ()</td></tr>
-<tr class="memdesc:ae964ff8411b4fdcaf65cb5529aea4bef"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function prints in the <code>stdout</code> a message whit a software description and the descriptions of its arguments. <br /></td></tr>
+<tr class="memdesc:ae964ff8411b4fdcaf65cb5529aea4bef"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function prints a message, in the <code>stdout</code>, with a software description and the descriptions of its arguments. <br /></td></tr>
 <tr class="separator:ae964ff8411b4fdcaf65cb5529aea4bef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abab505eef94a08a9092f916c62637071"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8h.html#abab505eef94a08a9092f916c62637071">ProcessMainArguments</a> (int argc, char *argv[])</td></tr>
 <tr class="memdesc:abab505eef94a08a9092f916c62637071"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function process the software's arguments, which define the behavior of this one.  <a href="#abab505eef94a08a9092f916c62637071">More...</a><br /></td></tr>
@@ -187,9 +187,62 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basi
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:a0423f4cb393331ce0b9f6b3a43adcaae"><td class="memItemLeft" align="right" valign="top"><a id="a0423f4cb393331ce0b9f6b3a43adcaae"></a>
-const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8h.html#a0423f4cb393331ce0b9f6b3a43adcaae">BASE_PATH</a> = &quot;/home/new-mauro/RFIMS-CART&quot;</td></tr>
+const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8h.html#a0423f4cb393331ce0b9f6b3a43adcaae">BASE_PATH</a> = &quot;/home/pi/RFIMS-CART&quot;</td></tr>
 <tr class="memdesc:a0423f4cb393331ce0b9f6b3a43adcaae"><td class="mdescLeft">&#160;</td><td class="mdescRight">This constant define the base path where there are the files and folders used by the software. <br /></td></tr>
 <tr class="separator:a0423f4cb393331ce0b9f6b3a43adcaae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c3522c6627edfbe8f9bd33aeb45b8c2"><td class="memItemLeft" ><a id="a1c3522c6627edfbe8f9bd33aeb45b8c2"></a>
+struct {</td></tr>
+<tr class="memitem:a0022ff2d0e6875b59cfcf647952a1c82"><td class="memItemLeft" >
+&#160;&#160;&#160;const unsigned int&#160;&#160;&#160;<a class="el" href="Basics_8h.html#a88cf59242b5a2ace3d90704ab4d2bcda">SWITCH</a> = 8</td></tr>
+<tr class="memdesc:a0022ff2d0e6875b59cfcf647952a1c82"><td class="mdescLeft">&#160;</td><td class="mdescRight">This pin is initialized as an output in LOW state, so the RF switch output will start connected to the noise source. <br /></td></tr>
+<tr class="separator:a0022ff2d0e6875b59cfcf647952a1c82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb44ee1fd7ff6ed6631795e7033a071d"><td class="memItemLeft" >
+&#160;&#160;&#160;const unsigned int&#160;&#160;&#160;<a class="el" href="Basics_8h.html#ac49574191d7b969a384f488bf156f074">NOISE_SOURCE</a> = 13</td></tr>
+<tr class="memdesc:abb44ee1fd7ff6ed6631795e7033a071d"><td class="mdescLeft">&#160;</td><td class="mdescRight">This pin is initialized as an output in LOW state, so the noise source will start turned off. <br /></td></tr>
+<tr class="separator:abb44ee1fd7ff6ed6631795e7033a071d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad243391a81e522cb3f208e99c9deaa9a"><td class="memItemLeft" >
+&#160;&#160;&#160;const unsigned int&#160;&#160;&#160;<a class="el" href="Basics_8h.html#a3082ce7a3469a197735f0df330c1db7f">LNAS</a> = 12</td></tr>
+<tr class="memdesc:ad243391a81e522cb3f208e99c9deaa9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">This pin is initialized as an output in LOW state, so the LNAs will start turned off. <br /></td></tr>
+<tr class="separator:ad243391a81e522cb3f208e99c9deaa9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6221c353381acbc82429e610c84f3d4c"><td class="memItemLeft" >
+&#160;&#160;&#160;const unsigned int&#160;&#160;&#160;<a class="el" href="Basics_8h.html#a237073109a5bfa275095a6997d994c39">SPECTRAN</a> = 14</td></tr>
+<tr class="memdesc:a6221c353381acbc82429e610c84f3d4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">This pin is initialized as an input with the pull-down resistor enabled, so the Spectran device will start turned off. <br /></td></tr>
+<tr class="separator:a6221c353381acbc82429e610c84f3d4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26026656900715faf235871afb58bb69"><td class="memItemLeft" >
+&#160;&#160;&#160;const unsigned int&#160;&#160;&#160;<a class="el" href="Basics_8h.html#a1f3aea83acb94fb9385c520e133172cc">LED_SWEEP_CAPTURE</a> = 9</td></tr>
+<tr class="memdesc:a26026656900715faf235871afb58bb69"><td class="mdescLeft">&#160;</td><td class="mdescRight">This pin is initialized as an output in LOW state, so the led will start turned off. <br /></td></tr>
+<tr class="separator:a26026656900715faf235871afb58bb69"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a458fada8969b4c3b712563d1903a909f"><td class="memItemLeft" >
+&#160;&#160;&#160;const unsigned int&#160;&#160;&#160;<a class="el" href="Basics_8h.html#ad2b6181fa6a423c60c574fa713cbe6cd">LED_SWEEP_PROCESS</a> = 10</td></tr>
+<tr class="memdesc:a458fada8969b4c3b712563d1903a909f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This pin is initialized as an output in LOW state, so the led will start turned off. <br /></td></tr>
+<tr class="separator:a458fada8969b4c3b712563d1903a909f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8fdbba5ea44d2a0535069ff343176b2"><td class="memItemLeft" >
+&#160;&#160;&#160;const unsigned int&#160;&#160;&#160;<a class="el" href="Basics_8h.html#a2b7714e3fe4c2724a3954fedefe07d39">LED_INIT_POS</a> = 1</td></tr>
+<tr class="memdesc:ae8fdbba5ea44d2a0535069ff343176b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">This pin is initialized as an output in LOW state, so the led will start turned off. <br /></td></tr>
+<tr class="separator:ae8fdbba5ea44d2a0535069ff343176b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add65f127d1281ab5fcb319cb0d949372"><td class="memItemLeft" >
+&#160;&#160;&#160;const unsigned int&#160;&#160;&#160;<a class="el" href="Basics_8h.html#af304626609da54cf58c8e0a46dac817c">LED_NEXT_POS</a> = 3</td></tr>
+<tr class="memdesc:add65f127d1281ab5fcb319cb0d949372"><td class="mdescLeft">&#160;</td><td class="mdescRight">This pin is initialized as an output in LOW state, so the led will start turned off. <br /></td></tr>
+<tr class="separator:add65f127d1281ab5fcb319cb0d949372"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26717bda7032c3c6c55e85df85d7fbd9"><td class="memItemLeft" >
+&#160;&#160;&#160;const unsigned int&#160;&#160;&#160;<a class="el" href="Basics_8h.html#a916b908a0652e7d442ecf8f1383a6b5f">LED_POLARIZ</a> = 5</td></tr>
+<tr class="memdesc:a26717bda7032c3c6c55e85df85d7fbd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">This pin is initialized as an output in LOW state, so the led will start turned off. <br /></td></tr>
+<tr class="separator:a26717bda7032c3c6c55e85df85d7fbd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a197463a3e311eca704c68a5b5f6aa013"><td class="memItemLeft" >
+&#160;&#160;&#160;const unsigned int&#160;&#160;&#160;<a class="el" href="Basics_8h.html#a95f3adabd348cd13ff295c9edce98d38">BUTTON_ENTER</a> = 2</td></tr>
+<tr class="memdesc:a197463a3e311eca704c68a5b5f6aa013"><td class="mdescLeft">&#160;</td><td class="mdescRight">This pin is initialized as in input wit the pull-up resistor enabled, so the button must connect the pin to GND. <br /></td></tr>
+<tr class="separator:a197463a3e311eca704c68a5b5f6aa013"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c3522c6627edfbe8f9bd33aeb45b8c2"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8h.html#a1c3522c6627edfbe8f9bd33aeb45b8c2">piPins</a></td></tr>
+<tr class="memdesc:a1c3522c6627edfbe8f9bd33aeb45b8c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">This unnamed structure is intended to store the constants with the assignment of GPIO pins to input and output external signals. <br /></td></tr>
+<tr class="separator:a1c3522c6627edfbe8f9bd33aeb45b8c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb83e5ae147752bdfbfec131998b1b41"><td class="memItemLeft" align="right" valign="top"><a id="adb83e5ae147752bdfbfec131998b1b41"></a>
+const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8h.html#adb83e5ae147752bdfbfec131998b1b41">SWITCH_TO_NS</a> = LOW</td></tr>
+<tr class="memdesc:adb83e5ae147752bdfbfec131998b1b41"><td class="mdescLeft">&#160;</td><td class="mdescRight">This constant define the value the switch's pin must take to connect noise source to input, provided that the noise source is connected to switch's J2 connector. <br /></td></tr>
+<tr class="separator:adb83e5ae147752bdfbfec131998b1b41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56077ad545aede44679ea2a7ab3a4d6f"><td class="memItemLeft" align="right" valign="top"><a id="a56077ad545aede44679ea2a7ab3a4d6f"></a>
+const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8h.html#a56077ad545aede44679ea2a7ab3a4d6f">SWITCH_TO_ANTENNA</a> = HIGH</td></tr>
+<tr class="memdesc:a56077ad545aede44679ea2a7ab3a4d6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This constant define the value the switch's pin must take to connect antenna to input, provided that the antenna is connected to switch's J1 connector. <br /></td></tr>
+<tr class="separator:a56077ad545aede44679ea2a7ab3a4d6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a73be6649a1d91070309752a2fbcf5b8a"><td class="memItemLeft" align="right" valign="top"><a id="a73be6649a1d91070309752a2fbcf5b8a"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8h.html#a73be6649a1d91070309752a2fbcf5b8a">flagCalEnabled</a></td></tr>
 <tr class="memdesc:a73be6649a1d91070309752a2fbcf5b8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The declaration of an external flag which defines if the calibration of the RF front end must be done or not. <br /></td></tr>

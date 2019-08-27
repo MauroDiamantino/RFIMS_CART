@@ -1,7 +1,7 @@
 /*! \file AntennaPositioner.cpp
  * 	\brief This file contains the definitions of several methods of the class _AntennaPositioner_.
- * 	\author Mauro Diamantino
  * 	\author Emanuel Asencio
+ * 	\author Mauro Diamantino
  */
 
 #include "AntennaPositioning.h"
