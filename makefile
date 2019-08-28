@@ -18,9 +18,10 @@ LDLIBS = -L/usr/local/lib -lftd2xx -lboost_filesystem -lboost_system -lboost_tim
 #######################FILES###########################
 HEADER_NAMES = AntennaPositioning.h TopLevel.h Basics.h Spectran.h SweepProcessing.h gnuplot_i.hpp
 
-SRC_NAMES = main.cpp AntennaPositioner.cpp Command.cpp CurveAdjuster.cpp DataLogger.cpp Basics.cpp FreqValues.cpp\
+SRC_NAMES = AntennaPositioner.cpp Command.cpp CurveAdjuster.cpp DataLogger.cpp Basics.cpp FreqValues.cpp\
 FrontEndCalibrator.cpp gnuplot_i.cpp GPSInterface.cpp Reply.cpp RFIDetector.cpp\
-SpectranConfigurator.cpp SpectranInterface.cpp SweepBuilder.cpp TimeData.cpp
+SpectranConfigurator.cpp SpectranInterface.cpp SweepBuilder.cpp TimeData.cpp\
+main.cpp
 
 TARGET = bin/rfims-cart
 
