@@ -1,0 +1,4 @@
+[Desktop Entry]
+Exec=lxterminal --command "/usr/local/bin/rfims-cart --plot --rfi=ska-mode1"
+Name=rfims-cart
+Type=Application

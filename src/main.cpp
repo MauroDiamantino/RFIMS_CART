@@ -445,6 +445,8 @@ int main(int argc, char * argv[])
 		TurnOffLeds();
 
 		cout << "\nExiting" << endl;
+		cout << "\nPress enter to finish the rfims software..." << endl;
+		WaitForKey();
 		std::exit(EXIT_FAILURE);
 	}
 
@@ -463,6 +465,8 @@ int main(int argc, char * argv[])
 	TurnOffLeds();
 
 	cout << "\nExiting from the software" << endl;
+	cout << "\nPress enter to finish the rfims software..." << endl;
+	WaitForKey();
 	return 0;
 }
 
