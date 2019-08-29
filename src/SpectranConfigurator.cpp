@@ -631,51 +631,8 @@ BandParameters SpectranConfigurator::ConfigureNextBand()
 	CheckEqual( SpecVariable::RESBANDW, subBandsParamVector[bandIndex].rbw );
 
 	SetVariable( SpecVariable::SWEEPTIME, float(subBandsParamVector[bandIndex].sweepTime) );
-	try
-	{
-		CheckEqual( SpecVariable::SWEEPTIME, float(subBandsParamVector[bandIndex].sweepTime) );
-	}
-	catch(rfims_exception & exc)
-	{
-		std::string str( exc.what() );
-		if( str.find("different") )
-		{
-			Command comm(Command::GETSTPVAR, SpecVariable::SWEEPTIME);
-			Reply reply(Reply::GETSTPVAR, SpecVariable::SWEEPTIME);
-			try
-			{
-				interface.Write(comm);
-				interface.Read(reply);
-				if( !reply.IsRight() )
-				{
-					rfims_exception exc("the reply to the command to get the current value of the \"sweep time\" was wrong.");
-					throw(exc);
-				}
-				if( subBandsParamVector[bandIndex].sweepTime > (unsigned int) reply.GetValue() )
-				{
-					std::ostringstream oss;
-					oss << "the sweep time value which was taken by the spectrum analyzer, " << reply.GetValue() << "ms, is lesser than the original one, " << subBandsParamVector[bandIndex].sweepTime << "ms.";
-					rfims_exception exc( oss.str() );
-					throw(exc);
-				}
-				subBandsParamVector[bandIndex].sweepTime = (unsigned int) reply.GetValue();
-			}
-			catch(rfims_exception & exc)
-			{
-				exc.Prepend("the reading of the sweep time which was taken by the spectrum analyzer failed");
-				throw;
-			}
-			cerr << "\nWarning: The band N " << bandIndex << " (Fstart=" << subBandsParamVector[bandIndex].startFreq << ", Fstop=";
-			cerr << subBandsParamVector[bandIndex].stopFreq << ") will have the sweep time " << subBandsParamVector[bandIndex].sweepTime;
-			cerr << "ms which is bigger than original one";
-		}
-		else
-			throw;
-	}
 
-	if(subBandsParamVector[bandIndex].flagDefaultSamplePoints)
-		SetVariable( SpecVariable::SWPFRQPTS, 1.0 ); //dummy setting to make sure that the spectrum analyzer has taken the default number of samples
-	else
+	if( !subBandsParamVector[bandIndex].flagDefaultSamplePoints )
 		SetVariable( SpecVariable::SWPFRQPTS, float(subBandsParamVector[bandIndex].samplePoints) );
 
 	SetVariable( SpecVariable::DETMODE, float(subBandsParamVector[bandIndex].detector) );
