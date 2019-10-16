@@ -5,6 +5,10 @@
 
 #include "TopLevel.h"
 
+//#//////Constants/////////////
+const unsigned int DEF_NUM_AZIM_POS = 6;
+
+
 //#//////////////////////Global variables//////////////////////////
 
 // Global variables which are used by the SignalHandler class
@@ -22,14 +26,15 @@ RFPlotter * SignalHandler::gainPlotterPtr; //!< The instantiation of the pointer
 RFPlotter * SignalHandler::nfPlotterPtr; //!< The instantiation of the pointer to the _RFPlotter_ object which is responsible for the plotting of the last estimated noise figure curve.
 
 // Flags which are defined by the software arguments and which indicates the way the software must behave.
-bool flagCalEnabled; //!< The declaration of an external flag which defines if the calibration of the RF front end must be done or not.
-bool flagPlot; //!< The declaration of an external flag which defines if the software has to generate plots.
-bool flagInfiniteLoop; //!< The declaration of an external flag which defines if the software has to perform a finite number of measurement cycles or iterate infinitely.
-bool flagRFI; //!< The declaration of an external flag which defines if the software has to perform RFI detection or not.
-bool flagUpload; //!< The declaration of an external flag which defines if the software has to upload the measurements or not.
+bool flagCalEnabled = true; //!< The declaration of a flag which defines if the calibration of the RF front end must be done or not. By default the calibration is enabled.
+bool flagPlot = false; //!< The declaration of a flag which defines if the software has to generate plots or not. By default the plotting is not performed.
+bool flagInfiniteLoop = true; //!< The declaration of a flag which defines if the software has to perform a finite number of measurement cycles or iterate infinitely. By default the software iterates infinitely.
+bool flagRFI = false; //!< The declaration of a flag which defines if the software has to perform RFI detection or not. By this task is not performed.
+bool flagUpload = true; //!< The declaration of a flag which defines if the software has to upload the measurements or not. By default the uploading is performed.
 
 //! A variable which saves the number of measurements cycles which left to be done. It is used when the user wishes a finite number of measurements cycles.
-unsigned int numOfMeasCycles=0;
+unsigned int numOfMeasCycles = 0;
+unsigned int numOfAzimPos = DEF_NUM_AZIM_POS;
 //! A variable which saves the norm which defines the harmful RF interference levels: ska-mode1, ska-mode2, itu-ra769-2-vlbi.
 RFI::ThresholdsNorm rfiNorm = RFI::SKA_MODE1;
 //! A timer which is used to measure the execution time when the number of iterations is finite.
@@ -59,6 +64,8 @@ int main(int argc, char * argv[])
 	bool flagNewMeasCycle=true;
 	// A flag which is used when the user executes the software to realize a finite number of iterations (measurement cycles), to states the requested measurements cycles have already been done.
 	bool flagEndIterations = false;
+
+	unsigned int sweepNumber = 1;
 
 	//#/////////////////////////////////////
 
@@ -112,7 +119,7 @@ int main(int argc, char * argv[])
 
 		//Putting the antenna in the initial position and polarization
 		antPositioner.Initialize();
-		cout << "The initial azimuth angle is " << antPositioner.GetAzimPosition() << "° N" << endl;
+		cout << "\nThe initial azimuth angle is " << antPositioner.GetAzimPosition() << "° N" << endl;
 
 		//#///////////////////////////////END OF THE INITIALIZATION///////////////////////////////////////
 
@@ -125,6 +132,8 @@ int main(int argc, char * argv[])
 
 			if(flagNewMeasCycle)
 			{
+				sweepNumber = 1;
+
 				//#/////////////////////LOADING OF THE SPECTRAN'S PARAMETERS//////////////////////////
 
 				//Loading by first time or reloading the Spectran parameters
@@ -172,6 +181,7 @@ int main(int argc, char * argv[])
 					uncalSweep.timeData = gpsInterface.GetTimeData();
 					uncalSweep.azimuthAngle = antPositioner.GetAzimPosition();
 					uncalSweep.polarization = antPositioner.GetPolarizationString();
+					flagSuccess=true;
 				}
 				catch(rfims_exception & exc)
 				{
@@ -187,7 +197,10 @@ int main(int argc, char * argv[])
 
 			//#////////////////////////////////CAPTURE LOOP OF A WHOLE SWEEP////////////////////////////////////
 
-			cout << "\nStarting the capturing of a whole sweep" << endl;
+			if( frontEndCalibrator.IsCalibStarted() )
+				cout << "\nStarting the capturing of a sweep for the calibration" << endl;
+			else
+				cout << "\nStarting the capturing of the sweep " << sweepNumber++ << '/' << (numOfAzimPos*2) << endl;
 #ifdef RASPBERRY_PI
 			digitalWrite(piPins.LED_SWEEP_CAPTURE, HIGH);
 #endif
@@ -216,8 +229,13 @@ int main(int argc, char * argv[])
 #ifdef RASPBERRY_PI
 			digitalWrite(piPins.LED_SWEEP_CAPTURE, LOW);
 #endif
+
 			specInterface.SoundNewSweep();
 			cout << "\nThe capturing of a whole sweep finished" << endl;
+
+			//Showing the max power in the input of the spectrum analyzer
+			auto sweepIter = std::max_element( uncalSweep.values.begin(), uncalSweep.values.end() );
+			cout << "\nThe max power in the input of the spectrum analyzer (after the internal preamp) was " << *sweepIter << " dBm" << endl;
 
 			//#/////////////////////////END OF THE CAPTURE LOOP OF A WHOLE SWEEP////////////////////////////////
 
@@ -229,16 +247,15 @@ int main(int argc, char * argv[])
 				//The bands parameters are given to the objects which need them after a sweep was captured to make sure the
 				//exact number of samples is known. The parameters which must be adjusted taking into account the bands
 				//parameters are reloaded and readjusted each time the bands parameters are changed.
-				cout << "\nThe bands parameters changed so these will be transferred to the objects which use them" << endl;
 				auto bandsParameters = specConfigurator.GetBandsParameters();
 				curveAdjuster.SetBandsParameters(bandsParameters);
 				curveAdjuster.SetRefSweep(uncalSweep);
 				frontEndCalibrator.SetBandsParameters(bandsParameters);
-				cout << "The ENR values curve will be (re)loaded" << endl;
+				cout << "\nThe ENR values curve will be (re)loaded" << endl;
 				frontEndCalibrator.LoadENR();
 				if(flagRFI)
 				{
-					cout << "The RFI harmful levels curve will be (re)loaded" << endl;
+					cout << "\nThe RFI harmful levels curve will be (re)loaded" << endl;
 					rfiDetector.SetBandsParameters(bandsParameters);
 					rfiDetector.LoadThreshCurve(rfiNorm);
 				}
@@ -420,8 +437,10 @@ int main(int argc, char * argv[])
 				if( antPositioner.GetPolarization()==Polarization::HORIZONTAL )
 					antPositioner.NextAzimPosition();
 
-				cout << "The new antenna position is: Azimuth=" << antPositioner.GetAzimPosition();
-				cout << ", Polarization=" << antPositioner.GetPolarizationString() << endl;
+				cout << "The new antenna position is:" << endl;
+				cout << "\tPosition number: " << (antPositioner.GetPositionIndex() + 1) << '/' << numOfAzimPos << endl;
+				cout <<	"\tAzimuth: " << antPositioner.GetAzimPosition() << "° N" << endl;
+				cout << "\tPolarization: " << antPositioner.GetPolarizationString() << endl;
 
 				//#/////////////////////////END OF THE ANTENNA POSITIONING/////////////////////////////////////
 			}

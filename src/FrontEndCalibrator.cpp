@@ -5,6 +5,39 @@
 
 #include "SweepProcessing.h"
 
+bool CheckNoFiniteAndNegValues(const std::vector<FreqValues::value_type> & values)
+{
+	bool flagWrongValue = false;
+	auto valueIter = values.begin();
+	while( valueIter!=values.end() && flagWrongValue==false )
+	{
+		if( !isfinite(*valueIter) || *valueIter<=0 )
+			flagWrongValue = true;
+		valueIter++;
+	}
+
+	if(flagWrongValue)
+		return true;
+
+	return false;
+}
+
+bool CheckNoFiniteValues(const std::vector<FreqValues::value_type> & values)
+{
+	bool flagWrongValue = false;
+	auto valueIter = values.begin();
+	while( valueIter!=values.end() && flagWrongValue==false )
+	{
+		if( !isfinite(*valueIter) )
+			flagWrongValue = true;
+		valueIter++;
+	}
+
+	if(flagWrongValue)
+		return true;
+
+	return false;
+}
 
 #ifdef DEBUG
 /*! At instantiation, the programmer must provide a reference to a _CurveAdjuster_ object.
@@ -19,7 +52,7 @@ FrontEndCalibrator::FrontEndCalibrator(CurveAdjuster & adj) : adjuster(adj), cor
  * \param [in] adj A reference to a _CurveAdjuster_ object, which will be used to adjust some internal curves.
  */
 FrontEndCalibrator::FrontEndCalibrator(CurveAdjuster & adj) : adjuster(adj), correctENR("enr"), powerNSoff("sweep"),
-		powerNSon("sweep"), powerNSoff_w("sweep"), powerNSon_w("sweep"), gain("gain"),
+		powerNSon("sweep"), powerNSoff_pw("sweep"), powerNSon_pw("sweep"), gain("gain"),
 		noiseTemperature("noise temperature"), noiseFigure("noise figure"), rbwCurve("rbw values curve")
 #endif
 {
@@ -34,8 +67,8 @@ FrontEndCalibrator::FrontEndCalibrator(CurveAdjuster & adj) : adjuster(adj), cor
  * 	\param [in] bandsParam A vector with the parameters of all frequency bands.
  */
 FrontEndCalibrator::FrontEndCalibrator(CurveAdjuster & adj, const std::vector<BandParameters> & bandsParam) :
-		adjuster(adj), correctENR("enr"), powerNSoff("sweep"), powerNSon("sweep"), powerNSoff_w("sweep"),
-		powerNSon_w("sweep"), bandsParameters(bandsParam), gain("gain"), noiseTemperature("noise temperature"),
+		adjuster(adj), correctENR("enr"), powerNSoff("sweep"), powerNSon("sweep"), powerNSoff_pw("sweep"),
+		powerNSon_pw("sweep"), bandsParameters(bandsParam), gain("gain"), noiseTemperature("noise temperature"),
 		noiseFigure("noise figure"), rbwCurve("rbw values curve"),
 		auxRFPloter("Sweeps captured with a 50 ohm load at the input")
 #else
@@ -43,8 +76,8 @@ FrontEndCalibrator::FrontEndCalibrator(CurveAdjuster & adj, const std::vector<Ba
  * 	\param [in] bandsParam A vector with the parameters of all frequency bands.
  */
 FrontEndCalibrator::FrontEndCalibrator(CurveAdjuster & adj, const std::vector<BandParameters> & bandsParam) :
-		adjuster(adj), correctENR("enr"), powerNSoff("sweep"), powerNSon("sweep"), powerNSoff_w("sweep"),
-		powerNSon_w("sweep"), bandsParameters(bandsParam), gain("gain"), noiseTemperature("noise temperature"),
+		adjuster(adj), correctENR("enr"), powerNSoff("sweep"), powerNSon("sweep"), powerNSoff_pw("sweep"),
+		powerNSon_pw("sweep"), bandsParameters(bandsParam), gain("gain"), noiseTemperature("noise temperature"),
 		noiseFigure("noise figure"), rbwCurve("rbw values curve")
 #endif
 {
@@ -78,6 +111,116 @@ void FrontEndCalibrator::BuildRBWCurve()
 	}
 
 	rbwCurve = adjuster.AdjustCurve(rbwCurve);
+}
+
+void FrontEndCalibrator::CorrectNoFiniteAndNegVal(std::vector<FreqValues::value_type> & values)
+{
+	//Correcting the wrong values of the noise figure curve
+	bool flagWrongPrevVal = false;
+	bool flagBeginWrongVal = false;
+	auto meanValue = values.front();
+	auto lastCorrNumIter = values.begin();
+
+	auto nfIter = values.begin();
+	for( ; nfIter!=values.end(); nfIter++)
+	{
+		if( !isfinite(*nfIter) || *nfIter < 0 )
+		{
+			if( nfIter==values.begin() )
+				flagBeginWrongVal = true;
+			else
+			{
+				if( !flagWrongPrevVal )
+					lastCorrNumIter = nfIter - 1;
+
+				if( nfIter==values.end()-1 )
+				{
+					auto auxIter = lastCorrNumIter + 1;
+					for( ; auxIter!=values.end(); auxIter++)
+						*auxIter = *lastCorrNumIter;
+				}
+			}
+
+			flagWrongPrevVal = true;
+		}
+		else
+		{
+			if(flagWrongPrevVal)
+			{
+				if(flagBeginWrongVal)
+				{
+					auto auxIter = values.begin();
+					for( ; auxIter!=nfIter; auxIter++)
+						*auxIter = *nfIter;
+					flagBeginWrongVal = false;
+				}
+				else
+				{
+					meanValue = (*nfIter + *lastCorrNumIter) / 2.0;
+					auto auxIter = lastCorrNumIter + 1;
+					for( ; auxIter!=nfIter; auxIter++)
+						*auxIter = meanValue;
+				}
+
+				flagWrongPrevVal = false;
+			}
+		}
+	}
+}
+
+void FrontEndCalibrator::CorrectNoFiniteVal(std::vector<FreqValues::value_type> & values)
+{
+	//Correcting the wrong values of the noise figure curve
+	bool flagWrongPrevVal = false;
+	bool flagBeginWrongVal = false;
+	auto meanValue = values.front();
+	auto lastCorrNumIter = values.begin();
+
+	auto nfIter = values.begin();
+	for( ; nfIter!=values.end(); nfIter++)
+	{
+		if( !isfinite(*nfIter) )
+		{
+			if( nfIter==values.begin() )
+				flagBeginWrongVal = true;
+			else
+			{
+				if( !flagWrongPrevVal )
+					lastCorrNumIter = nfIter - 1;
+
+				if( nfIter==values.end()-1 )
+				{
+					auto auxIter = lastCorrNumIter + 1;
+					for( ; auxIter!=values.end(); auxIter++)
+						*auxIter = *lastCorrNumIter;
+				}
+			}
+
+			flagWrongPrevVal = true;
+		}
+		else
+		{
+			if(flagWrongPrevVal)
+			{
+				if(flagBeginWrongVal)
+				{
+					auto auxIter = values.begin();
+					for( ; auxIter!=nfIter; auxIter++)
+						*auxIter = *nfIter;
+					flagBeginWrongVal = false;
+				}
+				else
+				{
+					meanValue = (*nfIter + *lastCorrNumIter) / 2.0;
+					auto auxIter = lastCorrNumIter + 1;
+					for( ; auxIter!=nfIter; auxIter++)
+						*auxIter = meanValue;
+				}
+
+				flagWrongPrevVal = false;
+			}
+		}
+	}
 }
 
 /*!	After the bands' parameters are stored, the RBW curve is built, taking into account those parameters.
@@ -161,78 +304,55 @@ void FrontEndCalibrator::LoadENR()
 
 void FrontEndCalibrator::StartCalibration()
 {
-#ifdef DEBUG
-{
-	cout << "Turn noise source off, switch the input to the noise source and ";
-	#ifdef BUTTON //implied that RASPBERRY_PI is defined
-		cout << "press the button to continue..." << endl;
-		while( digitalRead(piPins.BUTTON_ENTER)==HIGH );
-	#else
-		cout << "press enter to continue..." << endl;
-		WaitForKey();
-	#endif
-}
-#else
-{
+	cout << "Turn off the noise source, switch the input to the noise source and press enter to continue..." << endl;
+	WaitForKey();
+
 	#ifdef RASPBERRY_PI
 		digitalWrite(piPins.NOISE_SOURCE, LOW); digitalWrite(piPins.SWITCH, SWITCH_TO_NS);
 	#endif
-}
-#endif
+
 	flagNSon = false; flagCalStarted=true;
 }
 
 void FrontEndCalibrator::TurnOnNS()
 {
-#ifdef DEBUG
-	cout << "\nTurn on the noise source and ";
-	#ifdef BUTTON //implied that RASPBERRY_PI is defined
-		cout << "press the button to continue..." << endl;
-		while( digitalRead(piPins.BUTTON_ENTER)==HIGH );
-	#else
-		cout << "press Enter to continue..." << endl;
-		WaitForKey();
-	#endif
-#else
+	cout << "\nTurn on the noise source and press Enter to continue..." << endl;
+	WaitForKey();
+
 	#ifdef RASPBERRY_PI
 		digitalWrite(piPins.NOISE_SOURCE, HIGH);
 	#endif
-#endif
+
 	flagNSon = true;
 }
 
 void FrontEndCalibrator::EndCalibration()
 {
-#ifdef DEBUG
-	cout << "\nTurn off the noise source, switch the input to the antenna and ";
-	#ifdef BUTTON //implied that RASPBERRY_PI is defined
-		cout << "press the button to continue..." << endl;
-		while( digitalRead(piPins.BUTTON_ENTER)==HIGH );
-	#else
-		cout << "press Enter to continue..." << endl;
-		WaitForKey();
-	#endif
-#else
+	cout << "\nTurn off the noise source, switch the input to the antenna and press Enter to continue..." << endl;
+	WaitForKey();
+
 	TurnOffNS();
+
 	#ifdef RASPBERRY_PI
 		digitalWrite(piPins.SWITCH, SWITCH_TO_ANTENNA);
 	#endif
-#endif
 
 	flagCalStarted=false;
 }
 
-void FrontEndCalibrator::SetSweep(const FreqValues & sweep)
+void FrontEndCalibrator::SetSweep(const FreqValues & sweep_dbm)
 {
 	if(flagNSon)
 	{
-		powerNSon = sweep;
-		powerNSon_w = pow(10.0, sweep/10.0 ) * 1e-3; //The power values are converted from dBm to Watts
+		powerNSon = sweep_dbm;
+		//powerNSon_w = pow(10.0, sweep_dbm/10.0 ) * 1e-3; //The power values are converted from dBm to Watts
+		powerNSon_pw = pow(10.0, (sweep_dbm + 90.0)/10.0); //The power values are converted from dBm to pW
 	}
 	else
 	{
-		powerNSoff = sweep;
-		powerNSoff_w = pow(10.0, sweep/10.0 ) * 1e-3; //The power values are converted from dBm to Watts
+		powerNSoff = sweep_dbm;
+		//powerNSoff_w = pow(10.0, sweep_dbm/10.0 ) * 1e-3; //The power values are converted from dBm to Watts
+		powerNSoff_pw = pow(10.0, (sweep_dbm + 90.0)/10.0); //The power values are converted from dBm to pW
 	}
 }
 
@@ -267,35 +387,87 @@ void FrontEndCalibrator::SetSweep(const FreqValues & sweep)
  */
 void FrontEndCalibrator::EstimateParameters()
 {
-	if( powerNSon_w.Empty() || powerNSoff_w.Empty() )
+	//if( powerNSon_w.Empty() || powerNSoff_w.Empty() )
+	if( powerNSon_pw.Empty() || powerNSoff_pw.Empty() )
 		throw rfims_exception("the front end calibrator could not estimate the parameters because one sweep (or both) was lacking.");
 
 	FreqValues tson("noise temperature"), yFactor("y-factor"), gainPowersRatio("gain");
 
 	//Calculating the front end's noise figure curve
 	tson = (REF_TEMPERATURE * correctENR) + tsoff;
-	yFactor = powerNSon_w / powerNSoff_w;
-	noiseTemperature = (-(tsoff * yFactor) + tson) / (yFactor - 1.0);
+
+	//////////7
+//	if( CheckNoFiniteAndNegValues(tson.values) )
+//		cout << "Hay valores incorrectos en tson" << endl;
+	///////////
+
+	//yFactor = powerNSon_w / powerNSoff_w;
+	yFactor = powerNSon_pw / powerNSoff_pw;
+
+	//auxPlotter2.Plot(yFactor, "lines", "yFactor");
+
+	//////////7
+//	if( CheckNoFiniteAndNegValues(yFactor.values) )
+//		cout << "Hay valores incorrectos en yFactor" << endl;
+	///////////
+
+	noiseTemperature = (tson - tsoff * yFactor) / (yFactor - 1.0); //Aqui se producen los valores erroneos (nan)
+
+	//////////7
+//	if( CheckNoFiniteAndNegValues(noiseTemperature.values) )
+//		cout << "Hay valores incorrectos en noiseTemperature" << endl;
+	///////////
+
 	noiseFigure = 10.0*log10( 1.0 + noiseTemperature / REF_TEMPERATURE );
 
-	//Checking the mean value of noise figure
-	float meanNoiseFig = noiseFigure.MeanValue();
-	if( 0.5 > meanNoiseFig || meanNoiseFig > 20.0 )
-		throw rfims_exception("a ridiculous mean noise figure was got during estimation.");
+	//////////7
+//	if( CheckNoFiniteAndNegValues(noiseFigure.values) )
+//		cout << "Hay valores incorrectos en noiseFigure" << endl;
+	///////////
 
-	//Correcting negative values of
-	for(auto nf : noiseFigure.values)
-		if(nf < 0)
-			nf = 3.5;
+	//Correcting the wrong values of the noise figure curve
+	CorrectNoFiniteAndNegVal(noiseFigure.values);
+	
+	//Checking the mean value of noise figure
+	auto meanNoiseFig = noiseFigure.MeanValue();
+	if( 0.5 > meanNoiseFig || meanNoiseFig > 20.0 )
+	{
+		std::ostringstream oss;
+		oss << "a ridiculous mean noise, " << meanNoiseFig << " dB, was got during estimation.";
+		throw rfims_exception( oss.str() );
+	}
 
 	//Calculating the front end's gain curve
-	gainPowersRatio = 0.5/(BOLTZMANN_CONST * rbwCurve) * ( powerNSoff_w/(tsoff + noiseTemperature) + powerNSon_w/(tson + noiseTemperature) );
+	//gainPowersRatio = 0.5/(BOLTZMANN_CONST * rbwCurve) * ( powerNSoff_w/(tsoff + noiseTemperature) + powerNSon_w/(tson + noiseTemperature) );
+	gainPowersRatio = 0.5/(BOLTZMANN_CONST * rbwCurve) * ( 1e-12*powerNSoff_pw/(tsoff + noiseTemperature) + 1e-12*powerNSon_pw/(tson + noiseTemperature) );
+
+	//////////7
+//	if( CheckNoFiniteAndNegValues(gainPowersRatio.values) )
+//		cout << "Hay valores incorrectos en gainPowersRatio" << endl;
+	///////////
+
 	gain = 10.0*log10(gainPowersRatio);
-	float meanGain = gain.MeanValue();
+
+	//////////7
+//	if( CheckNoFiniteAndNegValues(gain.values) )
+//		cout << "Hay valores incorrectos en gain" << endl;
+	///////////
+
+	//Correcting the wrong values of the gain curve
+	CorrectNoFiniteAndNegVal(gain.values);
 
 	//Checking the mean value of gain
+	auto meanGain = gain.MeanValue();
 	if( 10.0 > meanGain || meanGain > 100.0 )
-		throw rfims_exception("a ridiculous mean gain was got during estimation.");
+	{
+		std::ostringstream oss;
+		oss << "a ridiculous mean gain, " << meanGain << " dB, was got during estimation.";
+		throw rfims_exception( oss.str() );
+	}
+
+	//Setting correctly the time data
+	//noiseTemperature.timeData = noiseFigure.timeData = gain.timeData = powerNSoff_w.timeData;
+	noiseTemperature.timeData = noiseFigure.timeData = gain.timeData = powerNSoff_pw.timeData;
 }
 
 /*!	The calibration of sweeps with output power values implies the following tasks:
@@ -325,23 +497,48 @@ const Sweep& FrontEndCalibrator::CalibrateSweep(const Sweep& powerOut)
 	auxRFPloter.Clear();
 	auxRFPloter.Plot(powerOut, "lines", "Uncalibrated sweep");
 #endif
-	Sweep powerInEff, powerInEff_w;
-	Sweep powerIn, powerIn_w;
+	Sweep powerInEff, powerInEff_pw;
+	Sweep powerIn, powerIn_pw;
+	FreqValues frontEndNoise_pw("noise");
 	try
 	{
 		//Calculating the effective input power (Pin_eff) which contains the antenna power and the
 		//internal noise generated in the receiver
 		powerInEff = powerOut - gain;
+
+		//////////7
+//		if( CheckNoFiniteValues(powerInEff.values) )
+//			cout << "Hay valores incorrectos en powerInEff" << endl;
+		///////////
+
 #ifdef DEBUG
 		auxRFPloter.Plot(powerInEff, "lines", "Effective input power (Pant + Nreceiver)");
 #endif
-		powerInEff_w = pow(10.0, powerInEff/10.0) * 1e-3; //The power values are converted from dBm to Watts
+		//powerInEff_w = pow(10.0, powerInEff/10.0) * 1e-3; //The power values are converted from dBm to Watts
+		powerInEff_pw = pow(10.0, (powerInEff + 90.0)/10.0); //The power values are converted from dBm to pW
+
+		//////////7
+//		if( CheckNoFiniteAndNegValues(powerInEff_pw.values) )
+//			cout << "Hay valores incorrectos en powerInEff_pw" << endl;
+		///////////
 
 		//Calculating the input power (Pin) which represents only the antenna power, without the receiver noise
-		powerIn_w = powerInEff_w - BOLTZMANN_CONST * rbwCurve * noiseTemperature;
+		//powerIn_w = powerInEff_w - BOLTZMANN_CONST * rbwCurve * noiseTemperature;
+		frontEndNoise_pw = 1e12 * BOLTZMANN_CONST * rbwCurve * noiseTemperature;
+		powerIn_pw = powerInEff_pw - frontEndNoise_pw;
 
-		//Converting the input power from Watts to dBm
-		powerIn = 10.0*log10(powerIn_w) + 30.0;
+		//////////7
+//		if( CheckNoFiniteAndNegValues(powerIn_pw.values) )
+//			cout << "Hay valores incorrectos en powerIn_pw" << endl;
+		///////////
+
+		//powerIn = 10.0*log10(powerIn_w) + 30.0; //Converting the input power from Watts to dBm
+		powerIn = 10.0*log10(powerIn_pw) - 90.0; //Converting the input power from pW to dBm
+
+		//////////7
+//		if( CheckNoFiniteValues(powerIn.values) )
+//			cout << "Hay valores incorrectos en powerIn" << endl;
+		///////////
 
 #ifdef DEBUG
 		auxRFPloter.Plot(powerIn, "lines", "Input power (Pant)");
@@ -349,6 +546,14 @@ const Sweep& FrontEndCalibrator::CalibrateSweep(const Sweep& powerOut)
 
 		//The input power is saved as the calibrated sweep
 		calSweep = powerIn;
+
+		//Correcting wrong power values (nan)
+		CorrectNoFiniteVal(calSweep.values);
+
+		//Setting correctly the auxiliary data
+		calSweep.azimuthAngle = powerOut.azimuthAngle;
+		calSweep.polarization = powerOut.polarization;
+		calSweep.timeData = powerOut.timeData;
 	}
 	catch(rfims_exception & exc)
 	{

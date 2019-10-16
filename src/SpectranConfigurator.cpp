@@ -486,13 +486,13 @@ void SpectranConfigurator::SetVariable(const SpecVariable variable, const float 
 		interface.Read(reply);
 		if(reply.IsRight()!=true)
 		{
-			rfims_exception exc("the reply to the command to set up the variable \"" + reply.GetVariableNameString() + "\" was wrong.");
+			rfims_exception exc("the reply to the command to set up the variable was wrong.");
 			throw(exc);
 		}
 	}
 	catch(rfims_exception & exc)
 	{
-		exc.Append("the setting of the variable \"" + reply.GetVariableNameString() + "\" failed.");
+		exc.Prepend("the setting of the variable \"" + comm.GetVariableNameString() + "\" failed");
 		throw;
 	}
 }
@@ -512,20 +512,20 @@ void SpectranConfigurator::CheckEqual(const SpecVariable variable, const float v
 		interface.Read(reply);
 		if( reply.IsRight()!=true )
 		{
-			rfims_exception exc("the reply to the command to get the current value of the \"" + reply.GetVariableNameString() + "\" was wrong.");
+			rfims_exception exc("the reply to the command to get the current value of the variable was wrong.");
 			throw(exc);
 		}
 		else if( reply.GetValue()!=value )
 		{
 			std::ostringstream oss;
-			oss << "the reply to the command to get the current value of the \"" + reply.GetVariableNameString() + "\" stated the value " << reply.GetValue() << " which is different to the one which was used to configure it, " << value << '.';
+			oss << "the reply to the command to get the current value of the variable stated the value " << reply.GetValue() << " which is different to the one which was used to configure it, " << value << '.';
 			rfims_exception exc( oss.str() );
 			throw(exc);
 		}
 	}
 	catch(rfims_exception & exc)
 	{
-		exc.Append("the checking of the configured variable \"" + reply.GetVariableNameString() + "\" failed.");
+		exc.Prepend("the checking of the configured variable \"" + comm.GetVariableNameString() + "\" failed");
 		throw;
 	}
 }
@@ -618,25 +618,45 @@ BandParameters SpectranConfigurator::ConfigureNextBand()
 			bandIndex=0;
 	}while(subBandsParamVector[bandIndex].flagEnable==false); //Checking if the current band is enabled
 
-	SetVariable( SpecVariable::STARTFREQ, subBandsParamVector[bandIndex].startFreq );
-	CheckApproxEqual( SpecVariable::STARTFREQ, subBandsParamVector[bandIndex].startFreq );
+	bool flagSuccess = false;
+	unsigned int numOfErrors = 0;
+	do
+	{
+		try
+		{
+			SetVariable( SpecVariable::STARTFREQ, subBandsParamVector[bandIndex].startFreq );
+			CheckApproxEqual( SpecVariable::STARTFREQ, subBandsParamVector[bandIndex].startFreq );
 
-	SetVariable( SpecVariable::STOPFREQ, subBandsParamVector[bandIndex].stopFreq );
-	CheckApproxEqual( SpecVariable::STOPFREQ, subBandsParamVector[bandIndex].stopFreq );
+			SetVariable( SpecVariable::STOPFREQ, subBandsParamVector[bandIndex].stopFreq );
+			CheckApproxEqual( SpecVariable::STOPFREQ, subBandsParamVector[bandIndex].stopFreq );
 
-	SetVariable( SpecVariable::RESBANDW, subBandsParamVector[bandIndex].rbw );
-	CheckEqual( SpecVariable::RESBANDW, subBandsParamVector[bandIndex].rbw );
+			SetVariable( SpecVariable::RESBANDW, subBandsParamVector[bandIndex].rbw );
+			CheckEqual( SpecVariable::RESBANDW, subBandsParamVector[bandIndex].rbw );
 
-	SetVariable( SpecVariable::VIDBANDW, subBandsParamVector[bandIndex].vbw );
-	CheckEqual( SpecVariable::RESBANDW, subBandsParamVector[bandIndex].rbw );
+			SetVariable( SpecVariable::VIDBANDW, subBandsParamVector[bandIndex].vbw );
+			CheckEqual( SpecVariable::RESBANDW, subBandsParamVector[bandIndex].rbw );
 
-	SetVariable( SpecVariable::SWEEPTIME, float(subBandsParamVector[bandIndex].sweepTime) );
+			SetVariable( SpecVariable::SWEEPTIME, float(subBandsParamVector[bandIndex].sweepTime) );
 
-	if( !subBandsParamVector[bandIndex].flagDefaultSamplePoints )
-		SetVariable( SpecVariable::SWPFRQPTS, float(subBandsParamVector[bandIndex].samplePoints) );
+			if( !subBandsParamVector[bandIndex].flagDefaultSamplePoints )
+				SetVariable( SpecVariable::SWPFRQPTS, float(subBandsParamVector[bandIndex].samplePoints) );
 
-	SetVariable( SpecVariable::DETMODE, float(subBandsParamVector[bandIndex].detector) );
-	CheckEqual( SpecVariable::DETMODE, float(subBandsParamVector[bandIndex].detector) );
+			SetVariable( SpecVariable::DETMODE, float(subBandsParamVector[bandIndex].detector) );
+			CheckEqual( SpecVariable::DETMODE, float(subBandsParamVector[bandIndex].detector) );
+
+			flagSuccess = true;
+		}
+		catch(rfims_exception & exc)
+		{
+			if( ++numOfErrors < 5 )
+			{
+				interface.Purge();
+				usleep(100000); //100ms
+			}
+			else
+				throw;
+		}
+	}while(!flagSuccess);
 
 	return subBandsParamVector[bandIndex];
 }

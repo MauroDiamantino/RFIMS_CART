@@ -12,6 +12,7 @@ AntennaPositioner::AntennaPositioner(GPSInterface & gpsInterf) : gpsInterface(gp
 	azimuthAngle=0.0;
 	polarization=Polarization::UNKNOWN;
 	positionIndex=255;
+	rotationAngle = 360.0 / numOfAzimPos;
 }
 
 /*!	This initialization implies to move the antenna to its initial position, to capture the initial azimuth
@@ -20,6 +21,7 @@ AntennaPositioner::AntennaPositioner(GPSInterface & gpsInterf) : gpsInterface(gp
  */
 bool AntennaPositioner::Initialize()
 {
+	/*
 	cout << "\nRotate antenna to the initial position, make sure the polarization is horizontal and press the button to continue.." << endl;
 
 #ifdef BUTTON //implied that RASPBERRY_PI is defined
@@ -51,6 +53,7 @@ bool AntennaPositioner::Initialize()
 			}
 		}
 	}while(!flagSuccess);
+	*/
 
 	polarization=Polarization::HORIZONTAL;
 	positionIndex=0;
@@ -68,9 +71,10 @@ bool AntennaPositioner::Initialize()
  */
 bool AntennaPositioner::NextAzimPosition()
 {
-	if( ++positionIndex >= NUM_OF_POSITIONS )
+	if( ++positionIndex >= numOfAzimPos )
 	{
 		positionIndex=0;
+		/*
 		cout << "Rotate antenna to the initial position, make sure the polarization is horizontal and press the button to continue.." << endl;
 #ifdef BUTTON //implied that RASPBERRY_PI is defined
 		digitalWrite(piPins.LED_INIT_POS, HIGH);
@@ -79,10 +83,12 @@ bool AntennaPositioner::NextAzimPosition()
 #else
 		WaitForKey();
 #endif
+		*/
 	}
 	else
 	{
-		cout << "Rotate the antenna " << ROTATION_ANGLE << "° clockwise and press the button to continue..." << endl;
+		/*
+		cout << "Rotate the antenna " << rotationAngle << "° clockwise and press the button to continue..." << endl;
 	#ifdef BUTTON //implied that RASPBERRY_PI is defined
 		digitalWrite(piPins.LED_NEXT_POS, HIGH);
 		while( digitalRead(piPins.BUTTON_ENTER)==HIGH );
@@ -90,10 +96,11 @@ bool AntennaPositioner::NextAzimPosition()
 	#else
 		WaitForKey();
 	#endif
+		*/
 	}
 
-	azimuthAngle+=45.0;
-	if(azimuthAngle>=360.0) azimuthAngle-=360.0;
+	azimuthAngle += rotationAngle;
+	if(azimuthAngle >= 360.0) azimuthAngle -= 360.0;
 
 	return true;
 }
@@ -103,6 +110,7 @@ bool AntennaPositioner::NextAzimPosition()
  */
 bool AntennaPositioner::ChangePolarization()
 {
+	/*
 	double absRoll;
 	bool flagSuccess=false;
 	do
@@ -156,6 +164,14 @@ bool AntennaPositioner::ChangePolarization()
 		}while(!flagSuccessRead);
 
 	}while(!flagSuccess);
+	*/
+
+	/////
+	if( polarization==Polarization::HORIZONTAL )
+		polarization = Polarization::VERTICAL;
+	else
+		polarization = Polarization::HORIZONTAL;
+	////
 
 	return true;
 }

@@ -163,9 +163,10 @@ class AntennaPositioner
 {
 	//Attributes//
 	//Constants
-	const std::uint8_t NUM_OF_POSITIONS = 6; //! The number of azimuth positions.
-	const double ROTATION_ANGLE = 360.0/NUM_OF_POSITIONS; //! The angle which the antenna must rotate to move to the next position.
+	//const std::uint8_t NUM_OF_POSITIONS = 6; //! The number of azimuth positions.
+	//const double ROTATION_ANGLE = 360.0/NUM_OF_POSITIONS; //! The angle which the antenna must rotate to move to the next position.
 	//Variables
+	double rotationAngle;
 	GPSInterface & gpsInterface; //! A reference to the object which is responsible for the communication with the Aaronia GPS receiver.
 	float azimuthAngle; //! The current azimuth angle of the antenna.
 	Polarization polarization; //! The current antenna polarization.
@@ -195,9 +196,9 @@ public:
 	//! This method returns the current azimuth position index.
 	unsigned int GetPositionIndex() const	{	return positionIndex;	}
 	//! This method return the total number of azimuth positions.
-	unsigned int GetNumOfPositions() const {	return NUM_OF_POSITIONS;	}
+	//unsigned int GetNumOfPositions() const {	return NUM_OF_POSITIONS;	}
 	//! This method states if the current position is the last one.
-	bool IsLastPosition() const {	return ( positionIndex >= (NUM_OF_POSITIONS-1) );	}
+	bool IsLastPosition() const {	return ( positionIndex >= (numOfAzimPos-1) );	}
 };
 
 #endif /* ANTENNAPOSITIONING_H_ */

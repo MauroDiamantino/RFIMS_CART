@@ -83,9 +83,9 @@ void WaitForKey()
 }
 
 /*! \param [in] vect A `std::vector<float>` container which must be negated.	*/
-std::vector<float> operator-(const std::vector<float> & vect)
+std::vector<FreqValues::value_type> operator-(const std::vector<FreqValues::value_type> & vect)
 {
-	std::vector<float> result;
+	std::vector<FreqValues::value_type> result;
 	for(auto& value : vect)
 		result.push_back( -value );
 	return result;
@@ -173,7 +173,7 @@ void TurnOffFrontEnd()
 
 void PrintHelp()
 {
-	cout << "Usage: rfmis-cart [--plot] [--no-frontend-cal] [--rfi={ska-mode1,ska-mode2,itu-ra769}] [--num-meas-cycles='number'] [--no-upload] [--help | -h]" << endl;
+	cout << "Usage: rfmis-cart [--plot] [--no-frontend-cal] [--rfi={ska-mode1,ska-mode2,itu-ra769}] [--num-meas-cycles='number'] [--no-upload] [--num-azim-pos='number'] [--help | -h]" << endl;
 	cout << "\nThis software was designed to capture RF power measurements from a spectrum analyzer Aaronia Spectran V4, using an antenna" << endl;
 	cout << "which could be rotated to point the horizon in different azimuth angles and whose polarization could be changed between" << endl;
 	cout << "horizontal and vertical. A sweep from 1 GHz (or maybe less) to 9.4 GHz is captured in each antenna position and then it is calibrated," << endl;
@@ -196,6 +196,10 @@ void PrintHelp()
 	cout << "\t\t\t\t\t\t\t  the 360° of azimuth angle. If this argument is not given the measurement" << endl;
 	cout << "\t\t\t\t\t\t\t  cycles are performed indefinitely." << endl;
 	cout << "\t--no-upload\t\t\t\t\tDisable the uploading of data, i.e., the sending of collected data to the remote server." << endl;
+	cout << "\t--num-azim-pos='number'\t\t\t\tDetermine the number of azimuth positions, which defined the azimuth rotation angle." << endl;
+	cout << "\t\t\t\t\t\t\t  The number of sweeps which will be captured during a measurement cycle is the number" << endl;
+	cout << "\t\t\t\t\t\t\t  of azimuth positions multiplied by 2. If this argument is not given, by default the number" << endl;
+	cout << "\t\t\t\t\t\t\t  of positions is 6." << endl;
 	cout << "\t-h, --help\t\t\t\t\tShow this help and finish there." << endl;
 }
 
@@ -274,7 +278,7 @@ bool ProcessMainArguments (int argc, char * argv[])
 			else
 			{
 				cout << "rfims-cart: unrecognized argument '" << *argIter << '\'' << endl;
-				cout << "Usage: rfmis-cart [--plot] [--no-frontend-cal] [--rfi={ska-mode1,ska-mode2,itu-ra769}] [--num-meas-cycles='number'] [--help | -h]" << endl;
+				cout << "Usage: rfmis-cart [--plot] [--no-frontend-cal] [--rfi={ska-mode1,ska-mode2,itu-ra769}] [--num-meas-cycles='number'] [--no-upload] [--num-azim-pos='number'] [--help | -h]" << endl;
 				return false;
 			}
 
@@ -306,6 +310,21 @@ bool ProcessMainArguments (int argc, char * argv[])
 			argList.erase(argIter);
 		}
 
+		//Searching the argument --num-azim-pos=xx
+		argIter = argList.cbegin();
+		while( argIter!=argList.cend() && argIter->find("--num-azim-pos=")==std::string::npos )		argIter++;
+		if( argIter!=argList.cend() )
+		{
+			//The argument was found
+			equalSignPos = argIter->find('=');
+			std::istringstream iss;
+			std::string numString = argIter->substr(equalSignPos+1);
+			iss.str(numString);
+			iss >> numOfAzimPos;
+			argList.erase(argIter);
+		}
+
+
 		//Checking if there were arguments which were not recognized
 		if(!argList.empty())
 		{
@@ -313,7 +332,7 @@ bool ProcessMainArguments (int argc, char * argv[])
 			for(argIter = argList.cbegin(); argIter != argList.cend(); argIter++)
 				cout << " \'" << *argIter << '\'';
 			cout << endl;
-			cout << "Usage: rfmis-cart [--plot] [--no-frontend-cal] [--rfi={ska-mode1,ska-mode2,itu-ra769}] [--num-meas-cycles='number'] [--no-upload] [--help | -h]" << endl;
+			cout << "Usage: rfmis-cart [--plot] [--no-frontend-cal] [--rfi={ska-mode1,ska-mode2,itu-ra769}] [--num-meas-cycles='number'] [--no-upload] [--num-azim-pos='number'] [--help | -h]" << endl;
 			return false;
 		}
 	}

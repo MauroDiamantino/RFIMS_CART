@@ -53,7 +53,7 @@ const Sweep& SweepBuilder::CaptureSweep(BandParameters & bandParam)
 
 	interface.EnableSweep();
 
-	cout << "Capturing a sweep..." << endl;
+	cout << "Capturing measurements..." << endl;
 
 	while (flagSweepReady==false)
 	{
@@ -114,10 +114,10 @@ const Sweep& SweepBuilder::CaptureSweep(BandParameters & bandParam)
 
 	}
 
+	interface.DisableSweep();
+
 	--samplesCount;
 	bandParam.samplePoints = samplesCount;
-
-	interface.DisableSweep();
 
 	BuildSweep();
 

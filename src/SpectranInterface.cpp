@@ -284,7 +284,7 @@ void SpectranInterface::DisableSweep()
 		{
 			//cerr << "Warning: one of the commands to disable the sending of measurements via USB failed." << endl;
 
-			if(++errorCounter < 4)
+			if(++errorCounter < 5)
 			{
 				Purge();
 				usleep(500000);

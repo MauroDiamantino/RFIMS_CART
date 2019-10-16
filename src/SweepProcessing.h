@@ -129,7 +129,7 @@ public:
 		}
 	}
 	//! This method cleans completely the plot, but the corresponding window will not be closed.
-	void Clear() {	plotter.reset_all(); ConfigureGraph(); sweep.Clear();	}
+	void Clear() {	plotter.reset_all(); ConfigureGraph(); sweep.Clear(); plotter.remove_tmpfiles();	}
 };
 
 //! The aim of the class _CurveAdjuster_ is to adjust any frequency curve, this is to interpolate and/or extrapolate the curve of a given parameter versus frequency.
@@ -193,17 +193,19 @@ class FrontEndCalibrator
 	//Attributes//
 	//Constants
 	const std::string CAL_FILES_PATH = BASE_PATH + "/calibration"; //!< The path were the related files are saved.
-	const float REF_TEMPERATURE = 290.0; //!< The reference temperature in Kelvin, 290 °K.
-	const float BOLTZMANN_CONST = 1.3806488e-23; //!< The Boltzmann constant.
+	const FreqValues::value_type REF_TEMPERATURE = 290.0; //!< The reference temperature in Kelvin, 290 °K.
+	const FreqValues::value_type BOLTZMANN_CONST = 1.3806488e-23; //!< The Boltzmann constant.
 	//Variables
 	CurveAdjuster & adjuster; //!< A reference to the instantiation of _CurveAdjuster_, which is the unique responsible of the adjusting of curves.
 	time_t enrFileLastWriteTime; //!< The last-modification time (in seconds from the Unix epoch) of the file with the ENR values of the noise generator.
 	FreqValues correctENR; //!< A structure which stores the corrected ENR values (taking into account Application Note 57-2 of Keysight) versus frequency.
-	float tsoff; //!< The noise temperature of the noise generator when it is turned off, which matches the physical temperature.
+	FreqValues::value_type tsoff; //!< The noise temperature of the noise generator when it is turned off, which matches the physical temperature.
 	FreqValues powerNSoff; //!< A structure which stores the output power values measured when the noise generator is turned off and represented in dBm.
 	FreqValues powerNSon; //!< A structure which stores the output power values measured when the noise generator is turned on and represented in dBm.
-	FreqValues powerNSoff_w; //!< A structure which stores the output power values measured when the noise generator is turned off and represented in Watts(W).
-	FreqValues powerNSon_w; //!< A structure which stores the output power values measured when the noise generator is turned on and represented in Watts(W).
+	//FreqValues powerNSoff_w; //!< A structure which stores the output power values measured when the noise generator is turned off and represented in Watts(W).
+	//FreqValues powerNSon_w; //!< A structure which stores the output power values measured when the noise generator is turned on and represented in Watts(W).
+	FreqValues powerNSoff_pw; //!< A structure which stores the output power values measured when the noise generator is turned off and represented in picoWatts(pW).
+	FreqValues powerNSon_pw; //!< A structure which stores the output power values measured when the noise generator is turned on and represented in picoWatts(pW).
 	std::vector<BandParameters> bandsParameters; //!< A vector which stores the parameters of all frequency bands.
 	bool flagNSon; //!< A flag which indicates if the noise source is turned on or not.
 	FreqValues gain; //!< A structure which stores the estimated gain values of the front end versus the frequency, represented in dB.
@@ -215,9 +217,12 @@ class FrontEndCalibrator
 #ifdef DEBUG
 	RFPlotter auxRFPloter; //!< This plotter is intended to see internal steps of the calibration process of a given sweep.
 #endif
+	//RFPlotter auxPlotter2;
 	//Private methods//
 	//! This method builds a curve with RBW values versus frequency, taking into account this parameter for each frequency band.
 	void BuildRBWCurve();
+	void CorrectNoFiniteAndNegVal(std::vector<FreqValues::value_type> & values);
+	void CorrectNoFiniteVal(std::vector<FreqValues::value_type> & values);
 public:
 	//Class Interface//
 	//! The default class constructor.
@@ -339,7 +344,7 @@ class DataLogger
 	const std::string FRONT_END_PARAM_PATH = BASE_PATH + "/calibration/frontendparam"; //!< The path were the files with the front end parameters must be saved.
 	const std::string BANDS_PARAM_CSV_PATH = BASE_PATH + "/parameters/csv"; //!< The path were the file with the parameters of all frequency bands is saved, with CSV format.
 	const std::string UPLOADS_PATH = BASE_PATH + "/uploads"; //!< The path were the files to be uploaded must be put.
-	const unsigned int NUM_OF_POSITIONS = 6; //!< The number of azimuth positions of the antenna positioning system.
+	//const unsigned int NUM_OF_POSITIONS = 6; //!< The number of azimuth positions of the antenna positioning system.
 	//Variables
 	std::ofstream ofs; //!< This object is used to write the data into the different files, following a specific format.
 	unsigned int sweepIndex; //!< An index which allows to know which is the current sweep in the entire measurement cycle, and how many sweeps remain until the end.

@@ -357,8 +357,8 @@ public:
 	 */
 	void Read(Reply& reply)
 	{
-		const unsigned int WAITING_TIME_MS = 1500; //1.5 s
-		const unsigned int DELAY_US = 5000; //5 ms
+		const unsigned int WAITING_TIME_MS = 3000; //3 s
+		const unsigned int DELAY_US = 10000; //10 ms
 		const unsigned int NUM_OF_ITERS = ceil( WAITING_TIME_MS / (double(DELAY_US)/1000.0) );
 		DWORD receivedBytes;
 		unsigned int numOfBytes=reply.GetNumOfBytes();
@@ -366,26 +366,39 @@ public:
 
 		unsigned int i=0;
 
-		unsigned int currNumOfBytes=0;
-		while ( currNumOfBytes<numOfBytes && i++<NUM_OF_ITERS )
-		{
-			currNumOfBytes = Available();
-			usleep(DELAY_US);
-		}
-
-//		while( Available()<numOfBytes && i++<NUM_OF_ITERS )
+//		unsigned int currNumOfBytes=0;
+//		while ( currNumOfBytes<numOfBytes && i++<NUM_OF_ITERS )
+//		{
+//			currNumOfBytes = Available();
 //			usleep(DELAY_US);
+//		}
+
+		while( Available()<numOfBytes && i++<NUM_OF_ITERS )
+			usleep(DELAY_US);
 
 		if(i>=NUM_OF_ITERS)
 			throw rfims_exception("in a reading operation, the input bytes were waited too much time.");
 
-		//usleep(200000);
+		//usleep(DELAY_US);
 
-		ftStatus=FT_Read(ftHandle, rxBuffer, numOfBytes, &receivedBytes);
-		if (ftStatus!=FT_OK)
-			throw rfims_exception("a Spectran reply could not be read, the function FT_Read() returned an error value.");
-		else if (receivedBytes!=numOfBytes)
-			throw rfims_exception("it was tried to read a Spectran reply but not all bytes were read.");
+		bool flagSuccess = false;
+		unsigned int numOfErrors = 0;
+		do
+		{
+			ftStatus=FT_Read(ftHandle, rxBuffer, numOfBytes, &receivedBytes);
+			if (ftStatus!=FT_OK)
+				if(++numOfErrors > 5)
+					throw rfims_exception("a Spectran reply could not be read, the function FT_Read() returned an error value.");
+				else
+					usleep(DELAY_US);
+			else if (receivedBytes!=numOfBytes)
+				if(++numOfErrors > 5)
+					throw rfims_exception("it was tried to read a Spectran reply but not all bytes were read.");
+				else
+					usleep(DELAY_US);
+			else
+				flagSuccess = true;
+		}while(!flagSuccess);
 
 		reply.InsertBytes(rxBuffer); //The received bytes are inserted in the given Reply object
 	}

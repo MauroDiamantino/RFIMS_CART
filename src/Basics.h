@@ -18,7 +18,7 @@
 
 /////////////////////////DEFINE'S//////////////////////////////
 
-#define RASPBERRY_PI // This preprocessor definition enables the use of the code which can only be used in the Raspberry Pi board (for example WiringPi functions).
+//#define RASPBERRY_PI // This preprocessor definition enables the use of the code which can only be used in the Raspberry Pi board (for example WiringPi functions).
 //#define DEBUG // This definition enables some code blocks which are aimed to test the software performance.
 #ifdef RASPBERRY_PI
 	//#define BUTTON // This definition determines the use of Enter key to respond to some software messages or the use of a button connected to a GPIO pin.
@@ -60,6 +60,9 @@
 #include <cstdlib>
 // This library specifies a set of interfaces for threaded programming commonly known as POSIX threads, or Pthread.
 #include <pthread.h>
+// This library has been included to use the function std::max_element().
+#include <algorithm>
+
 #ifdef RASPBERRY_PI
 // WiringPi is a PIN based GPIO access library for the SoC devices used in all Raspberry Pi versions.
 /* It’s designed to be familiar to people who have used the Arduino “wiring” system. It's developed directly
@@ -169,8 +172,9 @@ struct TimeData
 //! The aim of this structure is to store the curve of a determined parameter or variable versus the frequency, which is named a frequency curve here.
 struct FreqValues
 {
+	typedef float value_type;
 	std::string type; //!< Type of frequency values: ”sweep”, “frequency response”, “calibration curve”, “threshold curve”, “rfi", etc.
-	std::vector<float> values; //!< RF power values (dBm), gain values (dB or dBi), noise figure values (dB), etc.
+	std::vector<value_type> values; //!< RF power values (dBm), gain values (dB or dBi), noise figure values (dB), etc.
 	std::vector<std::uint_least64_t> frequencies; //!< Frequency values in Hz.
 	TimeData timeData; //!< A TimeData object which contains information about the time when the values were captured, defined, etc.
 	//! The default constructor which can receive the curve type.
@@ -192,7 +196,7 @@ struct FreqValues
 	//! An overloading of the operator += adapted for this structure.
 	const FreqValues& operator+=(const FreqValues& rhs);
 	//! The aim of this method is to offer the mean value of all data points, i.e. it calculates the average.
-	float MeanValue() const;
+	value_type MeanValue() const;
 
 	//Friends functions//
 	//! An overloading of the unary operator - which negates a _FreqValues_ object.
@@ -200,32 +204,42 @@ struct FreqValues
 	//! An overloading of operator + which calculates the sum of two objects of structure _FreqValues_.
 	friend FreqValues operator+(const FreqValues & lhs, const FreqValues & rhs); //defined in FreqValues.cpp
 	//! An overloading of operator + which calculates the sum of a _FreqValues_ object and a _float_ value, in that order.
+	friend FreqValues operator+(const FreqValues & lhs, const double rhs); //defined in FreqValues.cpp
 	friend FreqValues operator+(const FreqValues & lhs, const float rhs); //defined in FreqValues.cpp
 	//! An overloading of operator + which calculates the sum of a _float_ value and a _FreqValues_ object, in that order.
+	friend FreqValues operator+(const double lhs, const FreqValues & rhs); //defined in FreqValues.cpp
 	friend FreqValues operator+(const float lhs, const FreqValues & rhs); //defined in FreqValues.cpp
 	//! An overloading of operator - which calculates the subtraction of two objects of structure _FreqValues_.
 	friend FreqValues operator-(const FreqValues & lhs, const FreqValues & rhs); //defined in FreqValues.cpp
 	//! An overloading of operator - which calculates the subtraction of a _FreqValues_ object and a _float_ value, in that order.
+	friend FreqValues operator-(const FreqValues & lhs, const double rhs); //defined in FreqValues.cpp
 	friend FreqValues operator-(const FreqValues & lhs, const float rhs); //defined in FreqValues.cpp
 	//! An overloading of operator - which calculates the subtraction of a _float_ value and a _FreqValues_ object, in that order.
+	friend FreqValues operator-(const double lhs, const FreqValues & rhs); //defined in FreqValues.cpp
 	friend FreqValues operator-(const float lhs, const FreqValues & rhs); //defined in FreqValues.cpp
 	//! An overloading of operator * which multiplies two objects of structure _FreqValues_.
 	friend FreqValues operator*(const FreqValues & lhs, const FreqValues & rhs); //defined in FreqValues.cpp
 	//! An overloading of operator * which multiplies a _FreqValues_ object and a _float_ value, in that order.
+	friend FreqValues operator*(const FreqValues & lhs, const double rhs); //defined in FreqValues.cpp
 	friend FreqValues operator*(const FreqValues & lhs, const float rhs); //defined in FreqValues.cpp
 	//! An overloading of operator * which multiplies a _float_ value and a _FreqValues_ object, in that order.
+	friend FreqValues operator*(const double lhs, const FreqValues & rhs); //defined in FreqValues.cpp
 	friend FreqValues operator*(const float lhs, const FreqValues & rhs); //defined in FreqValues.cpp
 	//! An overloading of operator / which calculates the division between two objects of structure _FreqValues_.
 	friend FreqValues operator/(const FreqValues & lhs, const FreqValues & rhs); //defined in FreqValues.cpp
 	//! An overloading of operator / which calculates the division between a _FreqValues_ object and a _float_ value, in that order.
+	friend FreqValues operator/(const FreqValues & lhs, const double rhs); //defined in FreqValues.cpp
 	friend FreqValues operator/(const FreqValues & lhs, const float rhs); //defined in FreqValues.cpp
 	//! An overloading of operator / which calculates the division between a _float_ value and a _FreqValues_ object, in that order.
+	friend FreqValues operator/(const double lhs, const FreqValues & rhs); //defined in FreqValues.cpp
 	friend FreqValues operator/(const float lhs, const FreqValues & rhs); //defined in FreqValues.cpp
 	//! An overloading of function `log10()`, decimal logarithm, adapted to receive an argument of type _FreqValues_.
 	friend FreqValues log10(const FreqValues & argument); //decimal logarithm, defined in FreqValues.cpp
 	//! An overloading of function `pow()`, power function, adapted to receive an argument of type _FreqValues_ as base and an argument of type _float_ as exponent.
+	friend FreqValues pow(const FreqValues & base, const double exponent); //exponentiation, defined in FreqValues.cpp
 	friend FreqValues pow(const FreqValues & base, const float exponent); //exponentiation, defined in FreqValues.cpp
 	//! An overloading of function `pow()`, exponentiation, adapted to receive an argument of type _float_ as base and an argument of type _FreqValues_ as exponent.
+	friend FreqValues pow(const double base, const FreqValues & exponent); //exponentiation, defined in FreqValues.cpp
 	friend FreqValues pow(const float base, const FreqValues & exponent); //exponentiation, defined in FreqValues.cpp
 };
 
@@ -256,40 +270,48 @@ struct Sweep : public FreqValues
 	//! An overloading of operator + which calculates the sum of two objects of structure _Sweep_.
 	friend Sweep operator+(const Sweep & lhs, const Sweep & rhs); //defined in FreqValues.cpp
 	//! An overloading of operator + which calculates the sum of a _Sweep_ object and a `std::vector<float>` container, in that order.
-	friend Sweep operator+(const Sweep & lhs, const std::vector<float> & rhs); //defined in FreqValues.cpp
+	friend Sweep operator+(const Sweep & lhs, const std::vector<value_type> & rhs); //defined in FreqValues.cpp
 	//! An overloading of operator + which calculates the sum of a `std::vector<float>` container and a _Sweep_ object, in that order.
-	friend Sweep operator+(const std::vector<float> & lhs, const Sweep & rhs); //defined in FreqValues.cpp
+	friend Sweep operator+(const std::vector<value_type> & lhs, const Sweep & rhs); //defined in FreqValues.cpp
 	//! An overloading of operator + which calculates the sum of a _Sweep_ object and a _FreqValues_ object, in that order.
 	friend Sweep operator+(const Sweep & lhs, const FreqValues & rhs); //defined in FreqValues.cpp
 	//! An overloading of operator + which calculates the sum of a _Sweep_ object and a _float_ value, in that order.
+	friend Sweep operator+(const Sweep & lhs, const double rhs); //defined in FreqValues.cpp
 	friend Sweep operator+(const Sweep & lhs, const float rhs); //defined in FreqValues.cpp
 	//! An overloading of operator + which calculates the sum of a _float_ value and a _Sweep_ object, in that order.
+	friend Sweep operator+(const double lhs, const Sweep & rhs); //defined in FreqValues.cpp
 	friend Sweep operator+(const float lhs, const Sweep & rhs); //defined in FreqValues.cpp
 	//! An overloading of operator - which calculates the subtraction of two objects of structure _Sweep_.
 	friend Sweep operator-(const Sweep & lhs, const Sweep & rhs); //defined in FreqValues.cpp
 	//! An overloading of operator - which calculates the subtraction of a _Sweep_ object and a `std::vector<float>` container, in that order.
-	friend Sweep operator-(const Sweep & lhs, const std::vector<float> & rhs); //defined in FreqValues.cpp
+	friend Sweep operator-(const Sweep & lhs, const std::vector<value_type> & rhs); //defined in FreqValues.cpp
 	//! An overloading of operator - which calculates the subtraction of a `std::vector<float>` container and a _Sweep_ object, in that order.
-	friend Sweep operator-(const std::vector<float> & lhs, const Sweep & rhs); //defined in FreqValues.cpp
+	friend Sweep operator-(const std::vector<value_type> & lhs, const Sweep & rhs); //defined in FreqValues.cpp
 	//! An overloading of operator - which calculates the subtraction of a _Sweep_ object and a _FreqValues_ object, in that order.
 	friend Sweep operator-(const Sweep & lhs, const FreqValues & rhs); //defined in FreqValues.cpp
 	//! An overloading of operator * which multiplies two objects of structure _Sweep_.
 	friend Sweep operator*(const Sweep & lhs, const Sweep & rhs); //defined in FreqValues.cpp
 	//! An overloading of operator * which multiplies a _Sweep_ object and a _float_ value, in that order.
+	friend Sweep operator*(const Sweep & lhs, const double rhs); //defined in FreqValues.cpp
 	friend Sweep operator*(const Sweep & lhs, const float rhs); //defined in FreqValues.cpp
 	//! An overloading of operator * which multiplies a _float_ value and a _Sweep_ object, in that order.
+	friend Sweep operator*(const double lhs, const Sweep & rhs); //defined in FreqValues.cpp
 	friend Sweep operator*(const float lhs, const Sweep & rhs); //defined in FreqValues.cpp
 	//! An overloading of operator / which calculates the division between two objects of structure _Sweep_.
 	friend Sweep operator/(const Sweep & lhs, const Sweep & rhs); //defined in FreqValues.cpp
 	//! An overloading of operator / which calculates the division between a _Sweep_ object and a _float_ value, in that order.
+	friend Sweep operator/(const Sweep & lhs, const double rhs); //defined in FreqValues.cpp
 	friend Sweep operator/(const Sweep & lhs, const float rhs); //defined in FreqValues.cpp
 	//! An overloading of operator / which calculates the division between a _float_ value and a _Sweep_ object, in that order.
+	friend Sweep operator/(const double lhs, const Sweep & rhs); //defined in FreqValues.cpp
 	friend Sweep operator/(const float lhs, const Sweep & rhs); //defined in FreqValues.cpp
 	//! An overloading of function `log10()` adapted to receive an argument of type _Sweep_.
 	friend Sweep log10(const Sweep & argument); //decimal logarithm, defined in FreqValues.cpp
 	//! An overloading of function `pow()` adapted to receive an argument of type _Sweep_ as base and an argument of type _float_ as exponent.
+	friend Sweep pow(const Sweep & base, const double exponent); //exponentiation, defined in FreqValues.cpp
 	friend Sweep pow(const Sweep & base, const float exponent); //exponentiation, defined in FreqValues.cpp
 	//! An overloading of function `pow()` adapted to receive an argument of type _float_ as base and an argument of type _Sweep_ as exponent.
+	friend Sweep pow(const double base, const Sweep & exponent); //exponentiation, defined in FreqValues.cpp
 	friend Sweep pow(const float base, const Sweep & exponent); //exponentiation, defined in FreqValues.cpp
 };
 
@@ -366,7 +388,7 @@ bool approximatelyEqual(float a, float b);
 bool approximatelyEqual(std::vector<float> vectorA, std::vector<float> vectorB);
 
 //! An overloading of unary operator - which negates the elements of a `std::vector<float>` container.
-std::vector<float> operator-(const std::vector<float> & vect); //defined in Basics.cpp
+std::vector<FreqValues::value_type> operator-(const std::vector<FreqValues::value_type> & vect); //defined in Basics.cpp
 
 //! This function stop the execution until any key is pressed by the user and it was used for debugging purpose.
 void WaitForKey();
@@ -403,6 +425,7 @@ extern bool flagUpload; //!< The declaration of an external flag which defines i
 
 //! The declaration of an external variable which stores the number of measurements cycles which left to be done. It is used when the user wishes a finite number of measurements cycles.
 extern unsigned int numOfMeasCycles;
+extern unsigned int numOfAzimPos;
 //! The declaration of an external variable which saves the norm which defines the harmful interference levels: ska-mode1, ska-mode2, itu-ra769-2-vlbi.
 extern RFI::ThresholdsNorm rfiNorm;
 

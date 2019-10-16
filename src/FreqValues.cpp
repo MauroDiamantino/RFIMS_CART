@@ -51,30 +51,30 @@ const FreqValues& FreqValues::operator=(const FreqValues & freqValues)
  */
 const FreqValues& FreqValues::operator+=(const FreqValues& rhs)
 {
-	if( rhs.frequencies!=frequencies )
-	{
-		rfims_exception exc("a sum could not be performed because the frequencies do not match");
-		throw(exc);
-	}
-
-	if( frequencies.size()!=values.size() && rhs.frequencies.size()!=rhs.values.size() )
-	{
-		rfims_exception exc("a sum could not be performed because one (or both) \"values\" vector has a different size with respect to the \"frequencies\" vector.");
-		throw(exc);
-	}
+//	if( rhs.frequencies!=frequencies )
+//	{
+//		rfims_exception exc("a sum could not be performed because the frequencies do not match");
+//		throw(exc);
+//	}
+//
+//	if( frequencies.size()!=values.size() && rhs.frequencies.size()!=rhs.values.size() )
+//	{
+//		rfims_exception exc("a sum could not be performed because one (or both) \"values\" vector has a different size with respect to the \"frequencies\" vector.");
+//		throw(exc);
+//	}
 
 	auto it1=values.begin();
 	auto it2=rhs.values.begin();
-	for( ; it1!=values.end(); it1++, it2++)
+	for( ; it1!=values.end(), it2!=rhs.values.end(); it1++, it2++)
 		*it1 += *it2;
 
 	return *this;
 }
 
-float FreqValues::MeanValue() const
+FreqValues::FreqValues::value_type FreqValues::MeanValue() const
 {
-	float sum=0;
-	for(const float & value : values)
+	FreqValues::value_type sum=0.0;
+	for(const auto & value : values)
 		sum += value;
 
 	return( sum/values.size() );
@@ -113,24 +113,24 @@ FreqValues operator-(const FreqValues & argument)
  */
 FreqValues operator+(const FreqValues & lhs, const FreqValues & rhs)
 {
-	if( lhs.frequencies!=rhs.frequencies )
-	{
-		rfims_exception exc("a sum could not be performed because the frequencies do not match");
-		throw(exc);
-	}
-
-	if( lhs.frequencies.size()!=lhs.values.size() && rhs.frequencies.size()!=rhs.values.size() )
-	{
-		rfims_exception exc("a sum (or subtraction) could not be performed because one (or both) \"values\" vector has a different size with respect to the \"frequencies\" vector.");
-		throw(exc);
-	}
+//	if( lhs.frequencies!=rhs.frequencies )
+//	{
+//		rfims_exception exc("a sum could not be performed because the frequencies do not match");
+//		throw(exc);
+//	}
+//
+//	if( lhs.frequencies.size()!=lhs.values.size() && rhs.frequencies.size()!=rhs.values.size() )
+//	{
+//		rfims_exception exc("a sum (or subtraction) could not be performed because one (or both) \"values\" vector has a different size with respect to the \"frequencies\" vector.");
+//		throw(exc);
+//	}
 
 	FreqValues result;
 	result.values.reserve( lhs.values.size() );
 
 	auto it1=lhs.values.begin();
 	auto it2=rhs.values.begin();
-	for( ; it1!=lhs.values.end(); it1++, it2++)
+	for( ; it1!=lhs.values.end(), it2!=rhs.values.end(); it1++, it2++)
 		result.values.push_back( *it1 + *it2 );
 
 	result.type = lhs.type;
@@ -148,7 +148,7 @@ FreqValues operator+(const FreqValues & lhs, const FreqValues & rhs)
  * 	\param [in] lhs The left-hand side operand.
  * 	\param [in] rhs The right-hand side operand.
  */
-FreqValues operator+(const FreqValues & lhs, const float rhs)
+FreqValues operator+(const FreqValues & lhs, const double rhs)
 {
 	FreqValues result;
 	result.values.reserve( lhs.values.size() );
@@ -163,6 +163,8 @@ FreqValues operator+(const FreqValues & lhs, const float rhs)
 	return result;
 }
 
+FreqValues operator+(const FreqValues & lhs, const float rhs) {	return( lhs + double(rhs) );	}
+
 /*! This function calls the function `operator+(FreqValues,float)` with the order of its arguments inverted, taking into
  *  account the commutative property of the sum. The values of the of object to be returned are determined by the
  *  operation, while the rest of attributes (frequency, type, timestamp, etc.) are copied from the right-hand side
@@ -172,6 +174,8 @@ FreqValues operator+(const FreqValues & lhs, const float rhs)
  * 	\param [in] lhs The left-hand side operand.
  * 	\param [in] rhs The right-hand side operand.
  */
+FreqValues operator+(const double lhs, const FreqValues & rhs) {		return (rhs + lhs);		}
+
 FreqValues operator+(const float lhs, const FreqValues & rhs) {		return (rhs + lhs);		}
 
 /*! This function calls the function `operator+(FreqValues,FreqValues)` with the right-hand side
@@ -190,6 +194,8 @@ FreqValues operator-(const FreqValues & lhs, const FreqValues & rhs) { return( l
  * 	\param [in] lhs The left-hand side operand.
  * 	\param [in] rhs The right-hand side operand.
  */
+FreqValues operator-(const FreqValues & lhs, const double rhs) {	return( lhs + (-rhs) );		}
+
 FreqValues operator-(const FreqValues & lhs, const float rhs) {	return( lhs + (-rhs) );		}
 
 /*! This function calls the function `operator+(float,FreqValues)` with the right-hand side
@@ -199,6 +205,8 @@ FreqValues operator-(const FreqValues & lhs, const float rhs) {	return( lhs + (-
  * 	\param [in] lhs The left-hand side operand.
  * 	\param [in] rhs The right-hand side operand.
  */
+FreqValues operator-(const double lhs, const FreqValues & rhs) {	return( lhs + (-rhs) );		}
+
 FreqValues operator-(const float lhs, const FreqValues & rhs) {	return( lhs + (-rhs) );		}
 
 /*! Before performing the operation, the function checks if the frequencies of each structure match
@@ -212,24 +220,24 @@ FreqValues operator-(const float lhs, const FreqValues & rhs) {	return( lhs + (-
  */
 FreqValues operator*(const FreqValues & lhs, const FreqValues & rhs)
 {
-	if( lhs.frequencies!=rhs.frequencies )
-	{
-		rfims_exception exc("a multiplication could not be performed because the frequencies do not match.");
-		throw(exc);
-	}
-
-	if( lhs.frequencies.size()!=lhs.values.size() && rhs.frequencies.size()!=rhs.values.size() )
-	{
-		rfims_exception exc("a multiplication (or division) could not be performed because one (or both) \"values\" vector has a different size with respect to the \"frequencies\" vector.");
-		throw(exc);
-	}
+//	if( lhs.frequencies!=rhs.frequencies )
+//	{
+//		rfims_exception exc("a multiplication could not be performed because the frequencies do not match.");
+//		throw(exc);
+//	}
+//
+//	if( lhs.frequencies.size()!=lhs.values.size() && rhs.frequencies.size()!=rhs.values.size() )
+//	{
+//		rfims_exception exc("a multiplication (or division) could not be performed because one (or both) \"values\" vector has a different size with respect to the \"frequencies\" vector.");
+//		throw(exc);
+//	}
 
 	FreqValues result;
 	result.values.reserve( lhs.values.size() );
 
 	auto it1=lhs.values.begin();
 	auto it2=rhs.values.begin();
-	for( ; it1!=lhs.values.end(); it1++, it2++)
+	for( ; it1!=lhs.values.end(), it2!=rhs.values.end(); it1++, it2++)
 		result.values.push_back( *it1 * *it2 );
 
 	result.type = lhs.type;
@@ -247,7 +255,7 @@ FreqValues operator*(const FreqValues & lhs, const FreqValues & rhs)
  * 	\param [in] lhs The left-hand side operand.
  * 	\param [in] rhs The right-hand side operand.
  */
-FreqValues operator*(const float lhs, const FreqValues & rhs)
+FreqValues operator*(const double lhs, const FreqValues & rhs)
 {
 	FreqValues result;
 	result.values.reserve( rhs.values.size() );
@@ -262,6 +270,8 @@ FreqValues operator*(const float lhs, const FreqValues & rhs)
 	return result;
 }
 
+FreqValues operator*(const float lhs, const FreqValues & rhs) 	{	return( double(lhs) * rhs );	}
+
 /*! This function calls the function `operator*(float,FreqValues)` with the order of its argument
  * 	inverted, taking into account the commutative property of the multiplication.
  *
@@ -269,6 +279,8 @@ FreqValues operator*(const float lhs, const FreqValues & rhs)
  * 	\param [in] lhs The left-hand side operand.
  * 	\param [in] rhs The right-hand side operand.
  */
+FreqValues operator*(const FreqValues & lhs, const double rhs){	return (rhs * lhs);		}
+
 FreqValues operator*(const FreqValues & lhs, const float rhs){	return (rhs * lhs);		}
 
 /*! Before performing the operation, the function checks if the frequencies of each structure match
@@ -282,24 +294,24 @@ FreqValues operator*(const FreqValues & lhs, const float rhs){	return (rhs * lhs
  */
 FreqValues operator/(const FreqValues & lhs, const FreqValues & rhs)
 {
-	if( lhs.frequencies!=rhs.frequencies )
-	{
-		rfims_exception exc("a division could not be performed because the frequencies do not match");
-		throw(exc);
-	}
-
-	if( lhs.frequencies.size()!=lhs.values.size() && rhs.frequencies.size()!=rhs.values.size() )
-	{
-		rfims_exception exc("a division could not be performed because one (or both) \"values\" vector has a different size with respect to the \"frequencies\" vector.");
-		throw(exc);
-	}
+//	if( lhs.frequencies!=rhs.frequencies )
+//	{
+//		rfims_exception exc("a division could not be performed because the frequencies do not match");
+//		throw(exc);
+//	}
+//
+//	if( lhs.frequencies.size()!=lhs.values.size() && rhs.frequencies.size()!=rhs.values.size() )
+//	{
+//		rfims_exception exc("a division could not be performed because one (or both) \"values\" vector has a different size with respect to the \"frequencies\" vector.");
+//		throw(exc);
+//	}
 
 	FreqValues result;
 	result.values.reserve( lhs.values.size() );
 
 	auto it1=lhs.values.begin();
 	auto it2=rhs.values.begin();
-	for( ; it1!=lhs.values.end(); it1++, it2++)
+	for( ; it1!=lhs.values.end(), it2!=rhs.values.end(); it1++, it2++)
 		result.values.push_back( *it1 / *it2 );
 
 	result.type = lhs.type;
@@ -317,7 +329,7 @@ FreqValues operator/(const FreqValues & lhs, const FreqValues & rhs)
  * 	\param [in] lhs The left-hand side operand.
  * 	\param [in] rhs The right-hand side operand.
  */
-FreqValues operator/(const float lhs, const FreqValues & rhs)
+FreqValues operator/(const double lhs, const FreqValues & rhs)
 {
 	FreqValues result;
 	result.values.reserve( rhs.values.size() );
@@ -332,12 +344,16 @@ FreqValues operator/(const float lhs, const FreqValues & rhs)
 	return result;
 }
 
+FreqValues operator/(const float lhs, const FreqValues & rhs) {	return( double(lhs) / rhs );	}
+
 /*! This function calls the function `operator*(FreqValues,float)` wit the right-hand argument inverted.
  *
  * 	The function returns a _FreqValues_ object with the results of the operation.
  * 	\param [in] lhs The left-hand side operand.
  * 	\param [in] rhs The right-hand side operand.
  */
+FreqValues operator/(const FreqValues & lhs, const double rhs) { 	return( lhs * (1/rhs) );	}
+
 FreqValues operator/(const FreqValues & lhs, const float rhs) { 	return( lhs * (1/rhs) );	}
 
 /*! This function takes each point of the given structure, apply the decimal logarithm whit its value
@@ -367,7 +383,7 @@ FreqValues log10(const FreqValues & argument)
  *	\param [in] base The _FreqValues_ structure to be used as the base of the power function.
  *	\param [in] exponent The float value which will be used as the exponent.
  */
-FreqValues pow(const FreqValues & base, const float exponent)
+FreqValues pow(const FreqValues & base, const double exponent)
 {
 	FreqValues result;
 	result.values.reserve( base.values.size() );
@@ -382,6 +398,8 @@ FreqValues pow(const FreqValues & base, const float exponent)
 	return result;
 }
 
+FreqValues pow(const FreqValues & base, const float exponent) {		return( pow( base, double(exponent) ) );	}
+
 /*! This function takes the `float` value, given as the base, and raises it to each of the
  * 	values of the _FreqValues_ structure given as the exponent. Each result is stored in a
  * 	different _FreqValues_ structure which is then returned. The rest of attributes
@@ -390,7 +408,7 @@ FreqValues pow(const FreqValues & base, const float exponent)
  * 	\param [in] base The `float` value given as the base of the exponentiation operation.
  * 	\param [in] exponent The _FreqValues_ structure whose values will be used as the exponents of the exponentiation operation.
  */
-FreqValues pow(const float base, const FreqValues & exponent)
+FreqValues pow(const double base, const FreqValues & exponent)
 {
 	FreqValues result;
 	result.values.reserve( exponent.values.size() );
@@ -404,6 +422,8 @@ FreqValues pow(const float base, const FreqValues & exponent)
 
 	return result;
 }
+
+FreqValues pow(const float base, const FreqValues & exponent) {	return( pow( double(base), exponent) );		}
 
 /////////////////////////Definitions of some Sweep structure's methods////////////////////
 
@@ -446,24 +466,24 @@ Sweep operator-(const Sweep & argument)
  */
 Sweep operator+(const Sweep & lhs, const Sweep & rhs)
 {
-	if( lhs.frequencies!=rhs.frequencies )
-	{
-		rfims_exception exc("a sum could not be performed because the frequencies do not match");
-		throw(exc);
-	}
-
-	if( lhs.frequencies.size()!=lhs.values.size() && rhs.frequencies.size()!=rhs.values.size() )
-	{
-		rfims_exception exc("a sum (or subtraction) could not be performed because one (or both) \"values\" vector has a different size with respect to the \"frequencies\" vector.");
-		throw(exc);
-	}
+//	if( lhs.frequencies!=rhs.frequencies )
+//	{
+//		rfims_exception exc("a sum could not be performed because the frequencies do not match");
+//		throw(exc);
+//	}
+//
+//	if( lhs.frequencies.size()!=lhs.values.size() && rhs.frequencies.size()!=rhs.values.size() )
+//	{
+//		rfims_exception exc("a sum (or subtraction) could not be performed because one (or both) \"values\" vector has a different size with respect to the \"frequencies\" vector.");
+//		throw(exc);
+//	}
 
 	Sweep result;
 	result.values.reserve( lhs.values.size() );
 
 	auto it1=lhs.values.begin();
 	auto it2=rhs.values.begin();
-	for( ; it1!=lhs.values.end(); it1++, it2++)
+	for( ; it1!=lhs.values.end(), it2!=rhs.values.end(); it1++, it2++)
 		result.values.push_back( *it1 + *it2 );
 
 	result.type = lhs.type;
@@ -483,7 +503,7 @@ Sweep operator+(const Sweep & lhs, const Sweep & rhs)
  * 	\param [in] lhs The left-hand side operand.
  * 	\param [in] rhs The right-hand side operand.
  */
-Sweep operator+(const Sweep & lhs, const std::vector<float> & rhs)
+Sweep operator+(const Sweep & lhs, const std::vector<FreqValues::value_type> & rhs)
 {
 	if( lhs.values.size() != rhs.size() )
 	{
@@ -507,7 +527,7 @@ Sweep operator+(const Sweep & lhs, const std::vector<float> & rhs)
  * 	\param [in] lhs The left-hand side operand.
  * 	\param [in] rhs The right-hand side operand.
  */
-Sweep operator+(const std::vector<float> & lhs, const Sweep & rhs) {	return( rhs + lhs );	}
+Sweep operator+(const std::vector<FreqValues::value_type> & lhs, const Sweep & rhs) {	return( rhs + lhs );	}
 
 /*! To perform this operation the _FreqValues_ argument is casted to _Sweep_. The values of the of object
  * 	to be returned are determined by the operation, while the rest of attributes (frequency, type,
@@ -528,13 +548,15 @@ Sweep operator+(const Sweep & lhs, const FreqValues & rhs) {	return( lhs + (Swee
  * 	\param [in] lhs The left-hand side operand.
  * 	\param [in] rhs The right-hand side operand.
  */
-Sweep operator+(const Sweep & lhs, const float rhs)
+Sweep operator+(const Sweep & lhs, const double rhs)
 {
 	Sweep result = (Sweep) ( (FreqValues) lhs + rhs);
 	result.azimuthAngle = lhs.azimuthAngle;
 	result.polarization = lhs.polarization;
 	return result;
 }
+
+Sweep operator+(const Sweep & lhs, const float rhs) {	return( lhs + double(rhs) );	}
 
 /*! The values of the of object	to be returned are determined by the operation, while the rest of attributes
  * 	(frequency, type, timestamp, etc.) are copied from the right-hand side argument, the only one argument
@@ -544,6 +566,8 @@ Sweep operator+(const Sweep & lhs, const float rhs)
  * 	\param [in] lhs The left-hand side operand.
  * 	\param [in] rhs The right-hand side operand.
  */
+Sweep operator+(const double lhs, const Sweep & rhs) {	return( rhs + lhs );	}
+
 Sweep operator+(const float lhs, const Sweep & rhs) {	return( rhs + lhs );	}
 
 /*! Before performing the operation, the function checks if the frequencies of each structure match
@@ -565,7 +589,7 @@ Sweep operator-(const Sweep & lhs, const Sweep & rhs) {		return( lhs + (-rhs) );
  * 	\param [in] lhs The left-hand side operand.
  * 	\param [in] rhs The right-hand side operand.
  */
-Sweep operator-(const Sweep & lhs, const std::vector<float> & rhs) {	return( lhs + (-rhs) );		}
+Sweep operator-(const Sweep & lhs, const std::vector<FreqValues::value_type> & rhs) {	return( lhs + (-rhs) );		}
 
 /*! Before performing the operation, the function checks if the "values" vectors have the same sizes. The
  * 	values of the of object to be returned are determined by the operation, while the rest of attributes
@@ -575,7 +599,7 @@ Sweep operator-(const Sweep & lhs, const std::vector<float> & rhs) {	return( lhs
  * 	\param [in] lhs The left-hand side operand.
  * 	\param [in] rhs The right-hand side operand.
  */
-Sweep operator-(const std::vector<float> & lhs, const Sweep & rhs) {	return( lhs + (-rhs) );		}
+Sweep operator-(const std::vector<FreqValues::value_type> & lhs, const Sweep & rhs) {	return( lhs + (-rhs) );		}
 
 /*! To perform this operation the _FreqValues_ argument is casted to _Sweep_. The values of the of object
  * 	to be returned are determined by the operation, while the rest of attributes (frequency, type,
@@ -613,13 +637,15 @@ Sweep operator*(const Sweep & lhs, const Sweep & rhs)
  * 	\param [in] lhs The left-hand side operand.
  * 	\param [in] rhs The right-hand side operand.
  */
-Sweep operator*(const float lhs, const Sweep & rhs)
+Sweep operator*(const double lhs, const Sweep & rhs)
 {
 	Sweep result = (Sweep) ( lhs * (FreqValues)rhs );
 	result.azimuthAngle=rhs.azimuthAngle;
 	result.polarization=rhs.polarization;
 	return result;
 }
+
+Sweep operator*(const float lhs, const Sweep & rhs) {	return( double(lhs) * rhs );	}
 
 /*! The values of the of object	to be returned are determined by the operation, while the rest of attributes
  * 	(frequency, type, timestamp, etc.) are copied from the left-hand side argument, the only one argument
@@ -629,6 +655,8 @@ Sweep operator*(const float lhs, const Sweep & rhs)
  * 	\param [in] lhs The left-hand side operand.
  * 	\param [in] rhs The right-hand side operand.
  */
+Sweep operator*(const Sweep & lhs, const double rhs) {	return( rhs * lhs );	}
+
 Sweep operator*(const Sweep & lhs, const float rhs) {	return( rhs * lhs );	}
 
 /*! Before performing the operation, the function checks if the frequencies of each structure match
@@ -656,13 +684,15 @@ Sweep operator/(const Sweep & lhs, const Sweep & rhs)
  * 	\param [in] lhs The left-hand side operand.
  * 	\param [in] rhs The right-hand side operand.
  */
-Sweep operator/(const float lhs, const Sweep & rhs)
+Sweep operator/(const double lhs, const Sweep & rhs)
 {
 	Sweep result = (Sweep) ( lhs / (FreqValues)rhs );
 	result.azimuthAngle=rhs.azimuthAngle;
 	result.polarization=rhs.polarization;
 	return result;
 }
+
+Sweep operator/(const float lhs, const Sweep & rhs) {	return( double(lhs) / rhs );	}
 
 /*! The values of the of object	to be returned are determined by the operation, while the rest of attributes
  * 	(frequency, type, timestamp, etc.) are copied from the left-hand side argument, the only one argument
@@ -672,6 +702,8 @@ Sweep operator/(const float lhs, const Sweep & rhs)
  * 	\param [in] lhs The left-hand side operand.
  * 	\param [in] rhs The right-hand side operand.
  */
+Sweep operator/(const Sweep & lhs, const double rhs) {	return( lhs * (1/rhs) );	}
+
 Sweep operator/(const Sweep & lhs, const float rhs) {	return( lhs * (1/rhs) );	}
 
 /*! This function takes each point of the given structure, apply the decimal logarithm whit its value
@@ -694,13 +726,15 @@ Sweep log10(const Sweep & argument)
  *	\param [in] base The _Sweep_ structure to be used as the base of the power function.
  *	\param [in] exponent The float value which will be used as the exponent.
  */
-Sweep pow(const Sweep & base, const float exponent)
+Sweep pow(const Sweep & base, const double exponent)
 {
 	Sweep result = (Sweep) pow((FreqValues&)base, exponent);
 	result.azimuthAngle = base.azimuthAngle;
 	result.polarization = base.polarization;
 	return result;
 }
+
+Sweep pow(const Sweep & base, const float exponent) {	return( pow( base, double(exponent) ) );	}
 
 /*! This function takes the `float` value, given as the base, and raises it to each of the
  * 	values of the _Sweep_ structure given as the exponent. Each result is stored in a
@@ -710,10 +744,12 @@ Sweep pow(const Sweep & base, const float exponent)
  * 	\param [in] base The `float` value given as the base of the exponentiation operation.
  * 	\param [in] exponent The _Sweep_ structure whose values will be used as the exponents of the exponentiation operation.
  */
-Sweep pow(const float base, const Sweep & exponent)
+Sweep pow(const double base, const Sweep & exponent)
 {
 	Sweep result = (Sweep) pow(base, (FreqValues&)exponent);
 	result.azimuthAngle = exponent.azimuthAngle;
 	result.polarization = exponent.polarization;
 	return result;
 }
+
+Sweep pow(const float base, const Sweep & exponent) {	return( pow( double(base), exponent) );		}
