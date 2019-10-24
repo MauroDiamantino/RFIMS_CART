@@ -615,6 +615,8 @@ TimeData GPSInterface::UpdateTimeData()
 {
 	std::vector<std::string> dataReplies;
 	unsigned int i=0;
+	std::string gprmcReply;
+	bool flagReplyFound;
 
 	do
 	{
@@ -631,9 +633,18 @@ TimeData GPSInterface::UpdateTimeData()
 		i=0;
 		while( dataReplies[i].find("$GPRMC")==std::string::npos )
 			i++;
-	}while( !ControlChecksum(dataReplies[i]) || !ControlStatus(dataReplies[i]) );
 
-	ExtractGPRMCData(dataReplies[i]);
+		if(i<7)
+		{
+			gprmcReply=dataReplies[i];
+			flagReplyFound=true;
+		}
+		else
+			flagReplyFound=false;
+
+	}while( !flagReplyFound || !ControlChecksum(gprmcReply) || !ControlStatus(gprmcReply) );
+
+	ExtractGPRMCData(gprmcReply);
 
 	return timeData;
 }
@@ -643,6 +654,8 @@ Data3D GPSInterface::UpdateCompassData()
 {
 	std::vector<std::string> dataReplies;
 	unsigned int i=0;
+	std::string compassReply;
+	bool flagReplyFound;
 
 	do
 	{
@@ -659,9 +672,18 @@ Data3D GPSInterface::UpdateCompassData()
 		i=0;
 		while( dataReplies[i].find("$PAAG,DATA,C")==std::string::npos )
 			i++;
-	}while( !ControlChecksum(dataReplies[i]) || !ControlStatus(dataReplies[i]) );
 
-	ExtractCompassData(dataReplies[i]);
+		if(i<7)
+		{
+			compassReply=dataReplies[i];
+			flagReplyFound=true;
+		}
+		else
+			flagReplyFound=false;
+
+	}while( !flagReplyFound || !ControlChecksum(compassReply) || !ControlStatus(compassReply) );
+
+	ExtractCompassData(compassReply);
 
 	return compassData;
 }
@@ -670,6 +692,8 @@ Data3D GPSInterface::UpdateGyroData()
 {
 	std::vector<std::string> dataReplies;
 	unsigned int i=0;
+	std::string gyroReply;
+	bool flagReplyFound;
 
 	do
 	{
@@ -686,9 +710,18 @@ Data3D GPSInterface::UpdateGyroData()
 		i=0;
 		while( dataReplies[i].find("$PAAG,DATA,G")==std::string::npos )
 			i++;
-	}while( !ControlChecksum(dataReplies[i]) || !ControlStatus(dataReplies[i]) );
 
-	ExtractGyroData(dataReplies[i]);
+		if(i<7)
+		{
+			gyroReply=dataReplies[i];
+			flagReplyFound=true;
+		}
+		else
+			flagReplyFound=false;
+
+	}while( !flagReplyFound || !ControlChecksum(gyroReply) || !ControlStatus(gyroReply) );
+
+	ExtractGyroData(gyroReply);
 
 	return gyroData;
 }
@@ -697,6 +730,8 @@ Data3D GPSInterface::UpdateAccelerData()
 {
 	std::vector<std::string> dataReplies;
 	unsigned int i=0;
+	std::string accelReply;
+	bool flagReplyFound;
 
 	do
 	{
@@ -713,9 +748,18 @@ Data3D GPSInterface::UpdateAccelerData()
 		i=0;
 		while( dataReplies[i].find("$PAAG,DATA,T")==std::string::npos )
 			i++;
-	}while( !ControlChecksum(dataReplies[i]) || !ControlStatus(dataReplies[i]) );
 
-	ExtractAccelerData(dataReplies[i]);
+		if(i<7)
+		{
+			accelReply=dataReplies[i];
+			flagReplyFound=true;
+		}
+		else
+			flagReplyFound=false;
+
+	}while( !flagReplyFound || !ControlChecksum(accelReply) || !ControlStatus(accelReply) );
+
+	ExtractAccelerData(accelReply);
 
 	return accelData;
 }
@@ -775,7 +819,9 @@ double GPSInterface::UpdatePitch()
 void GPSInterface::UpdatePressAndElevat()
 {
 	std::vector<std::string> dataReplies;
+	std::string baromReply;
 	unsigned int i=0;
+	bool flagReplyFound;
 
 	do
 	{
@@ -792,9 +838,93 @@ void GPSInterface::UpdatePressAndElevat()
 		i=0;
 		while( dataReplies[i].find("$PAAG,DATA,B")==std::string::npos )
 			i++;
-	}while( !ControlChecksum(dataReplies[i]) || !ControlStatus(dataReplies[i]) );
 
-	ExtractBarometerData(dataReplies[i]);
+		if(i<7)
+		{
+			baromReply = dataReplies[i];
+			flagReplyFound=true;
+		}
+		else
+			flagReplyFound=false;
+
+	}while( !flagReplyFound || !ControlChecksum(baromReply) || !ControlStatus(baromReply) );
+
+	ExtractBarometerData(baromReply);
+}
+
+void GPSInterface::UpdateAll()
+{
+	bool flagGPRMCReply=false, flagGPGGAReply=false, flagBaromReply=false;
+	bool flagGyroReply=false, flagCompassReply=false, flagAccelerReply=false;
+
+	std::vector<std::string> dataReplies;
+
+	do
+	{
+		try
+		{
+			ReadOneDataSet(dataReplies);
+		}
+		catch(rfims_exception & exc)
+		{
+			exc.Prepend("it was not possible to update all attributes");
+			throw;
+		}
+
+		for(const std::string & reply : dataReplies)
+		{
+			if( reply.find("$GPRMC") != std::string::npos )
+			{
+				if( ControlChecksum(reply) && ControlStatus(reply) )
+				{
+					ExtractGPRMCData(reply);
+					flagGPRMCReply=true;
+				}
+			}
+			else if( reply.find("$GPGGA") != std::string::npos )
+			{
+				if( ControlChecksum(reply) )
+				{
+					ExtractGPGGAData(reply);
+					flagGPGGAReply=true;
+				}
+			}
+			else if( reply.find("$PAAG,DATA,G") != std::string::npos )
+			{
+				if( ControlChecksum(reply) && ControlStatus(reply) )
+				{
+					ExtractGyroData(reply);
+					flagGyroReply=true;
+				}
+			}
+			else if( reply.find("$PAAG,DATA,C") != std::string::npos )
+			{
+				if( ControlChecksum(reply) && ControlStatus(reply) )
+				{
+					ExtractCompassData(reply);
+					flagCompassReply=true;
+				}
+			}
+			else if( reply.find("$PAAG,DATA,B") != std::string::npos )
+			{
+				if( ControlChecksum(reply) && ControlStatus(reply) )
+				{
+					ExtractBarometerData(reply);
+					flagBaromReply=true;
+				}
+			}
+			else if( reply.find("$PAAG,DATA,T") != std::string::npos )
+			{
+				if( ControlChecksum(reply) && ControlStatus(reply) )
+				{
+					ExtractAccelerData(reply);
+					flagAccelerReply=true;
+				}
+			}
+		}
+
+	}while(!flagGPRMCReply || !flagGPGGAReply || !flagBaromReply ||
+			!flagGyroReply || !flagCompassReply || !flagAccelerReply);
 }
 
 ////! This method is intended to enable the streaming of data from the GPS receiver.

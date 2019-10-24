@@ -151,6 +151,8 @@ public:
 	double UpdatePitch();
 	//! A method which reads the corresponding data reply to update the pressure and the pressure-based elevation.
 	void UpdatePressAndElevat();
+	//! A method which reads all data replies to update all attributes.
+	void UpdateAll();
 	//! This method returns the time data (date and time) which was received from the GPS satellites.
 	const TimeData & GetTimeData() const {	return timeData;	}
 	//! This method returns the GPS coordinates.
