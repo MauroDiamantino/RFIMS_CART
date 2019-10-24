@@ -20,7 +20,8 @@ GPSInterface::GPSInterface()
 	coordinates={ 0.0, 0.0 };
 	numOfSatellites=0;
 	gpsElevation=0.0;
-	gyroData=compassData=accelData = { Data3D::UNINITIALIZED, "", 0.0, 0.0, 0.0 };
+	compassData=accelData = { Data3D::UNINITIALIZED, "", 0.0, 0.0, 0.0 };
+	//gyroData = { Data3D::UNINITIALIZED, "", 0.0, 0.0, 0.0 };
 	yaw=0.0;
 	pitch=0.0;
 	roll=0.0;
@@ -74,52 +75,6 @@ GPSInterface::GPSInterface()
 	ftStatus = FT_SetFlowControl(ftHandle, FT_FLOW_NONE, 0, 0);
 	if(ftStatus!=FT_OK)
 		throw rfims_exception("the flow control could not be set up.");
-
-	DIR * dir;
-	struct dirent * ent;
-	std::string filename;
-	bool flagFound=false;
-	unsigned int index, maxIndex=0;
-	std::istringstream iss;
-	size_t posIndex, posPoint;
-
-	dir=opendir( SENSORS_FILES_PATH.c_str() );
-	if( dir==NULL )
-		throw rfims_exception("the directory where files with sensors data are saved could not be opened.");
-
-	while( (ent=readdir(dir)) != NULL )
-	{
-		filename = ent->d_name;
-		if( filename.find("sensorsdata_")!=std::string::npos && filename.find(".txt")!=std::string::npos )
-		{
-			flagFound=true;
-			posIndex = filename.find('_') + 1;
-			posPoint = filename.find('.');
-			iss.clear();
-			iss.str( filename.substr(posIndex, posPoint-posIndex) );
-			iss >> index;
-			if(index > maxIndex)
-				maxIndex = index;
-		}
-	}
-
-	std::string pathAndName;
-	if(flagFound)
-	{
-		std::ostringstream oss;
-		oss << "sensorsdata_" << (maxIndex + 1) << ".txt" << endl;
-		pathAndName = SENSORS_FILES_PATH + oss.str();
-	}
-	else
-	{
-		pathAndName = SENSORS_FILES_PATH + "sensorsdata_1.txt";
-	}
-
-	//Enabling exceptions for logical errors (failbit) and read/writing errors (badbit) on i/o operations
-	sensorFile.exceptions(std::ofstream::failbit | std::ofstream::badbit);
-	//Associating the output file stream with the corresponding file where the sensors data will be stored
-	sensorFile.open(pathAndName);
-	sensorFile << "Timestamp,Gyroscope.x,Gyroscope.y,Gyroscope.z,Compass.x,Compass.y,Compass.z,Accelerometer.x,Accelerometer.y,Accelerometer.z,yaw,pitch,roll\n";
 
 	Purge();
 	usleep(300000);
@@ -213,6 +168,8 @@ inline void GPSInterface::Read(std::string& reply, const unsigned int numOfBytes
 	DWORD receivedBytes;
 	char rxBuffer;
 
+	reply.clear();
+
 	if(numOfBytes!=0)
 	{
 		//Loop to wait for the bytes
@@ -243,7 +200,9 @@ inline void GPSInterface::Read(std::string& reply, const unsigned int numOfBytes
 			rfims_exception exc("the GPS interface tried to read a reply, but one character could not be read.");
 			throw(exc);
 		}
+
 		reply += rxBuffer;
+
 	}while(rxBuffer!='\n');
 }
 
@@ -265,6 +224,16 @@ inline bool GPSInterface::ControlChecksum(const std::string& reply)
 	sscanf(checksumString.c_str(), "%x", &receivedChecksum);
 
 	if(receivedChecksum==calculChecksum)
+		return true;
+
+	return false;
+}
+
+inline bool GPSInterface::ControlStatus(const std::string & reply)
+{
+	size_t statusCharPos = reply.find('*') - 1;
+
+	if( reply.at(statusCharPos)=='A' || reply.at(statusCharPos)=='a' )
 		return true;
 
 	return false;
@@ -325,85 +294,27 @@ void GPSInterface::ConfigureVariable(const std::string& variable, const unsigned
 }
 
 
-inline void GPSInterface::CalculateCardanAngles()
+inline void GPSInterface::CalculateYaw()
 {
 	yaw = atan2(compassData.y, compassData.x) * 180.0/M_PI;
 
 	if( (yaw+=180.0) >= 360.0 )
 		yaw -= 360.0;
-
-	pitch = -atan2( accelData.y, sqrt(pow(accelData.x,2) + pow(accelData.z,2)) ) * 180.0/M_PI;
-	roll = atan2( -accelData.x, (accelData.z<0 ? -1 : 1) * sqrt(pow(accelData.y,2) + pow(accelData.z,2)) ) * 180.0/M_PI;
 }
 
-/*! Also, this method controls the checksum of the desired reply. The method throws exception when the checksum is wrong
- * and when the desired reply was not found.
- */
-unsigned int GPSInterface::FindAndCheckDataReply(const std::vector<std::string>& replies, const std::string& replyType, const char sensor)
-{
-	std::string header;
-	if(replyType=="PAAG")
-	{
-		header = "$PAAG,DATA,";
-		header += sensor;
-	}
-	else
-	{
-		header = '$';
-		header += replyType;
-	}
 
-	unsigned int i=0;
-	while( replies[i].find(header)==std::string::npos && i<replies.size() )
-		i++;
-
-	if( i>=replies.size() )
-	{
-		rfims_exception exc;
-		if(sensor=='\0')
-			exc.SetMessage("the reply " + replyType + " was not found between the data replies.");
-		else
-			exc.SetMessage("the reply " + replyType + " with the data of sensor " + sensor + " was not found between the data replies.");
-		throw(exc);
-	}
-
-	if( !ControlChecksum(replies[i]) )
-	{
-		rfims_exception exc("the PAAG reply with the gyroscope data was received with a wrong checksum.");
-		throw(exc);
-	}
-
-	return i;
-}
-
-/*! This method is intended for debugging purposes. */
-void GPSInterface::SaveSensorsData()
-{
-	//Timestamp,Gyroscope.x,Gyroscope.y,Gyroscope.z,Compass.x,Compass.y,Compass.z,Accelerometer.x,Accelerometer.y,Accelerometer.z,yaw,pitch,roll\n
-
-	sensorFile << timeData.GetTimestamp() << ',' << gyroData.x << ',' << gyroData.y << ',' << gyroData.z << ',';
-	sensorFile << compassData.x << ',' << compassData.y << ',' << compassData.z << ',';
-	sensorFile << accelData.x << ',' << accelData.y << ',' << accelData.z << ',';
-	sensorFile << yaw << ',' << pitch << ',' << roll << '\n';
-}
-
-void GPSInterface::ProcessDataReplies(const std::vector<std::string>& replies)
+void GPSInterface::ExtractGPRMCData(const std::string & reply)
 {
 	nmea_s * data;
-	std::stringstream ss;
-	unsigned int i;
-	char * auxString;
 
-	//Searching GPRMC reply
-	i = FindAndCheckDataReply(replies, "GPRMC");
-
-	auxString = new char[replies[i].size()+10];
-	strcpy(auxString, replies[i].c_str());
+	//Copying the reply to an auxiliary string to avoid destroying the original string
+	char * auxString = new char[ reply.size() + 10 ];
+	strcpy( auxString, reply.c_str() );
 
 	//Parsing GPRMC reply
-	data = nmea_parse(auxString, replies[i].size(), 0);
+	data = nmea_parse(auxString, reply.size(), 0);
 	if(data==NULL)
-		throw rfims_exception("it was not possible to parse the GPRMC reply.");
+		throw rfims_exception("it was not possible to parse a GPRMC reply.");
 
 	nmea_gprmc_s * gprmc = (nmea_gprmc_s*) data;
 
@@ -413,102 +324,109 @@ void GPSInterface::ProcessDataReplies(const std::vector<std::string>& replies)
 	coordinates.latitude = double(gprmc->latitude.degrees + gprmc->latitude.minutes/60.0) * (gprmc->latitude.cardinal=='S' ? -1.0 : 1.0);
 	coordinates.longitude = double(gprmc->longitude.degrees + gprmc->longitude.minutes/60.0) * (gprmc->longitude.cardinal=='W' ? -1.0 : 1.0);
 
-	//Searching GPGGA reply
-	i = FindAndCheckDataReply(replies, "GPGGA");
+	delete[] auxString;
+	nmea_free(data);
+}
+
+
+void GPSInterface::ExtractGPGGAData(const std::string & reply)
+{
+	nmea_s * data;
+
+	//Copying the reply to an auxiliary string to avoid destroying the original string
+	char * auxString = new char[ reply.size() + 10 ];
+	strcpy( auxString, reply.c_str() );
 
 	//Parsing GPGGA reply
-	data = nmea_parse((char*)replies[i].c_str(), replies[i].size(), 0);
+	data = nmea_parse(auxString, reply.size(), 0);
 	if(data==NULL)
-		throw rfims_exception("it was not possible to parse the GPGGA reply.");
+		throw rfims_exception("it was not possible to parse a GPGGA reply.");
 
 	nmea_gpgga_s * gpgga = (nmea_gpgga_s*) data;
 	gpsElevation = gpgga->altitude;
 	numOfSatellites = gpgga->n_satellites;
 
 	delete[] auxString;
+	nmea_free(data);
+}
 
-	//Searching PAAG reply with Gyroscope data
-	i = FindAndCheckDataReply(replies, "PAAG", 'G');
 
-	//Parsing PAAG reply with Gyroscope data
-	size_t statusPos = replies[i].find('*') - 1;
-	if( replies[i].at(statusPos)!='A' )
-		throw rfims_exception("the PAAG reply with the gyroscope data stated an invalid status.");
-
-	size_t xPos = replies[i].find(',', 13) + 1;
+void GPSInterface::ExtractGyroData(const std::string & reply)
+{
+	std::stringstream ss;
+	std::string aux;
 	char delimiter[2];
-	ss.clear();
-	std::string aux = replies[i].substr(xPos, statusPos-xPos-1);
+
+	//Extracting the 3D values (x,y,z)
+	size_t statusPos = reply.find('*') - 1;
+	size_t xPos = reply.find(',', 13) + 1;
+	aux = reply.substr(xPos, statusPos-xPos-1);
 	ss.str( aux );
 	ss >> gyroData.x >> delimiter[0] >> gyroData.y >> delimiter[1] >> gyroData.z;
+
 	//Scaling the gyroscope data so they are in degrees/s
 	gyroData.x /= 14.375;
 	gyroData.y /= 14.375;
 	gyroData.z /= 14.375;
+}
 
-	//Searching PAAG reply with compass data
-	i = FindAndCheckDataReply(replies, "PAAG", 'C');
 
-	//Parsing PAAG reply with compass data
-	statusPos = replies[i].find('*') - 1;
-	if( replies[i].at(statusPos)!='A' )
-		throw rfims_exception("the PAAG reply with the compass data stated an invalid status.");
+void GPSInterface::ExtractCompassData(const std::string & reply)
+{
+	std::stringstream ss;
+	std::string aux;
+	char delimiter[2];
 
-	xPos = replies[i].find(',', 13) + 1;
-	ss.clear();
-	aux.clear();
-	aux = replies[i].substr(xPos, statusPos-xPos-1);
+	//Extracting the 3D values (x,y,z)
+	auto statusPos = reply.find('*') - 1;
+	auto xPos = reply.find(',', 13) + 1;
+	aux = reply.substr(xPos, statusPos-xPos-1);
 	ss.str( aux );
 	ss >> compassData.x >> delimiter[0] >> compassData.y >> delimiter[1] >> compassData.z;
+
 	//Scaling the compass data so they are in Gauss
 	compassData.x /= 1090.0;
 	compassData.y /= 1090.0;
 	compassData.z /= 1090.0;
+}
 
-	//Searching PAAG reply with accelerometer data
-	i = FindAndCheckDataReply( replies, "PAAG", 'T');
 
-	//Parsing the PAAG reply with the accelerometer data
-	statusPos = replies[i].find('*') - 1;
-	if( replies[i].at(statusPos)!='A' )
-		throw rfims_exception("the PAAG reply with the accelerometer data stated an invalid status.");
+void GPSInterface::ExtractAccelerData(const std::string & reply)
+{
+	std::stringstream ss;
+	std::string aux;
+	char delimiter[2];
 
-	xPos = replies[i].find(',', 13) + 1;
-	ss.clear();
-	aux.clear();
-	aux = replies[i].substr(xPos, statusPos-xPos-1);
+	//Extracting the 3D values (x,y,z)
+	auto statusPos = reply.find('*') - 1;
+	auto xPos = reply.find(',', 13) + 1;
+	aux = reply.substr(xPos, statusPos-xPos-1);
 	ss.str( aux );
 	ss >> accelData.x >> delimiter[0] >> accelData.y >> delimiter[1] >> accelData.z;
+
 	//Scaling the accelerometer data
 	accelData.x /= 8192.0;
 	accelData.y /= 8192.0;
 	accelData.z /= 8192.0;
+}
 
-	//Searching PAAG reply with the barometer data
-	i = FindAndCheckDataReply(replies, "PAAG", 'B');
 
-	//Parsing PAAG reply with the barometer data
-	statusPos = replies[i].find('*') - 1;
-	if( replies[i].at(statusPos)!='A' )
-		throw rfims_exception("the PAAG reply with the barometer data stated an invalid status.");
+void GPSInterface::ExtractBarometerData(const std::string & reply)
+{
+	std::stringstream ss;
+	std::string aux;
 
-	size_t valuePos = replies[i].find(',', 13) + 1;
-	size_t nextDelimPos = replies[i].find(',', valuePos);
-	ss.clear();
-	aux.clear();
-	aux = replies[i].substr(valuePos, nextDelimPos-valuePos);
+	//Extracting the pressure value
+	auto valuePos = reply.find(',', 13) + 1;
+	auto nextDelimPos = reply.find(',', valuePos);
+	aux = reply.substr(valuePos, nextDelimPos-valuePos);
 	ss.str( aux );
 	ss >> pressure;
+
 	//Applying the formula from the Portland State Aerospace Society (PSAS) to calculate the elevation from atmosphere pressure.
 	presElevation = ( pow( pressure/1013.25, -(-6.5e-3 * 287.053)/9.8 ) - 1.0 ) * 295.0 / -6.5e-3;
-
-	//Calculating the Cardan angles: yaw, pitch and roll
-	CalculateCardanAngles();
-
-	SaveSensorsData();
-
-	nmea_free(data);
 }
+
 
 void GPSInterface::Purge()
 {
@@ -618,29 +536,28 @@ void GPSInterface::Initialize()
 	do
 	{
 		sleep(1); //1s
-		std::string command("$PAAG,MODE,READONE\r\n");
-		std::vector<std::string> dataReplies(7);
-		try
+
+		std::vector<std::string> dataReplies;
+		unsigned int i=0;
+		do
 		{
-			Write(command);
-			for(unsigned int i=0; i<7; i++)
-				Read(dataReplies[i]);
-		}
-		catch(rfims_exception& exc)
-		{
-			exc.Prepend("it could not be determined if the GPS receiver has established communication with a minimum number of satellites");
-			throw;
-		}
-		unsigned int i = FindAndCheckDataReply(dataReplies, "GPGGA");
-		//Parsing GPGGA reply
-		nmea_s * data = nmea_parse((char*)dataReplies[i].c_str(), dataReplies[i].size(), 0);
-		if(data==NULL)
-		{
-			rfims_exception exc("it was not possible to parse the GPGGA reply when the GPS interface was determining the number of satellites at initialization.");
-			throw(exc);
-		}
-		nmea_gpgga_s * gpgga = (nmea_gpgga_s*) data;
-		numOfSatellites = gpgga->n_satellites;
+			try
+			{
+				ReadOneDataSet(dataReplies);
+			}
+			catch(rfims_exception & exc)
+			{
+				exc.Prepend("it was not possible to determine the number of satellites the GPS Logger is connected with");
+				throw;
+			}
+
+			i=0;
+			while( dataReplies[i].find("$GPGGA")==std::string::npos )
+				i++;
+		}while( !ControlChecksum(dataReplies[i]) );
+
+		ExtractGPGGAData(dataReplies[i]);
+
 	}while( numOfSatellites < MIN_NUM_OF_SATELLITES );
 
 	Purge();
@@ -663,8 +580,11 @@ unsigned int GPSInterface::Available()
 	return numOfInputBytes;
 }
 
-void GPSInterface::ReadOneDataSet()
+void GPSInterface::ReadOneDataSet(std::vector<std::string> & dataReplies)
 {
+	dataReplies.clear();
+	dataReplies.resize(7);
+
 	std::string command("$PAAG,MODE,READONE\r\n");
 	try
 	{
@@ -676,20 +596,205 @@ void GPSInterface::ReadOneDataSet()
 		throw;
 	}
 
-	std::vector<std::string> dataReplies(7);
 	try
 	{
 		for(unsigned int i=0; i<7; i++)
-		{
 			Read(dataReplies[i]);
-		}
-		ProcessDataReplies(dataReplies);
 	}
 	catch(rfims_exception& exc)
 	{
-		exc.Prepend("the GPS interface failed when it tried to read or process a set of data replies");
+		exc.Prepend("the GPS interface failed when it tried to read a set of data replies");
 		throw;
 	}
+
+	Purge();
+}
+
+
+TimeData GPSInterface::UpdateTimeData()
+{
+	std::vector<std::string> dataReplies;
+	unsigned int i=0;
+
+	do
+	{
+		try
+		{
+			ReadOneDataSet(dataReplies);
+		}
+		catch(rfims_exception & exc)
+		{
+			exc.Prepend("it was not possible to update the time data");
+			throw;
+		}
+
+		i=0;
+		while( dataReplies[i].find("$GPRMC")==std::string::npos )
+			i++;
+	}while( !ControlChecksum(dataReplies[i]) || !ControlStatus(dataReplies[i]) );
+
+	ExtractGPRMCData(dataReplies[i]);
+
+	return timeData;
+}
+
+
+Data3D GPSInterface::UpdateCompassData()
+{
+	std::vector<std::string> dataReplies;
+	unsigned int i=0;
+
+	do
+	{
+		try
+		{
+			ReadOneDataSet(dataReplies);
+		}
+		catch(rfims_exception & exc)
+		{
+			exc.Prepend("it was not possible to update the compass data");
+			throw;
+		}
+
+		i=0;
+		while( dataReplies[i].find("$PAAG,DATA,C")==std::string::npos )
+			i++;
+	}while( !ControlChecksum(dataReplies[i]) || !ControlStatus(dataReplies[i]) );
+
+	ExtractCompassData(dataReplies[i]);
+
+	return compassData;
+}
+
+Data3D GPSInterface::UpdateGyroData()
+{
+	std::vector<std::string> dataReplies;
+	unsigned int i=0;
+
+	do
+	{
+		try
+		{
+			ReadOneDataSet(dataReplies);
+		}
+		catch(rfims_exception & exc)
+		{
+			exc.Prepend("it was not possible to update the gyroscope data");
+			throw;
+		}
+
+		i=0;
+		while( dataReplies[i].find("$PAAG,DATA,G")==std::string::npos )
+			i++;
+	}while( !ControlChecksum(dataReplies[i]) || !ControlStatus(dataReplies[i]) );
+
+	ExtractGyroData(dataReplies[i]);
+
+	return gyroData;
+}
+
+Data3D GPSInterface::UpdateAccelerData()
+{
+	std::vector<std::string> dataReplies;
+	unsigned int i=0;
+
+	do
+	{
+		try
+		{
+			ReadOneDataSet(dataReplies);
+		}
+		catch(rfims_exception & exc)
+		{
+			exc.Prepend("it was not possible to update the accelerometer data");
+			throw;
+		}
+
+		i=0;
+		while( dataReplies[i].find("$PAAG,DATA,T")==std::string::npos )
+			i++;
+	}while( !ControlChecksum(dataReplies[i]) || !ControlStatus(dataReplies[i]) );
+
+	ExtractAccelerData(dataReplies[i]);
+
+	return accelData;
+}
+
+double GPSInterface::UpdateYaw()
+{
+	try
+	{
+		UpdateCompassData();
+	}
+	catch(rfims_exception & exc)
+	{
+		exc.Prepend("the updating of the yaw angle failed");
+		throw;
+	}
+
+	CalculateYaw();
+
+	return yaw;
+}
+
+
+double GPSInterface::UpdateRoll()
+{
+	try
+	{
+		UpdateAccelerData();
+	}
+	catch(rfims_exception & exc)
+	{
+		exc.Prepend("the updating of the roll angle failed");
+		throw;
+	}
+
+	CalculateRoll();
+
+	return roll;
+}
+
+double GPSInterface::UpdatePitch()
+{
+	try
+	{
+		UpdateAccelerData();
+	}
+	catch(rfims_exception & exc)
+	{
+		exc.Prepend("the updating of the pitch angle failed");
+		throw;
+	}
+
+	CalculatePitch();
+
+	return pitch;
+}
+
+void GPSInterface::UpdatePressAndElevat()
+{
+	std::vector<std::string> dataReplies;
+	unsigned int i=0;
+
+	do
+	{
+		try
+		{
+			ReadOneDataSet(dataReplies);
+		}
+		catch(rfims_exception & exc)
+		{
+			exc.Prepend("it was not possible to update the pressure");
+			throw;
+		}
+
+		i=0;
+		while( dataReplies[i].find("$PAAG,DATA,B")==std::string::npos )
+			i++;
+	}while( !ControlChecksum(dataReplies[i]) || !ControlStatus(dataReplies[i]) );
+
+	ExtractBarometerData(dataReplies[i]);
 }
 
 ////! This method is intended to enable the streaming of data from the GPS receiver.

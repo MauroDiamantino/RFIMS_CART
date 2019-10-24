@@ -167,30 +167,14 @@ int main(int argc, char * argv[])
 			//This flag is pulled down here because it is just not needed from here to down.
 			flagNewMeasCycle=false;
 
-			//#//////////////////////////GETTING ANTENNA POSITIONS AND TIME DATA///////////////////////////
+
+			//#//////////////////////////CAPTURING THE ANTENNA'S POSITION AND THE TIME DATA///////////////////////////
 
 			//The timestamp of each sweep is taking at the beginning. Also, the antenna position data are
 			//saved in the Sweep object here.
-			bool flagSuccess=false;
-			unsigned int numOfErrors=0;
-			do
-			{
-				try
-				{
-					gpsInterface.ReadOneDataSet();
-					uncalSweep.timeData = gpsInterface.GetTimeData();
-					uncalSweep.azimuthAngle = antPositioner.GetAzimPosition();
-					uncalSweep.polarization = antPositioner.GetPolarizationString();
-					flagSuccess=true;
-				}
-				catch(rfims_exception & exc)
-				{
-					if( ++numOfErrors < 3)
-						cerr << "\nWarning: reading of time data and antenna position failed: " << exc.what() << endl;
-					else
-						throw rfims_exception("the reading of time data and antenna position failed three times.");
-				}
-			}while(!flagSuccess);
+			uncalSweep.timeData = gpsInterface.UpdateTimeData();
+			uncalSweep.azimuthAngle = antPositioner.GetAzimPosition();
+			uncalSweep.polarization = antPositioner.GetPolarizationString();
 
 			//#///////////////////////////////////////////////////////////////////////////////////////////////
 

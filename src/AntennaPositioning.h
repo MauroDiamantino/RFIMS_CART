@@ -67,7 +67,6 @@ class GPSInterface
 	const unsigned int GYRO_FILTERFREQ = 4; //!< It is a number ranging from 0-7 to select the frequency of the average filter of the gyroscope sensor.
 	const unsigned int GYRO_FILTERDIV = 1; //!< This number represents the divisor of the average filter for the gyroscope sensor, ranging from 0-255.
 	const unsigned int DATARATE = 20; //!< The data rate of the GPS sensors data, measured in Hz.
-	const std::string SENSORS_FILES_PATH = BASE_PATH + "/gps/"; //!< The path where there are the files related with the GPS receiver.
 	const unsigned int MIN_NUM_OF_SATELLITES = 3; //!< The minimum number of satellites the GPS receiver must connect with, at initialization.
 	//Variables
 	FT_HANDLE ftHandle; //!< The handler of the communication with the Aaronia GPS receiver.
@@ -95,18 +94,34 @@ class GPSInterface
 	void Write(const std::string& command);
 	//! This method performs the reading operations.
 	void Read(std::string& reply, const unsigned int numOfBytes=0);
+	//! This method returns the number of bytes in the input buffer.
+	unsigned int Available();
 	//! This method performs the checking of each reply, taking into account the checksum.
 	bool ControlChecksum(const std::string& reply);
+	//! This method checks if the status of a PAAG,DATA reply or a GPRMC reply is ok.
+	bool ControlStatus(const std::string & reply);
 	//! This method is intended to set an internal variable of the GPS receiver.
 	void ConfigureVariable(const std::string& variable, const unsigned int value);
-	//! The aim of this method is to get the Cardan angles (yaw, pitch and roll) from the electronic compass and accelerometer data.
-	void CalculateCardanAngles();
-	//! This method takes a vector of data replies (GPRMC, GPGGA and PAAG,DATA) and returns the position of a desired reply.
-	unsigned int FindAndCheckDataReply(const std::vector<std::string>& replies, const std::string& replyType, const char sensor='\0');
-	//! The aim of this method is to save into the non-volatile memory the measurements of accelerometer, gyroscope and compass, and the Cardan angles.
-	void SaveSensorsData();
-	//! This method takes a vector of data replies (GPRMC, GPGGA and PAAG,DATA), parse them and extract the GPS and sensors data.
-	void ProcessDataReplies(const std::vector<std::string>& replies);
+	//! This method sends a command to get just one set of data replies (GPS and sensors data) which are put in the vector received as an argument.
+	void ReadOneDataSet(std::vector<std::string> & dataReplies);
+	//! This method extracts the corresponding GPS data from a GPRMC reply.
+	void ExtractGPRMCData(const std::string & reply);
+	//! This method extracts the corresponding GPS data from a GPGAA reply.
+	void ExtractGPGGAData(const std::string & reply);
+	//! This method extracts the gyroscope data from the corresponding GPS Logger reply.
+	void ExtractGyroData(const std::string & reply);
+	//! This method extracts the 3D compass data from the corresponding GPS Logger reply.
+	void ExtractCompassData(const std::string & reply);
+	//! This method extracts the 3D accelerometer data from the corresponding GPS Logger reply.
+	void ExtractAccelerData(const std::string & reply);
+	//! This method extracts the barometer data from the corresponding GPS Logger reply.
+	void ExtractBarometerData(const std::string & reply);
+	//! The aim of this method is to calculate the yaw angle (one of the Cardan angles) from the 3D compass data.
+	void CalculateYaw();
+	//! The aim of this method is to calculate the pitch angle (one of the Cardan angles) from the 3D accelerometer data.
+	void CalculatePitch() {		pitch = -atan2( accelData.y, sqrt(pow(accelData.x,2) + pow(accelData.z,2)) ) * 180.0/M_PI;	}
+	//! The aim of this method is to calculate the roll angle (one of the Cardan angles) from the 3D accelerometer data.
+	void CalculateRoll() {	roll = atan2( -accelData.x, (accelData.z<0 ? -1 : 1) * sqrt(pow(accelData.y,2) + pow(accelData.z,2)) ) * 180.0/M_PI;	}
 public:
 	//Class Interface//
 	//! The default constructor of class GPSInterface.
@@ -115,16 +130,27 @@ public:
 	~GPSInterface();
 	//! This method is intended to try the communication with the Aaronia GPS receiver and configure the device.
 	void Initialize();
-	//! This method returns the number of bytes in the input buffer.
-	unsigned int Available();
-	//! This method send a command to get just one data set (GPS and sensors data) and it updates the class attributes with that data set.
-	void ReadOneDataSet();
 	//void EnableStreaming();
-	//void CaptureStreamData();
 	//! This method is intended to disable the data streaming from the Aaronia GPS receiver.
 	void DisableStreaming();
 	//! A method intended to purge the input and output buffers of the USB interface
 	void Purge();
+	//! A method which reads the corresponding data reply to update the time data and returns it.
+	TimeData UpdateTimeData();
+	//! A method which reads the corresponding data reply to update the gyroscope data and returns them.
+	Data3D UpdateGyroData();
+	//! A method which reads the corresponding data reply to update the compass data and returns them.
+	Data3D UpdateCompassData();
+	//! A method which reads the corresponding data reply to update the accelerometer data and returns them.
+	Data3D UpdateAccelerData();
+	//! A method which reads the corresponding data replies to update the yaw angle and returns it.
+	double UpdateYaw();
+	//! A method which reads the corresponding data replies to update the roll angle and returns it.
+	double UpdateRoll();
+	//! A method which reads the corresponding data replies to update the pitch angle and returns it.
+	double UpdatePitch();
+	//! A method which reads the corresponding data reply to update the pressure and the pressure-based elevation.
+	void UpdatePressAndElevat();
 	//! This method returns the time data (date and time) which was received from the GPS satellites.
 	const TimeData & GetTimeData() const {	return timeData;	}
 	//! This method returns the GPS coordinates.
