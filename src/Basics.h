@@ -405,31 +405,12 @@ void TurnOnFrontEnd();
 //! The aim of this function is to turn off the RF front-end elements in a sequential manner, from the antenna to the spectrum analyzer.
 void TurnOffFrontEnd();
 
-//! This function prints a message, in the `stdout`, with a software description and the descriptions of its arguments.
-void PrintHelp();
-
-//! This function process the software's arguments, which define the behavior of this one.
-bool ProcessMainArguments(int argc, char * argv[]);
-
 ////////////////////////////////////////////////////////////////
 
 
 /////////////////////////GLOBAL VARIABLES///////////////////////
-
-// Flags which are defined by the software arguments and which indicates the way the software must behave.
-extern bool flagCalEnabled; //!< The declaration of an external flag which defines if the calibration of the RF front end must be done or not.
-extern bool flagPlot; //!< The declaration of an external flag which defines if the software has to generate plots.
-extern bool flagInfiniteLoop; //!< The declaration of an external flag which defines if the software has to perform a finite number of measurement cycles or iterate infinitely.
-extern bool flagRFI; //!< The declaration of an external flag which defines if the software has to perform RFI detection or not.
-extern bool flagUpload; //!< The declaration of an external flag which defines if the software has to upload the measurements or not.
-
-//! The declaration of an external variable which stores the number of measurements cycles which left to be done. It is used when the user wishes a finite number of measurements cycles.
-extern unsigned int numOfMeasCycles;
 extern unsigned int numOfAzimPos;
-//! The declaration of an external variable which saves the norm which defines the harmful interference levels: ska-mode1, ska-mode2, itu-ra769-2-vlbi.
-extern RFI::ThresholdsNorm rfiNorm;
 
-////////////////////////////////////////////////////////////////
 
 
 #endif /* BASICS_H_ */

@@ -13,11 +13,43 @@
 #include "SweepProcessing.h"
 #include "AntennaPositioning.h"
 
+#include <cstddef>
 #include <signal.h>
 #include <boost/timer/timer.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 
+
+//#///////////////Constants///////////////////
+const unsigned int DEF_NUM_AZIM_POS = 6;
+
+/////////////////////////GLOBAL VARIABLES///////////////////////
+
+// Flags which are defined by the software arguments and which indicates the way the software must behave.
+extern bool flagCalEnabled; //!< The declaration of an external flag which defines if the calibration of the RF front end must be done or not.
+extern bool flagPlot; //!< The declaration of an external flag which defines if the software has to generate plots.
+extern bool flagInfiniteLoop; //!< The declaration of an external flag which defines if the software has to perform a finite number of measurement cycles or iterate infinitely.
+extern bool flagRFI; //!< The declaration of an external flag which defines if the software has to perform RFI detection or not.
+extern bool flagUpload; //!< The declaration of an external flag which defines if the software has to upload the measurements or not.
+
+//! The declaration of an external variable which stores the number of measurements cycles which left to be done. It is used when the user wishes a finite number of measurements cycles.
+extern unsigned int numOfMeasCycles;
+//! The declaration of an external variable which saves the norm which defines the harmful interference levels: ska-mode1, ska-mode2, itu-ra769-2-vlbi.
+extern RFI::ThresholdsNorm rfiNorm;
 extern boost::timer::cpu_timer timer;
+
+////////////////////////////////////////////////////////////////
+
+
+///////////////////GLOBAL FUNCTIONS/////////////////////////
+
+//! This function prints a message, in the `stdout`, with a software description and the descriptions of its arguments.
+void PrintHelp();
+
+//! This function process the software's arguments, which define the behavior of this one.
+bool ProcessMainArguments(int argc, char * argv[]);
+
+///////////////////////////////////////////////////////////////
+
 
 //! The class _SignalHandler_ is intended to handle the interprocess signals (IPC) which terminates the software.
 /*! The signals which are handled by this class are SIGINT and SIGTERM. When one these signals arrived, the destructors
@@ -27,12 +59,20 @@ extern boost::timer::cpu_timer timer;
 class SignalHandler
 {
 public:
+	//! The SignalHandler constructor which set up the function which handles the signals.
+	SignalHandler()
+	{
+		if( signal(int(SIGINT), (__sighandler_t) SignalHandler::ExitSignalHandler)==SIG_ERR )
+			cerr << "The SIGINT signal handler could not be set." << endl;
+
+		if( signal(int(SIGTERM),  (__sighandler_t) SignalHandler::ExitSignalHandler)==SIG_ERR )
+			cerr << "The SIGTERM signal handler could not be set." << endl;
+	}
 	//! This method is intended to set the pointers to the high-level objects and to set handler functions.
-	void SetupSignalHandler(SpectranInterface * specInterfPt, SpectranConfigurator * specConfiguratorPt,
-			SweepBuilder * sweepBuilderPt, CurveAdjuster * adjusterPt, FrontEndCalibrator * calibratorPt,
-			RFIDetector * rfiDetectorPt=nullptr, DataLogger * dataLoggerPt=nullptr, GPSInterface * gpsInterfacePt=nullptr,
-			AntennaPositioner * antPositionerPt=nullptr, RFPlotter * sweepPlotterPt=nullptr,
-			RFPlotter * gainPlotterPt=nullptr, RFPlotter * nfPlotterPt=nullptr )
+	void SetAllPointers(SpectranInterface * specInterfPt, SpectranConfigurator * specConfiguratorPt, SweepBuilder * sweepBuilderPt,
+			CurveAdjuster * adjusterPt, FrontEndCalibrator * calibratorPt, RFIDetector * rfiDetectorPt, DataLogger * dataLoggerPt,
+			GPSInterface * gpsInterfacePt, AntennaPositioner * antPositionerPt, RFPlotter * sweepPlotterPt,
+			RFPlotter * gainPlotterPt, RFPlotter * nfPlotterPt)
 	{
 		specInterfPtr=specInterfPt;
 		specConfiguratorPtr=specConfiguratorPt;
@@ -46,14 +86,10 @@ public:
 		sweepPlotterPtr=sweepPlotterPt;
 		gainPlotterPtr=gainPlotterPt;
 		nfPlotterPtr=nfPlotterPt;
-
-		if( signal(int(SIGINT), (__sighandler_t) SignalHandler::ExitSignalHandler)==SIG_ERR )
-			throw rfims_exception("The SIGINT signal handler could not be set.");
-
-		if( signal(int(SIGTERM),  (__sighandler_t) SignalHandler::ExitSignalHandler)==SIG_ERR )
-			throw rfims_exception("The SIGTERM signal handler could not be set.");
 	}
-	//Static methods and objects
+
+	//////////////Static methods and objects////////////////
+
 	static SpectranInterface * specInterfPtr; //!< A pointer to the _SpectranInterface_ object.
 	static SpectranConfigurator * specConfiguratorPtr; //!< A pointer to the _SpectranConfigurator_ object.
 	static SweepBuilder * sweepBuilderPtr; //!< A pointer to the _SweepBuilder_ object.
@@ -74,12 +110,18 @@ public:
 	 */
 	static void ExitSignalHandler(int signum)
 	{
-		cout << "A signal which terminates the program was captured. Signal number: " << signum << endl;
-		specInterfPtr->~SpectranInterface();
-		specConfiguratorPtr->~SpectranConfigurator();
-		sweepBuilderPtr->~SweepBuilder();
-		adjusterPtr->~CurveAdjuster();
-		calibratorPtr->~FrontEndCalibrator();
+		cout << "\nA signal which terminates the program was captured. Signal number: " << signum << endl;
+
+		if(specInterfPtr!=nullptr)
+			specInterfPtr->~SpectranInterface();
+		if(specConfiguratorPtr!=nullptr)
+			specConfiguratorPtr->~SpectranConfigurator();
+		if(sweepBuilderPtr!=nullptr)
+			sweepBuilderPtr->~SweepBuilder();
+		if(adjusterPtr!=nullptr)
+			adjusterPtr->~CurveAdjuster();
+		if(calibratorPtr!=nullptr)
+			calibratorPtr->~FrontEndCalibrator();
 		if(rfiDetectorPtr!=nullptr)
 			rfiDetectorPtr->~RFIDetector();
 		if(dataLoggerPtr!=nullptr)
