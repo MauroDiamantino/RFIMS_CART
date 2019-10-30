@@ -219,7 +219,7 @@ int main(int argc, char * argv[])
 
 			//Showing the max power in the input of the spectrum analyzer
 			auto sweepIter = std::max_element( uncalSweep.values.begin(), uncalSweep.values.end() );
-			cout << "\nThe max power in the input of the spectrum analyzer (after the internal preamp) was " << *sweepIter << " dBm" << endl;
+			cout << "\nThe max power in the input of the spectrum analyzer (after the internal preamp) was " << *sweepIter << " dBm (max value: +20 dBm)" << endl;
 
 			//#/////////////////////////END OF THE CAPTURE LOOP OF A WHOLE SWEEP////////////////////////////////
 
@@ -406,12 +406,12 @@ int main(int argc, char * argv[])
 						try
 						{
 							dataLogger.PrepareAndUploadData();
+							cout << "The thread was created, the data to be uploaded will be processed in parallel with the rest of operations" << endl;
 						}
 						catch(std::exception & exc)
 						{
 							cerr << "\nWarning: " << exc.what() << endl;
 						}
-						cout << "The thread was created, the data to be uploaded will be processed in parallel with the rest of operations" << endl;
 					}
 				}
 
@@ -447,7 +447,7 @@ int main(int argc, char * argv[])
 		TurnOffFrontEnd();
 		TurnOffLeds();
 
-		cout << "\nExiting" << endl;
+		//cout << "\nExiting from the rfims software..." << endl;
 		cout << "\nPress enter to finish the rfims software..." << endl;
 		WaitForKey();
 		std::exit(EXIT_FAILURE);
@@ -467,7 +467,7 @@ int main(int argc, char * argv[])
 	TurnOffFrontEnd();
 	TurnOffLeds();
 
-	cout << "\nExiting from the software" << endl;
+	//cout << "\nExiting from the rfims software..." << endl;
 	cout << "\nPress enter to finish the rfims software..." << endl;
 	WaitForKey();
 	return 0;

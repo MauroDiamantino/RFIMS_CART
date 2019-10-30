@@ -20,26 +20,37 @@ HEADER_NAMES = AntennaPositioning.h TopLevel.h Basics.h Spectran.h SweepProcessi
 
 SRC_NAMES = AntennaPositioner.cpp Command.cpp CurveAdjuster.cpp DataLogger.cpp Basics.cpp FreqValues.cpp\
 FrontEndCalibrator.cpp gnuplot_i.cpp GPSInterface.cpp Reply.cpp RFIDetector.cpp\
-SpectranConfigurator.cpp SpectranInterface.cpp SweepBuilder.cpp TimeData.cpp\
-main.cpp
+SpectranConfigurator.cpp SpectranInterface.cpp SweepBuilder.cpp TimeData.cpp
+#main.cpp
 
-TARGET = bin/rfims-cart
+MAIN_TARGET = bin/rfims-cart
 
 SOURCES = $(addprefix src/, $(SRC_NAMES))
 OBJECTS = $(addprefix obj/, $(subst .cpp,.o,$(SRC_NAMES)))
 HEADERS = $(addprefix src/, $(HEADER_NAMES))
 
 ###################MAKE INSTRUCTIONS#####################
-all: $(TARGET)
+all: $(MAIN_TARGET)
 
-$(TARGET): $(OBJECTS)
+test: bin/test-gps
+
+$(MAIN_TARGET): $(OBJECTS) obj/main.o
 	@echo "Linking..."
 	@mkdir -p bin/
-	$(CXX) $(LDFLAGS) -o $(TARGET) $(OBJECTS) $(LDLIBS)
+	$(CXX) $(LDFLAGS) -o $(MAIN_TARGET) $(OBJECTS) obj/main.o $(LDLIBS)
+
+bin/test-gps: $(OBJECTS) obj/TestbenchGPSLogger.o
+	@echo "Linking..."
+	@mkdir -p bin/
+	$(CXX) $(LDFLAGS) -o bin/test-gps $(OBJECTS) obj/TestbenchGPSLogger.o $(LDLIBS)
 
 obj/main.o: src/main.cpp $(HEADERS)
 	@mkdir -p obj/
 	$(CXX) $(CPPFLAGS) -o obj/main.o -c src/main.cpp
+
+obj/TestbenchGPSLogger.o: test/TestbenchGPSLogger.cpp $(HEADERS)
+	@mkdir -p obj/
+	$(CXX) $(CPPFLAGS) -o obj/TestbenchGPSLogger.o -c test/TestbenchGPSLogger.cpp
 
 obj/AntennaPositioner.o: $(addprefix src/, AntennaPositioner.cpp Basics.h AntennaPositioning.h)
 	@mkdir -p obj/
@@ -107,7 +118,7 @@ clean:
 
 copy-files:
 	@echo "Copying the program binary, the scripts and the program data files..."
-	cp -f $(TARGET) /usr/local/bin
+	cp -f $(MAIN_TARGET) /usr/local/bin
 	cp -f scripts/client.py /usr/local
 	cp -f -r data/RFIMS-CART/ /home/pi/
 	cp -f data/99-aaronia-spectran.rules /etc/udev/rules.d

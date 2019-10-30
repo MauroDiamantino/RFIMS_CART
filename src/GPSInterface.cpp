@@ -5,6 +5,76 @@
 
 #include "AntennaPositioning.h"
 
+//#/////////////////Friend functions//////////////////////
+
+void *StreamingThread(void * arg)
+{
+	pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, NULL);
+
+	std::string reply;
+	unsigned int numOfSerialErrors=0;
+
+	auto gpsInterfacePtr = (GPSInterface*) arg;
+
+	while(1)
+	{
+		try
+		{
+			gpsInterfacePtr->Read(reply, 42); //Read a reply with at least 42 bytes
+
+			if( reply.find("$GPRMC") != std::string::npos )
+			{
+				if( gpsInterfacePtr->ControlChecksum(reply) && gpsInterfacePtr->ControlStatus(reply) )
+					gpsInterfacePtr->ExtractGPRMCData(reply);
+			}
+			else if( reply.find("$GPGGA") != std::string::npos )
+			{
+				if( gpsInterfacePtr->ControlChecksum(reply) )
+					gpsInterfacePtr->ExtractGPGGAData(reply);
+			}
+			else if( reply.find("$PAAG,DATA,G") != std::string::npos )
+			{
+				if( gpsInterfacePtr->ControlChecksum(reply) && gpsInterfacePtr->ControlStatus(reply) )
+					gpsInterfacePtr->ExtractGyroData(reply);
+			}
+			else if( reply.find("$PAAG,DATA,C") != std::string::npos )
+			{
+				if( gpsInterfacePtr->ControlChecksum(reply) && gpsInterfacePtr->ControlStatus(reply) )
+					gpsInterfacePtr->ExtractCompassData(reply);
+			}
+			else if( reply.find("$PAAG,DATA,B") != std::string::npos )
+			{
+				if( gpsInterfacePtr->ControlChecksum(reply) && gpsInterfacePtr->ControlStatus(reply) )
+					gpsInterfacePtr->ExtractBarometerData(reply);
+			}
+			else if( reply.find("$PAAG,DATA,T") != std::string::npos )
+			{
+				if( gpsInterfacePtr->ControlChecksum(reply) && gpsInterfacePtr->ControlStatus(reply) )
+					gpsInterfacePtr->ExtractAccelerData(reply);
+			}
+
+			numOfSerialErrors=0;
+		}
+		catch(rfims_exception & exc)
+		{
+			if(++numOfSerialErrors > 10)
+			{
+				gpsInterfacePtr->flagStreamingEnabled=false;
+				gpsInterfacePtr->DisableStreaming();
+				gpsInterfacePtr->streamingRetVal = -4;
+				pthread_exit(&gpsInterfacePtr->streamingRetVal);
+			}
+		}
+
+		pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
+		pthread_testcancel();
+		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, NULL);
+	}
+
+	return NULL;
+}
+
+
 ///////////////Implementations of the GPSInterface class' methods///////////////
 
 /*! The constructor has to include the custom VID and PID combination of Aaronia GPS receiver within the allowed
@@ -20,13 +90,19 @@ GPSInterface::GPSInterface()
 	coordinates={ 0.0, 0.0 };
 	numOfSatellites=0;
 	gpsElevation=0.0;
-	compassData=accelData = { Data3D::UNINITIALIZED, "", 0.0, 0.0, 0.0 };
-	//gyroData = { Data3D::UNINITIALIZED, "", 0.0, 0.0, 0.0 };
-	yaw=0.0;
-	pitch=0.0;
-	roll=0.0;
+	gyroData=compassData=accelData = { Data3D::UNINITIALIZED, "", 0.0, 0.0, 0.0 };
+	yaw=pitch=roll=0.0;
 	pressure=0.0;
 	presElevation=0.0;
+
+	flagNewGPRMCData=flagNewGPGGAData=flagNewBaromData=false;
+	flagNewGyroData=flagNewCompassData=flagNewAccelerData=false;
+	flagNewTimeData=flagNewCoordinates=flagNewNumOfSatellites=false;
+	flagNewGPSElevation=flagNewYaw=flagNewRoll=flagNewPitch=false;
+
+	threadID=0;
+	flagStreamingEnabled=false;
+	streamingRetVal=0;
 
 	ftStatus=FT_SetVIDPID(VID, PID);
 	if(ftStatus!=FT_OK)
@@ -77,7 +153,7 @@ GPSInterface::GPSInterface()
 		throw rfims_exception("the flow control could not be set up.");
 
 	Purge();
-	usleep(300000);
+	usleep(100000);
 }
 
 
@@ -95,7 +171,7 @@ GPSInterface::~GPSInterface()
 	}
 	catch(std::exception& exc)
 	{
-		cerr << "Warning: The GPSInterface's destructor could not make sure the data streaming is disabled." << endl;
+		cerr << "Warning: The GPSInterface's destructor could not ensure the data streaming is disabled: " << exc.what() << endl;
 	}
 
 	//Disabling the data logging into the microSD card
@@ -106,7 +182,7 @@ GPSInterface::~GPSInterface()
 	}
 	catch(std::exception& exc)
 	{
-		cerr << "Warning: The GPSInterface's destructor could not make sure the data logging into file is disabled." << endl;
+		cerr << "Warning: The GPSInterface's destructor could not ensure the data logging into file is disabled: " << exc.what() << endl;
 	}
 
 	//Purging the input and output buffers
@@ -116,7 +192,7 @@ GPSInterface::~GPSInterface()
 	}
 	catch(std::exception& exc)
 	{
-		cerr << exc.what();
+		cerr << "Warning: " << exc.what();
 	}
 
 	//Closing the communication with the Aaronia GPS receiver
@@ -125,9 +201,6 @@ GPSInterface::~GPSInterface()
 	{
 		cerr << "Error: the communication with the Aaronia GPS receiver could not be closed." << endl;
 	}
-
-	//Closing the file where the sensors data are stored
-	sensorFile.close();
 }
 
 /*! This method takes a command and sends it to the Aaronia GPS receiver, using the D2XX library.
@@ -174,34 +247,38 @@ inline void GPSInterface::Read(std::string& reply, const unsigned int numOfBytes
 	{
 		//Loop to wait for the bytes
 		unsigned int i=0;
-		while(Available()<numOfBytes && i++ < 20)
+		while( Available() < numOfBytes && i++ < 200)
 			usleep(10000); //10ms
 
 		if(i>=20)
-			throw rfims_exception("the data set (GPRMC, GPGGA and PAAG replies) was waited too much time.");
+			throw rfims_exception("the data set (GPRMC, GPGGA and PAAG replies) was waited too much time."); // 2s
 
-		usleep(30000); //An additional delay to wait for some additional bytes
+		//usleep(30000); //An additional delay to wait for some additional bytes
 	}
 	else
-		//A fixed time interval to wait for the bytes
-		usleep(150000);
+		usleep(150000); //A fixed time interval to wait for the bytes
 
 	//Loop where the characters are read until a '\n' character is read
+	unsigned int numOfSerialErrors=0;
 	do
 	{
 		ftStatus=FT_Read(ftHandle, &rxBuffer, 1, &receivedBytes);
+
 		if(ftStatus!=FT_OK)
 		{
-			rfims_exception exc("the GPS interface tried to read a reply, but the function FT_Read() returned an error value.");
-			throw(exc);
+			if(++numOfSerialErrors > 5)
+				throw rfims_exception("the GPS interface tried to read a reply, but the function FT_Read() returned an error value.");
 		}
 		else if(receivedBytes!=1)
 		{
-			rfims_exception exc("the GPS interface tried to read a reply, but one character could not be read.");
-			throw(exc);
+			if(++numOfSerialErrors > 5)
+				throw rfims_exception("the GPS interface tried to read a reply, but one character could not be read.");
 		}
-
-		reply += rxBuffer;
+		else
+		{
+			numOfSerialErrors=0;
+			reply += rxBuffer;
+		}
 
 	}while(rxBuffer!='\n');
 }
@@ -286,8 +363,8 @@ void GPSInterface::ConfigureVariable(const std::string& variable, const unsigned
 	if(currentValue!=value)
 	{
 		std::ostringstream oss;
-		oss << "the reply of the command to set up the variable " << variable;
-		oss << " stated that the range was not configured with the desired value, " << value;
+		oss << "the reply of the command to set up the variable " << variable << " stated it was configured with the value, ";
+		oss << currentValue << ", which is different to the desired value, " << value << '.';
 		rfims_exception exc( oss.str() );
 		throw(exc);
 	}
@@ -300,6 +377,24 @@ inline void GPSInterface::CalculateYaw()
 
 	if( (yaw+=180.0) >= 360.0 )
 		yaw -= 360.0;
+
+	flagNewYaw=true;
+}
+
+
+inline void GPSInterface::CalculatePitch()
+{
+	pitch = -atan2( accelData.y, sqrt(pow(accelData.x,2) + pow(accelData.z,2)) ) * 180.0/M_PI;
+
+	flagNewPitch=true;
+}
+
+
+void GPSInterface::CalculateRoll()
+{
+	roll = atan2( -accelData.x, (accelData.z<0 ? -1 : 1) * sqrt(pow(accelData.y,2) + pow(accelData.z,2)) ) * 180.0/M_PI;
+
+	flagNewRoll=true;
 }
 
 
@@ -326,6 +421,10 @@ void GPSInterface::ExtractGPRMCData(const std::string & reply)
 
 	delete[] auxString;
 	nmea_free(data);
+
+	flagNewGPRMCData=true;
+	flagNewTimeData=true;
+	flagNewCoordinates=true;
 }
 
 
@@ -348,6 +447,10 @@ void GPSInterface::ExtractGPGGAData(const std::string & reply)
 
 	delete[] auxString;
 	nmea_free(data);
+
+	flagNewGPGGAData=true;
+	flagNewGPSElevation=true;
+	flagNewNumOfSatellites=true;
 }
 
 
@@ -368,6 +471,8 @@ void GPSInterface::ExtractGyroData(const std::string & reply)
 	gyroData.x /= 14.375;
 	gyroData.y /= 14.375;
 	gyroData.z /= 14.375;
+
+	flagNewGyroData=true;
 }
 
 
@@ -388,6 +493,8 @@ void GPSInterface::ExtractCompassData(const std::string & reply)
 	compassData.x /= 1090.0;
 	compassData.y /= 1090.0;
 	compassData.z /= 1090.0;
+
+	flagNewCompassData=true;
 }
 
 
@@ -408,6 +515,8 @@ void GPSInterface::ExtractAccelerData(const std::string & reply)
 	accelData.x /= 8192.0;
 	accelData.y /= 8192.0;
 	accelData.z /= 8192.0;
+
+	flagNewAccelerData=true;
 }
 
 
@@ -425,6 +534,8 @@ void GPSInterface::ExtractBarometerData(const std::string & reply)
 
 	//Applying the formula from the Portland State Aerospace Society (PSAS) to calculate the elevation from atmosphere pressure.
 	presElevation = ( pow( pressure/1013.25, -(-6.5e-3 * 287.053)/9.8 ) - 1.0 ) * 295.0 / -6.5e-3;
+
+	flagNewBaromData=true;
 }
 
 
@@ -494,6 +605,11 @@ void GPSInterface::Initialize()
 				exc.Prepend("the ID commands failed");
 				throw;
 			}
+			else
+			{
+				Purge();
+				usleep(100000);
+			}
 		}
 	}
 
@@ -531,14 +647,16 @@ void GPSInterface::Initialize()
 	variable = "DATARATE";
 	ConfigureVariable(variable, DATARATE);
 
-	//The loop where is waited the GPS receiver has established communication with a minimum number of satellites
+	//Here it is waited for the GPS receiver to establish communication with a minimum number of satellites
 	cout << "Waiting for the GPS receiver to get connected with at least " << MIN_NUM_OF_SATELLITES << " satellites..." << endl;
 	do
 	{
 		sleep(1); //1s
 
 		std::vector<std::string> dataReplies;
+		std::string gpggaReply;
 		unsigned int i=0;
+		bool flagReplyFound=false;
 		do
 		{
 			try
@@ -554,14 +672,23 @@ void GPSInterface::Initialize()
 			i=0;
 			while( dataReplies[i].find("$GPGGA")==std::string::npos )
 				i++;
-		}while( !ControlChecksum(dataReplies[i]) );
 
-		ExtractGPGGAData(dataReplies[i]);
+			if(i<7)
+			{
+				gpggaReply=dataReplies[i];
+				flagReplyFound=true;
+			}
+			else
+				flagReplyFound=false;
+
+		}while( !flagReplyFound || !ControlChecksum(gpggaReply) );
+
+		ExtractGPGGAData(gpggaReply);
 
 	}while( numOfSatellites < MIN_NUM_OF_SATELLITES );
 
 	Purge();
-	usleep(300000);
+	usleep(100000);
 
 	flagConnected=true;
 }
@@ -573,10 +700,8 @@ unsigned int GPSInterface::Available()
 	//ftStatus=FT_GetQueueStatus(ftHandle, &numOfInputBytes);
 	ftStatus=FT_GetStatus(ftHandle, &numOfInputBytes, &numOfOutputBytes, &numOfEvents);
 	if(ftStatus!=FT_OK)
-	{
-		rfims_exception exc("the GPS interface failed when it tried to determine the number of bytes in the input buffer.");
-		throw(exc);
-	}
+		throw rfims_exception("the GPS interface failed when it tried to determine the number of bytes in the input buffer.");
+
 	return numOfInputBytes;
 }
 
@@ -613,38 +738,43 @@ void GPSInterface::ReadOneDataSet(std::vector<std::string> & dataReplies)
 
 TimeData GPSInterface::UpdateTimeData()
 {
-	std::vector<std::string> dataReplies;
-	unsigned int i=0;
-	std::string gprmcReply;
-	bool flagReplyFound;
-
-	do
+	if(!flagStreamingEnabled)
 	{
-		try
+		std::vector<std::string> dataReplies;
+		unsigned int i=0;
+		std::string gprmcReply;
+		bool flagReplyFound;
+
+		do
 		{
-			ReadOneDataSet(dataReplies);
-		}
-		catch(rfims_exception & exc)
-		{
-			exc.Prepend("it was not possible to update the time data");
-			throw;
-		}
+			try
+			{
+				ReadOneDataSet(dataReplies);
+			}
+			catch(rfims_exception & exc)
+			{
+				exc.Prepend("it was not possible to update the time data");
+				throw;
+			}
 
-		i=0;
-		while( dataReplies[i].find("$GPRMC")==std::string::npos )
-			i++;
+			i=0;
+			while( dataReplies[i].find("$GPRMC")==std::string::npos )
+				i++;
 
-		if(i<7)
-		{
-			gprmcReply=dataReplies[i];
-			flagReplyFound=true;
-		}
-		else
-			flagReplyFound=false;
+			if(i<7)
+			{
+				gprmcReply=dataReplies[i];
+				flagReplyFound=true;
+			}
+			else
+				flagReplyFound=false;
 
-	}while( !flagReplyFound || !ControlChecksum(gprmcReply) || !ControlStatus(gprmcReply) );
+		}while( !flagReplyFound || !ControlChecksum(gprmcReply) || !ControlStatus(gprmcReply) );
 
-	ExtractGPRMCData(gprmcReply);
+		ExtractGPRMCData(gprmcReply);
+	}
+	else
+		cerr << "\nWarning: it was tried to manually update the time data while the streaming was enabled." << endl;
 
 	return timeData;
 }
@@ -652,131 +782,154 @@ TimeData GPSInterface::UpdateTimeData()
 
 Data3D GPSInterface::UpdateCompassData()
 {
-	std::vector<std::string> dataReplies;
-	unsigned int i=0;
-	std::string compassReply;
-	bool flagReplyFound;
-
-	do
+	if(!flagStreamingEnabled)
 	{
-		try
+		std::vector<std::string> dataReplies;
+		unsigned int i=0;
+		std::string compassReply;
+		bool flagReplyFound;
+
+		do
 		{
-			ReadOneDataSet(dataReplies);
-		}
-		catch(rfims_exception & exc)
-		{
-			exc.Prepend("it was not possible to update the compass data");
-			throw;
-		}
+			try
+			{
+				ReadOneDataSet(dataReplies);
+			}
+			catch(rfims_exception & exc)
+			{
+				exc.Prepend("it was not possible to update the compass data");
+				throw;
+			}
 
-		i=0;
-		while( dataReplies[i].find("$PAAG,DATA,C")==std::string::npos )
-			i++;
+			i=0;
+			while( dataReplies[i].find("$PAAG,DATA,C")==std::string::npos )
+				i++;
 
-		if(i<7)
-		{
-			compassReply=dataReplies[i];
-			flagReplyFound=true;
-		}
-		else
-			flagReplyFound=false;
+			if(i<7)
+			{
+				compassReply=dataReplies[i];
+				flagReplyFound=true;
+			}
+			else
+				flagReplyFound=false;
 
-	}while( !flagReplyFound || !ControlChecksum(compassReply) || !ControlStatus(compassReply) );
+		}while( !flagReplyFound || !ControlChecksum(compassReply) || !ControlStatus(compassReply) );
 
-	ExtractCompassData(compassReply);
+		ExtractCompassData(compassReply);
+	}
+	else
+		cerr << "\nWarning: it was tried to manually update the compass data while the streaming was enabled." << endl;
 
 	return compassData;
 }
 
+
 Data3D GPSInterface::UpdateGyroData()
 {
-	std::vector<std::string> dataReplies;
-	unsigned int i=0;
-	std::string gyroReply;
-	bool flagReplyFound;
-
-	do
+	if(!flagStreamingEnabled)
 	{
-		try
+		std::vector<std::string> dataReplies;
+		unsigned int i=0;
+		std::string gyroReply;
+		bool flagReplyFound;
+
+		do
 		{
-			ReadOneDataSet(dataReplies);
-		}
-		catch(rfims_exception & exc)
-		{
-			exc.Prepend("it was not possible to update the gyroscope data");
-			throw;
-		}
+			try
+			{
+				ReadOneDataSet(dataReplies);
+			}
+			catch(rfims_exception & exc)
+			{
+				exc.Prepend("it was not possible to update the gyroscope data");
+				throw;
+			}
 
-		i=0;
-		while( dataReplies[i].find("$PAAG,DATA,G")==std::string::npos )
-			i++;
+			i=0;
+			while( dataReplies[i].find("$PAAG,DATA,G")==std::string::npos )
+				i++;
 
-		if(i<7)
-		{
-			gyroReply=dataReplies[i];
-			flagReplyFound=true;
-		}
-		else
-			flagReplyFound=false;
+			if(i<7)
+			{
+				gyroReply=dataReplies[i];
+				flagReplyFound=true;
+			}
+			else
+				flagReplyFound=false;
 
-	}while( !flagReplyFound || !ControlChecksum(gyroReply) || !ControlStatus(gyroReply) );
+		}while( !flagReplyFound || !ControlChecksum(gyroReply) || !ControlStatus(gyroReply) );
 
-	ExtractGyroData(gyroReply);
+		ExtractGyroData(gyroReply);
+	}
+	else
+		cerr << "\nWarning: it was tried to manually update the gyro data while the streaming was enabled." << endl;
 
 	return gyroData;
 }
 
+
 Data3D GPSInterface::UpdateAccelerData()
 {
-	std::vector<std::string> dataReplies;
-	unsigned int i=0;
-	std::string accelReply;
-	bool flagReplyFound;
-
-	do
+	if(!flagStreamingEnabled)
 	{
-		try
+		std::vector<std::string> dataReplies;
+		unsigned int i=0;
+		std::string accelReply;
+		bool flagReplyFound;
+
+		do
 		{
-			ReadOneDataSet(dataReplies);
-		}
-		catch(rfims_exception & exc)
-		{
-			exc.Prepend("it was not possible to update the accelerometer data");
-			throw;
-		}
+			try
+			{
+				ReadOneDataSet(dataReplies);
+			}
+			catch(rfims_exception & exc)
+			{
+				exc.Prepend("it was not possible to update the accelerometer data");
+				throw;
+			}
 
-		i=0;
-		while( dataReplies[i].find("$PAAG,DATA,T")==std::string::npos )
-			i++;
+			i=0;
+			while( dataReplies[i].find("$PAAG,DATA,T")==std::string::npos )
+				i++;
 
-		if(i<7)
-		{
-			accelReply=dataReplies[i];
-			flagReplyFound=true;
-		}
-		else
-			flagReplyFound=false;
+			if(i<7)
+			{
+				accelReply=dataReplies[i];
+				flagReplyFound=true;
+			}
+			else
+				flagReplyFound=false;
 
-	}while( !flagReplyFound || !ControlChecksum(accelReply) || !ControlStatus(accelReply) );
+		}while( !flagReplyFound || !ControlChecksum(accelReply) || !ControlStatus(accelReply) );
 
-	ExtractAccelerData(accelReply);
+		ExtractAccelerData(accelReply);
+	}
+	else
+		cerr << "\nWarning: it was tried to manually update the accelerometer data while the streaming was enabled." << endl;
 
 	return accelData;
 }
 
+
 double GPSInterface::UpdateYaw()
 {
-	try
+	if(!flagStreamingEnabled)
 	{
-		UpdateCompassData();
-	}
-	catch(rfims_exception & exc)
-	{
-		exc.Prepend("the updating of the yaw angle failed");
-		throw;
-	}
+		try
+		{
+			UpdateCompassData();
+		}
+		catch(rfims_exception & exc)
+		{
+			exc.Prepend("the updating of the yaw angle failed");
+			throw;
+		}
 
-	CalculateYaw();
+		CalculateYaw();
+	}
+	else
+		cerr << "\nWarning: it was tried to manually update the yaw angle while the streaming was enabled." << endl;
 
 	return yaw;
 }
@@ -784,193 +937,254 @@ double GPSInterface::UpdateYaw()
 
 double GPSInterface::UpdateRoll()
 {
-	try
+	if(!flagStreamingEnabled)
 	{
-		UpdateAccelerData();
-	}
-	catch(rfims_exception & exc)
-	{
-		exc.Prepend("the updating of the roll angle failed");
-		throw;
-	}
+		try
+		{
+			UpdateAccelerData();
+		}
+		catch(rfims_exception & exc)
+		{
+			exc.Prepend("the updating of the roll angle failed");
+			throw;
+		}
 
-	CalculateRoll();
+		CalculateRoll();
+	}
+	else
+		cerr << "\nWarning: it was tried to manually update the roll angle while the streaming was enabled." << endl;
 
 	return roll;
 }
 
 double GPSInterface::UpdatePitch()
 {
-	try
+	if(!flagStreamingEnabled)
 	{
-		UpdateAccelerData();
-	}
-	catch(rfims_exception & exc)
-	{
-		exc.Prepend("the updating of the pitch angle failed");
-		throw;
-	}
+		try
+		{
+			UpdateAccelerData();
+		}
+		catch(rfims_exception & exc)
+		{
+			exc.Prepend("the updating of the pitch angle failed");
+			throw;
+		}
 
-	CalculatePitch();
+		CalculatePitch();
+	}
+	else
+		cerr << "\nWarning: it was tried to manually update the pitch angle while the streaming was enabled." << endl;
 
 	return pitch;
 }
 
 void GPSInterface::UpdatePressAndElevat()
 {
-	std::vector<std::string> dataReplies;
-	std::string baromReply;
-	unsigned int i=0;
-	bool flagReplyFound;
-
-	do
+	if(!flagStreamingEnabled)
 	{
-		try
+		std::vector<std::string> dataReplies;
+		std::string baromReply;
+		unsigned int i=0;
+		bool flagReplyFound;
+
+		do
 		{
-			ReadOneDataSet(dataReplies);
-		}
-		catch(rfims_exception & exc)
-		{
-			exc.Prepend("it was not possible to update the pressure");
-			throw;
-		}
+			try
+			{
+				ReadOneDataSet(dataReplies);
+			}
+			catch(rfims_exception & exc)
+			{
+				exc.Prepend("it was not possible to update the pressure");
+				throw;
+			}
 
-		i=0;
-		while( dataReplies[i].find("$PAAG,DATA,B")==std::string::npos )
-			i++;
+			i=0;
+			while( dataReplies[i].find("$PAAG,DATA,B")==std::string::npos )
+				i++;
 
-		if(i<7)
-		{
-			baromReply = dataReplies[i];
-			flagReplyFound=true;
-		}
-		else
-			flagReplyFound=false;
+			if(i<7)
+			{
+				baromReply = dataReplies[i];
+				flagReplyFound=true;
+			}
+			else
+				flagReplyFound=false;
 
-	}while( !flagReplyFound || !ControlChecksum(baromReply) || !ControlStatus(baromReply) );
+		}while( !flagReplyFound || !ControlChecksum(baromReply) || !ControlStatus(baromReply) );
 
-	ExtractBarometerData(baromReply);
+		ExtractBarometerData(baromReply);
+	}
+	else
+		cerr << "\nWarning: it was tried to manually update the barometer data while the streaming was enabled." << endl;
 }
+
+
+unsigned int GPSInterface::UpdateNumOfSatellites()
+{
+	if(!flagStreamingEnabled)
+	{
+		std::vector<std::string> dataReplies;
+		std::string gpggaReply;
+		unsigned int i=0;
+		bool flagReplyFound;
+
+		do
+		{
+			try
+			{
+				ReadOneDataSet(dataReplies);
+			}
+			catch(rfims_exception & exc)
+			{
+				exc.Prepend("it was not possible to update the number of satellites");
+				throw;
+			}
+
+			i=0;
+			while( dataReplies[i].find("$GPGGA")==std::string::npos )
+				i++;
+
+			if(i<7)
+			{
+				gpggaReply = dataReplies[i];
+				flagReplyFound=true;
+			}
+			else
+				flagReplyFound=false;
+
+		}while( !flagReplyFound || !ControlChecksum(gpggaReply) );
+
+		ExtractGPGGAData(gpggaReply);
+	}
+	else
+		cerr << "\nWarning: it was tried to manually update the number of satellites while the streaming was enabled." << endl;
+
+	return numOfSatellites;
+}
+
 
 void GPSInterface::UpdateAll()
 {
-	bool flagGPRMCReply=false, flagGPGGAReply=false, flagBaromReply=false;
-	bool flagGyroReply=false, flagCompassReply=false, flagAccelerReply=false;
-
-	std::vector<std::string> dataReplies;
-
-	do
+	if(!flagStreamingEnabled)
 	{
-		try
-		{
-			ReadOneDataSet(dataReplies);
-		}
-		catch(rfims_exception & exc)
-		{
-			exc.Prepend("it was not possible to update all attributes");
-			throw;
-		}
+		bool flagGPRMCReply=false, flagGPGGAReply=false, flagBaromReply=false;
+		bool flagGyroReply=false, flagCompassReply=false, flagAccelerReply=false;
 
-		for(const std::string & reply : dataReplies)
-		{
-			if( reply.find("$GPRMC") != std::string::npos )
-			{
-				if( ControlChecksum(reply) && ControlStatus(reply) )
-				{
-					ExtractGPRMCData(reply);
-					flagGPRMCReply=true;
-				}
-			}
-			else if( reply.find("$GPGGA") != std::string::npos )
-			{
-				if( ControlChecksum(reply) )
-				{
-					ExtractGPGGAData(reply);
-					flagGPGGAReply=true;
-				}
-			}
-			else if( reply.find("$PAAG,DATA,G") != std::string::npos )
-			{
-				if( ControlChecksum(reply) && ControlStatus(reply) )
-				{
-					ExtractGyroData(reply);
-					flagGyroReply=true;
-				}
-			}
-			else if( reply.find("$PAAG,DATA,C") != std::string::npos )
-			{
-				if( ControlChecksum(reply) && ControlStatus(reply) )
-				{
-					ExtractCompassData(reply);
-					flagCompassReply=true;
-				}
-			}
-			else if( reply.find("$PAAG,DATA,B") != std::string::npos )
-			{
-				if( ControlChecksum(reply) && ControlStatus(reply) )
-				{
-					ExtractBarometerData(reply);
-					flagBaromReply=true;
-				}
-			}
-			else if( reply.find("$PAAG,DATA,T") != std::string::npos )
-			{
-				if( ControlChecksum(reply) && ControlStatus(reply) )
-				{
-					ExtractAccelerData(reply);
-					flagAccelerReply=true;
-				}
-			}
-		}
+		std::vector<std::string> dataReplies;
 
-	}while(!flagGPRMCReply || !flagGPGGAReply || !flagBaromReply ||
-			!flagGyroReply || !flagCompassReply || !flagAccelerReply);
+		do
+		{
+			try
+			{
+				ReadOneDataSet(dataReplies);
+			}
+			catch(rfims_exception & exc)
+			{
+				exc.Prepend("it was not possible to update all attributes");
+				throw;
+			}
+
+			for(const std::string & reply : dataReplies)
+			{
+				if( reply.find("$GPRMC") != std::string::npos )
+				{
+					if( ControlChecksum(reply) && ControlStatus(reply) )
+					{
+						ExtractGPRMCData(reply);
+						flagGPRMCReply=true;
+					}
+				}
+				else if( reply.find("$GPGGA") != std::string::npos )
+				{
+					if( ControlChecksum(reply) )
+					{
+						ExtractGPGGAData(reply);
+						flagGPGGAReply=true;
+					}
+				}
+				else if( reply.find("$PAAG,DATA,G") != std::string::npos )
+				{
+					if( ControlChecksum(reply) && ControlStatus(reply) )
+					{
+						ExtractGyroData(reply);
+						flagGyroReply=true;
+					}
+				}
+				else if( reply.find("$PAAG,DATA,C") != std::string::npos )
+				{
+					if( ControlChecksum(reply) && ControlStatus(reply) )
+					{
+						ExtractCompassData(reply);
+						flagCompassReply=true;
+					}
+				}
+				else if( reply.find("$PAAG,DATA,B") != std::string::npos )
+				{
+					if( ControlChecksum(reply) && ControlStatus(reply) )
+					{
+						ExtractBarometerData(reply);
+						flagBaromReply=true;
+					}
+				}
+				else if( reply.find("$PAAG,DATA,T") != std::string::npos )
+				{
+					if( ControlChecksum(reply) && ControlStatus(reply) )
+					{
+						ExtractAccelerData(reply);
+						flagAccelerReply=true;
+					}
+				}
+			}
+
+		}while(!flagGPRMCReply || !flagGPGGAReply || !flagBaromReply ||
+				!flagGyroReply || !flagCompassReply || !flagAccelerReply);
+	}
+	else
+		cerr << "\nWarning: it was tried to manually update all attributes while the streaming was enabled." << endl;
 }
 
-////! This method is intended to enable the streaming of data from the GPS receiver.
-///*! After the streaming has been enable the method CaptureStreamData() must be used to get the stream data
-// * and update the class attributes from them.
-// */
-//void GPSInterface::EnableStreaming()
-//{
-//	Purge();
-//
-//	std::string command("$PAAG,MODE,START\r\n");
-//	try
-//	{
-//		Write(command);
-//	}
-//	catch(rfims_exception& exc)
-//	{
-//		exc.Prepend("the command to enable the data streaming failed");
-//		throw;
-//	}
-//}
-//
-////! This method is intended to capture the continuous flow of data (stream) which sent from the Aaronia GPS receiver (when the streming is enabled).
-///*! When this method is called the GPS interface reads one set of data from the USB interface and calls the method
-// * ProcessDataReplies(), which extract the data from the replies and update the class attributes from them.
-// */
-//void GPSInterface::CaptureStreamData()
-//{
-//	//Waiting for the next data set
-//	usleep( (__useconds_t)1/DATARATE );
-//
-//	std::vector<std::string> dataReplies(7);
-//	try
-//	{
-//		ReadDataReplies(dataReplies);
-//		ProcessDataReplies(dataReplies);
-//	}
-//	catch(rfims_exception& exc)
-//	{
-//		exc.Prepend("the GPS interface failed when it tried to capture the stream data or when it tried to process them");
-//		throw;
-//	}
-//}
+/*! After the streaming has been enable the method CaptureStreamData() must be used to get the stream data
+ * and update the class attributes from them.
+ */
+void GPSInterface::EnableStreaming()
+{
+	Purge();
+
+	std::string command("$PAAG,MODE,START\r\n");
+	try
+	{
+		Write(command);
+	}
+	catch(rfims_exception& exc)
+	{
+		exc.Prepend("the command to enable the data streaming failed");
+		throw;
+	}
+
+	if( pthread_create(&threadID, NULL, StreamingThread, NULL) != 0 )
+		throw( rfims_exception("the creation of the streaming thread failed.") );
+
+	flagStreamingEnabled=true;
+}
+
 
 void GPSInterface::DisableStreaming()
 {
+	if(flagStreamingEnabled)
+	{
+		if( pthread_cancel(threadID) != 0 )
+			throw( rfims_exception("the cancellation of the streaming thread failed.") );
+
+		void * retval;
+		pthread_join(threadID, &retval);
+		if( retval!=PTHREAD_CANCELED )
+			throw( rfims_exception("the checking of the cancellation of the streaming thread stated this failed.") );
+
+		flagStreamingEnabled=false;
+	}
+
 	std::string command("$PAAG,MODE,STOP\r\n");
 	try
 	{
@@ -983,5 +1197,5 @@ void GPSInterface::DisableStreaming()
 	}
 
 	Purge();
-	usleep(30000);
+	usleep(100000);
 }
