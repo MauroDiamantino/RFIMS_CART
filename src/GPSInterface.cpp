@@ -40,7 +40,10 @@ void *StreamingThread(void * arg)
 			else if( reply.find("$PAAG,DATA,C") != std::string::npos )
 			{
 				if( gpsInterfacePtr->ControlChecksum(reply) && gpsInterfacePtr->ControlStatus(reply) )
+				{
 					gpsInterfacePtr->ExtractCompassData(reply);
+					gpsInterfacePtr->CalculateYaw();
+				}
 			}
 			else if( reply.find("$PAAG,DATA,B") != std::string::npos )
 			{
@@ -50,7 +53,11 @@ void *StreamingThread(void * arg)
 			else if( reply.find("$PAAG,DATA,T") != std::string::npos )
 			{
 				if( gpsInterfacePtr->ControlChecksum(reply) && gpsInterfacePtr->ControlStatus(reply) )
+				{
 					gpsInterfacePtr->ExtractAccelerData(reply);
+					gpsInterfacePtr->CalculateRoll();
+					gpsInterfacePtr->CalculatePitch();
+				}
 			}
 
 			numOfSerialErrors=0;
@@ -151,9 +158,6 @@ GPSInterface::GPSInterface()
 	ftStatus = FT_SetFlowControl(ftHandle, FT_FLOW_NONE, 0, 0);
 	if(ftStatus!=FT_OK)
 		throw rfims_exception("the flow control could not be set up.");
-
-	Purge();
-	usleep(100000);
 }
 
 
@@ -1163,7 +1167,7 @@ void GPSInterface::EnableStreaming()
 		throw;
 	}
 
-	if( pthread_create(&threadID, NULL, StreamingThread, NULL) != 0 )
+	if( pthread_create(&threadID, NULL, StreamingThread, (void*)this) != 0 )
 		throw( rfims_exception("the creation of the streaming thread failed.") );
 
 	flagStreamingEnabled=true;
@@ -1185,17 +1189,21 @@ void GPSInterface::DisableStreaming()
 		flagStreamingEnabled=false;
 	}
 
-	std::string command("$PAAG,MODE,STOP\r\n");
-	try
+	for(unsigned int i=0; i<3; i++)
 	{
-		Write(command);
-	}
-	catch(rfims_exception& exc)
-	{
-		exc.Prepend("the command to disable the data streaming failed");
-		throw;
+		std::string command("$PAAG,MODE,STOP\r\n");
+		try
+		{
+			Write(command);
+		}
+		catch(rfims_exception& exc)
+		{
+			exc.Prepend("the command to disable the data streaming failed");
+			throw;
+		}
 	}
 
+	usleep(100000);
 	Purge();
 	usleep(100000);
 }

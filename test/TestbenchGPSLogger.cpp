@@ -10,6 +10,9 @@
 
 //#//////Constants/////////////
 const unsigned int DEF_NUM_AZIM_POS = 6;
+const unsigned int DELAY_US = 1000000;
+const unsigned int WAITING_TIME_S = 20;
+const unsigned int NUM_OF_TRIES = WAITING_TIME_S / (double(DELAY_US) / 1e6);
 
 //#//////////////////////Global variables//////////////////////////
 
@@ -48,7 +51,7 @@ int main()
 
 	cout << "\nNotas:" << endl;
 	cout << "- Asegurese de realizar una calibracion del dispositivo (ver manual en el maletin) antes de realizar este test." << endl;
-	cout << "- Cuando se le solicite alguna accion al usuario, el programa esperara a lo sumo 10s a que el usuario haga lo solicitado." << endl;
+	cout << "- Cuando se le solicite alguna accion al usuario, el programa esperara a lo sumo " << WAITING_TIME_S << "s a que el usuario haga lo solicitado." << endl;
 
 	try
 	{
@@ -62,7 +65,7 @@ int main()
 		cout << "\nPresione una tecla para comenzar..." << endl;
 		WaitForKey();
 
-		cout << "\nA continuacion se probara la recepcion a pedido de los datos de los sensores (streaming deshabilitado)" << endl;
+		cout << "A continuacion se probara la recepcion a pedido de los datos de los sensores (streaming deshabilitado)" << endl;
 
 		//////////////////////PRUEBA 1//////////////////////
 		cout << "\nUbique el dispositivo sobre una superficie plana..." << endl;
@@ -70,23 +73,23 @@ int main()
 		//Analisis del angulo roll
 		do
 		{
-			sleep(1);
+			usleep(DELAY_US);
 			gpsInterface.UpdateRoll();
 		}
-		while( (gpsInterface.GetRoll() < -5.0 || gpsInterface.GetRoll() > 5.0) && ++i < 10 );
+		while( (gpsInterface.GetRoll() < -5.0 || gpsInterface.GetRoll() > 5.0) && ++i < NUM_OF_TRIES );
 
-		if(i>=10)
+		if(i>=NUM_OF_TRIES)
 			throw rfims_exception("se espero demasiado tiempo que el angulo roll este alrededor de cero.");
 
 		//Analisis del angulo pitch
 		do
 		{
-			sleep(1);
+			usleep(DELAY_US);
 			gpsInterface.UpdatePitch();
 		}
-		while( (gpsInterface.GetPitch() < -5.0 || gpsInterface.GetPitch() > 5.0) && ++i < 10 );
+		while( (gpsInterface.GetPitch() < -5.0 || gpsInterface.GetPitch() > 5.0) && ++i < NUM_OF_TRIES );
 
-		if(i>=10)
+		if(i>=NUM_OF_TRIES)
 			throw rfims_exception("se espero demasiado tiempo que el angulo pitch este alrededor de cero.");
 
 		cout << "Excelente!" << endl;
@@ -98,12 +101,12 @@ int main()
 		//Analisis del angulo roll
 		do
 		{
-			sleep(1);
+			usleep(DELAY_US);
 			gpsInterface.UpdateRoll();
 		}
-		while( ( fabs(gpsInterface.GetRoll()) < 85.0 || fabs(gpsInterface.GetRoll()) > 95.0 ) && ++i < 10 );
+		while( ( fabs(gpsInterface.GetRoll()) < 85.0 || fabs(gpsInterface.GetRoll()) > 95.0 ) && ++i < NUM_OF_TRIES );
 
-		if(i>=10)
+		if(i>=NUM_OF_TRIES)
 			throw rfims_exception("se espero demasiado tiempo que el angulo roll este alrededor de 90 grados.");
 
 		cout << "Excelente!" << endl;
@@ -115,12 +118,12 @@ int main()
 		//Analisis del angulo pitch
 		do
 		{
-			sleep(1);
+			usleep(DELAY_US);
 			gpsInterface.UpdatePitch();
 		}
-		while( ( fabs(gpsInterface.GetPitch()) < 85.0 || fabs(gpsInterface.GetPitch()) > 95.0) && ++i < 10 );
+		while( ( fabs(gpsInterface.GetPitch()) < 85.0 || fabs(gpsInterface.GetPitch()) > 95.0) && ++i < NUM_OF_TRIES );
 
-		if(i>=10)
+		if(i>=NUM_OF_TRIES)
 			throw rfims_exception("se espero demasiado tiempo que el angulo pitch este alrededor de 90 grados.");
 
 		cout << "Excelente!" << endl;
@@ -132,12 +135,12 @@ int main()
 		//Analisis del angulo yaw
 		do
 		{
-			sleep(1);
+			usleep(DELAY_US);
 			gpsInterface.UpdateYaw();
 		}
-		while( (gpsInterface.GetYaw() < 85.0 || gpsInterface.GetYaw() > 95.0) && ++i < 10 );
+		while( (gpsInterface.GetYaw() < 80.0 || gpsInterface.GetYaw() > 100.0) && ++i < NUM_OF_TRIES );
 
-		if(i>=10)
+		if(i>=NUM_OF_TRIES)
 			throw rfims_exception("se espero demasiado tiempo que el angulo yaw este alrededor de 90 grados.");
 
 		cout << "Excelente!" << endl;
@@ -149,12 +152,12 @@ int main()
 		//Analisis del angulo yaw
 		do
 		{
-			sleep(1);
+			usleep(DELAY_US);
 			gpsInterface.UpdateYaw();
 		}
-		while( (gpsInterface.GetYaw() < 175.0 || gpsInterface.GetYaw() > 185.0) && ++i < 10 );
+		while( (gpsInterface.GetYaw() < 170.0 || gpsInterface.GetYaw() > 190.0) && ++i < NUM_OF_TRIES );
 
-		if(i>=10)
+		if(i>=NUM_OF_TRIES)
 			throw rfims_exception("se espero demasiado tiempo que el angulo yaw este alrededor de 180 grados.");
 
 		cout << "Excelente!" << endl;
@@ -169,7 +172,7 @@ int main()
 		{
 			auto timeData = gpsInterface.UpdateTimeData();
 			cout << '\t' << timeData.GetTimestamp() << endl;
-			cout << "Es correcta la fecha y la hora? (Ingrese 's' por si o cualquier otra letra por no): " << endl;
+			cout << "Es correcta la fecha y la hora? (Ingrese 's' por si o cualquier otra letra por no): ";
 			cin >> answer;
 
 			if( tolower(answer) == 's' )
@@ -191,11 +194,8 @@ int main()
 		//////////////////////////////////////////////////////
 
 		/////////////////////PRUEBA 8////////////////////////
-		const int NUM_REG_SENS = 20;
-		const int NUM_REG_GPS = 5;
 		cout << "\nA continuacion se probara el streaming de datos del dispositivo" << endl;
 		cout << "La tasa de actualizacion para los datos de los sensores (no para los datos del GPS) sera: " << gpsInterface.GetDataRate() << " datos/s" << endl;
-		cout << "Se capturaran " << NUM_REG_SENS << " registros de cada sensor y " << NUM_REG_GPS << " registros del sistema GPS." << endl;
 
 		cout << "Presione una tecla para comenzar..." << endl;
 		WaitForKey();
@@ -203,9 +203,9 @@ int main()
 		gpsInterface.EnableStreaming();
 		cout << "\nStreaming habilitado!" << endl;
 
-		cout << "\nDatos del GPS:" << endl;
+		cout << "\nDatos del GPS: 5 registros" << endl;
 
-		for(int i=0; i<NUM_REG_GPS; i++)
+		for(int i=0; i<5; i++)
 		{
 			while( !gpsInterface.NewGPSData() );
 			cout << "\n\tTimestamp: " << gpsInterface.GetTimeData().GetTimestamp() << endl;
@@ -217,39 +217,39 @@ int main()
 		}
 
 		Data3D data;
-		cout << "\nDatos del giroscopio:" << endl;
-		for(int i=0; i<NUM_REG_SENS; i++)
+		cout << "\nDatos del giroscopio: 10 registros" << endl;
+		for(int i=0; i<10; i++)
 		{
 			while( !gpsInterface.NewGyroData() );
 			data = gpsInterface.GetGyroData();
 			cout << "\tx: " << data.x << " °/s\ty: " << data.y << " °/s\tz: " << data.z << " °/s" << endl;
 		}
 
-		cout << "\nDatos del acelerometro:" << endl;
-		for(int i=0; i<NUM_REG_SENS; i++)
+		cout << "\nDatos del acelerometro: 10 registros" << endl;
+		for(int i=0; i<10; i++)
 		{
 			while( !gpsInterface.NewAccelerData() );
 			data = gpsInterface.GetAccelerData();
 			cout << "\tx: " << data.x << " g\ty: " << data.y << " g\tz: " << data.z << " g" << endl;
 		}
 
-		cout << "\nDatos del magnetometro:" << endl;
-		for(int i=0; i<NUM_REG_SENS; i++)
+		cout << "\nDatos del magnetometro: 10 registros" << endl;
+		for(int i=0; i<10; i++)
 		{
 			while( !gpsInterface.NewCompassData() );
 			data = gpsInterface.GetCompassData();
 			cout << "\tx: " << data.x << " Gauss\ty: " << data.y << " Gauss\tz: " << data.z << " Gauss" << endl;
 		}
 
-		cout << "\nPresion y elevacion obtenida a partir del barometro:" << endl;
-		for(int i=0; i<NUM_REG_SENS; i++)
+		cout << "\nPresion y elevacion obtenida a partir del barometro: 10 registros" << endl;
+		for(int i=0; i<10; i++)
 		{
 			while( !gpsInterface.NewPressure() );
 			cout << "\tPresion: " << gpsInterface.GetPressure() << " hPa\tElevacion: " << gpsInterface.GetPressElevation() << " m" << endl;
 		}
 
-		cout << "\nAngulos de navegacion:" << endl;
-		for(int i=0; i<NUM_REG_SENS; i++)
+		cout << "\nAngulos de navegacion: 40 registros" << endl;
+		for(int i=0; i<40; i++)
 		{
 			while( !gpsInterface.NewYaw() || !gpsInterface.NewRoll() || !gpsInterface.NewPitch() );
 			cout << "\tyaw: " << gpsInterface.GetYaw() << " °\tpitch: " << gpsInterface.GetPitch() << " °\troll: " << gpsInterface.GetRoll() << " °" << endl;
@@ -263,8 +263,10 @@ int main()
 	catch(std::exception & exc)
 	{
 		cerr << "\nError: " << exc.what() << endl;
+		cout << "\nTip: realice el test nuevamente y si no obtiene mejoras pruebe con realizar la calibracion manual nuevamente y asegurese de que la bateria este bien cargada." << endl;
 		exit(EXIT_FAILURE);
 	}
 
+	cout << "\nLa prueba del dispositivo Aaronia GPS Logger fue exitosa!!" << endl;
 	return 0;
 }

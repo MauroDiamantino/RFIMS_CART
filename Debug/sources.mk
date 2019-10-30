@@ -25,5 +25,4 @@ C_DEPS :=
 SUBDIRS := \
 test \
 src \
-obj \
 

@@ -66,7 +66,7 @@ class GPSInterface
 	const unsigned int ACCELER_RANGE = 2; //!< The maximum range of the accelerometer measured in g (gravitational acceleration). It can be 2g, 4g or 8g.
 	const unsigned int GYRO_FILTERFREQ = 4; //!< It is a number ranging from 0-7 to select the frequency of the average filter of the gyroscope sensor.
 	const unsigned int GYRO_FILTERDIV = 1; //!< This number represents the divisor of the average filter for the gyroscope sensor, ranging from 0-255.
-	const unsigned int DATARATE = 2; //!< The data rate of the GPS sensors data, measured in Hz. f=2 Hz, T=0.5s.
+	const unsigned int DATARATE = 4; //!< The data rate of the GPS sensors data, measured in Hz. f=4 Hz, T=250ms.
 	const unsigned int MIN_NUM_OF_SATELLITES = 3; //!< The minimum number of satellites the GPS receiver must connect with, at initialization.
 	//Variables
 	FT_HANDLE ftHandle; //!< The handler of the communication with the Aaronia GPS receiver.
