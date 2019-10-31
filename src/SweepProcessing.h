@@ -140,13 +140,17 @@ class CurveAdjuster
 	{
 		float slope;
 		float y_intercept;
-		std::uint_least64_t f_min, f_max;
+		std::uint_least64_t f_min, f_max; //Frequency values in Hz
 		float Evaluate(const std::uint_least64_t freqValue)
 		{
 			if( f_min<=freqValue && freqValue<=f_max )
 				return( slope*freqValue + y_intercept );
 			else
-				throw( rfims_exception("Out-of-range calculation on a linear function.") );
+			{
+				std::ostringstream oss;
+				oss << "out-of-range calculation on a linear function, the frequency was " << std::setprecision(4) << (freqValue/1e6) << " MHz.";
+				throw rfims_exception( oss.str() ) ;
+			}
 		}
 	}; //!< This structure is intended to store the data of a linear function, in the frequency domain.
 	//Attributes//

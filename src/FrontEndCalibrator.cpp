@@ -110,7 +110,15 @@ void FrontEndCalibrator::BuildRBWCurve()
 		rbwCurve.values.push_back(itBand->rbw);
 	}
 
-	rbwCurve = adjuster.AdjustCurve(rbwCurve);
+	try
+	{
+		rbwCurve = adjuster.AdjustCurve(rbwCurve);
+	}
+	catch(rfims_exception & exc)
+	{
+		exc.Prepend("the adjustment of the RBW curve failed");
+		throw;
+	}
 }
 
 void FrontEndCalibrator::CorrectNoFiniteAndNegVal(std::vector<FreqValues::value_type> & values)
@@ -298,7 +306,15 @@ void FrontEndCalibrator::LoadENR()
 			correctENR = enr;
 
 		//Adjusting the curve (interpolation, extrapolation and/or decimation)
-		correctENR = adjuster.AdjustCurve(correctENR);
+		try
+		{
+			correctENR = adjuster.AdjustCurve(correctENR);
+		}
+		catch(rfims_exception & exc)
+		{
+			exc.Prepend("the adjustment of the ENR curve failed");
+			throw;
+		}
 	}
 }
 
@@ -627,8 +643,25 @@ void FrontEndCalibrator::LoadDefaultParameters()
 		gain.Clear();
 		noiseFigure.Clear();
 
-		gain = adjuster.AdjustCurve(defaultGain);
-		noiseFigure = adjuster.AdjustCurve(defaultNoiseFig);
+		try
+		{
+			gain = adjuster.AdjustCurve(defaultGain);
+		}
+		catch(rfims_exception & exc)
+		{
+			exc.Prepend("the adjustment of the estimated gain curve failed");
+			throw;
+		}
+
+		try
+		{
+			noiseFigure = adjuster.AdjustCurve(defaultNoiseFig);
+		}
+		catch(rfims_exception & exc)
+		{
+			exc.Prepend("the adjustment of the estimated noise figure curve failed");
+			throw;
+		}
 
 		FreqValues noiseFactor("noise factor");
 		noiseFactor = pow(10.0, noiseFigure/10.0);
