@@ -6,22 +6,29 @@
 #include "TopLevel.h"
 
 
-//#//////////////////////Global variables//////////////////////////
+//#//////////////////////GLOBAL VARIABLES////////////////////////
 
 // Flags which are defined by the software arguments and which indicates the way the software must behave.
-bool flagCalEnabled = true; //!< The declaration of a flag which defines if the calibration of the RF front end must be done or not. By default the calibration is enabled.
-bool flagPlot = false; //!< The declaration of a flag which defines if the software has to generate plots or not. By default the plotting is not performed.
-bool flagInfiniteLoop = true; //!< The declaration of a flag which defines if the software has to perform a finite number of measurement cycles or iterate infinitely. By default the software iterates infinitely.
-bool flagRFI = false; //!< The declaration of a flag which defines if the software has to perform RFI detection or not. By this task is not performed.
-bool flagUpload = true; //!< The declaration of a flag which defines if the software has to upload the measurements or not. By default the uploading is performed.
-
+//! The declaration of a flag which defines if the calibration of the RF front end must be done or not. By default the calibration is enabled.
+bool flagCalEnabled = true;
+//! The declaration of a flag which defines if the software has to generate plots or not. By default the plotting is not performed.
+bool flagPlot = false;
+//! The declaration of a flag which defines if the software has to perform a finite number of measurement cycles or iterate infinitely. By default the software iterates infinitely.
+bool flagInfiniteLoop = true;
+//! The declaration of a flag which defines if the software has to perform RFI detection or not. By this task is not performed.
+bool flagRFI = false;
+//! The declaration of a flag which defines if the software has to upload the measurements or not. By default the uploading is performed.
+bool flagUpload = true;
 //! A variable which saves the number of measurements cycles which left to be done. It is used when the user wishes a finite number of measurements cycles.
 unsigned int numOfMeasCycles = 0;
+//! A variable which receives the number of azimuth positions from the corresponding software's argument. The number of sweeps will be the double of this value.
 unsigned int numOfAzimPos = DEF_NUM_AZIM_POS;
 //! A variable which saves the norm which defines the harmful RF interference levels: ska-mode1, ska-mode2, itu-ra769-2-vlbi.
 RFI::ThresholdsNorm rfiNorm = RFI::SKA_MODE1;
 //! A timer which is used to measure the execution time when the number of iterations is finite.
 boost::timer::cpu_timer timer;
+
+//#////////////////////////////////////////////////////////////////
 
 
 //#////////////////////////////MAIN FUNCTION//////////////////////////////////
@@ -40,7 +47,6 @@ boost::timer::cpu_timer timer;
 int main(int argc, char * argv[])
 {
 	//#////////Local variables/////////////
-
 	// An object which is responsible of the handling of the received signals.
 	SignalHandler signalHandler;
 	// A flag which states if the bands parameters have been loaded by first time or they have been reloaded.
@@ -49,9 +55,8 @@ int main(int argc, char * argv[])
 	bool flagNewMeasCycle=true;
 	// A flag which is used when the user executes the software to realize a finite number of iterations (measurement cycles), to states the requested measurements cycles have already been done.
 	bool flagEndIterations = false;
-
+	// A variable which represents the number of the current sweep (like an index but this starts in one). The sweeps got for the calibration are not taking into account.
 	unsigned int sweepNumber = 1;
-
 	//#/////////////////////////////////////
 
 	// The checking of the program's arguments.
@@ -67,8 +72,7 @@ int main(int argc, char * argv[])
 	TurnOnFrontEnd();
 
 	if(!flagInfiniteLoop)
-		//Starting timer
-		timer.start();
+		timer.start(); //Starting timer
 
 	RFPlotter sweepPlotter, gainPlotter, nfPlotter;
 
@@ -87,9 +91,8 @@ int main(int argc, char * argv[])
 		AntennaPositioner antPositioner(gpsInterface);
 
 		//Setting of pointers to objects which are used by SignalHandler class
-		signalHandler.SetAllPointers(&specInterface, &specConfigurator, &sweepBuilder, &curveAdjuster,
-				&frontEndCalibrator, &rfiDetector, &dataLogger, &gpsInterface, &antPositioner,
-				&sweepPlotter, &gainPlotter, &nfPlotter);
+		signalHandler.SetAllPointers(&specInterface, &specConfigurator, &sweepBuilder, &curveAdjuster, &frontEndCalibrator,
+				&rfiDetector, &dataLogger, &gpsInterface, &antPositioner, &sweepPlotter, &gainPlotter, &nfPlotter);
 
 		//Initializing the spectrum analyzer
 		cout << "\nInitializing the spectrum analyzer Aaronia Spectran HF-60105 V4 X..." << endl;
@@ -126,8 +129,10 @@ int main(int argc, char * argv[])
 				cout << "Loading the fixed parameters..." << endl;
 				if( specConfigurator.LoadFixedParameters() )
 				{
-					//If the fixed parameters were loaded for the first time or they were reloaded, the initial configuration will be repeated
-					cout << "The fixed parameters were loaded by first time or they were reloaded so the Spectran initial configuration will be done" << endl;
+					//If the fixed parameters were loaded for the first time or they were reloaded, the initial
+					//configuration will be repeated
+					cout << "The fixed parameters were loaded by first time or they were reloaded, ";
+					cout << "so the initial configuration of the Spectran will be performed" << endl;
 					specConfigurator.InitialConfiguration();
 					cout << "The initial configuration was carried out successfully" << endl;
 				}
@@ -169,9 +174,11 @@ int main(int argc, char * argv[])
 				cout << "\nStarting the capturing of a sweep for the calibration" << endl;
 			else
 				cout << "\nStarting the capturing of the sweep " << sweepNumber++ << '/' << (numOfAzimPos*2) << endl;
+
 #ifdef RASPBERRY_PI
 			digitalWrite(piPins.LED_SWEEP_CAPTURE, HIGH);
 #endif
+
 			//Capturing the sweeps related to each one of the frequency bands, which in conjunction form a whole sweep
 			for(unsigned int i=0; i < specConfigurator.GetNumOfBands(); i++)
 			{
@@ -187,11 +194,13 @@ int main(int argc, char * argv[])
 				currFreqBand = sweepBuilder.CaptureSweep(currBandParam);
 
 				bool flagLastPointRemoved = uncalSweep.PushBack(currFreqBand);
-				if( flagBandsParamReloaded && flagLastPointRemoved )
-					currBandParam.samplePoints--;
 				
 				if(flagBandsParamReloaded)
+				{
+					if(flagLastPointRemoved)
+						currBandParam.samplePoints--;
 					specConfigurator.SetCurrBandParameters(currBandParam);
+				}
 			}
 
 #ifdef RASPBERRY_PI
@@ -203,7 +212,9 @@ int main(int argc, char * argv[])
 
 			//Showing the max power in the input of the spectrum analyzer
 			auto sweepIter = std::max_element( uncalSweep.values.begin(), uncalSweep.values.end() );
-			cout << "\nThe max power in the input of the spectrum analyzer (after the internal preamp) was " << *sweepIter << " dBm (max value: +20 dBm)" << endl;
+			auto maxElemPos = std::distance( uncalSweep.values.begin(), sweepIter );
+			cout << "\nThe max power in the input of the spectrum analyzer (after the internal preamp) was: " << *sweepIter << " dBm at the frequency of ";
+			cout << std::setprecision(4) << uncalSweep.frequencies.at(maxElemPos) / 1e6 << " MHz (max value: +20 dBm)" << endl;
 
 			//#/////////////////////////END OF THE CAPTURE LOOP OF A WHOLE SWEEP////////////////////////////////
 
@@ -251,7 +262,7 @@ int main(int argc, char * argv[])
 			//#///////////////////////////END OF TRANSFERRING OF THE BANDS PARAMETERS//////////////////////////////
 
 
-			//#//////////////////////////////SWEEP PROCESSING/////////////////////////////////////
+			//#///////////////////////////////////////SWEEP PROCESSING////////////////////////////////////////////
 
 			if( frontEndCalibrator.IsCalibStarted() )
 			{
@@ -263,11 +274,9 @@ int main(int argc, char * argv[])
 					frontEndCalibrator.SetSweep(uncalSweep);
 
 					if( frontEndCalibrator.IsNoiseSourceOff() )
-						////////Noise source off////////////
 						frontEndCalibrator.TurnOnNS();
 					else
 					{
-						///////Noise source on/////////////
 						frontEndCalibrator.EndCalibration();
 #ifdef RASPBERRY_PI
 						digitalWrite(piPins.LED_SWEEP_PROCESS, HIGH);
@@ -318,7 +327,7 @@ int main(int argc, char * argv[])
 #ifdef RASPBERRY_PI
 				digitalWrite(piPins.LED_SWEEP_PROCESS, HIGH);
 #endif
-
+				//This flag is pulled down here because it is just not needed from here to down.
 				flagBandsParamReloaded=false;
 
 				//Sweep calibration, taking into account the total gain curve
@@ -367,8 +376,6 @@ int main(int argc, char * argv[])
 				//#/////////////////////////////END OF NORMAL PROCESSING///////////////////////////////////
 
 
-				//#//////////////////////////////ANTENNA POSITIONING////////////////////////////////////////
-
 				//Checking if the current measurement cycle has finished and if the software should or not starts a new one.
 				if( antPositioner.IsLastPosition() && antPositioner.GetPolarization()==Polarization::VERTICAL)
 				{
@@ -380,24 +387,33 @@ int main(int argc, char * argv[])
 					else
 						flagNewMeasCycle = true;
 
-					cout << "\nDeleting old files" << endl;
-					dataLogger.DeleteOldFiles();
-					cout << "The deleting finished" << endl;
-
+					//Uploading
 					if(flagUpload)
 					{
 						cout << "\nCreating a thread to prepare and upload data in parallel" << endl;
 						try
 						{
 							dataLogger.PrepareAndUploadData();
-							cout << "The thread was created, the data to be uploaded will be processed in parallel with the rest of operations" << endl;
 						}
 						catch(std::exception & exc)
 						{
 							cerr << "\nWarning: " << exc.what() << endl;
 						}
 					}
+
+					//Deleting old files
+					cout << "\nDeleting old files" << endl;
+					try
+					{
+						dataLogger.DeleteOldFiles();
+					}
+					catch(std::exception & exc)
+					{
+						cerr << "\nWarning: " << exc.what() << endl;
+					}
 				}
+
+				//#//////////////////////////////ANTENNA POSITIONING////////////////////////////////////////
 
 				//Changing the antenna position
 				cout << "\nThe antenna position will be changed" << endl;
@@ -415,18 +431,12 @@ int main(int argc, char * argv[])
 		}
 		//#///////////////////////////////END OF THE GENERAL LOOP////////////////////////////////////
 	}
-	catch(rfims_exception & exc)
+	catch(std::exception & exc)
 	{
 		cerr << "\nError: " << exc.what() << endl;
 
 		if( !timer.is_stopped() )
-		{
-			//Showing the elapsed time since the beginning
-			timer.stop();
-			boost::timer::cpu_times times = timer.elapsed();
-			boost::posix_time::time_duration td = boost::posix_time::microseconds(times.wall/1000);
-			cout << "\nThe elapsed time since the beginning is: " << boost::posix_time::to_simple_string(td) << endl;
-		}
+			cout << "\nThe elapsed time since the beginning is: " << GetTimeAsString(timer) << endl;
 
 		TurnOffFrontEnd();
 		TurnOffLeds();
@@ -434,19 +444,14 @@ int main(int argc, char * argv[])
 		//cout << "\nExiting from the rfims software..." << endl;
 		cout << "\nPress enter to finish the rfims software..." << endl;
 		WaitForKey();
+
 		std::exit(EXIT_FAILURE);
 	}
 
 	cout << "\nThe sweeps capturing process finished." << endl;
 
 	if( !timer.is_stopped() )
-	{
-		//Showing the elapsed time since the beginning
-		timer.stop();
-		boost::timer::cpu_times times = timer.elapsed();
-		boost::posix_time::time_duration td = boost::posix_time::microseconds(times.wall/1000);
-		cout << "\nThe elapsed time since the beginning is: " << boost::posix_time::to_simple_string(td) << endl;
-	}
+		cout << "\nThe elapsed time since the beginning is: " << GetTimeAsString(timer) << endl;
 
 	TurnOffFrontEnd();
 	TurnOffLeds();
@@ -454,6 +459,7 @@ int main(int argc, char * argv[])
 	//cout << "\nExiting from the rfims software..." << endl;
 	cout << "\nPress enter to finish the rfims software..." << endl;
 	WaitForKey();
+
 	return 0;
 }
 

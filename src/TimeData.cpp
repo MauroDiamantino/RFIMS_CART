@@ -9,7 +9,7 @@ std::string TimeData::GetDate() const
 {
 	std::ostringstream oss;
 	oss.fill('0'); oss.setf(std::ios::right, std::ios::adjustfield);
-	oss << std::setw(2) << day << '-' << std::setw(2) << month << '-' << year;
+	oss << std::setw(2) << day << '-' << std::setw(2) << month << '-' << std::setw(4) << year;
 	return oss.str();
 }
 

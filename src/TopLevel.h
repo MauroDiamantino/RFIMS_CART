@@ -48,6 +48,9 @@ void PrintHelp();
 //! This function process the software's arguments, which define the behavior of this one.
 bool ProcessMainArguments(int argc, char * argv[]);
 
+//! A function which extracts data from a timer and returns it as a string in a human-readable format.
+std::string GetTimeAsString(boost::timer::cpu_timer & timer);
+
 ///////////////////////////////////////////////////////////////
 
 
@@ -140,13 +143,7 @@ public:
 		TurnOffFrontEnd();
 
 		if( !timer.is_stopped() )
-		{
-			//Showing the elapsed time since the beginning
-			timer.stop();
-			boost::timer::cpu_times times = timer.elapsed();
-			boost::posix_time::time_duration td = boost::posix_time::microseconds(times.wall/1000);
-			cout << "\nThe elapsed time since the beginning is: " << boost::posix_time::to_simple_string(td) << endl;
-		}
+			cout << "\nThe elapsed time since the beginning is: " << GetTimeAsString(timer) << endl;
 
 		std::exit(signum);
 	}

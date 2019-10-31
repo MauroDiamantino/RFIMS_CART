@@ -200,3 +200,12 @@ bool ProcessMainArguments (int argc, char * argv[])
 	}
 	return true;
 }
+
+std::string GetTimeAsString(boost::timer::cpu_timer & timer)
+{
+	//Showing the elapsed time since the beginning
+	timer.stop();
+	boost::timer::cpu_times times = timer.elapsed();
+	boost::posix_time::time_duration td = boost::posix_time::microseconds(times.wall/1000);
+	return boost::posix_time::to_simple_string(td);
+}
