@@ -16,7 +16,7 @@
 #ifndef BASICS_H_
 #define BASICS_H_
 
-/////////////////////////DEFINE'S//////////////////////////////
+//#//////////////////////DEFINE'S//////////////////////////////
 
 //#define RASPBERRY_PI // This preprocessor definition enables the use of the code which can only be used in the Raspberry Pi board (for example WiringPi functions).
 //#define DEBUG // This definition enables some code blocks which are aimed to test the software performance.
@@ -24,10 +24,10 @@
 	//#define BUTTON // This definition determines the use of Enter key to respond to some software messages or the use of a button connected to a GPIO pin.
 #endif
 
-///////////////////////////////////////////////////////////////
+//#////////////////////////////////////////////////////////////
 
 
-////////////////////////GLOBAL LIBRARIES AND HEADERS//////////////////////////////
+//#/////////////////////GLOBAL LIBRARIES AND HEADERS//////////////////////////////
 
 // The must-have library which allows to use the objects `std::cout` and `std::cin` among a lot of other things.
 #include <iostream>
@@ -71,7 +71,7 @@
 #include <wiringPi.h>
 #endif
 
-///////////////////////////////////////////////////////////////////////////////////
+//#////////////////////////////////////////////////////////////////////////////////
 
 
 using std::cout;
@@ -80,7 +80,7 @@ using std::cin;
 using std::endl;
 
 
-/////////////////////GLOBAL CONSTANTS/////////////////////////
+//#//////////////////GLOBAL CONSTANTS/////////////////////////
 
 #ifdef RASPBERRY_PI
 //! This constant define the base path where there are the files and folders used by the software.
@@ -90,10 +90,14 @@ const std::string BASE_PATH = "/home/pi/RFIMS-CART";
 const std::string BASE_PATH = "/home/new-mauro/RFIMS-CART";
 #endif
 
-/////////////////////////////////////////////////////////////
+//#//////////////////////////////////////////////////////////
 
 
-/////////////////////////GLOBAL CLASSES AND STRUCTURES/////////////////////////
+//#///////////////////////GLOBAL VARIABLES///////////////////////
+extern unsigned int numOfAzimPos;
+
+
+//#//////////////////////GLOBAL CLASSES AND STRUCTURES/////////////////////////
 
 //! A class derived from standard class `std::exception`.
 /*! This class is customized to managed the exceptions in a desired way. This class has been
@@ -372,15 +376,55 @@ struct
 	const unsigned int LED_NEXT_POS = 3; //!< This pin is initialized as an output in LOW state, so the led will start turned off.
 	const unsigned int LED_POLARIZ = 5; //!< This pin is initialized as an output in LOW state, so the led will start turned off.
 	const unsigned int BUTTON_ENTER = 2; //!< This pin is initialized as in input wit the pull-up resistor enabled, so the button must connect the pin to GND.
+	//Pines de la clase AntennaPositioner
+	//Se debe indicar los pines de PUL, DIR, EN, SENSOR_NORTE en donde van a ir conectados
+	const unsigned int PUL=7; //pin 7
+	const unsigned int DIRECCION=9; //pin 5
+	const unsigned int EN=8; //pin 3
+	const unsigned int SENSOR_NORTE=2; //pin 13
+	const unsigned int POL=0; //pin 11
+	const unsigned int FASE_A=1; //pin 12
+	const unsigned int FASE_B=4; //pin 16
 } piPins;
-const int SWITCH_TO_NS = LOW; //!< This constant define the value the switch's pin must take to connect noise source to input, provided that the noise source is connected to switch's J2 connector.
-const int SWITCH_TO_ANTENNA = HIGH; //!< This constant define the value the switch's pin must take to connect antenna to input, provided that the antenna is connected to switch's J1 connector.
+
+struct
+{
+	const int SWITCH_TO_NS = LOW; //!< This constant define the value the switch's pin must take to connect noise source to input, provided that the noise source is connected to switch's J2 connector.
+	const int SWITCH_TO_ANT = !SWITCH_TO_NS; //!< This constant define the value the switch's pin must take to connect antenna to input, provided that the antenna is connected to switch's J1 connector.
+
+	const int NS_ON = HIGH;
+	const int NS_OFF = !NS_ON;
+
+	const int LNAS_ON = HIGH;
+	const int LNAS_OFF = !LNAS_ON;
+
+	const int SPECTRAN_ON = HIGH;
+	const int SPECTRAN_OFF = !SPECTRAN_ON;
+
+	const int PUL_ON = HIGH;
+	const int PUL_OFF = !PUL_ON;
+
+	const int DIR_ON = HIGH;
+	const int DIR_OFF = !DIR_ON;
+
+	const int SENS_NOR_ON = HIGH;
+	const int SENS_NOR_OFF = !SENS_NOR_ON;
+
+	const int POL_HOR = HIGH;
+	const int POL_VERT = !POL_HOR;
+
+	const int FASE_A_ON = HIGH;
+	const int FASE_A_OFF = !FASE_A_ON;
+
+	const int FASE_B_ON = HIGH;
+	const int FASE_B_OFF = !FASE_B_ON;
+} pinsValues;
 #endif
 
-///////////////////////////////////////////////////////////////////////
+//#////////////////////////////////////////////////////////////////////
 
 
-///////////////////////GLOBAL FUNCTIONS//////////////////////
+//#////////////////////GLOBAL FUNCTIONS//////////////////////
 
 //! Function intended to compare floating-point numbers as approximately equal, taking into account the floating-point rounding errors.
 bool approximatelyEqual(float a, float b);
@@ -405,11 +449,7 @@ void TurnOnFrontEnd();
 //! The aim of this function is to turn off the RF front-end elements in a sequential manner, from the antenna to the spectrum analyzer.
 void TurnOffFrontEnd();
 
-////////////////////////////////////////////////////////////////
-
-
-/////////////////////////GLOBAL VARIABLES///////////////////////
-extern unsigned int numOfAzimPos;
+//#/////////////////////////////////////////////////////////////
 
 
 

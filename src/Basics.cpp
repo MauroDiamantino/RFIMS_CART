@@ -126,6 +126,28 @@ void InitializeGPIO()
 
 	pinMode(piPins.LED_POLARIZ, OUTPUT);
 	digitalWrite(piPins.LED_POLARIZ, LOW);
+
+	//Inicializacion de los pines de la clase AntennaPositioner
+	pinMode(piPins.PUL,OUTPUT);          //SEÑAL DE PULSOS
+	digitalWrite(piPins.PUL, LOW);
+
+	pinMode(piPins.DIRECCION,OUTPUT);    //SEÑAL DE DIRECCION;DIR:LOW(DERECHA),DIR:HIGH(IZQUIERDA)
+	digitalWrite(piPins.PUL, LOW);
+
+	pinMode(piPins.EN,OUTPUT);           //SEÑAL DE HABILITACION (HIGH=HABILITA , LOW=DESHABILITAR)
+	digitalWrite(piPins.EN,LOW);
+
+	pinMode(piPins.SENSOR_NORTE,INPUT);  //SEÑAL DEL SENSOR DE EFECTO HALL
+	digitalWrite(piPins.SENSOR_NORTE, LOW);
+
+	pinMode(piPins.POL,OUTPUT);          //SEÑAL PARA LA POLARIZACION
+	digitalWrite(piPins.POL, LOW);
+
+	pinMode(piPins.FASE_A,INPUT);         //SEÑAL 1 DEL ENCODER (DERECHA)
+	digitalWrite(piPins.FASE_A, LOW);
+
+	pinMode(piPins.FASE_B,INPUT);         //SEÑAL 2 DEL ENCODER (IZQUIERDA)
+	digitalWrite(piPins.FASE_B, LOW);
 #endif
 }
 

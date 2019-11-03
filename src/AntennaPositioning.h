@@ -270,12 +270,32 @@ class AntennaPositioner
 	//Constants
 	//const std::uint8_t NUM_OF_POSITIONS = 6; //! The number of azimuth positions.
 	//const double ROTATION_ANGLE = 360.0/NUM_OF_POSITIONS; //! The angle which the antenna must rotate to move to the next position.
+
 	//Variables
-	double rotationAngle;
-	GPSInterface & gpsInterface; //! A reference to the object which is responsible for the communication with the Aaronia GPS receiver.
-	float azimuthAngle; //! The current azimuth angle of the antenna.
-	Polarization polarization; //! The current antenna polarization.
-	std::uint8_t positionIndex; //! An index which allows to know how many positions have been swept and how many remains to reach the last position.
+	struct PosicionAntena
+	{
+	    float grados;
+	    float pasos;
+	    int posicion;
+	} pos_actual, pos_anterior;
+
+	volatile float cuenta;
+	volatile float yaw;
+	//volatile float roll;
+	float n;
+	//int dire; // 0 DERECHA Y 1 IZQUIERDA
+	int cantPosiciones; //Variable que almacena
+	int polar; //POLAR = 0 (HORIZONTAL) ; POLAR = 1 (VERTICAL)
+	GPSInterface & gpsInterface;
+
+	//Private methods//
+	void inicia_variables();
+	bool poneEnCero();
+	bool guardaDatos();
+	float mover();
+	bool actualizaActual(float pasos_aux);
+	void un_paso();
+	bool regresar();
 public:
 	//! The unique constructor of the class _AntennaPositioner_.
 	AntennaPositioner(GPSInterface & gpsInterf);
@@ -293,17 +313,21 @@ public:
 	//! This method change the antenna polarization.
 	bool ChangePolarization();
 	//! This method returns the current antenna azimuth angle.
-	float GetAzimPosition() const {		return azimuthAngle;	}
+	float GetAzimPosition() const {		return pos_actual.grados;	}
 	//! This method returns the current antenna polarization, as a `std::string` object.
 	std::string GetPolarizationString() const;
 	//! This method returns the current antenna polarization, as a value of the enumeration [Polarization](\ref Polarization).
-	Polarization GetPolarization() const {	return polarization;	}
+	int GetPolarization() const {	return polar;	}
 	//! This method returns the current azimuth position index.
-	unsigned int GetPositionIndex() const	{	return positionIndex;	}
+	int GetPositionIndex() const	{	return pos_actual.posicion;	}
 	//! This method return the total number of azimuth positions.
 	//unsigned int GetNumOfPositions() const {	return NUM_OF_POSITIONS;	}
 	//! This method states if the current position is the last one.
-	bool IsLastPosition() const {	return ( positionIndex >= (numOfAzimPos-1) );	}
+	bool IsLastPosition() const {	return ( pos_actual.posicion >= (cantPosiciones-1) );	}
+
+	//Friends functions//
+	void canalA();
+	void canalB();
 };
 
 #endif /* ANTENNAPOSITIONING_H_ */

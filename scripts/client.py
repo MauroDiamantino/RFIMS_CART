@@ -11,7 +11,6 @@
 # queue (in the software rfims-data) waiting to be uploaded. The path and name of the file to be sent is passed as an argument.
 #
 # \author Leandro Saldivar
-# \author Mauro Diamantino
 
 import os
 import sys
