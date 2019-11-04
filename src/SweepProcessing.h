@@ -357,10 +357,12 @@ class DataLogger
 	bool flagNewBandsParam; //!< A flag which indicates if new bands parameters were loaded and inserted to this object to save them in a CSV file, in the current measurement cycle.
 	bool flagNewFrontEndParam; //!< A flag which indicates if new front end parameters were estimated and inserted to this object to save them into memory, in the current measurement cycle.
 	bool flagStoredRFI; //!< A flag which indicates if the object was asked to store RFI in the current measurement cycle.
+	bool flagUseSweepTimestamp;
 	std::queue<std::string> filesToUpload; //!< A structure which contains the names of the files which remain to be uploaded.
 	pthread_t uploadThread; //!< A variable which saves the ID of the thread created to upload the data to remote server, in parallel with the capture of a new sweep.
 	char threadMsg[100]; //!< An array which saves a message the thread can returned when there was an error.
 public:
+	enum TimestampSource {SWEEP, FRONTENDPARAM};
 	//Class interface//
 	//! The unique class constructor.
 	DataLogger();
@@ -368,6 +370,8 @@ public:
 	~DataLogger();
 	//! A method which allows to set the number of sweeps of a measurement cycle (the two calibration sweeps are not considered), i.e. the number of sweeps which must be store in the same file.
 	void SetNumOfSweeps(unsigned int number) { numOfSweeps=number;	}
+	//! A method which allows to define the timestamp source which will be used for the name of the file where the sweeps will be stored.
+	void SetFilenameTimestampSrc(TimestampSource source) {	flagUseSweepTimestamp = source==SWEEP ? true : false;	}
 	//! This method is intended to save the bands parameters in a CSV file which is more adequately to be read in the remote server.
 	void SaveBandsParamAsCSV(const std::vector<BandParameters> & bandsParamVector);
 	//! This method is intended to save the estimated front end parameters, gain and noise figure, into the non-volatile memory.

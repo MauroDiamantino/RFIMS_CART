@@ -38,7 +38,9 @@ DataLogger::DataLogger()
 	flagNewBandsParam=false;
 	flagNewFrontEndParam=false;
 	flagStoredRFI=false;
+	flagUseSweepTimestamp=false;
 	uploadThread=0;
+	numOfSweeps=12;
 
 	try
 	{
@@ -164,7 +166,7 @@ void DataLogger::SaveFrontEndParam(const FreqValues & gain, const FreqValues & n
 {
 	if( !gain.Empty() && !noiseFigure.Empty() )
 	{
-		std::string timestamp = currMeasCycleTimestamp = gain.timeData.GetTimestamp();
+		currMeasCycleTimestamp = gain.timeData.GetTimestamp();
 
 		boost::filesystem::path filePath(FRONT_END_PARAM_PATH);
 
@@ -187,7 +189,7 @@ void DataLogger::SaveFrontEndParam(const FreqValues & gain, const FreqValues & n
 		for(const auto & freq : noiseFigure.frequencies)
 			ofs << ',' << std::setprecision(4) << double(freq)/1e6;
 		ofs << "\r\n";
-		ofs << timestamp;
+		ofs << currMeasCycleTimestamp;
 		for(const auto& nf : noiseFigure.values)
 			ofs << ',' << std::setprecision(2) << nf;
 		ofs << "\r\n";
@@ -214,7 +216,7 @@ void DataLogger::SaveFrontEndParam(const FreqValues & gain, const FreqValues & n
 		for(const auto& freq : gain.frequencies)
 			ofs << ',' << std::setprecision(4) << double(freq)/1e6;
 		ofs << "\r\n";
-		ofs << timestamp;
+		ofs << currMeasCycleTimestamp;
 		for(const auto& g : gain.values)
 			ofs << ',' << std::setprecision(1) << g;
 		ofs << "\r\n";
@@ -249,8 +251,9 @@ void DataLogger::SaveSweep(const Sweep & sweep)
 			//New measurement cycle//
 
 			//Updating the first sweep date if the method SaveFrontEndParam() has not been called before
-			if(!flagNewFrontEndParam)
+			if(flagUseSweepTimestamp || !flagNewFrontEndParam)
 				currMeasCycleTimestamp=sweep.timeData.GetTimestamp();
+
 
 			//Creating the new sweeps file
 			boost::filesystem::path filePath(MEASUREMENTS_PATH);
