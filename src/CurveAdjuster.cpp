@@ -15,9 +15,10 @@ void CurveAdjuster::BuildLines(const FreqValues & curve)
 	lines.clear();
 	auto itFreq = curve.frequencies.begin();
 	auto itValue = curve.values.begin();
+	
 	if( *itFreq > bandsParameters.front().startFreq )
 	{
-		auxLine.f_min = bandsParameters.front().startFreq;
+		auxLine.f_min = bandsParameters.front().startFreq * 0.9;
 		auxLine.f_max = *itFreq;
 		auxLine.slope = 0.0;
 		auxLine.y_intercept = *itValue;
@@ -37,7 +38,7 @@ void CurveAdjuster::BuildLines(const FreqValues & curve)
 	if( curve.frequencies.back() < bandsParameters.back().stopFreq )
 	{
 		auxLine.f_min = curve.frequencies.back();
-		auxLine.f_max = bandsParameters.back().stopFreq;;
+		auxLine.f_max = bandsParameters.back().stopFreq * 1.1;
 		auxLine.slope = 0.0;
 		auxLine.y_intercept = curve.values.back();
 		lines.push_back(auxLine);
