@@ -324,7 +324,7 @@ void FrontEndCalibrator::StartCalibration()
 	WaitForKey();
 
 	#ifdef RASPBERRY_PI
-		digitalWrite(piPins.NOISE_SOURCE, LOW); digitalWrite(piPins.SWITCH, SWITCH_TO_NS);
+		digitalWrite(piPins.NOISE_SOURCE, LOW); digitalWrite(piPins.SWITCH, pinsValues.SWITCH_TO_NS);
 	#endif
 
 	flagNSon = false; flagCalStarted=true;
@@ -350,7 +350,7 @@ void FrontEndCalibrator::EndCalibration()
 	TurnOffNS();
 
 	#ifdef RASPBERRY_PI
-		digitalWrite(piPins.SWITCH, SWITCH_TO_ANTENNA);
+		digitalWrite(piPins.SWITCH, pinsValues.SWITCH_TO_ANT);
 	#endif
 
 	flagCalStarted=false;
@@ -361,14 +361,14 @@ void FrontEndCalibrator::SetSweep(const FreqValues & sweep_dbm)
 	if(flagNSon)
 	{
 		powerNSon = sweep_dbm;
-		//powerNSon_w = pow(10.0, sweep_dbm/10.0 ) * 1e-3; //The power values are converted from dBm to Watts
-		powerNSon_pw = pow(10.0, (sweep_dbm + 90.0)/10.0); //The power values are converted from dBm to pW
+		powerNSon_w = pow(10.0, sweep_dbm/10.0 ) * 1e-3; //The power values are converted from dBm to Watts
+		//powerNSon_pw = pow(10.0, (sweep_dbm + 90.0)/10.0); //The power values are converted from dBm to pW
 	}
 	else
 	{
 		powerNSoff = sweep_dbm;
-		//powerNSoff_w = pow(10.0, sweep_dbm/10.0 ) * 1e-3; //The power values are converted from dBm to Watts
-		powerNSoff_pw = pow(10.0, (sweep_dbm + 90.0)/10.0); //The power values are converted from dBm to pW
+		powerNSoff_w = pow(10.0, sweep_dbm/10.0 ) * 1e-3; //The power values are converted from dBm to Watts
+		//powerNSoff_pw = pow(10.0, (sweep_dbm + 90.0)/10.0); //The power values are converted from dBm to pW
 	}
 }
 
@@ -403,22 +403,26 @@ void FrontEndCalibrator::SetSweep(const FreqValues & sweep_dbm)
  */
 void FrontEndCalibrator::EstimateParameters()
 {
-	//if( powerNSon_w.Empty() || powerNSoff_w.Empty() )
-	if( powerNSon_pw.Empty() || powerNSoff_pw.Empty() )
+	if( powerNSon_w.Empty() || powerNSoff_w.Empty() )
+	//if( powerNSon_pw.Empty() || powerNSoff_pw.Empty() )
 		throw rfims_exception("the front end calibrator could not estimate the parameters because one sweep (or both) was lacking.");
 
 	FreqValues tson("noise temperature"), yFactor("y-factor"), gainPowersRatio("gain");
 
 	//Calculating the front end's noise figure curve
 	tson = (REF_TEMPERATURE * correctENR) + tsoff;
+	
+	cout << "-1" << endl;
 
 	//////////7
 //	if( CheckNoFiniteAndNegValues(tson.values) )
 //		cout << "Hay valores incorrectos en tson" << endl;
 	///////////
 
-	//yFactor = powerNSon_w / powerNSoff_w;
-	yFactor = powerNSon_pw / powerNSoff_pw;
+	yFactor = powerNSon_w / powerNSoff_w;
+	//yFactor = powerNSon_pw / powerNSoff_pw;
+	
+	cout << "-2" << endl;
 
 	//auxPlotter2.Plot(yFactor, "lines", "yFactor");
 
@@ -427,7 +431,9 @@ void FrontEndCalibrator::EstimateParameters()
 //		cout << "Hay valores incorrectos en yFactor" << endl;
 	///////////
 
-	noiseTemperature = (tson - tsoff * yFactor) / (yFactor - 1.0); //Aqui se producen los valores erroneos (nan)
+	noiseTemperature = (tson - (tsoff * yFactor)) / (yFactor - 1.0); //Aqui se producen los valores erroneos (nan)
+	
+	cout << "-3" << endl;
 
 	//////////7
 //	if( CheckNoFiniteAndNegValues(noiseTemperature.values) )
@@ -435,6 +441,8 @@ void FrontEndCalibrator::EstimateParameters()
 	///////////
 
 	noiseFigure = 10.0*log10( 1.0 + noiseTemperature / REF_TEMPERATURE );
+	
+	cout << "-4" << endl;
 
 	//////////7
 //	if( CheckNoFiniteAndNegValues(noiseFigure.values) )
@@ -443,6 +451,8 @@ void FrontEndCalibrator::EstimateParameters()
 
 	//Correcting the wrong values of the noise figure curve
 	CorrectNoFiniteAndNegVal(noiseFigure.values);
+	
+	cout << "-5" << endl;
 	
 	//Checking the mean value of noise figure
 	auto meanNoiseFig = noiseFigure.MeanValue();
@@ -454,8 +464,8 @@ void FrontEndCalibrator::EstimateParameters()
 	}
 
 	//Calculating the front end's gain curve
-	//gainPowersRatio = 0.5/(BOLTZMANN_CONST * rbwCurve) * ( powerNSoff_w/(tsoff + noiseTemperature) + powerNSon_w/(tson + noiseTemperature) );
-	gainPowersRatio = 0.5/(BOLTZMANN_CONST * rbwCurve) * ( 1e-12*powerNSoff_pw/(tsoff + noiseTemperature) + 1e-12*powerNSon_pw/(tson + noiseTemperature) );
+	gainPowersRatio = 0.5/(BOLTZMANN_CONST * rbwCurve) * ( powerNSoff_w/(tsoff + noiseTemperature) + powerNSon_w/(tson + noiseTemperature) );
+	//gainPowersRatio = 0.5/(BOLTZMANN_CONST * rbwCurve) * ( 1e-12*powerNSoff_pw/(tsoff + noiseTemperature) + 1e-12*powerNSon_pw/(tson + noiseTemperature) );
 
 	//////////7
 //	if( CheckNoFiniteAndNegValues(gainPowersRatio.values) )

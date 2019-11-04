@@ -187,9 +187,12 @@ int main(int argc, char * argv[])
 					else
 					{
 						frontEndCalibrator.EndCalibration();
+						cout << "*1" << endl;
 						frontEndCalibrator.EstimateParameters();
+						cout << "*2" << endl;
 
 						dataLogger.SaveFrontEndParam( frontEndCalibrator.GetGain(), frontEndCalibrator.GetNoiseFigure() );
+						cout << "*3" << endl;
 
 						if(flagTestPlot)
 							try
@@ -348,7 +351,7 @@ bool ProcessTestArguments(int argc, char * argv[])
 
 		//Searching for the argument --num-files=xx
 		argIter = argList.cbegin();
-		while( argIter!=argList.cend() && *argIter!="--num-files=" )	argIter++;
+		while( argIter!=argList.cend() && argIter->find("--num-files=")==std::string::npos )	argIter++;
 		if( argIter!=argList.cend() )
 		{
 			//The argument was found
@@ -360,7 +363,7 @@ bool ProcessTestArguments(int argc, char * argv[])
 
 		//Searching for the argument --num-sweeps-file=xx
 		argIter = argList.cbegin();
-		while( argIter!=argList.cend() && *argIter!="--num-sweeps-file=" )	argIter++;
+		while( argIter!=argList.cend() && argIter->find("--num-sweeps-file=")==std::string::npos )	argIter++;
 		if( argIter!=argList.cend() )
 		{
 			//The argument was found
@@ -391,7 +394,7 @@ bool ProcessTestArguments(int argc, char * argv[])
 		}
 
 		//Checking if there were arguments which were not recognized
-		if(!argList.empty())
+		if( !argList.empty() )
 		{
 			cout << "test-spectran: the following arguments were not recognized:";
 			for(argIter = argList.cbegin(); argIter != argList.cend(); argIter++)

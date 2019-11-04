@@ -206,8 +206,8 @@ class FrontEndCalibrator
 	FreqValues::value_type tsoff; //!< The noise temperature of the noise generator when it is turned off, which matches the physical temperature.
 	FreqValues powerNSoff; //!< A structure which stores the output power values measured when the noise generator is turned off and represented in dBm.
 	FreqValues powerNSon; //!< A structure which stores the output power values measured when the noise generator is turned on and represented in dBm.
-	//FreqValues powerNSoff_w; //!< A structure which stores the output power values measured when the noise generator is turned off and represented in Watts(W).
-	//FreqValues powerNSon_w; //!< A structure which stores the output power values measured when the noise generator is turned on and represented in Watts(W).
+	FreqValues powerNSoff_w; //!< A structure which stores the output power values measured when the noise generator is turned off and represented in Watts(W).
+	FreqValues powerNSon_w; //!< A structure which stores the output power values measured when the noise generator is turned on and represented in Watts(W).
 	FreqValues powerNSoff_pw; //!< A structure which stores the output power values measured when the noise generator is turned off and represented in picoWatts(pW).
 	FreqValues powerNSon_pw; //!< A structure which stores the output power values measured when the noise generator is turned on and represented in picoWatts(pW).
 	std::vector<BandParameters> bandsParameters; //!< A vector which stores the parameters of all frequency bands.
@@ -252,8 +252,9 @@ public:
 	void TurnOffNS()
 	{
 	#ifdef RASPBERRY_PI
-			digitalWrite(piPins.NOISE_SOURCE, LOW); flagNSon = false;
+		digitalWrite(piPins.NOISE_SOURCE, LOW);
 	#endif
+		flagNSon = false;
 	}
 	//! The calibration process is finished turning it off the noise generator and switching the input to the antenna.
 	void EndCalibration();

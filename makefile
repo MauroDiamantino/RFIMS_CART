@@ -12,8 +12,8 @@ CXX = g++
 CPPFLAGS = -std=c++11 -O3 -g0 -Wall -fmessage-length=0 -I/usr/local/include
 LDFLAGS = -g0
 
-#LDLIBS = -L/usr/local/lib -lftd2xx -lboost_filesystem -lboost_system -lboost_timer -lnmea -lwiringPi -lpthread #For Raspberry Pi boards
-LDLIBS = -L/usr/local/lib -lftd2xx -lboost_filesystem -lboost_system -lboost_timer -lnmea -lpthread #For non-Raspberry boards
+LDLIBS = -L/usr/local/lib -lftd2xx -lboost_filesystem -lboost_system -lboost_timer -lnmea -lwiringPi -lpthread #For Raspberry Pi boards
+#LDLIBS = -L/usr/local/lib -lftd2xx -lboost_filesystem -lboost_system -lboost_timer -lnmea -lpthread #For non-Raspberry boards
 
 #######################FILES###########################
 HEADER_NAMES = AntennaPositioning.h TopLevel.h Basics.h Spectran.h SweepProcessing.h gnuplot_i.hpp

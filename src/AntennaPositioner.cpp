@@ -5,13 +5,41 @@
 
 #include "AntennaPositioning.h"
 
+//#/////////////////////////////INTERRUPCIONES//////////////////////////
+
+volatile float AntennaPositioner::cuenta=0;
+
+void canalA()
+{
+#ifdef RASPBERRY_PI
+    if(digitalRead(piPins.FASE_B) == 0){
+        AntennaPositioner::cuenta++;
+    }else{
+        AntennaPositioner::cuenta--;
+    }
+#endif
+}
+
+void canalB()
+{
+#ifdef RASPBERRY_PI
+    if(digitalRead(piPins.FASE_A) == 0){
+        AntennaPositioner::cuenta--;
+    }else{
+        AntennaPositioner::cuenta++;
+    }
+#endif
+}
+
+
+////////////////////////////////////////////////////////////////////
 
 void AntennaPositioner::inicia_variables()
 {
 #ifdef RASPBERRY_PI
 	//SE INICIAN LAS INTERRUPCIONES
-	wiringPiISR(FASE_A, INT_EDGE_RISING, canalA);
-	wiringPiISR(FASE_B, INT_EDGE_RISING, canalB);
+	wiringPiISR(piPins.FASE_A, INT_EDGE_RISING, canalA);
+	wiringPiISR(piPins.FASE_B, INT_EDGE_RISING, canalB);
 #endif
 }
 
@@ -36,9 +64,9 @@ bool AntennaPositioner::Initialize()
 {
 #ifdef RASPBERRY_PI
 	//SE PONE EN BAJO LA HABILITACION
-	digitalWrite(EN,LOW);
+	digitalWrite(piPins.EN,LOW);
 	// PONER LA ANTENA EN POSICION HORIZONTAL
-	digitalWrite(POL,LOW); // PONE LA ANTENA EN POSICION HORIZONTAL
+	digitalWrite(piPins.POL,LOW); // PONE LA ANTENA EN POSICION HORIZONTAL
 #endif
 
 	double aux = 100.0;
@@ -51,15 +79,15 @@ bool AntennaPositioner::Initialize()
 
 #ifdef RASPBERRY_PI
 	//SE PONE EN ALTO LA HABILITACION
-	digitalWrite(EN,HIGH);
+	digitalWrite(piPins.EN,HIGH);
 
 	//SE EMPIEZA EN UNA DIRECCION(DIR,HIGH) (IZQUIERDA) sentido anti-horario
-	digitalWrite(DIRECCION,HIGH);
+	digitalWrite(piPins.DIRECCION,HIGH);
 
 	cuenta=0;
 	while( (cuenta/n) > -360 && cuenta <= 0 )
 	{
-		if (0 == digitalRead(SENSOR_NORTE)) //A TRAVES DE UNA SE�AL (0 O 1) SE VERA DONDE ESTA EL NORTE
+		if (0 == digitalRead(piPins.SENSOR_NORTE)) //A TRAVES DE UNA SE�AL (0 O 1) SE VERA DONDE ESTA EL NORTE
 		{
 			if(false == poneEnCero())
 				return(false);
@@ -69,7 +97,7 @@ bool AntennaPositioner::Initialize()
 	}
 
 	//SE PONE EN BAJO LA HABILITACION
-	digitalWrite(EN,LOW);
+	digitalWrite(piPins.EN,LOW);
 #endif
 	return(false);
 }
@@ -89,15 +117,15 @@ bool AntennaPositioner::NextAzimPosition()
 
 #ifdef RASPBERRY_PI
 	//SE PONE EN ALTO LA HABILITACION
-	digitalWrite(EN,HIGH);
-	digitalWrite(DIRECCION,LOW);//DERECHA ---> ME MUEVO EN SENTIDO CONTRARIO POR LOS CABLES sentido horario
+	digitalWrite(piPins.EN,HIGH);
+	digitalWrite(piPins.DIRECCION,LOW);//DERECHA ---> ME MUEVO EN SENTIDO CONTRARIO POR LOS CABLES sentido horario
 #endif
 
 	//GUARDA LOS DATOS ACTUALES A LOS DATOS ANTERIORES
 	if(false == guardaDatos())
 	{
 #ifdef RESPBERRY_PI
-		digitalWrite(EN,LOW);
+		digitalWrite(piPins.EN,LOW);
 #endif
 		return(false);
 	}
@@ -108,7 +136,7 @@ bool AntennaPositioner::NextAzimPosition()
 		if(false == actualizaActual(pasos_aux))
 		{
 #ifdef RASPBERRY_PI
-			digitalWrite(EN,LOW);
+			digitalWrite(piPins.EN,LOW);
 #endif
 			return(false);
 		}
@@ -118,7 +146,7 @@ bool AntennaPositioner::NextAzimPosition()
 		if(false == poneEnCero())
 		{
 #ifdef RASPBERRY_PI
-			digitalWrite(EN,LOW);
+			digitalWrite(piPins.EN,LOW);
 #endif
 			return(false);
 		}
@@ -126,7 +154,7 @@ bool AntennaPositioner::NextAzimPosition()
 		if(false == regresar())
 		{
 #ifdef RASPBERRY_PI
-			digitalWrite(EN,LOW);
+			digitalWrite(piPins.EN,LOW);
 #endif
 			return(false);
 		}
@@ -134,7 +162,7 @@ bool AntennaPositioner::NextAzimPosition()
 
 #ifdef RASPBERRY_PI
 	//SE PONE EN BAJO LA HABILITACION
-	digitalWrite(EN,LOW);
+	digitalWrite(piPins.EN,LOW);
 #endif
 
 	return(true);
@@ -147,7 +175,7 @@ bool AntennaPositioner::ChangePolarization()
 {
 #ifdef RASPBERRY_PI
 	//SE PONE EN ALTO LA HABILITACION
-	digitalWrite(EN,LOW);
+	digitalWrite(piPins.EN,LOW);
 #endif
 
 	// INVERTIR LA POLARIZACION DE LA FUENTE DE ALIMENTACION DEL MOTOR QUE MANEJA LA POLARIZACION
@@ -156,7 +184,7 @@ bool AntennaPositioner::ChangePolarization()
     if (polar == 0)
     {
 #ifdef RASPBERRY_PI
-        digitalWrite(POL,HIGH); // PONE LA ANTENA EN POSICION VERTICAL
+        digitalWrite(piPins.POL,HIGH); // PONE LA ANTENA EN POSICION VERTICAL
 #endif
         aux = 100;
         while ( ((aux < 85) || (aux > 95)) )
@@ -171,7 +199,7 @@ bool AntennaPositioner::ChangePolarization()
     {
         aux=100;
 #ifdef RASPBERRY_PI
-        digitalWrite(POL,LOW); // PONE LA ANTENA EN POSICION HORIZONTAL
+        digitalWrite(piPins.POL,LOW); // PONE LA ANTENA EN POSICION HORIZONTAL
 #endif
         while ( ((aux < -5) || (aux > 5)) )
         {
@@ -202,9 +230,9 @@ void AntennaPositioner::un_paso()
 {
 #ifdef RASPBERRY_PI
 	const unsigned int RETARDO = 5;//MILISEGUNDOS
-    digitalWrite(PUL,HIGH); // SE ENVIA UN PULSO EN ALTO(PUL,HIGH)
+    digitalWrite(piPins.PUL,HIGH); // SE ENVIA UN PULSO EN ALTO(PUL,HIGH)
     delay(RETARDO);  // SE ESPERA UN TIEMPO(RETARDO)
-    digitalWrite(PUL,LOW); // SE ENVIA UN PULSO EN BAJO(PUL,LOW)
+    digitalWrite(piPins.PUL,LOW); // SE ENVIA UN PULSO EN BAJO(PUL,LOW)
     delay(RETARDO);
 #endif
 }
@@ -256,7 +284,7 @@ bool AntennaPositioner::poneEnCero()
 bool AntennaPositioner::regresar()
 {
 #ifdef RASPBERRY_PI
-	digitalWrite(DIRECCION,HIGH);// REGRESO POR LA IZQUIERDA ANTI HORARIO
+	digitalWrite(piPins.DIRECCION,HIGH);// REGRESO POR LA IZQUIERDA ANTI HORARIO
 #endif
 	cuenta=0;
 	float aux = -((360.0 / cantPosiciones) * (cantPosiciones));
@@ -267,28 +295,4 @@ bool AntennaPositioner::regresar()
                 return true;
     }
     return(false);
-}
-
-//#/////////////////////////////INTERRUPCIONES//////////////////////////
-
-void canalA()
-{
-#ifdef RASPBERRY_PI
-    if(digitalRead(FASE_B) == 0){
-        cuenta++;
-    }else{
-        cuenta--;
-    }
-#endif
-}
-
-void canalB()
-{
-#ifdef RASPBERRY_PI
-    if(digitalRead(FASE_A) == 0){
-        cuenta--;
-    }else{
-        cuenta++;
-    }
-#endif
 }

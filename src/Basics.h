@@ -18,7 +18,7 @@
 
 //#//////////////////////DEFINE'S//////////////////////////////
 
-//#define RASPBERRY_PI // This preprocessor definition enables the use of the code which can only be used in the Raspberry Pi board (for example WiringPi functions).
+#define RASPBERRY_PI // This preprocessor definition enables the use of the code which can only be used in the Raspberry Pi board (for example WiringPi functions).
 //#define DEBUG // This definition enables some code blocks which are aimed to test the software performance.
 #ifdef RASPBERRY_PI
 	//#define BUTTON // This definition determines the use of Enter key to respond to some software messages or the use of a button connected to a GPIO pin.
@@ -172,7 +172,7 @@ struct TimeData
 //! The aim of this structure is to store the curve of a determined parameter or variable versus the frequency, which is named a frequency curve here.
 struct FreqValues
 {
-	typedef float value_type;
+	typedef double value_type;
 	std::string type; //!< Type of frequency values: ”sweep”, “frequency response”, “calibration curve”, “threshold curve”, “rfi", etc.
 	std::vector<value_type> values; //!< RF power values (dBm), gain values (dB or dBi), noise figure values (dB), etc.
 	std::vector<std::uint_least64_t> frequencies; //!< Frequency values in Hz.

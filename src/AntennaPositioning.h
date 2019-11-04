@@ -279,7 +279,7 @@ class AntennaPositioner
 	    int posicion;
 	} pos_actual, pos_anterior;
 
-	volatile float cuenta;
+	static volatile float cuenta;
 	volatile float yaw;
 	//volatile float roll;
 	float n;
@@ -326,8 +326,8 @@ public:
 	bool IsLastPosition() const {	return ( pos_actual.posicion >= (cantPosiciones-1) );	}
 
 	//Friends functions//
-	void canalA();
-	void canalB();
+	friend void canalA();
+	friend void canalB();
 };
 
 #endif /* ANTENNAPOSITIONING_H_ */

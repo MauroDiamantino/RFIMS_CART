@@ -101,7 +101,7 @@ void InitializeGPIO()
 	digitalWrite(piPins.NOISE_SOURCE, LOW);
 
 	pinMode(piPins.SWITCH, OUTPUT);
-	digitalWrite(piPins.SWITCH, SWITCH_TO_NS);
+	digitalWrite(piPins.SWITCH, pinsValues.SWITCH_TO_NS);
 
 	pinMode(piPins.LNAS, OUTPUT);
 	digitalWrite(piPins.LNAS, LOW);
@@ -173,7 +173,7 @@ void TurnOnFrontEnd()
 	sleep(5);
 	digitalWrite(piPins.LNAS, HIGH);
 	sleep(1);
-	digitalWrite(piPins.SWITCH, SWITCH_TO_ANTENNA);
+	digitalWrite(piPins.SWITCH, pinsValues.SWITCH_TO_ANT);
 #endif
 }
 
