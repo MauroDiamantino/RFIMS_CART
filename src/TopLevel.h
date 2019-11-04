@@ -22,19 +22,18 @@
 //#///////////////Constants///////////////////
 const unsigned int DEF_NUM_AZIM_POS = 6;
 
-/////////////////////////GLOBAL VARIABLES///////////////////////
 
-// Flags which are defined by the software arguments and which indicates the way the software must behave.
-extern bool flagCalEnabled; //!< The declaration of an external flag which defines if the calibration of the RF front end must be done or not.
-extern bool flagPlot; //!< The declaration of an external flag which defines if the software has to generate plots.
-extern bool flagInfiniteLoop; //!< The declaration of an external flag which defines if the software has to perform a finite number of measurement cycles or iterate infinitely.
-extern bool flagRFI; //!< The declaration of an external flag which defines if the software has to perform RFI detection or not.
-extern bool flagUpload; //!< The declaration of an external flag which defines if the software has to upload the measurements or not.
+/////////////////////////DECLARATIONS OF GLOBAL VARIABLES///////////////////////
 
-//! The declaration of an external variable which stores the number of measurements cycles which left to be done. It is used when the user wishes a finite number of measurements cycles.
+//Declarations of global variables which are defined in TopLevel.cpp
+extern bool flagCalEnabled;
+extern bool flagPlot;
+extern bool flagInfiniteLoop;
+extern bool flagRFI;
+extern bool flagUpload;
 extern unsigned int numOfMeasCycles;
-//! The declaration of an external variable which saves the norm which defines the harmful interference levels: ska-mode1, ska-mode2, itu-ra769-2-vlbi.
 extern RFI::ThresholdsNorm rfiNorm;
+extern unsigned int numOfAzimPos;
 extern boost::timer::cpu_timer timer;
 
 ////////////////////////////////////////////////////////////////

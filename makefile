@@ -20,7 +20,7 @@ HEADER_NAMES = AntennaPositioning.h TopLevel.h Basics.h Spectran.h SweepProcessi
 
 SRC_NAMES = AntennaPositioner.cpp Command.cpp CurveAdjuster.cpp DataLogger.cpp Basics.cpp FreqValues.cpp\
 FrontEndCalibrator.cpp gnuplot_i.cpp GPSInterface.cpp Reply.cpp RFIDetector.cpp\
-SpectranConfigurator.cpp SpectranInterface.cpp SweepBuilder.cpp TimeData.cpp
+SpectranConfigurator.cpp SpectranInterface.cpp SweepBuilder.cpp TimeData.cpp TopLevel.cpp
 #main.cpp
 
 MAIN_TARGET = bin/rfims-cart
@@ -30,9 +30,10 @@ OBJECTS = $(addprefix obj/, $(subst .cpp,.o,$(SRC_NAMES)))
 HEADERS = $(addprefix src/, $(HEADER_NAMES))
 
 ###################MAKE INSTRUCTIONS#####################
+
 all: $(MAIN_TARGET)
 
-test: bin/test-gps
+tests: bin/test-gps bin/test-spectran
 
 $(MAIN_TARGET): $(OBJECTS) obj/main.o
 	@echo "Linking..."
@@ -40,9 +41,14 @@ $(MAIN_TARGET): $(OBJECTS) obj/main.o
 	$(CXX) $(LDFLAGS) -o $(MAIN_TARGET) $(OBJECTS) obj/main.o $(LDLIBS)
 
 bin/test-gps: $(OBJECTS) obj/TestbenchGPSLogger.o
-	@echo "Linking..."
+	@echo "Linking test-gps..."
 	@mkdir -p bin/
 	$(CXX) $(LDFLAGS) -o bin/test-gps $(OBJECTS) obj/TestbenchGPSLogger.o $(LDLIBS)
+
+bin/test-spectran: $(OBJECTS) obj/TestbenchSpectran.o
+	@echo "Linking test-spectran..."
+	@mkdir -p bin/
+	$(CXX) $(LDFLAGS) -o bin/test-spectran $(OBJECTS) obj/TestbenchSpectran.o $(LDLIBS)
 
 obj/main.o: src/main.cpp $(HEADERS)
 	@mkdir -p obj/
@@ -51,6 +57,10 @@ obj/main.o: src/main.cpp $(HEADERS)
 obj/TestbenchGPSLogger.o: test/TestbenchGPSLogger.cpp $(HEADERS)
 	@mkdir -p obj/
 	$(CXX) $(CPPFLAGS) -o obj/TestbenchGPSLogger.o -c test/TestbenchGPSLogger.cpp
+
+obj/TestbenchSpectran.o: test/TestbenchSpectran.cpp $(HEADERS)
+	@mkdir -p obj/
+	$(CXX) $(CPPFLAGS) -o obj/TestbenchSpectran.o -c test/TestbenchSpectran.cpp
 
 obj/AntennaPositioner.o: $(addprefix src/, AntennaPositioner.cpp Basics.h AntennaPositioning.h)
 	@mkdir -p obj/
@@ -111,6 +121,10 @@ obj/SweepBuilder.o: $(addprefix src/, SweepBuilder.cpp Basics.h Spectran.h)
 obj/TimeData.o: $(addprefix src/, TimeData.cpp Basics.h)
 	@mkdir -p obj/
 	$(CXX) $(CPPFLAGS) -o obj/TimeData.o -c src/TimeData.cpp
+
+obj/TopLevel.o: src/TopLevel.cpp src/TopLevel.h
+	@mkdir -p obj/
+	$(CXX) $(CPPFLAGS) -o obj/TopLevel.o -c src/TopLevel.cpp
 
 clean:
 	@echo "Cleaning..."

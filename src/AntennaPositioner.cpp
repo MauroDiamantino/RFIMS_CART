@@ -24,7 +24,7 @@ AntennaPositioner::AntennaPositioner(GPSInterface & gpsInterf) : gpsInterface(gp
 	yaw = 0.0;
 	//roll = 0.0;
 	n = 2.0;
-	cantPosiciones = numOfAzimPos; //Este valor es recibido como un argumento del software que se guarda en la variable 'numOfAzimPos'
+	cantPosiciones = 6;
 	polar = 0; //POLAR = 0 (HORIZONTAL) ; POLAR = 1 (VERTICAL)
 }
 

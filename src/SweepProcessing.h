@@ -352,6 +352,7 @@ class DataLogger
 	//Variables
 	std::ofstream ofs; //!< This object is used to write the data into the different files, following a specific format.
 	unsigned int sweepIndex; //!< An index which allows to know which is the current sweep in the entire measurement cycle, and how many sweeps remain until the end.
+	unsigned int numOfSweeps; //!< Total number of sweeps
 	std::string currMeasCycleTimestamp; //!< The timestamp of the current measurement cycle, which is taken as the date at the beginning.
 	bool flagNewBandsParam; //!< A flag which indicates if new bands parameters were loaded and inserted to this object to save them in a CSV file, in the current measurement cycle.
 	bool flagNewFrontEndParam; //!< A flag which indicates if new front end parameters were estimated and inserted to this object to save them into memory, in the current measurement cycle.
@@ -365,6 +366,8 @@ public:
 	DataLogger();
 	//! The class destructor.
 	~DataLogger();
+	//! A method which allows to set the number of sweeps of a measurement cycle (the two calibration sweeps are not considered), i.e. the number of sweeps which must be store in the same file.
+	void SetNumOfSweeps(unsigned int number) { numOfSweeps=number;	}
 	//! This method is intended to save the bands parameters in a CSV file which is more adequately to be read in the remote server.
 	void SaveBandsParamAsCSV(const std::vector<BandParameters> & bandsParamVector);
 	//! This method is intended to save the estimated front end parameters, gain and noise figure, into the non-volatile memory.

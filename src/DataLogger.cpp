@@ -241,7 +241,7 @@ void DataLogger::SaveSweep(const Sweep & sweep)
 	//The data are saved only if a sweep has been loaded
 	if( !sweep.Empty() )
 	{
-		if(++sweepIndex >= 2*numOfAzimPos) //2 polarizations multiplied by numOfAzimPos azimuth positions
+		if(++sweepIndex >= numOfSweeps) //numOfSweeps should be the double of the number of azimuth positions
 			sweepIndex=0;
 
 		if(sweepIndex==0)

@@ -93,10 +93,6 @@ const std::string BASE_PATH = "/home/new-mauro/RFIMS-CART";
 //#//////////////////////////////////////////////////////////
 
 
-//#///////////////////////GLOBAL VARIABLES///////////////////////
-extern unsigned int numOfAzimPos;
-
-
 //#//////////////////////GLOBAL CLASSES AND STRUCTURES/////////////////////////
 
 //! A class derived from standard class `std::exception`.

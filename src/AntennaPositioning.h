@@ -303,9 +303,9 @@ public:
 	/*!	Its implementation is empty because the attributes are implicitly destroyed. However, the
 	 * destructor is defined here to allow this one to be called explicitly in any part of the code,
 	 * what is used by the signals handler to destroy the objects when a signal to finish the execution
-	 * of the software is received.
-	 */
+	 * of the software is received. */
 	~AntennaPositioner() {}
+	void SetNumOfAzimPos(unsigned int number) {	cantPosiciones=number;	}
 	//! This method performs the initialization of the antenna positioning system.
 	bool Initialize();
 	//! This method moves the antenna to the next azimuth position.

@@ -6,31 +6,6 @@
 #include "TopLevel.h"
 
 
-//#//////////////////////GLOBAL VARIABLES////////////////////////
-
-// Flags which are defined by the software arguments and which indicates the way the software must behave.
-//! The declaration of a flag which defines if the calibration of the RF front end must be done or not. By default the calibration is enabled.
-bool flagCalEnabled = true;
-//! The declaration of a flag which defines if the software has to generate plots or not. By default the plotting is not performed.
-bool flagPlot = false;
-//! The declaration of a flag which defines if the software has to perform a finite number of measurement cycles or iterate infinitely. By default the software iterates infinitely.
-bool flagInfiniteLoop = true;
-//! The declaration of a flag which defines if the software has to perform RFI detection or not. By this task is not performed.
-bool flagRFI = false;
-//! The declaration of a flag which defines if the software has to upload the measurements or not. By default the uploading is performed.
-bool flagUpload = true;
-//! A variable which saves the number of measurements cycles which left to be done. It is used when the user wishes a finite number of measurements cycles.
-unsigned int numOfMeasCycles = 0;
-//! A variable which receives the number of azimuth positions from the corresponding software's argument. The number of sweeps will be the double of this value.
-unsigned int numOfAzimPos = DEF_NUM_AZIM_POS;
-//! A variable which saves the norm which defines the harmful RF interference levels: ska-mode1, ska-mode2, itu-ra769-2-vlbi.
-RFI::ThresholdsNorm rfiNorm = RFI::SKA_MODE1;
-//! A timer which is used to measure the execution time when the number of iterations is finite.
-boost::timer::cpu_timer timer;
-
-//#////////////////////////////////////////////////////////////////
-
-
 //#////////////////////////////MAIN FUNCTION//////////////////////////////////
 
 //! The main function of the RFISM-CART software.
@@ -57,6 +32,7 @@ int main(int argc, char * argv[])
 	bool flagEndIterations = false;
 	// A variable which represents the number of the current sweep (like an index but this starts in one). The sweeps got for the calibration are not taking into account.
 	unsigned int sweepNumber = 1;
+	unsigned int measCycleIndex = 0;
 	//#/////////////////////////////////////
 
 	// The checking of the program's arguments.
@@ -107,6 +83,12 @@ int main(int argc, char * argv[])
 		//Putting the antenna in the initial position and polarization
 		antPositioner.Initialize();
 		cout << "\nThe initial azimuth angle is " << antPositioner.GetAzimPosition() << "° N" << endl;
+		
+		//Setting the total number of sweeps per measurement cycle in the data logger
+		dataLogger.SetNumOfSweeps(2*numOfAzimPos);
+
+		//Setting the number of azimuth positions in the antenna positioner
+		antPositioner.SetNumOfAzimPos(numOfAzimPos);
 
 		//#///////////////////////////////END OF THE INITIALIZATION///////////////////////////////////////
 
@@ -125,6 +107,7 @@ int main(int argc, char * argv[])
 
 				//Loading by first time or reloading the Spectran parameters
 				cout << "\nLoading the Spectran's configuration parameters from the corresponding files" << endl;
+				
 				//Loading the fixed parameters
 				cout << "Loading the fixed parameters..." << endl;
 				if( specConfigurator.LoadFixedParameters() )
@@ -143,18 +126,18 @@ int main(int argc, char * argv[])
 				cout << "The frequency bands' parameters were loaded successfully" << endl;
 
 				//#///////////////////END OF THE LOADING OF THE SPECTRAN'S PARAMETERS////////////////
-			}
 
-			//Determining if the front end calibration must be done or not
-			if(flagCalEnabled && flagNewMeasCycle)
-			{
-				//The front end calibration is enabled and a new measurement cycle is starting
-				cout << "\nStarting the front end calibration" << endl;
-				frontEndCalibrator.StartCalibration();
+				//Determining if the front end calibration must be done or not
+				if(flagCalEnabled)
+				{
+					//The front end calibration is enabled and a new measurement cycle is starting
+					cout << "\nStarting the front end calibration" << endl;
+					frontEndCalibrator.StartCalibration();
+				}
+	
+				//This flag is pulled down here because it is just not needed from here to down.
+				flagNewMeasCycle=false;
 			}
-
-			//This flag is pulled down here because it is just not needed from here to down.
-			flagNewMeasCycle=false;
 
 
 			//#//////////////////////////CAPTURING THE ANTENNA'S POSITION AND THE TIME DATA///////////////////////////
@@ -173,7 +156,10 @@ int main(int argc, char * argv[])
 			if( frontEndCalibrator.IsCalibStarted() )
 				cout << "\nStarting the capturing of a sweep for the calibration" << endl;
 			else
-				cout << "\nStarting the capturing of the sweep " << sweepNumber++ << '/' << (numOfAzimPos*2) << endl;
+				if(flagInfiniteLoop)
+					cout << "\nStarting the capturing of the sweep " << sweepNumber++ << '/' << (numOfAzimPos*2) << endl;
+				else
+					cout << "\nStarting the capturing of the sweep " << sweepNumber++ << '/' << (numOfAzimPos*2) << ", in measurement cycle " << (measCycleIndex + 1) << '/' << numOfMeasCycles << endl;
 
 #ifdef RASPBERRY_PI
 			digitalWrite(piPins.LED_SWEEP_CAPTURE, HIGH);
@@ -227,24 +213,29 @@ int main(int argc, char * argv[])
 				//exact number of samples is known. The parameters which must be adjusted taking into account the bands
 				//parameters are reloaded and readjusted each time the bands parameters are changed.
 				auto bandsParameters = specConfigurator.GetBandsParameters();
+
 				curveAdjuster.SetBandsParameters(bandsParameters);
 				curveAdjuster.SetRefSweep(uncalSweep);
 				frontEndCalibrator.SetBandsParameters(bandsParameters);
 				cout << "\nThe ENR values curve will be (re)loaded" << endl;
 				frontEndCalibrator.LoadENR();
+
 				if(flagRFI)
 				{
 					cout << "\nThe RFI harmful levels curve will be (re)loaded" << endl;
 					rfiDetector.SetBandsParameters(bandsParameters);
 					rfiDetector.LoadThreshCurve(rfiNorm);
 				}
+
 				//Saving the bands parameters in a CSV file
 				dataLogger.SaveBandsParamAsCSV(bandsParameters);
+
 				if(!flagCalEnabled)
 				{
 					cout << "\nThe front end calibration is not enabled so the default front end parameters will be loaded..." << endl;
 					frontEndCalibrator.LoadDefaultParameters();
 					cout << "The default front end parameters were loaded successfully" << endl;
+
 					if(flagPlot)
 						try
 						{
@@ -379,9 +370,9 @@ int main(int argc, char * argv[])
 				//Checking if the current measurement cycle has finished and if the software should or not starts a new one.
 				if( antPositioner.IsLastPosition() && antPositioner.GetPolarization()==Polarization::VERTICAL)
 				{
-					if( !flagInfiniteLoop && --numOfMeasCycles==0 )
+					if( !flagInfiniteLoop && ++measCycleIndex >= numOfMeasCycles )
 					{
-						cout << "\nThe requested number of measurements cycles have been realized" << endl;
+						cout << "\nThe " << numOfMeasCycles << " measurements cycles have been realized" << endl;
 						flagEndIterations = true;
 					}
 					else
