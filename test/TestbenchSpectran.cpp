@@ -25,7 +25,9 @@ bool ProcessTestArguments(int argc, char * argv[]);
 int main(int argc, char * argv[])
 {
 	//#///////Local variables///////////
+	SignalHandler signalHandler;
 	bool flagEndIterations=false;
+	bool flagSetBandsParamAndRefSweep=true;
 	unsigned int fileIndex=0;
 	unsigned int sweepIndex=0;
 	//#/////////////////////////////////
@@ -104,16 +106,14 @@ int main(int argc, char * argv[])
 		curveAdjuster.SetBandsParameters(bandsParameters);
 		frontEndCalibrator.SetBandsParameters(bandsParameters);
 
-		//Loading the ENR values, now that the bands parameters are known
-		cout << "\nThe ENR values curve will be loaded" << endl;
-		frontEndCalibrator.LoadENR();
-
 		//#///////////////////END OF THE LOADING OF THE SPECTRAN'S PARAMETERS////////////////
 
-
-		//The front end calibration is performed once at the beginning
-		cout << "\nStarting the front end calibration" << endl;
-		frontEndCalibrator.StartCalibration();
+		if(flagCalibrateSweeps)
+		{
+			//The front end calibration is performed once at the beginning
+			cout << "\nStarting the front end calibration" << endl;
+			frontEndCalibrator.StartCalibration();
+		}
 
 
 		//#/////////////////////////////////////GENERAL LOOP////////////////////////////////////////////
@@ -134,9 +134,9 @@ int main(int argc, char * argv[])
 			//#////////////////////////////////CAPTURE LOOP OF A WHOLE SWEEP////////////////////////////////////
 
 			if( frontEndCalibrator.IsCalibStarted() )
-				cout << "\nStarting the capturing of a sweep for the calibration" << endl;
+				cout << "\n\nStarting the capturing of a sweep for the calibration" << endl;
 			else
-				cout << "\nStarting the capturing of the sweep " << (sweepIndex + 1) << '/' << numOfSweepsPerFile << ", in file " << (fileIndex + 1) << '/' << numOfFiles << endl;
+				cout << "\n\nStarting the capturing of the sweep " << (sweepIndex + 1) << '/' << numOfSweepsPerFile << ", in file " << (fileIndex + 1) << '/' << numOfFiles << endl;
 
 			//Capturing the sweeps related to each one of the frequency bands, which in conjunction form a whole sweep
 			for(unsigned int i=0; i < specConfigurator.GetNumOfBands(); i++)
@@ -161,7 +161,22 @@ int main(int argc, char * argv[])
 
 			cout << "\nThe capturing of a whole sweep finished" << endl;
 			specInterface.SoundNewSweep();
-			curveAdjuster.SetRefSweep(uncalSweep);
+
+			if(flagSetBandsParamAndRefSweep)
+			{
+				curveAdjuster.SetRefSweep(uncalSweep);
+
+				if(flagCalibrateSweeps)
+				{
+					//Loading the ENR values, now that the bands parameters are known
+					cout << "\nThe ENR values curve will be loaded" << endl;
+					frontEndCalibrator.LoadENR();
+
+					frontEndCalibrator.BuildRBWCurve();
+				}
+
+				flagSetBandsParamAndRefSweep=false;
+			}
 
 			//Showing the max power in the input of the spectrum analyzer
 			auto sweepIter = std::max_element( uncalSweep.values.begin(), uncalSweep.values.end() );
@@ -187,12 +202,9 @@ int main(int argc, char * argv[])
 					else
 					{
 						frontEndCalibrator.EndCalibration();
-						cout << "*1" << endl;
 						frontEndCalibrator.EstimateParameters();
-						cout << "*2" << endl;
 
 						dataLogger.SaveFrontEndParam( frontEndCalibrator.GetGain(), frontEndCalibrator.GetNoiseFigure() );
-						cout << "*3" << endl;
 
 						if(flagTestPlot)
 							try
@@ -256,8 +268,11 @@ int main(int argc, char * argv[])
 
 				//Checking if the software must continue or not
 				if(++sweepIndex >= numOfSweepsPerFile)
+				{
+					sweepIndex=0;
 					if(++fileIndex >= numOfFiles)
 						flagEndIterations=true;
+				}
 			}
 		}
 	}
@@ -267,9 +282,9 @@ int main(int argc, char * argv[])
 
 		cout << "\nThe elapsed time since the beginning is: " << GetTimeAsString(timer) << endl;
 
-		//cout << "\nExiting from the rfims software..." << endl;
-		cout << "\nPress enter to finish the rfims software..." << endl;
-		WaitForKey();
+		cout << "\nExiting from the software..." << endl;
+//		cout << "\nPress enter to finish the rfims software..." << endl;
+//		WaitForKey();
 
 		std::exit(EXIT_FAILURE);
 	}
@@ -278,9 +293,9 @@ int main(int argc, char * argv[])
 
 	cout << "\nThe elapsed time since the beginning is: " << GetTimeAsString(timer) << endl;
 
-	//cout << "\nExiting from the rfims software..." << endl;
-	cout << "\nPress enter to finish the rfims software..." << endl;
-	WaitForKey();
+	cout << "\nExiting from the software..." << endl;
+//	cout << "\nPress enter to finish the rfims software..." << endl;
+//	WaitForKey();
 
 	return 0;
 }

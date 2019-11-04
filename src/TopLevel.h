@@ -144,6 +144,8 @@ public:
 		if( !timer.is_stopped() )
 			cout << "\nThe elapsed time since the beginning is: " << GetTimeAsString(timer) << endl;
 
+		cout << "\nExiting from the software..." << endl;
+
 		std::exit(signum);
 	}
 };

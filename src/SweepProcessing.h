@@ -206,8 +206,8 @@ class FrontEndCalibrator
 	FreqValues::value_type tsoff; //!< The noise temperature of the noise generator when it is turned off, which matches the physical temperature.
 	FreqValues powerNSoff; //!< A structure which stores the output power values measured when the noise generator is turned off and represented in dBm.
 	FreqValues powerNSon; //!< A structure which stores the output power values measured when the noise generator is turned on and represented in dBm.
-	FreqValues powerNSoff_w; //!< A structure which stores the output power values measured when the noise generator is turned off and represented in Watts(W).
-	FreqValues powerNSon_w; //!< A structure which stores the output power values measured when the noise generator is turned on and represented in Watts(W).
+	//FreqValues powerNSoff_w; //!< A structure which stores the output power values measured when the noise generator is turned off and represented in Watts(W).
+	//FreqValues powerNSon_w; //!< A structure which stores the output power values measured when the noise generator is turned on and represented in Watts(W).
 	FreqValues powerNSoff_pw; //!< A structure which stores the output power values measured when the noise generator is turned off and represented in picoWatts(pW).
 	FreqValues powerNSon_pw; //!< A structure which stores the output power values measured when the noise generator is turned on and represented in picoWatts(pW).
 	std::vector<BandParameters> bandsParameters; //!< A vector which stores the parameters of all frequency bands.
@@ -223,8 +223,6 @@ class FrontEndCalibrator
 #endif
 	//RFPlotter auxPlotter2;
 	//Private methods//
-	//! This method builds a curve with RBW values versus frequency, taking into account this parameter for each frequency band.
-	void BuildRBWCurve();
 	void CorrectNoFiniteAndNegVal(std::vector<FreqValues::value_type> & values);
 	void CorrectNoFiniteVal(std::vector<FreqValues::value_type> & values);
 public:
@@ -242,6 +240,8 @@ public:
 	~FrontEndCalibrator() {}
 	//! This method allows to insert a vector with the parameters of all frequency bands.
 	void SetBandsParameters(const std::vector<BandParameters> & bandsParam);
+	//! This method builds a curve with RBW values versus frequency, taking into account this parameter for each frequency band.
+	void BuildRBWCurve();
 	//! This method load the curve of ENR values versus frequency of the noise generator, from the corresponding file.
 	void LoadENR();
 	//! The calibration is started ensuring the noise source is turned off, switching the input to this device and preparing the object to receive the sweeps.

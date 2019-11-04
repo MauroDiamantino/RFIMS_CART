@@ -217,8 +217,11 @@ int main(int argc, char * argv[])
 				curveAdjuster.SetBandsParameters(bandsParameters);
 				curveAdjuster.SetRefSweep(uncalSweep);
 				frontEndCalibrator.SetBandsParameters(bandsParameters);
+
 				cout << "\nThe ENR values curve will be (re)loaded" << endl;
 				frontEndCalibrator.LoadENR();
+
+				frontEndCalibrator.BuildRBWCurve();
 
 				if(flagRFI)
 				{

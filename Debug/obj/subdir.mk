@@ -18,7 +18,9 @@ O_SRCS += \
 ../obj/SpectranInterface.o \
 ../obj/SweepBuilder.o \
 ../obj/TestbenchGPSLogger.o \
+../obj/TestbenchSpectran.o \
 ../obj/TimeData.o \
+../obj/TopLevel.o \
 ../obj/gnuplot_i.o 
 
 
