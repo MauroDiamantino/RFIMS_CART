@@ -319,39 +319,52 @@ void FrontEndCalibrator::LoadENR()
 
 void FrontEndCalibrator::StartCalibration()
 {
+#ifdef DEBUG
 	cout << "Turn off the noise source, switch the input to the noise source and press enter to continue..." << endl;
 	WaitForKey();
+#endif
 
-	#ifdef RASPBERRY_PI
-		digitalWrite(piPins.NOISE_SOURCE, LOW); digitalWrite(piPins.SWITCH, pinsValues.SWITCH_TO_NS);
-	#endif
+	TurnOffNS();
 
-	flagNSon = false; flagCalStarted=true;
+#ifdef RASPBERRY_PI
+	digitalWrite(piPins.SWITCH, pinsValues.SWITCH_TO_NS);
+#endif
+	flagCalStarted=true;
 }
 
 void FrontEndCalibrator::TurnOnNS()
 {
+#ifdef DEBUG
 	cout << "\nTurn on the noise source and press Enter to continue..." << endl;
 	WaitForKey();
+#endif
 
-	#ifdef RASPBERRY_PI
-		digitalWrite(piPins.NOISE_SOURCE, HIGH);
-	#endif
-
+#ifdef RASPBERRY_PI
+	digitalWrite(piPins.NOISE_SOURCE, pinsValues.NS_ON);
+#endif
 	flagNSon = true;
+}
+
+void FrontEndCalibrator::TurnOffNS()
+{
+#ifdef RASPBERRY_PI
+	digitalWrite(piPins.NOISE_SOURCE, pinsValues.NS_OFF);
+#endif
+	flagNSon = false;
 }
 
 void FrontEndCalibrator::EndCalibration()
 {
+#ifdef DEBUG
 	cout << "\nTurn off the noise source, switch the input to the antenna and press Enter to continue..." << endl;
 	WaitForKey();
+#endif
 
 	TurnOffNS();
 
-	#ifdef RASPBERRY_PI
-		digitalWrite(piPins.SWITCH, pinsValues.SWITCH_TO_ANT);
-	#endif
-
+#ifdef RASPBERRY_PI
+	digitalWrite(piPins.SWITCH, pinsValues.SWITCH_TO_ANT);
+#endif
 	flagCalStarted=false;
 }
 

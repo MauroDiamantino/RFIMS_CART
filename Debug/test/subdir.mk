@@ -4,12 +4,15 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../test/TestbenchGPSLogger.cpp \
 ../test/TestbenchSpectran.cpp 
 
 OBJS += \
+./test/TestbenchGPSLogger.o \
 ./test/TestbenchSpectran.o 
 
 CPP_DEPS += \
+./test/TestbenchGPSLogger.d \
 ./test/TestbenchSpectran.d 
 
 

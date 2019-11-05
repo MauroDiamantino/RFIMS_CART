@@ -78,7 +78,7 @@ bool approximatelyEqual(std::vector<float> vectorA, std::vector<float> vectorB)
 void WaitForKey()
 {
     cin.clear();
-    cin.ignore(std::cin.rdbuf()->in_avail());
+    cin.ignore( cin.rdbuf()->in_avail() );
     cin.get();
 }
 
@@ -98,67 +98,64 @@ void InitializeGPIO()
 	wiringPiSetup();
 
 	pinMode(piPins.NOISE_SOURCE, OUTPUT);
-	digitalWrite(piPins.NOISE_SOURCE, LOW);
+	digitalWrite(piPins.NOISE_SOURCE, pinsValues.NS_OFF);
 
 	pinMode(piPins.SWITCH, OUTPUT);
 	digitalWrite(piPins.SWITCH, pinsValues.SWITCH_TO_NS);
 
 	pinMode(piPins.LNAS, OUTPUT);
-	digitalWrite(piPins.LNAS, LOW);
+	digitalWrite(piPins.LNAS, pinsValues.LNAS_OFF);
 
 	pinMode(piPins.SPECTRAN, OUTPUT);
-	digitalWrite(piPins.SPECTRAN, LOW);
+	digitalWrite(piPins.SPECTRAN, pinsValues.SPECTRAN_OFF);
 
 	pinMode(piPins.LED_SWEEP_CAPTURE, OUTPUT);
-	digitalWrite(piPins.LED_SWEEP_CAPTURE, LOW);
+	digitalWrite(piPins.LED_SWEEP_CAPTURE, pinsValues.LED_SWP_CAPT_OFF);
 
 	pinMode(piPins.LED_SWEEP_PROCESS, OUTPUT);
-	digitalWrite(piPins.LED_SWEEP_PROCESS, LOW);
+	digitalWrite(piPins.LED_SWEEP_PROCESS, pinsValues.LED_SWP_PROC_OFF);
 
 	pinMode(piPins.LED_INIT_POS, OUTPUT);
-	digitalWrite(piPins.LED_INIT_POS, LOW);
+	digitalWrite(piPins.LED_INIT_POS, pinsValues.LED_INIT_POS_OFF);
 
-	pinMode(piPins.BUTTON_ENTER, INPUT);
-	pullUpDnControl(piPins.BUTTON_ENTER, PUD_UP);
+	pinMode(piPins.BUTTON, INPUT);
+	pullUpDnControl(piPins.BUTTON, PUD_UP);
 
 	pinMode(piPins.LED_NEXT_POS, OUTPUT);
-	digitalWrite(piPins.LED_NEXT_POS, LOW);
+	digitalWrite(piPins.LED_NEXT_POS, pinsValues.LED_NEXT_POS_OFF);
 
 	pinMode(piPins.LED_POLARIZ, OUTPUT);
-	digitalWrite(piPins.LED_POLARIZ, LOW);
+	digitalWrite(piPins.LED_POLARIZ, pinsValues.LED_POLARIZ_OFF);
 
 	//Inicializacion de los pines de la clase AntennaPositioner
-	pinMode(piPins.PUL,OUTPUT);          //SEÑAL DE PULSOS
-	digitalWrite(piPins.PUL, LOW);
+	pinMode(piPins.PUL, OUTPUT);          //SEÑAL DE PULSOS
+	digitalWrite(piPins.PUL, pinsValues.PUL_OFF);
 
-	pinMode(piPins.DIRECCION,OUTPUT);    //SEÑAL DE DIRECCION;DIR:LOW(DERECHA),DIR:HIGH(IZQUIERDA)
-	digitalWrite(piPins.PUL, LOW);
+	pinMode(piPins.DIRECCION, OUTPUT);    //SEÑAL DE DIRECCION;DIR:LOW(DERECHA),DIR:HIGH(IZQUIERDA)
+	digitalWrite(piPins.DIRECCION, LOW);
 
-	pinMode(piPins.EN,OUTPUT);           //SEÑAL DE HABILITACION (HIGH=HABILITA , LOW=DESHABILITAR)
-	digitalWrite(piPins.EN,LOW);
+	pinMode(piPins.EN, OUTPUT);           //SEÑAL DE HABILITACION (HIGH=HABILITA , LOW=DESHABILITAR)
+	digitalWrite(piPins.EN, pinsValues.EN_OFF);
 
-	pinMode(piPins.SENSOR_NORTE,INPUT);  //SEÑAL DEL SENSOR DE EFECTO HALL
-	digitalWrite(piPins.SENSOR_NORTE, LOW);
+	pinMode(piPins.SENSOR_NORTE, INPUT);  //SEÑAL DEL SENSOR DE EFECTO HALL
 
-	pinMode(piPins.POL,OUTPUT);          //SEÑAL PARA LA POLARIZACION
-	digitalWrite(piPins.POL, LOW);
+	pinMode(piPins.POL, OUTPUT);          //SEÑAL PARA LA POLARIZACION
+	digitalWrite(piPins.POL, pinsValues.POL_HOR);
 
-	pinMode(piPins.FASE_A,INPUT);         //SEÑAL 1 DEL ENCODER (DERECHA)
-	digitalWrite(piPins.FASE_A, LOW);
+	pinMode(piPins.FASE_A, INPUT);         //SEÑAL 1 DEL ENCODER (DERECHA)
 
-	pinMode(piPins.FASE_B,INPUT);         //SEÑAL 2 DEL ENCODER (IZQUIERDA)
-	digitalWrite(piPins.FASE_B, LOW);
+	pinMode(piPins.FASE_B, INPUT);         //SEÑAL 2 DEL ENCODER (IZQUIERDA)
 #endif
 }
 
 void TurnOffLeds()
 {
 #ifdef RASPBERRY_PI
-	digitalWrite(piPins.LED_SWEEP_CAPTURE, LOW);
-	digitalWrite(piPins.LED_SWEEP_PROCESS, LOW);
-	digitalWrite(piPins.LED_INIT_POS, LOW);
-	digitalWrite(piPins.LED_NEXT_POS, LOW);
-	digitalWrite(piPins.LED_POLARIZ, LOW);
+	digitalWrite(piPins.LED_SWEEP_CAPTURE, pinsValues.LED_SWP_CAPT_OFF);
+	digitalWrite(piPins.LED_SWEEP_PROCESS, pinsValues.LED_SWP_PROC_OFF);
+	digitalWrite(piPins.LED_INIT_POS, pinsValues.LED_INIT_POS_OFF);
+	digitalWrite(piPins.LED_NEXT_POS, pinsValues.LED_NEXT_POS_OFF);
+	digitalWrite(piPins.LED_POLARIZ, pinsValues.LED_POLARIZ_OFF);
 #endif
 }
 
@@ -169,9 +166,9 @@ void TurnOffLeds()
 void TurnOnFrontEnd()
 {
 #ifdef RASPBERRY_PI
-	digitalWrite(piPins.SPECTRAN, HIGH);
+	digitalWrite(piPins.SPECTRAN, pinsValues.SPECTRAN_ON);
 	sleep(5);
-	digitalWrite(piPins.LNAS, HIGH);
+	digitalWrite(piPins.LNAS, pinsValues.LNAS_ON);
 	sleep(1);
 	digitalWrite(piPins.SWITCH, pinsValues.SWITCH_TO_ANT);
 #endif
@@ -184,11 +181,11 @@ void TurnOnFrontEnd()
 void TurnOffFrontEnd()
 {
 #ifdef RASBPERRY_PI
-	digitalWrite(piPins.NOISE_SOURCE, LOW);
-	digitalWrite(piPins.SWITCH, SWITCH_TO_NS);
+	digitalWrite(piPins.NOISE_SOURCE, pinsValues.NS_OFF);
+	digitalWrite(piPins.SWITCH, pinsValues.SWITCH_TO_NS);
 	sleep(1);
-	digitalWrite(piPins.LNAS, LOW);
+	digitalWrite(piPins.LNAS, pinsValues.LNAS_OFF);
 	sleep(1);
-	digitalWrite(piPins.SPECTRAN, LOW);
+	digitalWrite(piPins.SPECTRAN, pinsValues.SPECTRAN_OFF);
 #endif
 }

@@ -20,6 +20,7 @@
 
 #define RASPBERRY_PI // This preprocessor definition enables the use of the code which can only be used in the Raspberry Pi board (for example WiringPi functions).
 //#define DEBUG // This definition enables some code blocks which are aimed to test the software performance.
+
 #ifdef RASPBERRY_PI
 	//#define BUTTON // This definition determines the use of Enter key to respond to some software messages or the use of a button connected to a GPIO pin.
 #endif
@@ -93,7 +94,88 @@ const std::string BASE_PATH = "/home/new-mauro/RFIMS-CART";
 //#//////////////////////////////////////////////////////////
 
 
-//#//////////////////////GLOBAL CLASSES AND STRUCTURES/////////////////////////
+//#//////////////////////////////////GLOBAL CLASSES AND STRUCTURES///////////////////////////////////////////
+
+
+//! This unnamed structure is intended to store the constants with the assignment of GPIO pins to input and output external signals.
+struct
+{
+	const unsigned int SWITCH = 8; //!< This pin is initialized as an output in LOW state, so the RF switch output will start connected to the noise source.
+	const unsigned int NOISE_SOURCE = 13; //!< This pin is initialized as an output in LOW state, so the noise source will start turned off.
+	const unsigned int LNAS = 12;  //!< This pin is initialized as an output in LOW state, so the LNAs will start turned off.
+	const unsigned int SPECTRAN = 14; //!< This pin is initialized as an input with the pull-down resistor enabled, so the Spectran device will start turned off.
+	const unsigned int LED_SWEEP_CAPTURE = 9; //!< This pin is initialized as an output in LOW state, so the led will start turned off.
+	const unsigned int LED_SWEEP_PROCESS = 10; //!< This pin is initialized as an output in LOW state, so the led will start turned off.
+	const unsigned int LED_INIT_POS = 1; //!< This pin is initialized as an output in LOW state, so the led will start turned off.
+	const unsigned int LED_NEXT_POS = 3; //!< This pin is initialized as an output in LOW state, so the led will start turned off.
+	const unsigned int LED_POLARIZ = 5; //!< This pin is initialized as an output in LOW state, so the led will start turned off.
+	const unsigned int BUTTON = 2; //!< This pin is initialized as in input wit the pull-up resistor enabled, so the button must connect the pin to GND.
+	//Pines de la clase AntennaPositioner
+	const unsigned int PUL=7; //pin 7
+	const unsigned int DIRECCION=9; //pin 5
+	const unsigned int EN=8; //pin 3
+	const unsigned int SENSOR_NORTE=2; //pin 13
+	const unsigned int POL=0; //pin 11
+	const unsigned int FASE_A=1; //pin 12
+	const unsigned int FASE_B=4; //pin 16
+} piPins;
+
+#ifdef RASPBERRY_PI
+//! This unnamed structure contains the digital pins' values (HIGH or LOW) and this states which value activates each pin and which value deactivates it.
+struct
+{
+	const int SWITCH_TO_NS = LOW; //!< This constant define the value the switch's pin must take to connect noise source to input, provided that the noise source is connected to switch's J2 connector.
+	const int SWITCH_TO_ANT = !SWITCH_TO_NS; //!< This constant define the value the switch's pin must take to connect antenna to input, provided that the antenna is connected to switch's J1 connector.
+
+	const int NS_ON = HIGH;
+	const int NS_OFF = !NS_ON;
+
+	const int LNAS_ON = HIGH;
+	const int LNAS_OFF = !LNAS_ON;
+
+	const int SPECTRAN_ON = HIGH;
+	const int SPECTRAN_OFF = !SPECTRAN_ON;
+
+	const int LED_SWP_CAPT_ON = HIGH;
+	const int LED_SWP_CAPT_OFF = !LED_SWP_CAPT_ON;
+
+	const int LED_SWP_PROC_ON = HIGH;
+	const int LED_SWP_PROC_OFF = !LED_SWP_PROC_ON;
+
+	const int LED_INIT_POS_ON = HIGH;
+	const int LED_INIT_POS_OFF = !LED_INIT_POS_ON;
+
+	const int LED_NEXT_POS_ON = HIGH;
+	const int LED_NEXT_POS_OFF = !LED_NEXT_POS_ON;
+
+	const int LED_POLARIZ_ON = HIGH;
+	const int LED_POLARIZ_OFF = !LED_POLARIZ_ON;
+
+	const int BUTTON_ON = LOW;
+	const int BUTTON_OFF = !BUTTON_ON;
+
+	const int PUL_ON = HIGH;
+	const int PUL_OFF = !PUL_ON;
+
+	const int DIR_ANTIHOR = HIGH;
+	const int DIR_HOR = !DIR_ON;
+
+	const int EN_ON = HIGH;
+	const int EN_OFF = !EN_ON;
+
+	const int SENS_NOR_ON = LOW;
+	const int SENS_NOR_OFF = !SENS_NOR_ON;
+
+	const int POL_HOR = LOW;
+	const int POL_VERT = !POL_HOR;
+
+	const int FASE_A_ON = HIGH;
+	const int FASE_A_OFF = !FASE_A_ON;
+
+	const int FASE_B_ON = HIGH;
+	const int FASE_B_OFF = !FASE_B_ON;
+} pinsValues;
+#endif
 
 //! A class derived from standard class `std::exception`.
 /*! This class is customized to managed the exceptions in a desired way. This class has been
@@ -357,65 +439,6 @@ struct BandParameters
 	unsigned int samplePoints; //!< Number of samples points. This value can be determined by the Spectran device (default value) or it can be a forced value.
 	unsigned int detector; //!< Display detector: ”RMS” takes the sample as the root mean square of the values present in the bucket, or “Min/Max” takes two samples as the minimum and maximum peaks in the bucket.
 };
-
-#ifdef RASPBERRY_PI
-//! This unnamed structure is intended to store the constants with the assignment of GPIO pins to input and output external signals.
-struct
-{
-	const unsigned int SWITCH = 8; //!< This pin is initialized as an output in LOW state, so the RF switch output will start connected to the noise source.
-	const unsigned int NOISE_SOURCE = 13; //!< This pin is initialized as an output in LOW state, so the noise source will start turned off.
-	const unsigned int LNAS = 12;  //!< This pin is initialized as an output in LOW state, so the LNAs will start turned off.
-	const unsigned int SPECTRAN = 14; //!< This pin is initialized as an input with the pull-down resistor enabled, so the Spectran device will start turned off.
-	const unsigned int LED_SWEEP_CAPTURE = 9; //!< This pin is initialized as an output in LOW state, so the led will start turned off.
-	const unsigned int LED_SWEEP_PROCESS = 10; //!< This pin is initialized as an output in LOW state, so the led will start turned off.
-	const unsigned int LED_INIT_POS = 1; //!< This pin is initialized as an output in LOW state, so the led will start turned off.
-	const unsigned int LED_NEXT_POS = 3; //!< This pin is initialized as an output in LOW state, so the led will start turned off.
-	const unsigned int LED_POLARIZ = 5; //!< This pin is initialized as an output in LOW state, so the led will start turned off.
-	const unsigned int BUTTON_ENTER = 2; //!< This pin is initialized as in input wit the pull-up resistor enabled, so the button must connect the pin to GND.
-	//Pines de la clase AntennaPositioner
-	//Se debe indicar los pines de PUL, DIR, EN, SENSOR_NORTE en donde van a ir conectados
-	const unsigned int PUL=7; //pin 7
-	const unsigned int DIRECCION=9; //pin 5
-	const unsigned int EN=8; //pin 3
-	const unsigned int SENSOR_NORTE=2; //pin 13
-	const unsigned int POL=0; //pin 11
-	const unsigned int FASE_A=1; //pin 12
-	const unsigned int FASE_B=4; //pin 16
-} piPins;
-
-struct
-{
-	const int SWITCH_TO_NS = LOW; //!< This constant define the value the switch's pin must take to connect noise source to input, provided that the noise source is connected to switch's J2 connector.
-	const int SWITCH_TO_ANT = !SWITCH_TO_NS; //!< This constant define the value the switch's pin must take to connect antenna to input, provided that the antenna is connected to switch's J1 connector.
-
-	const int NS_ON = HIGH;
-	const int NS_OFF = !NS_ON;
-
-	const int LNAS_ON = HIGH;
-	const int LNAS_OFF = !LNAS_ON;
-
-	const int SPECTRAN_ON = HIGH;
-	const int SPECTRAN_OFF = !SPECTRAN_ON;
-
-	const int PUL_ON = HIGH;
-	const int PUL_OFF = !PUL_ON;
-
-	const int DIR_ON = HIGH;
-	const int DIR_OFF = !DIR_ON;
-
-	const int SENS_NOR_ON = HIGH;
-	const int SENS_NOR_OFF = !SENS_NOR_ON;
-
-	const int POL_HOR = HIGH;
-	const int POL_VERT = !POL_HOR;
-
-	const int FASE_A_ON = HIGH;
-	const int FASE_A_OFF = !FASE_A_ON;
-
-	const int FASE_B_ON = HIGH;
-	const int FASE_B_OFF = !FASE_B_ON;
-} pinsValues;
-#endif
 
 //#////////////////////////////////////////////////////////////////////
 

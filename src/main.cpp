@@ -162,7 +162,7 @@ int main(int argc, char * argv[])
 					cout << "\nStarting the capturing of the sweep " << sweepNumber++ << '/' << (numOfAzimPos*2) << ", in measurement cycle " << (measCycleIndex + 1) << '/' << numOfMeasCycles << endl;
 
 #ifdef RASPBERRY_PI
-			digitalWrite(piPins.LED_SWEEP_CAPTURE, HIGH);
+			digitalWrite(piPins.LED_SWEEP_CAPTURE, pinsValues.LED_SWP_CAPT_ON);
 #endif
 
 			//Capturing the sweeps related to each one of the frequency bands, which in conjunction form a whole sweep
@@ -190,7 +190,7 @@ int main(int argc, char * argv[])
 			}
 
 #ifdef RASPBERRY_PI
-			digitalWrite(piPins.LED_SWEEP_CAPTURE, LOW);
+			digitalWrite(piPins.LED_SWEEP_CAPTURE, pinsValues.LED_SWP_CAPT_OFF);
 #endif
 
 			specInterface.SoundNewSweep();
@@ -213,10 +213,10 @@ int main(int argc, char * argv[])
 				//exact number of samples is known. The parameters which must be adjusted taking into account the bands
 				//parameters are reloaded and readjusted each time the bands parameters are changed.
 				auto bandsParameters = specConfigurator.GetBandsParameters();
-
 				curveAdjuster.SetBandsParameters(bandsParameters);
-				curveAdjuster.SetRefSweep(uncalSweep);
 				frontEndCalibrator.SetBandsParameters(bandsParameters);
+
+				curveAdjuster.SetRefSweep(uncalSweep);
 
 				cout << "\nThe ENR values curve will be (re)loaded" << endl;
 				frontEndCalibrator.LoadENR();
@@ -273,7 +273,7 @@ int main(int argc, char * argv[])
 					{
 						frontEndCalibrator.EndCalibration();
 #ifdef RASPBERRY_PI
-						digitalWrite(piPins.LED_SWEEP_PROCESS, HIGH);
+						digitalWrite(piPins.LED_SWEEP_PROCESS, pinsValues.LED_SWP_PROC_ON);
 #endif
 						frontEndCalibrator.EstimateParameters();
 
@@ -292,7 +292,7 @@ int main(int argc, char * argv[])
 								cerr << "\nWarning: " << exc.what() << endl;
 							}
 #ifdef RASPBERRY_PI
-						digitalWrite(piPins.LED_SWEEP_PROCESS, LOW);
+						digitalWrite(piPins.LED_SWEEP_PROCESS, pinsValues.LED_SWP_PROC_OFF);
 #endif
 					}
 				}
@@ -319,7 +319,7 @@ int main(int argc, char * argv[])
 				//Processing of sweeps which were captured with the antenna connected to the input////////////
 
 #ifdef RASPBERRY_PI
-				digitalWrite(piPins.LED_SWEEP_PROCESS, HIGH);
+				digitalWrite(piPins.LED_SWEEP_PROCESS, pinsValues.LED_SWP_PROC_ON);
 #endif
 				//This flag is pulled down here because it is just not needed from here to down.
 				flagBandsParamReloaded=false;
@@ -365,7 +365,7 @@ int main(int argc, char * argv[])
 					dataLogger.SaveRFI(detectedRFI);
 
 #ifdef RASPBERRY_PI
-				digitalWrite(piPins.LED_SWEEP_PROCESS, LOW);
+				digitalWrite(piPins.LED_SWEEP_PROCESS, pinsValues.LED_SWP_PROC_OFF);
 #endif
 				//#/////////////////////////////END OF NORMAL PROCESSING///////////////////////////////////
 

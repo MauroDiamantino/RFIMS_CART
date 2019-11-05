@@ -249,13 +249,7 @@ public:
 	//! This method just turns on the noise generator and it internally registers this situation.
 	void TurnOnNS();
 	//! This method just turns off the noise generator and it internally registers this situation.
-	void TurnOffNS()
-	{
-	#ifdef RASPBERRY_PI
-		digitalWrite(piPins.NOISE_SOURCE, LOW);
-	#endif
-		flagNSon = false;
-	}
+	void TurnOffNS();
 	//! The calibration process is finished turning it off the noise generator and switching the input to the antenna.
 	void EndCalibration();
 	//! This method is intended to insert the two sweeps which are captured during the calibration process, with the noise source turned on and off.
