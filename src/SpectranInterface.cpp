@@ -198,9 +198,9 @@ void SpectranInterface::Initialize()
 unsigned int SpectranInterface::Available()
 {
 	DWORD numOfInputBytes;
-	ftStatus=FT_GetQueueStatus(ftHandle, &numOfInputBytes);
-	//DWORD numOfOutputBytes, events;
-	//ftStatus=FT_GetStatus(ftHandle, &numOfInputBytes, &numOfOutputBytes, &events);
+	//ftStatus=FT_GetQueueStatus(ftHandle, &numOfInputBytes);
+	DWORD numOfOutputBytes, events;
+	ftStatus=FT_GetStatus(ftHandle, &numOfInputBytes, &numOfOutputBytes, &events);
 	if (ftStatus!=FT_OK)
 		throw rfims_exception("the Spectran interface could not read the number of bytes in the receive queue.");
 

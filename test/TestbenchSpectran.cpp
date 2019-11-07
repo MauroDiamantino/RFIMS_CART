@@ -146,7 +146,7 @@ int main(int argc, char * argv[])
 
 				currBandParam = specConfigurator.ConfigureNextBand();
 
-				cout << "\nFrequency band N° " << i+1 << endl;
+				cout << "\nFrequency band N° " << (i+1) << '/' << specConfigurator.GetNumOfBands() << endl;
 				cout << "Fstart=" << (currBandParam.startFreq/1e6) << " MHz, Fstop=" << (currBandParam.stopFreq/1e6) << " MHz, ";
 				cout << "RBW=" << (currBandParam.rbw/1e3) << " KHz, Sweep time=" << currBandParam.sweepTime << " ms" << endl;
 

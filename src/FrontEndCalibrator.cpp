@@ -319,10 +319,10 @@ void FrontEndCalibrator::LoadENR()
 
 void FrontEndCalibrator::StartCalibration()
 {
-#ifdef DEBUG
+//#ifdef DEBUG
 	cout << "Turn off the noise source, switch the input to the noise source and press enter to continue..." << endl;
 	WaitForKey();
-#endif
+//#endif
 
 	TurnOffNS();
 
@@ -334,10 +334,10 @@ void FrontEndCalibrator::StartCalibration()
 
 void FrontEndCalibrator::TurnOnNS()
 {
-#ifdef DEBUG
+//#ifdef DEBUG
 	cout << "\nTurn on the noise source and press Enter to continue..." << endl;
 	WaitForKey();
-#endif
+//#endif
 
 #ifdef RASPBERRY_PI
 	digitalWrite(piPins.NOISE_SOURCE, pinsValues.NS_ON);
@@ -355,10 +355,10 @@ void FrontEndCalibrator::TurnOffNS()
 
 void FrontEndCalibrator::EndCalibration()
 {
-#ifdef DEBUG
+//#ifdef DEBUG
 	cout << "\nTurn off the noise source, switch the input to the antenna and press Enter to continue..." << endl;
 	WaitForKey();
-#endif
+//#endif
 
 	TurnOffNS();
 

@@ -159,7 +159,7 @@ int main(int argc, char * argv[])
 				if(flagInfiniteLoop)
 					cout << "\nStarting the capturing of the sweep " << sweepNumber++ << '/' << (numOfAzimPos*2) << endl;
 				else
-					cout << "\nStarting the capturing of the sweep " << sweepNumber++ << '/' << (numOfAzimPos*2) << ", in measurement cycle " << (measCycleIndex + 1) << '/' << numOfMeasCycles << endl;
+					cout << "\nStarting the capturing of the sweep " << sweepNumber++ << '/' << (numOfAzimPos*2) << ", in the measurement cycle " << (measCycleIndex + 1) << '/' << numOfMeasCycles << endl;
 
 #ifdef RASPBERRY_PI
 			digitalWrite(piPins.LED_SWEEP_CAPTURE, pinsValues.LED_SWP_CAPT_ON);
@@ -173,7 +173,7 @@ int main(int argc, char * argv[])
 
 				currBandParam = specConfigurator.ConfigureNextBand();
 
-				cout << "\nFrequency band N° " << i+1 << endl;
+				cout << "\nFrequency band N° " << (i+1) << '/' << specConfigurator.GetNumOfBands() << endl;
 				cout << "Fstart=" << (currBandParam.startFreq/1e6) << " MHz, Fstop=" << (currBandParam.stopFreq/1e6) << " MHz, ";
 				cout << "RBW=" << (currBandParam.rbw/1e3) << " KHz, Sweep time=" << currBandParam.sweepTime << " ms" << endl;
 

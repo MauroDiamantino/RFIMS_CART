@@ -360,8 +360,9 @@ public:
 		const unsigned int WAITING_TIME_MS = 3000; //3 s
 		const unsigned int DELAY_US = 10000; //10 ms
 		const unsigned int NUM_OF_ITERS = ceil( WAITING_TIME_MS / (double(DELAY_US)/1000.0) );
+
 		DWORD receivedBytes;
-		unsigned int numOfBytes=reply.GetNumOfBytes();
+		unsigned int numOfBytes = reply.GetNumOfBytes();
 		std::uint8_t rxBuffer[numOfBytes];
 
 		unsigned int i=0;
@@ -374,7 +375,11 @@ public:
 //		}
 
 		while( Available()<numOfBytes && i++<NUM_OF_ITERS )
+#ifdef RASPBERRY_PI
+			delayMicroseconds(DELAY_US);
+#else
 			usleep(DELAY_US);
+#endif
 
 		if(i>=NUM_OF_ITERS)
 			throw rfims_exception("in a reading operation, the input bytes were waited too much time.");

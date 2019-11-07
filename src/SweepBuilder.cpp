@@ -64,13 +64,20 @@ const Sweep& SweepBuilder::CaptureSweep(BandParameters & bandParam)
 		}
 		catch(rfims_exception & exc)
 		{
-			cerr << "\nWarning: " << exc.what() << endl;
-			if(++errorTimeCount < 3)
+			if(++errorTimeCount <= 5)
+			{
+				cerr << "\nWarning: " << exc.what() << endl;
 				continue;
+			}
 			else
 			{
-				interface.DisableSweep();
-				rfims_exception exc("the capture of the last sweep was interrupted because the reading of the measurements failed three times.");
+				try
+				{
+					interface.DisableSweep();
+				}
+				catch(std::exception & exc){}
+
+				rfims_exception exc("the capture of the last sweep was interrupted because the reading of the measurements failed five times.");
 				throw(exc);
 			}
 		}
