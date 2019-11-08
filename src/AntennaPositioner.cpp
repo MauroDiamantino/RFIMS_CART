@@ -62,44 +62,65 @@ AntennaPositioner::AntennaPositioner(GPSInterface & gpsInterf) : gpsInterface(gp
  */
 bool AntennaPositioner::Initialize()
 {
-#ifdef RASPBERRY_PI
-	//SE PONE EN BAJO LA HABILITACION
-	digitalWrite(piPins.EN, pinsValues.EN_OFF);
-	// PONER LA ANTENA EN POSICION HORIZONTAL
-	digitalWrite(piPins.POL, pinsValues.POL_HOR); // PONE LA ANTENA EN POSICION HORIZONTAL
-#endif
+#ifdef MANUAL
+	//#///////////////////////FUNCIONAMIENTO MANUAL/////////////////////////////////
 
-	double aux = 100.0;
-	while ( (aux < -5.0) || (aux > 5.0) )
-	{
-		gpsInterface.UpdateRoll();
-		aux = gpsInterface.GetRoll();//rotacion
-	}
-	polar = 0;// AHORA LA ANTENA QUEDO EN POLARIZACION HORIZONTAL
+	cout << "\nRotate the antenna to the initial position, make sure the polarization is horizontal and " << endl;
 
-#ifdef RASPBERRY_PI
-	//SE PONE EN ALTO LA HABILITACION
-	digitalWrite(piPins.EN, pinsValues.EN_ON);
+	#ifdef BUTTON //implica que la constante RASPBERRY_PI esta definida
+		cout << "press the button to continue..." << endl;
+		while( digitalRead(piPins.BUTTON_ENTER)==pinsValues.BUTTON_OFF );
+	#else
+		cout << "press Enter to continue..." << endl;
+		WaitForEnter();
+	#endif
 
-	//SE EMPIEZA EN UNA DIRECCION(DIR,HIGH) (IZQUIERDA) sentido anti-horario
-	digitalWrite(piPins.DIRECCION, pinsValues.DIR_ANTIHOR);
+	return true;
 
-	cuenta=0;
-	while( (cuenta/n) > -360 && cuenta <= 0 )
-	{
-		if (pinsValues.SENS_NOR_ON == digitalRead(piPins.SENSOR_NORTE)) //A TRAVES DE UNA SEÑAL (0 O 1) SE VERA DONDE ESTA EL NORTE
+#else
+	//#///////////////////////FUNCIONAMIENTO AUTOMATICO//////////////////////////////
+	//#/////////////////////Codigo de Emanuel Asencio/////////////////////////////////////
+
+	#ifdef RASPBERRY_PI
+		//SE PONE EN BAJO LA HABILITACION
+		digitalWrite(piPins.EN, pinsValues.EN_OFF);
+		// PONER LA ANTENA EN POSICION HORIZONTAL
+		digitalWrite(piPins.POL, pinsValues.POL_HOR); // PONE LA ANTENA EN POSICION HORIZONTAL
+	#endif
+
+		double aux = 100.0;
+		while ( (aux < -5.0) || (aux > 5.0) )
 		{
-			if(false == poneEnCero())
-				return(false);
-			return(true);
+			gpsInterface.UpdateRoll();
+			aux = gpsInterface.GetRoll();//rotacion
 		}
-		un_paso();
-	}
+		polar = 0;// AHORA LA ANTENA QUEDO EN POLARIZACION HORIZONTAL
 
-	//SE PONE EN BAJO LA HABILITACION
-	digitalWrite(piPins.EN, pinsValues.EN_OFF);
+	#ifdef RASPBERRY_PI
+		//SE PONE EN ALTO LA HABILITACION
+		digitalWrite(piPins.EN, pinsValues.EN_ON);
+
+		//SE EMPIEZA EN UNA DIRECCION(DIR,HIGH) (IZQUIERDA) sentido anti-horario
+		digitalWrite(piPins.DIRECCION, pinsValues.DIR_ANTIHOR);
+
+		cuenta=0;
+		while( (cuenta/n) > -360 && cuenta <= 0 )
+		{
+			if (pinsValues.SENS_NOR_ON == digitalRead(piPins.SENSOR_NORTE)) //A TRAVES DE UNA SEÑAL (0 O 1) SE VERA DONDE ESTA EL NORTE
+			{
+				if(false == poneEnCero())
+					return(false);
+				return(true);
+			}
+			un_paso();
+		}
+
+		//SE PONE EN BAJO LA HABILITACION
+		digitalWrite(piPins.EN, pinsValues.EN_OFF);
+	#endif
+
+		return(false);
 #endif
-	return(false);
 }
 
 /*!	To move the antenna to the next position, this is rotated an angle determined by the number of positions
@@ -113,59 +134,97 @@ bool AntennaPositioner::Initialize()
  */
 bool AntennaPositioner::NextAzimPosition()
 {
+#ifdef MANUAL
+	//#////////////////////////////FUNCIONAMIENTO MANUAL////////////////////////////////////////////
+
+	if( ++pos_actual.posicion >= cantPosiciones )
+	{
+		pos_actual.posicion=0;
+
+		cout << "Rotate the antenna to the initial position, make sure the polarization is horizontal and " << endl;
+
+	#ifdef BUTTON //implica que la constante RASPBERRY_PI esta definida
+		cout << "press the button to continue..." << endl;
+		while( digitalRead(piPins.BUTTON_ENTER)==pinsValues.BUTTON_OFF );
+	#else
+		cout << "press Enter to continue..." << endl;
+		WaitForEnter();
+	#endif
+
+	}
+	else
+	{
+		cout << "Rotate the antenna " << (360.0/cantPosiciones) << "° clockwise and " << endl;
+
+	#ifdef BUTTON //implica que la constante RASPBERRY_PI esta definida
+		cout << "press the button to continue..." << endl;
+		while( digitalRead(piPins.BUTTON_ENTER)==pinsValues.BUTTON_OFF );
+	#else
+		cout << "press Enter to continue..." << endl;
+		WaitForEnter();
+	#endif
+	}
+
+	return true;
+
+#else
+	//#////////////////////////////FUNCIONAMIENTO AUTOMATICO////////////////////////////////////////
+	//#//////////////////////////Codigo de Emanuel Asencio//////////////////////////////////////////////
+
 	float pasos_aux;
 
-#ifdef RASPBERRY_PI
-	//SE PONE EN ALTO LA HABILITACION
-	digitalWrite(piPins.EN, pinsValues.EN_ON);
-	digitalWrite(piPins.DIRECCION, pinsValues.DIR_HOR);//DERECHA ---> ME MUEVO EN SENTIDO CONTRARIO POR LOS CABLES sentido horario
-#endif
+	#ifdef RASPBERRY_PI
+		//SE PONE EN ALTO LA HABILITACION
+		digitalWrite(piPins.EN, pinsValues.EN_ON);
+		digitalWrite(piPins.DIRECCION, pinsValues.DIR_HOR);//DERECHA ---> ME MUEVO EN SENTIDO CONTRARIO POR LOS CABLES sentido horario
+	#endif
 
-	//GUARDA LOS DATOS ACTUALES A LOS DATOS ANTERIORES
-	if(false == guardaDatos())
-	{
-#ifdef RESPBERRY_PI
+		//GUARDA LOS DATOS ACTUALES A LOS DATOS ANTERIORES
+		if(false == guardaDatos())
+		{
+	#ifdef RESPBERRY_PI
+			digitalWrite(piPins.EN, pinsValues.EN_OFF);
+	#endif
+			return(false);
+		}
+
+		if ((pos_actual.pasos == pos_anterior.pasos) && (pos_actual.posicion != cantPosiciones))
+		{
+			pasos_aux = mover();
+			if(false == actualizaActual(pasos_aux))
+			{
+	#ifdef RASPBERRY_PI
+				digitalWrite(piPins.EN, pinsValues.EN_OFF);
+	#endif
+				return(false);
+			}
+		}
+		else if ((pos_actual.pasos == pos_anterior.pasos) && (pos_actual.posicion == cantPosiciones))
+		{
+			if(false == poneEnCero())
+			{
+	#ifdef RASPBERRY_PI
+				digitalWrite(piPins.EN, pinsValues.EN_OFF);
+	#endif
+				return(false);
+			}
+				//regresar(cantPosiciones);
+			if(false == regresar())
+			{
+	#ifdef RASPBERRY_PI
+				digitalWrite(piPins.EN, pinsValues.EN_OFF);
+	#endif
+				return(false);
+			}
+		}
+
+	#ifdef RASPBERRY_PI
+		//SE PONE EN BAJO LA HABILITACION
 		digitalWrite(piPins.EN, pinsValues.EN_OFF);
-#endif
-		return(false);
-	}
+	#endif
 
-	if ((pos_actual.pasos == pos_anterior.pasos) && (pos_actual.posicion != cantPosiciones))
-	{
-		pasos_aux = mover();
-		if(false == actualizaActual(pasos_aux))
-		{
-#ifdef RASPBERRY_PI
-			digitalWrite(piPins.EN, pinsValues.EN_OFF);
+		return(true);
 #endif
-			return(false);
-		}
-	}
-	else if ((pos_actual.pasos == pos_anterior.pasos) && (pos_actual.posicion == cantPosiciones))
-	{
-		if(false == poneEnCero())
-		{
-#ifdef RASPBERRY_PI
-			digitalWrite(piPins.EN, pinsValues.EN_OFF);
-#endif
-			return(false);
-		}
-			//regresar(cantPosiciones);
-		if(false == regresar())
-		{
-#ifdef RASPBERRY_PI
-			digitalWrite(piPins.EN, pinsValues.EN_OFF);
-#endif
-			return(false);
-		}
-	}
-
-#ifdef RASPBERRY_PI
-	//SE PONE EN BAJO LA HABILITACION
-	digitalWrite(piPins.EN, pinsValues.EN_OFF);
-#endif
-
-	return(true);
 }
 
 /*! If the current polarization is horizontal, then it is changed to vertical, and vice versa.
@@ -173,56 +232,63 @@ bool AntennaPositioner::NextAzimPosition()
  */
 bool AntennaPositioner::ChangePolarization()
 {
-#ifdef RASPBERRY_PI
-	//SE PONE EN ALTO LA HABILITACION
-	digitalWrite(piPins.EN, pinsValues.EN_OFF);
-#endif
+#ifdef MANUAL
+	//#//////////////////////////FUNCIONAMIENTO MANUAL/////////////////////////////////
 
-	// INVERTIR LA POLARIZACION DE LA FUENTE DE ALIMENTACION DEL MOTOR QUE MANEJA LA POLARIZACION
-	float aux=0;
-	 // COMO ESTA EN POLARIZACION HORIZONTAL LA CAMBIA A VERTICAL
-    if (polar == 0)
-    {
-#ifdef RASPBERRY_PI
-        digitalWrite(piPins.POL, pinsValues.POL_VER); // PONE LA ANTENA EN POSICION VERTICAL
-#endif
-        aux = 100;
-        while ( ((aux < 85) || (aux > 95)) )
-        {
-            gpsInterface.UpdateRoll();
-            aux = gpsInterface.GetRoll();//rotacion
-        }
-        polar = 1; // AHORA LA ANTENA QUEDO EN POLARIZACION VERTICAL
-        return(true);
-    }
-    else
-    {
-        aux=100;
-#ifdef RASPBERRY_PI
-        digitalWrite(piPins.POL, pinsValues.POL_HOR); // PONE LA ANTENA EN POSICION HORIZONTAL
-#endif
-        while ( ((aux < -5) || (aux > 5)) )
-        {
-            gpsInterface.UpdateRoll();
-            aux = gpsInterface.GetRoll();//rotacion
-        }
-        polar = 0;// AHORA LA ANTENA QUEDO EN POLARIZACION HORIZONTAL
-        return(true);
-    }
-}
+	cout << "Change the antenna polarization and " << endl;
 
-/*! \return A `std::string` object with the current antenna polarization.	*/
-std::string AntennaPositioner::GetPolarizationString() const
-{
-	switch(polar)
-	{
-	case 0:
-		return "horizontal";
-	case 1:
-		return "vertical";
-	default:
-		return "unknown";
-	}
+	#ifdef BUTTON //implica que la constante RASPBERRY_PI esta definida
+		cout << "press the button to continue..." << endl;
+		while( digitalRead(piPins.BUTTON_ENTER)==pinsValues.BUTTON_OFF );
+	#else
+		cout << "press Enter to continue..." << endl;
+		WaitForEnter();
+	#endif
+
+	return true;
+
+#else
+	//#/////////////////////////FUNCIONAMIENTO AUTOMATICO//////////////////////////////
+	//#////////////////////Codigo de Emanuel Asencio//////////////////////////////////
+
+	#ifdef RASPBERRY_PI
+		//SE PONE EN ALTO LA HABILITACION
+		digitalWrite(piPins.EN, pinsValues.EN_OFF);
+	#endif
+
+		// INVERTIR LA POLARIZACION DE LA FUENTE DE ALIMENTACION DEL MOTOR QUE MANEJA LA POLARIZACION
+		float aux=0;
+		 // COMO ESTA EN POLARIZACION HORIZONTAL LA CAMBIA A VERTICAL
+		if (polar == 0)
+		{
+	#ifdef RASPBERRY_PI
+			digitalWrite(piPins.POL, pinsValues.POL_VER); // PONE LA ANTENA EN POSICION VERTICAL
+	#endif
+			aux = 100;
+			while ( ((aux < 85) || (aux > 95)) )
+			{
+				gpsInterface.UpdateRoll();
+				aux = gpsInterface.GetRoll();//rotacion
+			}
+			polar = 1; // AHORA LA ANTENA QUEDO EN POLARIZACION VERTICAL
+			return(true);
+		}
+		else
+		{
+			aux=100;
+	#ifdef RASPBERRY_PI
+			digitalWrite(piPins.POL, pinsValues.POL_HOR); // PONE LA ANTENA EN POSICION HORIZONTAL
+	#endif
+			while ( ((aux < -5) || (aux > 5)) )
+			{
+				gpsInterface.UpdateRoll();
+				aux = gpsInterface.GetRoll();//rotacion
+			}
+			polar = 0;// AHORA LA ANTENA QUEDO EN POLARIZACION HORIZONTAL
+			return(true);
+		}
+
+#endif
 }
 
 //DA UN PASO
@@ -295,4 +361,34 @@ bool AntennaPositioner::regresar()
                 return true;
     }
     return(false);
+}
+
+//#///////////////////////////////////////////
+
+/*! \return A value of the enumeration 'Polarization'. 	*/
+Polarization AntennaPositioner::GetPolarization() const
+{
+	switch(polar)
+	{
+	case 0:
+		return Polarization::HORIZONTAL;
+	case 1:
+		return Polarization::VERTICAL;
+	default:
+		return Polarization::UNKNOWN;
+	}
+}
+
+/*! \return A `std::string` object with the current antenna polarization.	*/
+std::string AntennaPositioner::GetPolarizationString() const
+{
+	switch(polar)
+	{
+	case 0:
+		return "horizontal";
+	case 1:
+		return "vertical";
+	default:
+		return "unknown";
+	}
 }

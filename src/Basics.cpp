@@ -75,7 +75,7 @@ bool approximatelyEqual(std::vector<float> vectorA, std::vector<float> vectorB)
 	}
 }
 
-void WaitForKey()
+void WaitForEnter()
 {
     cin.clear();
     cin.ignore( cin.rdbuf()->in_avail() );
@@ -118,8 +118,8 @@ void InitializeGPIO()
 	pinMode(piPins.LED_INIT_POS, OUTPUT);
 	digitalWrite(piPins.LED_INIT_POS, pinsValues.LED_INIT_POS_OFF);
 
-	pinMode(piPins.BUTTON, INPUT);
-	pullUpDnControl(piPins.BUTTON, PUD_UP);
+	pinMode(piPins.BUTTON_ENTER, INPUT);
+	pullUpDnControl(piPins.BUTTON_ENTER, PUD_UP);
 
 	pinMode(piPins.LED_NEXT_POS, OUTPUT);
 	digitalWrite(piPins.LED_NEXT_POS, pinsValues.LED_NEXT_POS_OFF);

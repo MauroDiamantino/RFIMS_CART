@@ -437,7 +437,7 @@ int main(int argc, char * argv[])
 
 		//cout << "\nExiting from the rfims software..." << endl;
 		cout << "\nPress enter to finish the rfims software..." << endl;
-		WaitForKey();
+		WaitForEnter();
 
 		std::exit(EXIT_FAILURE);
 	}
@@ -452,7 +452,7 @@ int main(int argc, char * argv[])
 
 	//cout << "\nExiting from the rfims software..." << endl;
 	cout << "\nPress enter to finish the rfims software..." << endl;
-	WaitForKey();
+	WaitForEnter();
 
 	return 0;
 }

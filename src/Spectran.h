@@ -375,11 +375,7 @@ public:
 //		}
 
 		while( Available()<numOfBytes && i++<NUM_OF_ITERS )
-#ifdef RASPBERRY_PI
-			delayMicroseconds(DELAY_US);
-#else
 			usleep(DELAY_US);
-#endif
 
 		if(i>=NUM_OF_ITERS)
 			throw rfims_exception("in a reading operation, the input bytes were waited too much time.");

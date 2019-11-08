@@ -20,6 +20,7 @@
 
 #define RASPBERRY_PI // This preprocessor definition enables the use of the code which can only be used in the Raspberry Pi board (for example WiringPi functions).
 //#define DEBUG // This definition enables some code blocks which are aimed to test the software performance.
+//#define MANUAL
 
 #ifdef RASPBERRY_PI
 	//#define BUTTON // This definition determines the use of Enter key to respond to some software messages or the use of a button connected to a GPIO pin.
@@ -109,7 +110,7 @@ struct
 	const unsigned int LED_INIT_POS = 1; //!< This pin is initialized as an output in LOW state, so the led will start turned off.
 	const unsigned int LED_NEXT_POS = 3; //!< This pin is initialized as an output in LOW state, so the led will start turned off.
 	const unsigned int LED_POLARIZ = 5; //!< This pin is initialized as an output in LOW state, so the led will start turned off.
-	const unsigned int BUTTON = 2; //!< This pin is initialized as in input wit the pull-up resistor enabled, so the button must connect the pin to GND.
+	const unsigned int BUTTON_ENTER = 2; //!< This pin is initialized as in input wit the pull-up resistor enabled, so the button must connect the pin to GND.
 	//Pines de la clase AntennaPositioner
 	const unsigned int PUL=7; //pin 7
 	const unsigned int DIRECCION=9; //pin 5
@@ -454,7 +455,7 @@ bool approximatelyEqual(std::vector<float> vectorA, std::vector<float> vectorB);
 std::vector<FreqValues::value_type> operator-(const std::vector<FreqValues::value_type> & vect); //defined in Basics.cpp
 
 //! This function stop the execution until any key is pressed by the user and it was used for debugging purpose.
-void WaitForKey();
+void WaitForEnter();
 
 //! This function initializes all GPIO pins which are used for the input and output signals, in the way it is described in structure _piPins_.
 void InitializeGPIO();

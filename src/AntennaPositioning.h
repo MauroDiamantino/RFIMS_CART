@@ -259,8 +259,8 @@ public:
 };
 
 
-//! An enumeration which contains the possible states of the antenna polarization: HORIZONTAL, VERTICAL or UNKNOWN.
-enum Polarization : char { HORIZONTAL, VERTICAL, UNKNOWN };
+// An enumeration which contains the possible states of the antenna polarization: HORIZONTAL, VERTICAL or UNKNOWN.
+enum Polarization : char { HORIZONTAL=0, VERTICAL=1, UNKNOWN };
 
 
 //! The aim of the class _AntennaPositioner_ is to handle the antenna positioning system.
@@ -317,7 +317,7 @@ public:
 	//! This method returns the current antenna polarization, as a `std::string` object.
 	std::string GetPolarizationString() const;
 	//! This method returns the current antenna polarization, as a value of the enumeration [Polarization](\ref Polarization).
-	int GetPolarization() const {	return polar;	}
+	Polarization GetPolarization() const;
 	//! This method returns the current azimuth position index.
 	int GetPositionIndex() const	{	return pos_actual.posicion;	}
 	//! This method return the total number of azimuth positions.
