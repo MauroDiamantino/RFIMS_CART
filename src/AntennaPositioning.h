@@ -287,6 +287,9 @@ class AntennaPositioner
 	int cantPosiciones; //Variable que almacena
 	int polar; //POLAR = 0 (HORIZONTAL) ; POLAR = 1 (VERTICAL)
 	GPSInterface & gpsInterface;
+	//Variables agregadas por mauro
+	std::string fuenteAnguloInicial;
+	float anguloInicial;
 
 	//Private methods//
 	void inicia_variables();
@@ -305,6 +308,7 @@ public:
 	 * what is used by the signals handler to destroy the objects when a signal to finish the execution
 	 * of the software is received. */
 	~AntennaPositioner() {}
+	//! This method allows to set the number of azimuth positions.
 	void SetNumOfAzimPos(unsigned int number) {	cantPosiciones=number;	}
 	//! This method performs the initialization of the antenna positioning system.
 	bool Initialize();

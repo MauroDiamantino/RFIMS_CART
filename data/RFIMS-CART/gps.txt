@@ -1,0 +1,5 @@
+Initial angle source=auto;	//'auto' or 'manual'. In auto mode the magnetometer of the GPS Logger is used if it has been correctly calibrated,
+							//otherwise the initial angle is taken from the next entry. In manual mode, the inital angle is directly taken from
+							//the next entry.
+Initial angle=0.0;			//A float value between 0.0 to 359.9999. This value is used when the previous entry is set in manual or the
+							//magnetometer is not calibrated.

@@ -43,18 +43,6 @@ void AntennaPositioner::inicia_variables()
 #endif
 }
 
-/*! \param gpsInterf A reference to the object which is responsible for the communication with the Aaronia GPS receiver. */
-AntennaPositioner::AntennaPositioner(GPSInterface & gpsInterf) : gpsInterface(gpsInterf)
-{
-	pos_actual = {0.0, 0.0, 0};
-	pos_anterior = {0.0, 0.0, 0};
-	cuenta = 0.0;
-	yaw = 0.0;
-	//roll = 0.0;
-	n = 2.0;
-	cantPosiciones = 6;
-	polar = 0; //POLAR = 0 (HORIZONTAL) ; POLAR = 1 (VERTICAL)
-}
 
 /*!	This initialization implies to move the antenna to its initial position, to capture the initial azimuth
  * angle and to ensure the antenna polarization is horizontal.
@@ -364,6 +352,77 @@ bool AntennaPositioner::regresar()
 }
 
 //#///////////////////////////////////////////
+
+/*! \param gpsInterf A reference to the object which is responsible for the communication with the Aaronia GPS receiver. */
+AntennaPositioner::AntennaPositioner(GPSInterface & gpsInterf) : gpsInterface(gpsInterf)
+{
+	pos_actual = {0.0, 0.0, 0};
+	pos_anterior = {0.0, 0.0, 0};
+	cuenta = 0.0;
+	yaw = 0.0;
+	//roll = 0.0;
+	n = 2.0;
+	cantPosiciones = 6;
+	polar = 0; //POLAR = 0 (HORIZONTAL) ; POLAR = 1 (VERTICAL)
+	fuenteAnguloInicial="auto";
+	anguloInicial=0;
+
+	//Se abre el archivo gps.txt para definir como se determinara el angulo inicial
+	std::ifstream ifs(BASE_PATH + "/gps.txt");
+
+	//Bucle de extraccion de informacion del archivo
+	do
+	{
+		std::string line, entry, valueString;
+		bool flagEntryLine = false;
+
+		std::getline(ifs, line);
+
+		//Se analiza si la linea actual contiene una entrada o solo comentarios
+		size_t semicolonPos;
+		if( ( semicolonPos=line.find(';') ) != std::string::npos )
+		{
+			size_t doubleSlashPos;
+			if( ( doubleSlashPos=line.find("//") ) != std::string::npos )
+			{
+				if( semicolonPos < doubleSlashPos)
+					flagEntryLine=true;
+			}
+			else
+				flagEntryLine=true;
+		}
+
+		//Si se trata de un linea con una entrada, entonces se extrae la informacion
+		if(flagEntryLine)
+		{
+			size_t equalSignPos;
+			if( ( equalSignPos=line.find('=') ) == std::string::npos )
+				throw rfims_exception("the file " + BASE_PATH + "/gps.txt does not have the equal sign in one of the entries.");
+
+			entry = line.substr(0, equalSignPos);
+			valueString = line.substr( equalSignPos+1, semicolonPos-equalSignPos-1 );
+
+			boost::algorithm::to_lower(entry);
+			boost::algorithm::to_lower(valueString);
+
+			if(entry == "initial angle source")
+				fuenteAnguloInicial = valueString;
+			else if(entry == "initial angle")
+			{
+				std::istringstream iss(valueString);
+				iss >> anguloInicial;
+			}
+			else
+				throw rfims_exception("the file " + BASE_PATH + "/gps.txt has an unknown entry: " + entry);
+		}
+
+		while( ifs.peek()=='\n' )
+			ifs.get();
+	}
+	while( !ifs.eof() );
+
+	ifs.close();
+}
 
 /*! \return A value of the enumeration 'Polarization'. 	*/
 Polarization AntennaPositioner::GetPolarization() const
