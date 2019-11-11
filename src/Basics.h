@@ -149,8 +149,8 @@ struct
 	const int LED_NEXT_POS_ON = HIGH;
 	const int LED_NEXT_POS_OFF = !LED_NEXT_POS_ON;
 
-	const int LED_POLARIZ_ON = HIGH;
-	const int LED_POLARIZ_OFF = !LED_POLARIZ_ON;
+	const int LED_POL_ON = HIGH;
+	const int LED_POL_OFF = !LED_POLARIZ_ON;
 
 	const int BUTTON_ON = LOW;
 	const int BUTTON_OFF = !BUTTON_ON;

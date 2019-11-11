@@ -80,15 +80,21 @@ int main(int argc, char * argv[])
 		gpsInterface.Initialize();
 		cout << "The GPS receiver was initialize successfully" << endl;
 
-		//Putting the antenna in the initial position and polarization
-		antPositioner.Initialize();
-		cout << "\nThe initial azimuth angle is " << antPositioner.GetAzimPosition() << "° N" << endl;
-		
 		//Setting the total number of sweeps per measurement cycle in the data logger
 		dataLogger.SetNumOfSweeps(2*numOfAzimPos);
 
 		//Setting the number of azimuth positions in the antenna positioner
 		antPositioner.SetNumOfAzimPos(numOfAzimPos);
+
+		//Putting the antenna in the initial position and polarization
+#ifdef RASPBERRY_PI
+		digitalWrite(piPins.LED_INIT_POS, pinsValues.LED_INIT_POS_ON);
+#endif
+		antPositioner.Initialize();
+#ifdef RASPBERRY_PI
+		digitalWrite(piPins.LED_INIT_POS, pinsValues.LED_INIT_POS_OFF);
+#endif
+		cout << "\nThe initial azimuth angle is " << antPositioner.GetAzimPosition() << "° N" << endl;
 
 		//#///////////////////////////////END OF THE INITIALIZATION///////////////////////////////////////
 
@@ -411,9 +417,24 @@ int main(int argc, char * argv[])
 
 				//Changing the antenna position
 				cout << "\nThe antenna position will be changed" << endl;
+#ifdef RASPBERRY_PI
+				digitalWrite(piPins.LED_POLARIZ, pinsValues.LED_POL_ON);
+#endif
 				antPositioner.ChangePolarization();
+#ifdef RASPBERRY_PI
+				digitalWrite(piPins.LED_POLARIZ, pinsValues.LED_POL_OFF);
+#endif
+
 				if( antPositioner.GetPolarization()==Polarization::HORIZONTAL )
+				{
+#ifdef RASPBERRY_PI
+					digitalWrite(piPins.LED_NEXT_POS, pinsValues.LED_NEXT_POS_ON);
+#endif
 					antPositioner.NextAzimPosition();
+#ifdef RASPBERRY_PI
+					digitalWrite(piPins.LED_NEXT_POS, pinsValues.LED_NEXT_POS_OFF);
+#endif
+				}
 
 				cout << "The new antenna position is:" << endl;
 				cout << "\tPosition number: " << (antPositioner.GetPositionIndex() + 1) << '/' << numOfAzimPos << endl;

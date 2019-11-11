@@ -55,6 +55,12 @@ void CurveAdjuster::BuildLines(const FreqValues & curve)
  */
 const FreqValues & CurveAdjuster::AdjustCurve(const FreqValues & curve)
 {
+	if( bandsParameters.empty() )
+		throw rfims_exception("the curve adjuster could not adjust a given curve because it has not received the bands' parameters.");
+
+	if( refSweep.Empty() )
+		throw rfims_exception("the curve adjuster could not adjust a given curve because it has not received a reference sweep (it can be anyone).");
+
 	BuildLines(curve);
 
 	adjCurve.Clear();

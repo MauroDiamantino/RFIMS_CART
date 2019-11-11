@@ -97,6 +97,9 @@ FrontEndCalibrator::FrontEndCalibrator(CurveAdjuster & adj, const std::vector<Ba
  */
 void FrontEndCalibrator::BuildRBWCurve()
 {
+	if( bandsParameters.empty() )
+		throw rfims_exception("the front end calibrator could not build the RBW curve because it has not received the bands' parameters.");
+
 	const float deltaFreq=100e3; //This delta frequency is summed to the start frequencies to avoid the discontinuity
 
 	//Building the curve with RBW values vs frequency
@@ -444,6 +447,12 @@ void FrontEndCalibrator::EstimateParameters()
 	if( powerNSon_pw.Empty() || powerNSoff_pw.Empty() )
 		throw rfims_exception("the front end calibrator could not estimate the parameters because one sweep (or both) was lacking.");
 
+	if( correctENR.Empty() )
+		throw rfims_exception("the front end calibrator could not estimate the parameters because the ENR curve is empty, remember to ask the calibrator to load that curve before the calibration.");
+
+	if( rbwCurve.Empty() )
+		throw rfims_exception("the front end calibrator could not estimate the parameters because the RBW curve is empty, remember to ask the calibrator to build that curve before the calibration.");
+
 	FreqValues tson("noise temperature"), yFactor("y-factor"), gainPowersRatio("gain");
 
 	//Calculating the front end's noise figure curve
@@ -546,6 +555,9 @@ void FrontEndCalibrator::EstimateParameters()
  */
 const Sweep& FrontEndCalibrator::CalibrateSweep(const Sweep& powerOut)
 {
+	if( gain.Empty() || noiseTemperature.Empty() )
+		throw rfims_exception("the front end calibrator could not calibrate the sweep because the front end parameters have not been estimated (or loaded) before.");
+
 #ifdef DEBUG
 	auxRFPloter.Clear();
 	auxRFPloter.Plot(powerOut, "lines", "Uncalibrated sweep");
