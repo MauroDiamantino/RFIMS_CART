@@ -37,7 +37,7 @@ int main()
 		cout << "La comunicacion fue inicializada con exito" << endl;
 
 		cout << "\nPresione una tecla para comenzar..." << endl;
-		WaitForKey();
+		WaitForEnter();
 
 		cout << "A continuacion se probara la recepcion a pedido de los datos de los sensores (streaming deshabilitado)" << endl;
 
@@ -172,7 +172,7 @@ int main()
 		cout << "La tasa de actualizacion para los datos de los sensores (no para los datos del GPS) sera: " << gpsInterface.GetDataRate() << " datos/s" << endl;
 
 		cout << "Presione una tecla para comenzar..." << endl;
-		WaitForKey();
+		WaitForEnter();
 
 		gpsInterface.EnableStreaming();
 		cout << "\nStreaming habilitado!" << endl;

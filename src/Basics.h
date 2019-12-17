@@ -98,34 +98,35 @@ const std::string BASE_PATH = "/home/new-mauro/RFIMS-CART";
 //#//////////////////////////////////GLOBAL CLASSES AND STRUCTURES///////////////////////////////////////////
 
 
-//! This unnamed structure is intended to store the constants with the assignment of GPIO pins to input and output external signals.
+//! This structure is intended to store the assignment of GPIO pins to input and output external signals, taking into account the Wiring Pi numbering.
 struct
 {
-	const unsigned int SWITCH = 8; //!< This pin is initialized as an output in LOW state, so the RF switch output will start connected to the noise source.
-	const unsigned int NOISE_SOURCE = 13; //!< This pin is initialized as an output in LOW state, so the noise source will start turned off.
-	const unsigned int LNAS = 12;  //!< This pin is initialized as an output in LOW state, so the LNAs will start turned off.
-	const unsigned int SPECTRAN = 14; //!< This pin is initialized as an input with the pull-down resistor enabled, so the Spectran device will start turned off.
-	const unsigned int LED_SWEEP_CAPTURE = 9; //!< This pin is initialized as an output in LOW state, so the led will start turned off.
-	const unsigned int LED_SWEEP_PROCESS = 10; //!< This pin is initialized as an output in LOW state, so the led will start turned off.
-	const unsigned int LED_INIT_POS = 1; //!< This pin is initialized as an output in LOW state, so the led will start turned off.
-	const unsigned int LED_NEXT_POS = 3; //!< This pin is initialized as an output in LOW state, so the led will start turned off.
-	const unsigned int LED_POLARIZ = 5; //!< This pin is initialized as an output in LOW state, so the led will start turned off.
-	const unsigned int BUTTON_ENTER = 2; //!< This pin is initialized as in input wit the pull-up resistor enabled, so the button must connect the pin to GND.
+	const unsigned int SWITCH = 10; //!< This pin is initialized as an output in LOW state, so the RF switch output will start connected to the noise source.
+	const unsigned int NOISE_SOURCE = 6; //!< This pin is initialized as an output in LOW state, so the noise source will start turned off.
+	const unsigned int LNAS = 26;  //!< This pin is initialized as an output in LOW state, so the LNAs will start turned off.
+	const unsigned int SPECTRAN = 27; //!< This pin is initialized as an input with the pull-down resistor enabled, so the Spectran device will start turned off.
+	const unsigned int LED_SWEEP_CAPTURE = 0; //!< This pin is initialized as an output in LOW state, so the led will start turned off.
+	const unsigned int LED_SWEEP_PROCESS = 2; //!< This pin is initialized as an output in LOW state, so the led will start turned off.
+	const unsigned int LED_INIT_POS = 12; //!< This pin is initialized as an output in LOW state, so the led will start turned off.
+	const unsigned int LED_NEXT_POS = 12; //!< This pin is initialized as an output in LOW state, so the led will start turned off.
+	const unsigned int LED_POLARIZ = 3; //!< This pin is initialized as an output in LOW state, so the led will start turned off.
+	const unsigned int LED_ERROR = 13;
+	const unsigned int BUTTON_ENTER = 8; //!< This pin is initialized as in input wit the pull-up resistor enabled, so the button must connect the pin to GND.
 	//Pines de la clase AntennaPositioner
-	const unsigned int PUL=7; //pin 7
-	const unsigned int DIRECCION=9; //pin 5
-	const unsigned int EN=8; //pin 3
-	const unsigned int SENSOR_NORTE=2; //pin 13
-	const unsigned int POL=0; //pin 11
-	const unsigned int FASE_A=1; //pin 12
-	const unsigned int FASE_B=4; //pin 16
+	const unsigned int PUL = 28;
+	const unsigned int DIRECCION = 31;
+	const unsigned int EN = 29;
+	const unsigned int SENSOR_NORTE = 30;
+	const unsigned int POL = 5;
+	const unsigned int FASE_A = 22;
+	const unsigned int FASE_B = 21;
 } piPins;
 
 #ifdef RASPBERRY_PI
-//! This unnamed structure contains the digital pins' values (HIGH or LOW) and this states which value activates each pin and which value deactivates it.
+//! This structure contains the digital pins' assertive values (HIGH or LOW).
 struct
 {
-	const int SWITCH_TO_NS = LOW; //!< This constant define the value the switch's pin must take to connect noise source to input, provided that the noise source is connected to switch's J2 connector.
+	const int SWITCH_TO_NS = HIGH; //!< This constant define the value the switch's pin must take to connect noise source to input, provided that the noise source is connected to switch's J2 connector.
 	const int SWITCH_TO_ANT = !SWITCH_TO_NS; //!< This constant define the value the switch's pin must take to connect antenna to input, provided that the antenna is connected to switch's J1 connector.
 
 	const int NS_ON = HIGH;
@@ -151,6 +152,9 @@ struct
 
 	const int LED_POL_ON = HIGH;
 	const int LED_POL_OFF = !LED_POLARIZ_ON;
+
+	const int LED_ERROR_ON = HIGH;
+	const int LED_ERROR_OFF = !LED_ERROR_ON;
 
 	const int BUTTON_ON = LOW;
 	const int BUTTON_OFF = !BUTTON_ON;
