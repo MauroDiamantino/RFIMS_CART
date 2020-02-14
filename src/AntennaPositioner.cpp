@@ -70,44 +70,137 @@ bool AntennaPositioner::Initialize()
 	//#/////////////////////Codigo de Emanuel Asencio/////////////////////////////////////
 
 	#ifdef RASPBERRY_PI
-		//SE PONE EN BAJO LA HABILITACION
+		//SE PONE EN BAJO LA HABILITACION (PARA ASEGURAR QUE EL MOTOR NO SE MUEVA)
 		digitalWrite(piPins.EN, pinsValues.EN_OFF);
 		// PONER LA ANTENA EN POSICION HORIZONTAL
 		digitalWrite(piPins.POL, pinsValues.POL_HOR); // PONE LA ANTENA EN POSICION HORIZONTAL
 	#endif
-
+        sleep(5);   //DELAY(5segundos) PARA DARLE TIEMPO AL ACTUADOR LINEAL A CAMBIAR DE POLARIZACION Y LUEGO ENTRAR AL WHILE
 		double aux = 100.0;
-		while ( (aux < -5.0) || (aux > 5.0) )
+		unsigned char i=0;
+		while ( ((aux < 355.0) && (aux > 5.0)) && (i < 10))
 		{
 			gpsInterface.UpdateRoll();
 			aux = gpsInterface.GetRoll();//rotacion
+			usleep(500000); //DELAY(medio segundo)
 		}
-		polar = 0;// AHORA LA ANTENA QUEDO EN POLARIZACION HORIZONTAL
+		if(i >= 10)
+        {
+            return(false);
+        }
+        else
+        {
+         polar = 0;// AHORA LA ANTENA QUEDO EN POLARIZACION HORIZONTAL
+        }
+
+//A PARTIR DE ACA EMPIEZA LA BUSQUEDA DEL NORTE
 
 	#ifdef RASPBERRY_PI
-		//SE PONE EN ALTO LA HABILITACION
-		digitalWrite(piPins.EN, pinsValues.EN_ON);
+            //SE PONE EN ALTO LA HABILITACION DEL MOTOR
+            digitalWrite(piPins.EN, pinsValues.EN_ON);
+            //SE EMPIEZA EN UNA DIRECCION(DIR,HIGH) (IZQUIERDA) sentido anti-horario
+            digitalWrite(piPins.DIRECCION, pinsValues.DIR_ANTIHOR);
 
-		//SE EMPIEZA EN UNA DIRECCION(DIR,HIGH) (IZQUIERDA) sentido anti-horario
-		digitalWrite(piPins.DIRECCION, pinsValues.DIR_ANTIHOR);
-
-		cuenta=0;
-		while( (cuenta/n) > -360 && cuenta <= 0 )
-		{
-			if (pinsValues.SENS_NOR_ON == digitalRead(piPins.SENSOR_NORTE)) //A TRAVES DE UNA SEÑAL (0 O 1) SE VERA DONDE ESTA EL NORTE
-			{
-				if(false == poneEnCero())
-					return(false);
-				return(true);
-			}
-			un_paso();
-		}
-
-		//SE PONE EN BAJO LA HABILITACION
+            cuenta=0;
+            while( ((cuenta/n) > -360 && cuenta <= 0) && band_mueve_inicial==0)
+            {
+                if (pinsValues.SENS_NOR_ON == digitalRead(piPins.SENSOR_NORTE)) //A TRAVES DE UNA SEÑAL (0 O 1) SE VERA DONDE ESTA EL NORTE
+                {
+                    band_norte=1;
+                }
+                if(band_norte)
+                {
+                    if(band_salta)
+                    {
+                        sleep(2);   //DELAY(2 segundos)
+                        gpsInterface.UpdateYaw();
+                        aux = gpsInterface.GetYaw();//PIDO ANGULO
+                        if((aux >= 355.0) || (aux <= 5.0)) //CORROBORO ANGULO NORTE ( 0° )
+                        {
+                            band_norte = 0;
+                            //DIRECCION(DIR,LOW) (DERECHA) horario
+                            digitalWrite(piPins.DIRECCION, pinsValues.DIR_HOR);
+                            for(i=0;i<90;i++)   //ME MUEVO 90 GRADOS
+                            {
+                                un_paso();
+                            }
+                            sleep(2);   //DELAY(2 segundos)
+                            gpsInterface.UpdateYaw();
+                            aux = gpsInterface.GetYaw();//PIDO ANGULO
+                            if((aux >= 85.0) || (aux <= 95.0)) //CORROBORO ANGULO 90°
+                            {
+                                band_gps_ok=1;// EL GPS ESTA FUNCIONANDO BIEN
+                            }//FIN CORROBORO ANGULO 90°
+                            else
+                            {
+                                band_gps_ok=0;// EL GPS ESTA FUNCIONANDO MAL
+                            }
+                        }//FIN CORROBORO ANGULO NORTE ( 0° )
+                        else
+                        {
+                            band_gps_ok=0;// EL GPS ESTA FUNCIONANDO MAL
+                        }
+                        if(band_gps_ok)
+                        {
+                            aux=aux-anguloInicial;
+                            if(aux > 0)
+                            {
+                            //DIRECCION(DIR,high) (IZQUIERDA) anti-horario
+                            digitalWrite(piPins.DIRECCION, pinsValues.DIR_ANTIHOR);
+                            band_mueve_inicial=1;
+                            }
+                            else
+                            {
+                            //DIRECCION(DIR,LOW) (DERECHA) horario
+                            digitalWrite(piPins.DIRECCION, pinsValues.DIR_HOR);
+                            band_mueve_inicial=1;
+                            }
+                        }//FIN BAND_GPS_OK
+                        else
+                        {
+                            band_salta=0;
+                            band_norte = 0;
+                        }
+                    }//FIN BANDERA SALTA
+                }//FIN BANDERA NORTE
+                if(band_gps_ok == 0 && band_salta == 0 && band_norte == 0)
+                {
+                    //SE EMPIEZA EN UNA DIRECCION(DIR,HIGH) (IZQUIERDA) sentido anti-horario
+                    digitalWrite(piPins.DIRECCION, pinsValues.DIR_ANTIHOR);
+                    if (pinsValues.SENS_NOR_ON == digitalRead(piPins.SENSOR_NORTE)) //A TRAVES DE UNA SEÑAL (0 O 1) SE VERA DONDE ESTA EL NORTE
+                    {
+                        band_norte=1;
+                        //DIRECCION(DIR,LOW) (DERECHA) horario
+                        digitalWrite(piPins.DIRECCION, pinsValues.DIR_HOR);
+                        band_mueve_inicial=1;
+                    }
+                }
+                un_paso();
+            }//FIN WHILE
+            if(band_mueve_inicial==1)
+            {
+                if(band_gps_ok)
+                {
+                    for(i=0;i<abs(aux-anguloInicial);i++)
+                    {
+                        un_paso();
+                    }
+                }
+                else
+                {
+                    for(i=0;i<(anguloInicial);i++)
+                    {
+                        un_paso();
+                    }
+                }
+                if(false == poneEnCero())
+                {   return(false);}
+                return(true);
+            }
+            return(false);
+		//SE PONE EN BAJO LA HABILITACION DEL MOTOR
 		digitalWrite(piPins.EN, pinsValues.EN_OFF);
 	#endif
-
-		return(false);
 #endif
 }
 
@@ -341,7 +434,7 @@ bool AntennaPositioner::regresar()
 	digitalWrite(piPins.DIRECCION, pinsValues.DIR_ANTIHOR);// REGRESO POR LA IZQUIERDA ANTI HORARIO
 #endif
 	cuenta=0;
-	float aux = -((360.0 / cantPosiciones) * (cantPosiciones));
+	float aux = -((360.0 / cantPosiciones) * (cantPosiciones-1));
     while(((cuenta/n) >= aux) && (cuenta<=0))
     {
         un_paso();
@@ -364,8 +457,7 @@ AntennaPositioner::AntennaPositioner(GPSInterface & gpsInterf) : gpsInterface(gp
 	n = 2.0;
 	cantPosiciones = 6;
 	polar = 0; //POLAR = 0 (HORIZONTAL) ; POLAR = 1 (VERTICAL)
-	fuenteAnguloInicial="auto";
-	anguloInicial=0;
+	anguloInicial=0.0;
 
 	//Se abre el archivo gps.txt para definir como se determinara el angulo inicial
 	std::ifstream ifs(BASE_PATH + "/gps.txt");
@@ -403,17 +495,18 @@ AntennaPositioner::AntennaPositioner(GPSInterface & gpsInterf) : gpsInterface(gp
 			valueString = line.substr( equalSignPos+1, semicolonPos-equalSignPos-1 );
 
 			boost::algorithm::to_lower(entry);
-			boost::algorithm::to_lower(valueString);
 
-			if(entry == "initial angle source")
-				fuenteAnguloInicial = valueString;
-			else if(entry == "initial angle")
+			if(entry == "antenna initial angle")
 			{
 				std::istringstream iss(valueString);
 				iss >> anguloInicial;
 			}
 			else
-				throw rfims_exception("the file " + BASE_PATH + "/gps.txt has an unknown entry: " + entry);
+			{
+				std::string msg = "the file " + BASE_PATH + "/gps.txt has an unknown entry, \"" + entry;
+				msg += "\", when the only entry which was waited is \"antenna initial angle\".";
+				throw rfims_exception(msg);
+			}
 		}
 
 		while( ifs.peek()=='\n' )

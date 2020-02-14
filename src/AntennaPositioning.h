@@ -267,9 +267,6 @@ enum Polarization : char { HORIZONTAL=0, VERTICAL=1, UNKNOWN };
 class AntennaPositioner
 {
 	//Attributes//
-	//Constants
-	//const std::uint8_t NUM_OF_POSITIONS = 6; //! The number of azimuth positions.
-	//const double ROTATION_ANGLE = 360.0/NUM_OF_POSITIONS; //! The angle which the antenna must rotate to move to the next position.
 
 	//Variables
 	struct PosicionAntena
@@ -281,15 +278,13 @@ class AntennaPositioner
 
 	static volatile float cuenta;
 	volatile float yaw;
-	//volatile float roll;
 	float n;
 	//int dire; // 0 DERECHA Y 1 IZQUIERDA
-	int cantPosiciones; //Variable que almacena
+	int cantPosiciones; //Variable que almacena la cantidad de posiciones azimutales
 	int polar; //POLAR = 0 (HORIZONTAL) ; POLAR = 1 (VERTICAL)
 	GPSInterface & gpsInterface;
 	//Variables agregadas por mauro
-	std::string fuenteAnguloInicial;
-	float anguloInicial;
+	double anguloInicial;
 
 	//Private methods//
 	void inicia_variables();
