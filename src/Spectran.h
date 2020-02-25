@@ -378,7 +378,7 @@ public:
 			usleep(DELAY_US);
 
 		if(i>=NUM_OF_ITERS)
-			throw rfims_exception("in a reading operation, the input bytes were waited too much time.");
+			throw rfims_exception("in a reading operation with the Spectran device, the input bytes were waited too much time.");
 
 		//usleep(DELAY_US);
 

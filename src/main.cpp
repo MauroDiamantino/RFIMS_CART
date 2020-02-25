@@ -177,13 +177,46 @@ int main(int argc, char * argv[])
 				BandParameters currBandParam;
 				FreqValues currFreqBand;
 
-				currBandParam = specConfigurator.ConfigureNextBand();
+				bool flagSuccess=false;
+				unsigned int numOfErrors=0;
+				do
+				{
+					try
+					{
+						currBandParam = specConfigurator.ConfigureNextBand();
 
-				cout << "\nFrequency band N° " << (i+1) << '/' << specConfigurator.GetNumOfBands() << endl;
-				cout << "Fstart=" << (currBandParam.startFreq/1e6) << " MHz, Fstop=" << (currBandParam.stopFreq/1e6) << " MHz, ";
-				cout << "RBW=" << (currBandParam.rbw/1e3) << " KHz, Sweep time=" << currBandParam.sweepTime << " ms" << endl;
+						cout << "\nFrequency band N° " << (i+1) << '/' << specConfigurator.GetNumOfBands() << endl;
+						cout << "Fstart=" << (currBandParam.startFreq/1e6) << " MHz, Fstop=" << (currBandParam.stopFreq/1e6) << " MHz, ";
+						cout << "RBW=" << (currBandParam.rbw/1e3) << " KHz, Sweep time=" << currBandParam.sweepTime << " ms" << endl;
 
-				currFreqBand = sweepBuilder.CaptureSweep(currBandParam);
+						currFreqBand = sweepBuilder.CaptureSweep(currBandParam);
+
+						flagSuccess=true;
+					}
+					catch(rfims_exception & exc)
+					{
+						++numOfErrors;
+
+						if(numOfErrors==2)
+						{
+							specInterface.SoftReset();
+							specInterface.Initialize();
+							specConfigurator.InitialConfiguration();
+						}
+						else if(numOfErrors==3)
+						{
+							specInterface.HardReset();
+							specInterface.Initialize();
+							specConfigurator.InitialConfiguration();
+						}
+						else if(numOfErrors>3)
+						{
+							exc.Prepend("the capturing of a sweep failed");
+							throw;
+						}
+					}
+				}while(flagSuccess==false);
+
 
 				bool flagLastPointRemoved = uncalSweep.PushBack(currFreqBand);
 				

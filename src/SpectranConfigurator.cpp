@@ -485,14 +485,11 @@ void SpectranConfigurator::SetVariable(const SpecVariable variable, const float 
 		interface.Write(comm);
 		interface.Read(reply);
 		if(reply.IsRight()!=true)
-		{
-			rfims_exception exc("the reply to the command to set up the variable was wrong.");
-			throw(exc);
-		}
+			throw rfims_exception("the reply to the command to set up the variable was wrong.");
 	}
 	catch(rfims_exception & exc)
 	{
-		exc.Prepend("the setting of the variable \"" + comm.GetVariableNameString() + "\" failed");
+		exc.Prepend("the setting of the Spectran variable \"" + comm.GetVariableNameString() + "\" failed");
 		throw;
 	}
 }
@@ -511,10 +508,7 @@ void SpectranConfigurator::CheckEqual(const SpecVariable variable, const float v
 		interface.Write(comm);
 		interface.Read(reply);
 		if( reply.IsRight()!=true )
-		{
-			rfims_exception exc("the reply to the command to get the current value of the variable was wrong.");
-			throw(exc);
-		}
+			throw rfims_exception("the reply to the command to get the current value of the variable was wrong.");
 		else if( reply.GetValue()!=value )
 		{
 			std::ostringstream oss;
@@ -525,7 +519,7 @@ void SpectranConfigurator::CheckEqual(const SpecVariable variable, const float v
 	}
 	catch(rfims_exception & exc)
 	{
-		exc.Prepend("the checking of the configured variable \"" + comm.GetVariableNameString() + "\" failed");
+		exc.Prepend("the checking of the configured Spectran variable \"" + comm.GetVariableNameString() + "\" failed");
 		throw;
 	}
 }
@@ -545,14 +539,11 @@ void SpectranConfigurator::CheckApproxEqual(const SpecVariable variable, float &
 		interface.Write(comm);
 		interface.Read(reply);
 		if( reply.IsRight()!=true )
-		{
-			rfims_exception exc("the reply to the command to get the current value of the \"" + reply.GetVariableNameString() + "\" was wrong.");
-			throw(exc);
-		}
+			throw rfims_exception("the reply to the command to get the current value of the variable was wrong.");
 		else if( reply.GetValue()<(0.9*value) || reply.GetValue()>(1.1*value) )
 		{
 			std::ostringstream oss;
-			oss << "the reply to the command to get the current value of the \"" + reply.GetVariableNameString() + "\" stated the value " << reply.GetValue() << " which is different to the one which was used to configure it, " << value << '.';
+			oss << "the reply to the command to get the current value of the variable stated the value " << reply.GetValue() << " which is different to the one which was used to configure it, " << value << '.';
 			rfims_exception exc( oss.str() );
 			throw(exc);
 		}
@@ -561,7 +552,7 @@ void SpectranConfigurator::CheckApproxEqual(const SpecVariable variable, float &
 	}
 	catch(rfims_exception & exc)
 	{
-		exc.Append("the checking of the configured variable \"" + reply.GetVariableNameString() + "\" failed.");
+		exc.Prepend("the checking of the configured Spectran variable \"" + reply.GetVariableNameString() + "\" failed");
 		throw;
 	}
 }
@@ -648,7 +639,7 @@ BandParameters SpectranConfigurator::ConfigureNextBand()
 		}
 		catch(rfims_exception & exc)
 		{
-			if( ++numOfErrors < 5 )
+			if( ++numOfErrors < 3 )
 			{
 				interface.Purge();
 				usleep(100000); //100ms

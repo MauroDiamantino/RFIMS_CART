@@ -223,7 +223,7 @@ void SpectranInterface::ResetSweep()
 	}
 	catch(rfims_exception & exc)
 	{
-		exc.Prepend("the command to reset the current sweep failed");
+		exc.Prepend("the Spectran command to reset the current sweep failed");
 		throw;
 	}
 }
@@ -247,7 +247,7 @@ void SpectranInterface::EnableSweep()
 	}
 	catch(rfims_exception & exc)
 	{
-		exc.Prepend("the enabling of the sending of measurements via USB failed");
+		exc.Prepend("the Spectran command to enable the sending of measurements via USB failed");
 		throw;
 	}
 
@@ -291,7 +291,7 @@ void SpectranInterface::DisableSweep()
 			}
 			else
 			{
-				exc.Prepend("the disabling of the sending of measurements via USB failed");
+				exc.Prepend("the Spectran command to disable the sending of measurements via USB failed");
 				throw;
 			}
 		}
@@ -321,7 +321,7 @@ void SpectranInterface::SoftReset()
 
 	ftStatus=FT_ResetDevice(ftHandle);
 	if(ftStatus!=FT_OK)
-		throw rfims_exception("the USB device could not be restarted.");
+		throw rfims_exception("the Spectran device could not be restarted.");
 
 	sleep(3);
 }

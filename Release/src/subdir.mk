@@ -18,7 +18,9 @@ CPP_SRCS += \
 ../src/SpectranInterface.cpp \
 ../src/SweepBuilder.cpp \
 ../src/TimeData.cpp \
-../src/gnuplot_i.cpp 
+../src/TopLevel.cpp \
+../src/gnuplot_i.cpp \
+../src/main.cpp 
 
 OBJS += \
 ./src/AntennaPositioner.o \
@@ -35,7 +37,9 @@ OBJS += \
 ./src/SpectranInterface.o \
 ./src/SweepBuilder.o \
 ./src/TimeData.o \
-./src/gnuplot_i.o 
+./src/TopLevel.o \
+./src/gnuplot_i.o \
+./src/main.o 
 
 CPP_DEPS += \
 ./src/AntennaPositioner.d \
@@ -52,7 +56,9 @@ CPP_DEPS += \
 ./src/SpectranInterface.d \
 ./src/SweepBuilder.d \
 ./src/TimeData.d \
-./src/gnuplot_i.d 
+./src/TopLevel.d \
+./src/gnuplot_i.d \
+./src/main.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
