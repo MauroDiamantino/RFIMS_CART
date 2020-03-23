@@ -259,7 +259,7 @@ public:
 };
 
 
-// An enumeration which contains the possible states of the antenna polarization: HORIZONTAL, VERTICAL or UNKNOWN.
+//! An enumeration which contains the possible states of the antenna polarization: HORIZONTAL, VERTICAL or UNKNOWN.
 enum Polarization : char { HORIZONTAL=0, VERTICAL=1, UNKNOWN };
 
 

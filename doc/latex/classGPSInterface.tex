@@ -18,55 +18,119 @@ The class {\itshape G\+P\+S\+Interace} is intended to establish the communicatio
 \begin{DoxyCompactList}\small\item\em The \hyperlink{classGPSInterface}{G\+P\+S\+Interface} class\textquotesingle{} destructor. \end{DoxyCompactList}\item 
 void \hyperlink{classGPSInterface_ac4a2712c98235f5ca2d826525180840b}{Initialize} ()
 \begin{DoxyCompactList}\small\item\em This method is intended to try the communication with the Aaronia G\+PS receiver and configure the device. \end{DoxyCompactList}\item 
-unsigned int \hyperlink{classGPSInterface_a3f92ed959a1ea60258e48ca7c379aec1}{Available} ()
-\begin{DoxyCompactList}\small\item\em This method returns the number of bytes in the input buffer. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classGPSInterface_acfbd1398a99916c1009b0ac00098ca67}\label{classGPSInterface_acfbd1398a99916c1009b0ac00098ca67}} 
-void \hyperlink{classGPSInterface_acfbd1398a99916c1009b0ac00098ca67}{Read\+One\+Data\+Set} ()
-\begin{DoxyCompactList}\small\item\em This method send a command to get just one data set (G\+PS and sensors data) and it updates the class attributes with that data set. \end{DoxyCompactList}\item 
+void \hyperlink{classGPSInterface_a9082fdd405532c59d4f085e62edc8ad7}{Enable\+Streaming} ()
+\begin{DoxyCompactList}\small\item\em This method is intended to enable the streaming of data from the G\+PS receiver. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classGPSInterface_a663c36374cc097040cb8945a3c25b190}\label{classGPSInterface_a663c36374cc097040cb8945a3c25b190}} 
 void \hyperlink{classGPSInterface_a663c36374cc097040cb8945a3c25b190}{Disable\+Streaming} ()
 \begin{DoxyCompactList}\small\item\em This method is intended to disable the data streaming from the Aaronia G\+PS receiver. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{classGPSInterface_a698c9b38eaaa36fef1abcbc19614e2ad}\label{classGPSInterface_a698c9b38eaaa36fef1abcbc19614e2ad}} 
 void \hyperlink{classGPSInterface_a698c9b38eaaa36fef1abcbc19614e2ad}{Purge} ()
 \begin{DoxyCompactList}\small\item\em A method intended to purge the input and output buffers of the U\+SB interface. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classGPSInterface_a6ca2cb996a9ed3c6cd436491c56aab18}\label{classGPSInterface_a6ca2cb996a9ed3c6cd436491c56aab18}} 
-const \hyperlink{structTimeData}{Time\+Data} \& \hyperlink{classGPSInterface_a6ca2cb996a9ed3c6cd436491c56aab18}{Get\+Time\+Data} () const
+\mbox{\Hypertarget{classGPSInterface_a7294a8a32b9ed2f10c5eaae3cf289995}\label{classGPSInterface_a7294a8a32b9ed2f10c5eaae3cf289995}} 
+\hyperlink{structTimeData}{Time\+Data} \hyperlink{classGPSInterface_a7294a8a32b9ed2f10c5eaae3cf289995}{Update\+Time\+Data} ()
+\begin{DoxyCompactList}\small\item\em A method which reads the corresponding data reply to update the time data and returns it. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classGPSInterface_a3eab2087c81b2847d08f6d2d1143ebf9}\label{classGPSInterface_a3eab2087c81b2847d08f6d2d1143ebf9}} 
+\hyperlink{structData3D}{Data3D} \hyperlink{classGPSInterface_a3eab2087c81b2847d08f6d2d1143ebf9}{Update\+Gyro\+Data} ()
+\begin{DoxyCompactList}\small\item\em A method which reads the corresponding data reply to update the gyroscope data and returns them. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classGPSInterface_aa0dcab52fb85346bdac3037d042da7ff}\label{classGPSInterface_aa0dcab52fb85346bdac3037d042da7ff}} 
+\hyperlink{structData3D}{Data3D} \hyperlink{classGPSInterface_aa0dcab52fb85346bdac3037d042da7ff}{Update\+Compass\+Data} ()
+\begin{DoxyCompactList}\small\item\em A method which reads the corresponding data reply to update the compass data and returns them. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classGPSInterface_ac80f02467033a37c5ed61317ec03fc6a}\label{classGPSInterface_ac80f02467033a37c5ed61317ec03fc6a}} 
+\hyperlink{structData3D}{Data3D} \hyperlink{classGPSInterface_ac80f02467033a37c5ed61317ec03fc6a}{Update\+Acceler\+Data} ()
+\begin{DoxyCompactList}\small\item\em A method which reads the corresponding data reply to update the accelerometer data and returns them. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classGPSInterface_a31cc076fd378b133a8549644f0bc647d}\label{classGPSInterface_a31cc076fd378b133a8549644f0bc647d}} 
+double \hyperlink{classGPSInterface_a31cc076fd378b133a8549644f0bc647d}{Update\+Yaw} ()
+\begin{DoxyCompactList}\small\item\em A method which reads the corresponding data replies to update the yaw angle and returns it. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classGPSInterface_a1ecdea88151717981ee50935aab30b90}\label{classGPSInterface_a1ecdea88151717981ee50935aab30b90}} 
+double \hyperlink{classGPSInterface_a1ecdea88151717981ee50935aab30b90}{Update\+Roll} ()
+\begin{DoxyCompactList}\small\item\em A method which reads the corresponding data replies to update the roll angle and returns it. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classGPSInterface_adf915f785dec180e91766fb3900542c0}\label{classGPSInterface_adf915f785dec180e91766fb3900542c0}} 
+double \hyperlink{classGPSInterface_adf915f785dec180e91766fb3900542c0}{Update\+Pitch} ()
+\begin{DoxyCompactList}\small\item\em A method which reads the corresponding data replies to update the pitch angle and returns it. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classGPSInterface_a756ac8b2cbe6d206089f8e5be7bc844a}\label{classGPSInterface_a756ac8b2cbe6d206089f8e5be7bc844a}} 
+void \hyperlink{classGPSInterface_a756ac8b2cbe6d206089f8e5be7bc844a}{Update\+Press\+And\+Elevat} ()
+\begin{DoxyCompactList}\small\item\em A method which reads the corresponding data reply to update the pressure and the pressure-\/based elevation. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classGPSInterface_a602aac740af9b1a98a977572be09a657}\label{classGPSInterface_a602aac740af9b1a98a977572be09a657}} 
+unsigned int \hyperlink{classGPSInterface_a602aac740af9b1a98a977572be09a657}{Update\+Num\+Of\+Satellites} ()
+\begin{DoxyCompactList}\small\item\em A method which reads the corresponding data reply (G\+P\+G\+GA reply) to update the number of satellites and returns it. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classGPSInterface_a4feebd6ac12f24ff93fea932e5272ae8}\label{classGPSInterface_a4feebd6ac12f24ff93fea932e5272ae8}} 
+void \hyperlink{classGPSInterface_a4feebd6ac12f24ff93fea932e5272ae8}{Update\+All} ()
+\begin{DoxyCompactList}\small\item\em A method which reads all data replies to update all attributes. \end{DoxyCompactList}\item 
+bool \hyperlink{classGPSInterface_af2656b318d0476d12067861d2477df52}{New\+Time\+Data} () const
+\begin{DoxyCompactList}\small\item\em A method which allows to know if there are new time data. \end{DoxyCompactList}\item 
+bool \hyperlink{classGPSInterface_af09baa1ae4d3b7618272d1c5bfbc5bd6}{New\+Coordinates} () const
+\begin{DoxyCompactList}\small\item\em A method which allows to know if there are new G\+PS coordinates. \end{DoxyCompactList}\item 
+bool \hyperlink{classGPSInterface_af4bce28d69aae9fe5d256ad6ec35cd9d}{New\+Num\+Of\+Satellites} () const
+\begin{DoxyCompactList}\small\item\em A method which allows to know if there is a new value of the number of satellites. \end{DoxyCompactList}\item 
+bool \hyperlink{classGPSInterface_a9d8395626efc9a191ff2635c486dbd56}{New\+G\+P\+S\+Elevation} () const
+\begin{DoxyCompactList}\small\item\em A method which allows to know if there is a new value of the G\+P\+S-\/based elevation. \end{DoxyCompactList}\item 
+bool \hyperlink{classGPSInterface_a009d3be64d7b6fbc26f3afc0e6b5e364}{New\+Gyro\+Data} () const
+\begin{DoxyCompactList}\small\item\em A method which allows to know if there are new gyroscope data. \end{DoxyCompactList}\item 
+bool \hyperlink{classGPSInterface_a4ced63a896cdadd2c49dab6beb0502a5}{New\+Compass\+Data} () const
+\begin{DoxyCompactList}\small\item\em A method which allows to know if there are new compass data. \end{DoxyCompactList}\item 
+bool \hyperlink{classGPSInterface_aa8f9b0517efbb5566a0a9220f23dd07a}{New\+Acceler\+Data} () const
+\begin{DoxyCompactList}\small\item\em A method which allows to know if there are new accelerometer data. \end{DoxyCompactList}\item 
+bool \hyperlink{classGPSInterface_a88d33d42e29b20e62619fc5c217868ae}{New\+Pressure} () const
+\begin{DoxyCompactList}\small\item\em A method which allows to know if there is a new value of pressure. \end{DoxyCompactList}\item 
+bool \hyperlink{classGPSInterface_afdd55479e220aa489095de6034f644c7}{New\+Yaw} () const
+\begin{DoxyCompactList}\small\item\em A method which allows to know if there is a new value of pressure. \end{DoxyCompactList}\item 
+bool \hyperlink{classGPSInterface_a89f1f28d2effdc31de745b7496e6f09a}{New\+Roll} () const
+\begin{DoxyCompactList}\small\item\em A method which allows to know if there is a new value of the roll angle. \end{DoxyCompactList}\item 
+bool \hyperlink{classGPSInterface_ab0f5da64a7320e246bc49fa869f498f5}{New\+Pitch} () const
+\begin{DoxyCompactList}\small\item\em A method which allows to know if there is a new value of the pitch angle. \end{DoxyCompactList}\item 
+bool \hyperlink{classGPSInterface_a5972705822baff825ef090a99b215f55}{New\+G\+P\+S\+Data} () const
+\begin{DoxyCompactList}\small\item\em A method which allows to know if there are new G\+PS data. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classGPSInterface_acf5b6366242ce4828ba13d13f692b744}\label{classGPSInterface_acf5b6366242ce4828ba13d13f692b744}} 
+const \hyperlink{structTimeData}{Time\+Data} \& \hyperlink{classGPSInterface_acf5b6366242ce4828ba13d13f692b744}{Get\+Time\+Data} ()
 \begin{DoxyCompactList}\small\item\em This method returns the time data (date and time) which was received from the G\+PS satellites. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classGPSInterface_a9c827a6ce3078c5e748105019b75e0e0}\label{classGPSInterface_a9c827a6ce3078c5e748105019b75e0e0}} 
-const \hyperlink{structGPSCoordinates}{G\+P\+S\+Coordinates} \& \hyperlink{classGPSInterface_a9c827a6ce3078c5e748105019b75e0e0}{Get\+Coordinates} () const
+\mbox{\Hypertarget{classGPSInterface_a21b7fb470d3e3641f9456a249e7df492}\label{classGPSInterface_a21b7fb470d3e3641f9456a249e7df492}} 
+const \hyperlink{structGPSCoordinates}{G\+P\+S\+Coordinates} \& \hyperlink{classGPSInterface_a21b7fb470d3e3641f9456a249e7df492}{Get\+Coordinates} ()
 \begin{DoxyCompactList}\small\item\em This method returns the G\+PS coordinates. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classGPSInterface_ab07cafce284ff50540a2be5b00410e34}\label{classGPSInterface_ab07cafce284ff50540a2be5b00410e34}} 
-unsigned int \hyperlink{classGPSInterface_ab07cafce284ff50540a2be5b00410e34}{Get\+Num\+Of\+Satellites} () const
+\mbox{\Hypertarget{classGPSInterface_acfacca3208f482716bf3408f9ba04aff}\label{classGPSInterface_acfacca3208f482716bf3408f9ba04aff}} 
+unsigned int \hyperlink{classGPSInterface_acfacca3208f482716bf3408f9ba04aff}{Get\+Num\+Of\+Satellites} ()
 \begin{DoxyCompactList}\small\item\em This method returns the current number of satellites which the G\+PS receiver is connected with. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classGPSInterface_ac70e16c9a95f440bc8ff58429b0db42a}\label{classGPSInterface_ac70e16c9a95f440bc8ff58429b0db42a}} 
-float \hyperlink{classGPSInterface_ac70e16c9a95f440bc8ff58429b0db42a}{Get\+G\+P\+S\+Elevation} () const
+\mbox{\Hypertarget{classGPSInterface_a8c71f18097c6486574ae1e5ef84aeb4e}\label{classGPSInterface_a8c71f18097c6486574ae1e5ef84aeb4e}} 
+float \hyperlink{classGPSInterface_a8c71f18097c6486574ae1e5ef84aeb4e}{Get\+G\+P\+S\+Elevation} ()
 \begin{DoxyCompactList}\small\item\em This method returns the elevation of the G\+PS receiver over the sea level, measured in meters (m) and based on G\+PS data. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classGPSInterface_ac3672cc76506fe6ed1ee4824a57c0857}\label{classGPSInterface_ac3672cc76506fe6ed1ee4824a57c0857}} 
-const \hyperlink{structData3D}{Data3D} \& \hyperlink{classGPSInterface_ac3672cc76506fe6ed1ee4824a57c0857}{Get\+Gyro\+Data} () const
+\mbox{\Hypertarget{classGPSInterface_a808e10398c33792afd17a0868bc37a31}\label{classGPSInterface_a808e10398c33792afd17a0868bc37a31}} 
+const \hyperlink{structData3D}{Data3D} \& \hyperlink{classGPSInterface_a808e10398c33792afd17a0868bc37a31}{Get\+Gyro\+Data} ()
 \begin{DoxyCompactList}\small\item\em This method returns the 3D gyroscope data. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classGPSInterface_aa0032f67cd64db9ddeee1b275025b417}\label{classGPSInterface_aa0032f67cd64db9ddeee1b275025b417}} 
-const \hyperlink{structData3D}{Data3D} \& \hyperlink{classGPSInterface_aa0032f67cd64db9ddeee1b275025b417}{Get\+Compass\+Data} () const
+\mbox{\Hypertarget{classGPSInterface_a128eca920d581fafa3a497db0a385c31}\label{classGPSInterface_a128eca920d581fafa3a497db0a385c31}} 
+const \hyperlink{structData3D}{Data3D} \& \hyperlink{classGPSInterface_a128eca920d581fafa3a497db0a385c31}{Get\+Compass\+Data} ()
 \begin{DoxyCompactList}\small\item\em This method returns the 3D compass data. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classGPSInterface_a675644b668df300d19afaefff9849886}\label{classGPSInterface_a675644b668df300d19afaefff9849886}} 
-const \hyperlink{structData3D}{Data3D} \& \hyperlink{classGPSInterface_a675644b668df300d19afaefff9849886}{Get\+Acceler\+Data} () const
+\mbox{\Hypertarget{classGPSInterface_a550dfc4020abe8de5d64802a15404fd2}\label{classGPSInterface_a550dfc4020abe8de5d64802a15404fd2}} 
+const \hyperlink{structData3D}{Data3D} \& \hyperlink{classGPSInterface_a550dfc4020abe8de5d64802a15404fd2}{Get\+Acceler\+Data} ()
 \begin{DoxyCompactList}\small\item\em This method returns the 3D accelerometer data. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classGPSInterface_a63ed7a32797c2fc7557bfdfdb74c43ed}\label{classGPSInterface_a63ed7a32797c2fc7557bfdfdb74c43ed}} 
-float \hyperlink{classGPSInterface_a63ed7a32797c2fc7557bfdfdb74c43ed}{Get\+Pressure} () const
+\mbox{\Hypertarget{classGPSInterface_ac0b9cef2de5103ee5ada0154cda9b326}\label{classGPSInterface_ac0b9cef2de5103ee5ada0154cda9b326}} 
+float \hyperlink{classGPSInterface_ac0b9cef2de5103ee5ada0154cda9b326}{Get\+Pressure} ()
 \begin{DoxyCompactList}\small\item\em This method returns the ambient temperature, measured in hectopascal (h\+Pa). \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classGPSInterface_aa6c34c4c04bea958c4ad15a2cd728e5e}\label{classGPSInterface_aa6c34c4c04bea958c4ad15a2cd728e5e}} 
-float \hyperlink{classGPSInterface_aa6c34c4c04bea958c4ad15a2cd728e5e}{Get\+Press\+Elevation} () const
+\mbox{\Hypertarget{classGPSInterface_a543f9df860565afa6ebe8c280cce1ba9}\label{classGPSInterface_a543f9df860565afa6ebe8c280cce1ba9}} 
+float \hyperlink{classGPSInterface_a543f9df860565afa6ebe8c280cce1ba9}{Get\+Press\+Elevation} ()
 \begin{DoxyCompactList}\small\item\em This method returns the elevation of the G\+PS receiver over the sea level, measured in meters (m) and based on the ambient pressure. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classGPSInterface_a5443691a26eb05587190cf631ffbcec3}\label{classGPSInterface_a5443691a26eb05587190cf631ffbcec3}} 
-double \hyperlink{classGPSInterface_a5443691a26eb05587190cf631ffbcec3}{Get\+Yaw} () const
+\mbox{\Hypertarget{classGPSInterface_afbb49a7fc74d393a41d447bfc4dbeed7}\label{classGPSInterface_afbb49a7fc74d393a41d447bfc4dbeed7}} 
+double \hyperlink{classGPSInterface_afbb49a7fc74d393a41d447bfc4dbeed7}{Get\+Yaw} ()
 \begin{DoxyCompactList}\small\item\em This method returns the yaw angle, measured in degrees and whose range is 0 to 359. North corresponds to 0°, east to 90°, south to 180° and west to 270°. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classGPSInterface_a5cb902ccc2165294b4dacc7f660dcb5a}\label{classGPSInterface_a5cb902ccc2165294b4dacc7f660dcb5a}} 
-double \hyperlink{classGPSInterface_a5cb902ccc2165294b4dacc7f660dcb5a}{Get\+Roll} () const
+\mbox{\Hypertarget{classGPSInterface_ae9f9c8e37b88f966ba1f12a52fcd5a16}\label{classGPSInterface_ae9f9c8e37b88f966ba1f12a52fcd5a16}} 
+double \hyperlink{classGPSInterface_ae9f9c8e37b88f966ba1f12a52fcd5a16}{Get\+Roll} ()
 \begin{DoxyCompactList}\small\item\em This method returns the roll angle, measured in degrees and whose range is -\/180 to 180. This angle is zero if the device is put on horizontal surface, positive if it turns right and negative if it turns left. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classGPSInterface_a27f5655d78068177d901933528f3ac6f}\label{classGPSInterface_a27f5655d78068177d901933528f3ac6f}} 
-double \hyperlink{classGPSInterface_a27f5655d78068177d901933528f3ac6f}{Get\+Pitch} () const
+\mbox{\Hypertarget{classGPSInterface_afbea020a31dde632a8e7c6f1595eedf6}\label{classGPSInterface_afbea020a31dde632a8e7c6f1595eedf6}} 
+double \hyperlink{classGPSInterface_afbea020a31dde632a8e7c6f1595eedf6}{Get\+Pitch} ()
 \begin{DoxyCompactList}\small\item\em This method returns the pitch angle, measured in degrees and whose range is -\/180 to 180. This angle is zero if the device is put on horizontal surface, positive if the elevation is over the surface and negative if the elevation is below the surface. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classGPSInterface_a460c65aca30831d73e2cad9c57856fd7}\label{classGPSInterface_a460c65aca30831d73e2cad9c57856fd7}} 
+unsigned int \hyperlink{classGPSInterface_a460c65aca30831d73e2cad9c57856fd7}{Get\+Data\+Rate} () const
+\begin{DoxyCompactList}\small\item\em This method returns the data rate when the streaming is enabled. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{classGPSInterface_a568715247cbcfa261d68a030df7bd1ef}\label{classGPSInterface_a568715247cbcfa261d68a030df7bd1ef}} 
 bool \hyperlink{classGPSInterface_a568715247cbcfa261d68a030df7bd1ef}{Is\+Connected} () const
-\begin{DoxyCompactList}\small\item\em This method states if the communication with the Aaronia G\+PS receiver has been initialized. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em This method states if the communication with the Aaronia G\+PS receiver has been initialized. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classGPSInterface_a2c67fa6d56d0c422f92f29f5970fa57b}\label{classGPSInterface_a2c67fa6d56d0c422f92f29f5970fa57b}} 
+bool \hyperlink{classGPSInterface_a2c67fa6d56d0c422f92f29f5970fa57b}{Is\+Streaming\+Enabled} () const
+\begin{DoxyCompactList}\small\item\em This method states if the data streaming is enabled. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classGPSInterface_a95d1d8f71a2e0f4de76627a6a2cab84a}\label{classGPSInterface_a95d1d8f71a2e0f4de76627a6a2cab84a}} 
+void $\ast$ \hyperlink{classGPSInterface_a95d1d8f71a2e0f4de76627a6a2cab84a}{Streaming\+Thread} (void $\ast$arg)
+\begin{DoxyCompactList}\small\item\em The function which is executed by the thread which reads each reply of the G\+PS Logger and extract the data from them. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
@@ -96,27 +160,17 @@ The \hyperlink{classGPSInterface}{G\+P\+S\+Interface} class\textquotesingle{} de
 The destructor has to make sure that the data streaming and the data logging into the micro\+SD card are stopped, and then it closes the communication with the Aaronia G\+PS receiver. 
 
 \subsection{Member Function Documentation}
-\mbox{\Hypertarget{classGPSInterface_a3f92ed959a1ea60258e48ca7c379aec1}\label{classGPSInterface_a3f92ed959a1ea60258e48ca7c379aec1}} 
-\index{G\+P\+S\+Interface@{G\+P\+S\+Interface}!Available@{Available}}
-\index{Available@{Available}!G\+P\+S\+Interface@{G\+P\+S\+Interface}}
-\subsubsection{\texorpdfstring{Available()}{Available()}}
-{\footnotesize\ttfamily unsigned int G\+P\+S\+Interface\+::\+Available (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+\mbox{\Hypertarget{classGPSInterface_a9082fdd405532c59d4f085e62edc8ad7}\label{classGPSInterface_a9082fdd405532c59d4f085e62edc8ad7}} 
+\index{G\+P\+S\+Interface@{G\+P\+S\+Interface}!Enable\+Streaming@{Enable\+Streaming}}
+\index{Enable\+Streaming@{Enable\+Streaming}!G\+P\+S\+Interface@{G\+P\+S\+Interface}}
+\subsubsection{\texorpdfstring{Enable\+Streaming()}{EnableStreaming()}}
+{\footnotesize\ttfamily void G\+P\+S\+Interface\+::\+Enable\+Streaming (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
 
 
-This method returns the number of bytes in the input buffer. 
+This method is intended to enable the streaming of data from the G\+PS receiver. 
 
-It uses the function F\+T\+\_\+\+Get\+Queue\+Status() of the D2\+XX library. \mbox{\Hypertarget{classGPSInterface_a663c36374cc097040cb8945a3c25b190}\label{classGPSInterface_a663c36374cc097040cb8945a3c25b190}} 
-\index{G\+P\+S\+Interface@{G\+P\+S\+Interface}!Disable\+Streaming@{Disable\+Streaming}}
-\index{Disable\+Streaming@{Disable\+Streaming}!G\+P\+S\+Interface@{G\+P\+S\+Interface}}
-\subsubsection{\texorpdfstring{Disable\+Streaming()}{DisableStreaming()}}
-{\footnotesize\ttfamily void G\+P\+S\+Interface\+::\+Disable\+Streaming (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
-
-
-
-This method is intended to disable the data streaming from the Aaronia G\+PS receiver. 
-
-! This method is intended to enable the streaming of data from the G\+PS receiver. $\ast$! After the streaming has been enable the method Capture\+Stream\+Data() must be used to get the stream data ! This method is intended to capture the continuous flow of data (stream) which sent from the Aaronia G\+PS receiver (when the streming is enabled). $\ast$! When this method is called the G\+PS interface reads one set of data from the U\+SB interface and calls the method \mbox{\Hypertarget{classGPSInterface_ac4a2712c98235f5ca2d826525180840b}\label{classGPSInterface_ac4a2712c98235f5ca2d826525180840b}} 
+After the streaming has been enable the method Capture\+Stream\+Data() must be used to get the stream data and update the class attributes from them. \mbox{\Hypertarget{classGPSInterface_ac4a2712c98235f5ca2d826525180840b}\label{classGPSInterface_ac4a2712c98235f5ca2d826525180840b}} 
 \index{G\+P\+S\+Interface@{G\+P\+S\+Interface}!Initialize@{Initialize}}
 \index{Initialize@{Initialize}!G\+P\+S\+Interface@{G\+P\+S\+Interface}}
 \subsubsection{\texorpdfstring{Initialize()}{Initialize()}}
@@ -126,7 +180,127 @@ This method is intended to disable the data streaming from the Aaronia G\+PS rec
 
 This method is intended to try the communication with the Aaronia G\+PS receiver and configure the device. 
 
-First, this method tries the communication with an ID command, and if the reply is right it shows the hardware version, firmware version and protocol version and then it disables the data streaming and the data logging into the micro\+SD card. After, the G\+PS interface set up the following variables\+: data rate of streaming, accelerometer range and bandwidth of the average filter of the gyroscope sensor. 
+First, this method tries the communication with an ID command, and if the reply is right it shows the hardware version, firmware version and protocol version and then it disables the data streaming and the data logging into the micro\+SD card. After, the G\+PS interface set up the following variables\+: data rate of streaming, accelerometer range and bandwidth of the average filter of the gyroscope sensor. \mbox{\Hypertarget{classGPSInterface_aa8f9b0517efbb5566a0a9220f23dd07a}\label{classGPSInterface_aa8f9b0517efbb5566a0a9220f23dd07a}} 
+\index{G\+P\+S\+Interface@{G\+P\+S\+Interface}!New\+Acceler\+Data@{New\+Acceler\+Data}}
+\index{New\+Acceler\+Data@{New\+Acceler\+Data}!G\+P\+S\+Interface@{G\+P\+S\+Interface}}
+\subsubsection{\texorpdfstring{New\+Acceler\+Data()}{NewAccelerData()}}
+{\footnotesize\ttfamily bool G\+P\+S\+Interface\+::\+New\+Acceler\+Data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+A method which allows to know if there are new accelerometer data. 
+
+This method is mainly intended to be used with the streaming option. When a P\+A\+AG,D\+A\+TA,T reply is received and the accelerometer data are extracted from it, it is considered these data are new. Once the accelerometer data are got with the method \hyperlink{classGPSInterface_a550dfc4020abe8de5d64802a15404fd2}{Get\+Acceler\+Data()}, then they are considered old data. \mbox{\Hypertarget{classGPSInterface_a4ced63a896cdadd2c49dab6beb0502a5}\label{classGPSInterface_a4ced63a896cdadd2c49dab6beb0502a5}} 
+\index{G\+P\+S\+Interface@{G\+P\+S\+Interface}!New\+Compass\+Data@{New\+Compass\+Data}}
+\index{New\+Compass\+Data@{New\+Compass\+Data}!G\+P\+S\+Interface@{G\+P\+S\+Interface}}
+\subsubsection{\texorpdfstring{New\+Compass\+Data()}{NewCompassData()}}
+{\footnotesize\ttfamily bool G\+P\+S\+Interface\+::\+New\+Compass\+Data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+A method which allows to know if there are new compass data. 
+
+This method is mainly intended to be used with the streaming option. When a P\+A\+AG,D\+A\+TA,C reply is received and the compass data are extracted from it, it is considered these data are new. Once the compass data are got with the method \hyperlink{classGPSInterface_a128eca920d581fafa3a497db0a385c31}{Get\+Compass\+Data()}, then they are considered old data. \mbox{\Hypertarget{classGPSInterface_af09baa1ae4d3b7618272d1c5bfbc5bd6}\label{classGPSInterface_af09baa1ae4d3b7618272d1c5bfbc5bd6}} 
+\index{G\+P\+S\+Interface@{G\+P\+S\+Interface}!New\+Coordinates@{New\+Coordinates}}
+\index{New\+Coordinates@{New\+Coordinates}!G\+P\+S\+Interface@{G\+P\+S\+Interface}}
+\subsubsection{\texorpdfstring{New\+Coordinates()}{NewCoordinates()}}
+{\footnotesize\ttfamily bool G\+P\+S\+Interface\+::\+New\+Coordinates (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+A method which allows to know if there are new G\+PS coordinates. 
+
+This method is mainly intended to be used with the streaming option. When a G\+P\+R\+MC reply is received and the coordinates are extracted from it, it is considered the coordinates are new data. Once the G\+PS coordinates are got with the method \hyperlink{classGPSInterface_a21b7fb470d3e3641f9456a249e7df492}{Get\+Coordinates()}, then they are considered old data. \mbox{\Hypertarget{classGPSInterface_a5972705822baff825ef090a99b215f55}\label{classGPSInterface_a5972705822baff825ef090a99b215f55}} 
+\index{G\+P\+S\+Interface@{G\+P\+S\+Interface}!New\+G\+P\+S\+Data@{New\+G\+P\+S\+Data}}
+\index{New\+G\+P\+S\+Data@{New\+G\+P\+S\+Data}!G\+P\+S\+Interface@{G\+P\+S\+Interface}}
+\subsubsection{\texorpdfstring{New\+G\+P\+S\+Data()}{NewGPSData()}}
+{\footnotesize\ttfamily bool G\+P\+S\+Interface\+::\+New\+G\+P\+S\+Data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+A method which allows to know if there are new G\+PS data. 
+
+This method is mainly intended to be used with the streaming option. When the corresponding replies, G\+P\+R\+MC and G\+P\+G\+GA, are received and the G\+PS data (time, coordinates, etc.) are extracted from them, it is considered these data are new. Once these data are got with the corresponding methods, then they are considered old data. \mbox{\Hypertarget{classGPSInterface_a9d8395626efc9a191ff2635c486dbd56}\label{classGPSInterface_a9d8395626efc9a191ff2635c486dbd56}} 
+\index{G\+P\+S\+Interface@{G\+P\+S\+Interface}!New\+G\+P\+S\+Elevation@{New\+G\+P\+S\+Elevation}}
+\index{New\+G\+P\+S\+Elevation@{New\+G\+P\+S\+Elevation}!G\+P\+S\+Interface@{G\+P\+S\+Interface}}
+\subsubsection{\texorpdfstring{New\+G\+P\+S\+Elevation()}{NewGPSElevation()}}
+{\footnotesize\ttfamily bool G\+P\+S\+Interface\+::\+New\+G\+P\+S\+Elevation (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+A method which allows to know if there is a new value of the G\+P\+S-\/based elevation. 
+
+This method is mainly intended to be used with the streaming option. When a G\+P\+G\+GA reply is received and the elevation is extracted from it, it is considered this number as a new data. Once the G\+P\+S-\/based elevation is got with the method \hyperlink{classGPSInterface_a8c71f18097c6486574ae1e5ef84aeb4e}{Get\+G\+P\+S\+Elevation()}, then it is considered old data. \mbox{\Hypertarget{classGPSInterface_a009d3be64d7b6fbc26f3afc0e6b5e364}\label{classGPSInterface_a009d3be64d7b6fbc26f3afc0e6b5e364}} 
+\index{G\+P\+S\+Interface@{G\+P\+S\+Interface}!New\+Gyro\+Data@{New\+Gyro\+Data}}
+\index{New\+Gyro\+Data@{New\+Gyro\+Data}!G\+P\+S\+Interface@{G\+P\+S\+Interface}}
+\subsubsection{\texorpdfstring{New\+Gyro\+Data()}{NewGyroData()}}
+{\footnotesize\ttfamily bool G\+P\+S\+Interface\+::\+New\+Gyro\+Data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+A method which allows to know if there are new gyroscope data. 
+
+This method is mainly intended to be used with the streaming option. When a P\+A\+AG,D\+A\+TA,G reply is received and the gyroscope data are extracted from it, it is considered these data are new. Once the gyroscope data are got with the method \hyperlink{classGPSInterface_a808e10398c33792afd17a0868bc37a31}{Get\+Gyro\+Data()}, then they are considered old data. \mbox{\Hypertarget{classGPSInterface_af4bce28d69aae9fe5d256ad6ec35cd9d}\label{classGPSInterface_af4bce28d69aae9fe5d256ad6ec35cd9d}} 
+\index{G\+P\+S\+Interface@{G\+P\+S\+Interface}!New\+Num\+Of\+Satellites@{New\+Num\+Of\+Satellites}}
+\index{New\+Num\+Of\+Satellites@{New\+Num\+Of\+Satellites}!G\+P\+S\+Interface@{G\+P\+S\+Interface}}
+\subsubsection{\texorpdfstring{New\+Num\+Of\+Satellites()}{NewNumOfSatellites()}}
+{\footnotesize\ttfamily bool G\+P\+S\+Interface\+::\+New\+Num\+Of\+Satellites (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+A method which allows to know if there is a new value of the number of satellites. 
+
+This method is mainly intended to be used with the streaming option. When a G\+P\+G\+GA reply is received and the number of satellites is extracted from it, it is considered this number as a new data. Once the number of satellites is got with the method \hyperlink{classGPSInterface_acfacca3208f482716bf3408f9ba04aff}{Get\+Num\+Of\+Satellites()}, then it is considered old data. \mbox{\Hypertarget{classGPSInterface_ab0f5da64a7320e246bc49fa869f498f5}\label{classGPSInterface_ab0f5da64a7320e246bc49fa869f498f5}} 
+\index{G\+P\+S\+Interface@{G\+P\+S\+Interface}!New\+Pitch@{New\+Pitch}}
+\index{New\+Pitch@{New\+Pitch}!G\+P\+S\+Interface@{G\+P\+S\+Interface}}
+\subsubsection{\texorpdfstring{New\+Pitch()}{NewPitch()}}
+{\footnotesize\ttfamily bool G\+P\+S\+Interface\+::\+New\+Pitch (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+A method which allows to know if there is a new value of the pitch angle. 
+
+This method is mainly intended to be used with the streaming option. When the corresponding replies are received and the pitch angle is calculated from their data, it is considered this value is new. Once this value is got with the method \hyperlink{classGPSInterface_afbea020a31dde632a8e7c6f1595eedf6}{Get\+Pitch()}, then it is considered old data. \mbox{\Hypertarget{classGPSInterface_a88d33d42e29b20e62619fc5c217868ae}\label{classGPSInterface_a88d33d42e29b20e62619fc5c217868ae}} 
+\index{G\+P\+S\+Interface@{G\+P\+S\+Interface}!New\+Pressure@{New\+Pressure}}
+\index{New\+Pressure@{New\+Pressure}!G\+P\+S\+Interface@{G\+P\+S\+Interface}}
+\subsubsection{\texorpdfstring{New\+Pressure()}{NewPressure()}}
+{\footnotesize\ttfamily bool G\+P\+S\+Interface\+::\+New\+Pressure (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+A method which allows to know if there is a new value of pressure. 
+
+This method is mainly intended to be used with the streaming option. When a P\+A\+AG,D\+A\+TA,B reply is received and the pressure is extracted from it, it is considered this data is new. Once the pressure value (or the pressure-\/based elevation) is got with the method \hyperlink{classGPSInterface_ac0b9cef2de5103ee5ada0154cda9b326}{Get\+Pressure()}, then it is considered old data. \mbox{\Hypertarget{classGPSInterface_a89f1f28d2effdc31de745b7496e6f09a}\label{classGPSInterface_a89f1f28d2effdc31de745b7496e6f09a}} 
+\index{G\+P\+S\+Interface@{G\+P\+S\+Interface}!New\+Roll@{New\+Roll}}
+\index{New\+Roll@{New\+Roll}!G\+P\+S\+Interface@{G\+P\+S\+Interface}}
+\subsubsection{\texorpdfstring{New\+Roll()}{NewRoll()}}
+{\footnotesize\ttfamily bool G\+P\+S\+Interface\+::\+New\+Roll (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+A method which allows to know if there is a new value of the roll angle. 
+
+This method is mainly intended to be used with the streaming option. When the corresponding replies are received and the roll angle is calculated from their data, it is considered this value is new. Once this value is got with the method \hyperlink{classGPSInterface_ae9f9c8e37b88f966ba1f12a52fcd5a16}{Get\+Roll()}, then it is considered old data. \mbox{\Hypertarget{classGPSInterface_af2656b318d0476d12067861d2477df52}\label{classGPSInterface_af2656b318d0476d12067861d2477df52}} 
+\index{G\+P\+S\+Interface@{G\+P\+S\+Interface}!New\+Time\+Data@{New\+Time\+Data}}
+\index{New\+Time\+Data@{New\+Time\+Data}!G\+P\+S\+Interface@{G\+P\+S\+Interface}}
+\subsubsection{\texorpdfstring{New\+Time\+Data()}{NewTimeData()}}
+{\footnotesize\ttfamily bool G\+P\+S\+Interface\+::\+New\+Time\+Data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+A method which allows to know if there are new time data. 
+
+This method is mainly intended to be used with the streaming option. When a G\+P\+R\+MC reply is received and the time data are extracted from it, it is considered the time data are new data. Once the time data are got with the method \hyperlink{classGPSInterface_acf5b6366242ce4828ba13d13f692b744}{Get\+Time\+Data()}, then they are considered old data. \mbox{\Hypertarget{classGPSInterface_afdd55479e220aa489095de6034f644c7}\label{classGPSInterface_afdd55479e220aa489095de6034f644c7}} 
+\index{G\+P\+S\+Interface@{G\+P\+S\+Interface}!New\+Yaw@{New\+Yaw}}
+\index{New\+Yaw@{New\+Yaw}!G\+P\+S\+Interface@{G\+P\+S\+Interface}}
+\subsubsection{\texorpdfstring{New\+Yaw()}{NewYaw()}}
+{\footnotesize\ttfamily bool G\+P\+S\+Interface\+::\+New\+Yaw (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+A method which allows to know if there is a new value of pressure. 
+
+This method is mainly intended to be used with the streaming option. When a P\+A\+AG,D\+A\+TA,B reply is received and the pressure is extracted from it, it is considered this data is new. Once the pressure value (or the pressure-\/based elevation) is got with the method \hyperlink{classGPSInterface_ac0b9cef2de5103ee5ada0154cda9b326}{Get\+Pressure()}, then it is considered old data. 
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 

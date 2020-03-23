@@ -18,31 +18,6 @@ Include dependency graph for main.\+cpp\+:\nopagebreak
 \item 
 int \hyperlink{main_8cpp_a0ddf1224851353fc92bfbff6f499fa97}{main} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
 \begin{DoxyCompactList}\small\item\em The main function of the R\+F\+I\+S\+M-\/\+C\+A\+RT software. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\subsection*{Variables}
-\begin{DoxyCompactItemize}
-\item 
-\mbox{\Hypertarget{main_8cpp_a73be6649a1d91070309752a2fbcf5b8a}\label{main_8cpp_a73be6649a1d91070309752a2fbcf5b8a}} 
-bool \hyperlink{main_8cpp_a73be6649a1d91070309752a2fbcf5b8a}{flag\+Cal\+Enabled}
-\begin{DoxyCompactList}\small\item\em The declaration of an external flag which defines if the calibration of the RF front end must be done or not. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{main_8cpp_a20c207881b1f505ca91715905e27bacb}\label{main_8cpp_a20c207881b1f505ca91715905e27bacb}} 
-bool \hyperlink{main_8cpp_a20c207881b1f505ca91715905e27bacb}{flag\+Plot}
-\begin{DoxyCompactList}\small\item\em The declaration of an external flag which defines if the software has to generate plots. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{main_8cpp_a6f3cbd74619175fd2b8580b37587f825}\label{main_8cpp_a6f3cbd74619175fd2b8580b37587f825}} 
-bool \hyperlink{main_8cpp_a6f3cbd74619175fd2b8580b37587f825}{flag\+Infinite\+Loop}
-\begin{DoxyCompactList}\small\item\em The declaration of an external flag which defines if the software has to perform a finite number of measurement cycles or iterate infinitely. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{main_8cpp_a816d4b897ea7e7b008ad3957e2203934}\label{main_8cpp_a816d4b897ea7e7b008ad3957e2203934}} 
-bool \hyperlink{main_8cpp_a816d4b897ea7e7b008ad3957e2203934}{flag\+R\+FI}
-\begin{DoxyCompactList}\small\item\em The declaration of an external flag which defines if the software has to perform \hyperlink{structRFI}{R\+FI} detection or not. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{main_8cpp_a7616186dd32bbd21eb512dfdc580214c}\label{main_8cpp_a7616186dd32bbd21eb512dfdc580214c}} 
-bool \hyperlink{main_8cpp_a7616186dd32bbd21eb512dfdc580214c}{flag\+Upload}
-\begin{DoxyCompactList}\small\item\em The declaration of an external flag which defines if the software has to upload the measurements or not. \end{DoxyCompactList}\item 
-unsigned int \hyperlink{main_8cpp_a4a22fc28d7ca5b183f4a901f4dafd4a6}{num\+Of\+Meas\+Cycles} =0
-\begin{DoxyCompactList}\small\item\em A variable which saves the number of measurements cycles which left to be done. It is used when the user wishes a finite number of measurements cycles. \end{DoxyCompactList}\item 
-\hyperlink{structRFI_a18cfa7d24274bbcd14acc6b513860cb0}{R\+F\+I\+::\+Thresholds\+Norm} \hyperlink{main_8cpp_a5fca012de3aeabad258f4f0fa6877334}{rfi\+Norm} = R\+F\+I\+::\+S\+K\+A\+\_\+\+M\+O\+D\+E1
-\begin{DoxyCompactList}\small\item\em A variable which saves the norm which defines the harmful RF interference levels\+: ska-\/mode1, ska-\/mode2, itu-\/ra769-\/2-\/vlbi. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{main_8cpp_add9d7dd1477d4336f2912fed380aeeea}\label{main_8cpp_add9d7dd1477d4336f2912fed380aeeea}} 
-boost\+::timer\+::cpu\+\_\+timer \hyperlink{main_8cpp_add9d7dd1477d4336f2912fed380aeeea}{timer}
-\begin{DoxyCompactList}\small\item\em A timer which is used to measure the execution time when the number of iterations is finite. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
@@ -81,27 +56,3 @@ The order of the operations which are performed in the main function follows the
 \mbox{\tt in}  & {\em argv} & An array of C strings ({\ttfamily char$\ast$}) where each one is a software\textquotesingle{}s argument. \\
 \hline
 \end{DoxyParams}
-
-
-\subsection{Variable Documentation}
-\mbox{\Hypertarget{main_8cpp_a4a22fc28d7ca5b183f4a901f4dafd4a6}\label{main_8cpp_a4a22fc28d7ca5b183f4a901f4dafd4a6}} 
-\index{main.\+cpp@{main.\+cpp}!num\+Of\+Meas\+Cycles@{num\+Of\+Meas\+Cycles}}
-\index{num\+Of\+Meas\+Cycles@{num\+Of\+Meas\+Cycles}!main.\+cpp@{main.\+cpp}}
-\subsubsection{\texorpdfstring{num\+Of\+Meas\+Cycles}{numOfMeasCycles}}
-{\footnotesize\ttfamily unsigned int num\+Of\+Meas\+Cycles =0}
-
-
-
-A variable which saves the number of measurements cycles which left to be done. It is used when the user wishes a finite number of measurements cycles. 
-
-The declaration of an external variable which stores the number of measurements cycles which left to be done. It is used when the user wishes a finite number of measurements cycles. \mbox{\Hypertarget{main_8cpp_a5fca012de3aeabad258f4f0fa6877334}\label{main_8cpp_a5fca012de3aeabad258f4f0fa6877334}} 
-\index{main.\+cpp@{main.\+cpp}!rfi\+Norm@{rfi\+Norm}}
-\index{rfi\+Norm@{rfi\+Norm}!main.\+cpp@{main.\+cpp}}
-\subsubsection{\texorpdfstring{rfi\+Norm}{rfiNorm}}
-{\footnotesize\ttfamily \hyperlink{structRFI_a18cfa7d24274bbcd14acc6b513860cb0}{R\+F\+I\+::\+Thresholds\+Norm} rfi\+Norm = R\+F\+I\+::\+S\+K\+A\+\_\+\+M\+O\+D\+E1}
-
-
-
-A variable which saves the norm which defines the harmful RF interference levels\+: ska-\/mode1, ska-\/mode2, itu-\/ra769-\/2-\/vlbi. 
-
-The declaration of an external variable which saves the norm which defines the harmful interference levels\+: ska-\/mode1, ska-\/mode2, itu-\/ra769-\/2-\/vlbi. 

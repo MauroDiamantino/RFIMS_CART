@@ -5,7 +5,7 @@ var searchData=
   ['time',['time',['../structData3D.html#a566d9370452a647cceea530cee5bb62a',1,'Data3D']]],
   ['timedata',['TimeData',['../structTimeData.html',1,'TimeData'],['../structFreqValues.html#a4c97a4710c83078f5af5d92f2bedfe61',1,'FreqValues::timeData()'],['../structTimeData.html#a4be51d0cd0dce3b91ce449b6c995a9e9',1,'TimeData::TimeData()'],['../structTimeData.html#af0454b54d768d6b21267b3692dae4d3d',1,'TimeData::TimeData(const TimeData &amp;timeData)']]],
   ['timedata_2ecpp',['TimeData.cpp',['../TimeData_8cpp.html',1,'']]],
-  ['timer',['timer',['../main_8cpp.html#add9d7dd1477d4336f2912fed380aeeea',1,'timer():&#160;main.cpp'],['../TopLevel_8h.html#add9d7dd1477d4336f2912fed380aeeea',1,'timer():&#160;main.cpp']]],
+  ['timer',['timer',['../TopLevel_8h.html#add9d7dd1477d4336f2912fed380aeeea',1,'TopLevel.cpp']]],
   ['toplevel_2eh',['TopLevel.h',['../TopLevel_8h.html',1,'']]],
   ['tries',['TRIES',['../client_8py.html#a1147ca818ea7c198f39540e1bf9ffe00',1,'client']]],
   ['turnbackdays',['TurnBackDays',['../structTimeData.html#ad204062485d50c24aad1d4b41a582bd8',1,'TimeData']]],

@@ -100,6 +100,10 @@ Public Types</h2></td></tr>
  }<tr class="memdesc:a18cfa7d24274bbcd14acc6b513860cb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enumeration which contains the reference documents (recommendations, protocols, etc.) of harmful <a class="el" href="structRFI.html" title="The aim of this structure is to store the data related with the detected RF interference (RFI): frequ...">RFI</a> levels (a.k.a. thresholds): the ITU recommendation RA.769-2, SKA protocol Mode 1, SKA protocol Mode 2. <br /></td></tr>
 </td></tr>
 <tr class="separator:a18cfa7d24274bbcd14acc6b513860cb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_types_structFreqValues"><td colspan="2" onclick="javascript:toggleInherit('pub_types_structFreqValues')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="structFreqValues.html">FreqValues</a></td></tr>
+<tr class="memitem:af93b30b6d2ecdcb55be9810292ed301f inherit pub_types_structFreqValues"><td class="memItemLeft" align="right" valign="top"><a id="af93b30b6d2ecdcb55be9810292ed301f"></a>
+typedef float&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b></td></tr>
+<tr class="separator:af93b30b6d2ecdcb55be9810292ed301f inherit pub_types_structFreqValues"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -141,10 +145,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 <tr class="memitem:a8024942907aaf5fd4aaa49850bbe6cd5 inherit pub_methods_structFreqValues"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structFreqValues.html">FreqValues</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFreqValues.html#a8024942907aaf5fd4aaa49850bbe6cd5">operator+=</a> (const <a class="el" href="structFreqValues.html">FreqValues</a> &amp;rhs)</td></tr>
 <tr class="memdesc:a8024942907aaf5fd4aaa49850bbe6cd5 inherit pub_methods_structFreqValues"><td class="mdescLeft">&#160;</td><td class="mdescRight">An overloading of the operator += adapted for this structure.  <a href="structFreqValues.html#a8024942907aaf5fd4aaa49850bbe6cd5">More...</a><br /></td></tr>
 <tr class="separator:a8024942907aaf5fd4aaa49850bbe6cd5 inherit pub_methods_structFreqValues"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a954b961f99175f11f09d1cd5d834c545 inherit pub_methods_structFreqValues"><td class="memItemLeft" align="right" valign="top"><a id="a954b961f99175f11f09d1cd5d834c545"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFreqValues.html#a954b961f99175f11f09d1cd5d834c545">MeanValue</a> () const</td></tr>
-<tr class="memdesc:a954b961f99175f11f09d1cd5d834c545 inherit pub_methods_structFreqValues"><td class="mdescLeft">&#160;</td><td class="mdescRight">The aim of this method is to offer the mean value of all data points, i.e. it calculates the average. <br /></td></tr>
-<tr class="separator:a954b961f99175f11f09d1cd5d834c545 inherit pub_methods_structFreqValues"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1e93224906ea823dd3e930a447c8bd9 inherit pub_methods_structFreqValues"><td class="memItemLeft" align="right" valign="top"><a id="ae1e93224906ea823dd3e930a447c8bd9"></a>
+value_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFreqValues.html#ae1e93224906ea823dd3e930a447c8bd9">MeanValue</a> () const</td></tr>
+<tr class="memdesc:ae1e93224906ea823dd3e930a447c8bd9 inherit pub_methods_structFreqValues"><td class="mdescLeft">&#160;</td><td class="mdescRight">The aim of this method is to offer the mean value of all data points, i.e. it calculates the average. <br /></td></tr>
+<tr class="separator:ae1e93224906ea823dd3e930a447c8bd9 inherit pub_methods_structFreqValues"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -167,10 +171,10 @@ unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFreqValues.html#a457f391fad53ee1e8bca839dde90c5f1">type</a></td></tr>
 <tr class="memdesc:a457f391fad53ee1e8bca839dde90c5f1 inherit pub_attribs_structFreqValues"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of frequency values: ”sweep”, “frequency response”, “calibration curve”, “threshold curve”, “rfi", etc. <br /></td></tr>
 <tr class="separator:a457f391fad53ee1e8bca839dde90c5f1 inherit pub_attribs_structFreqValues"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a07669bbe3b65cbfb80300631ce85fb76 inherit pub_attribs_structFreqValues"><td class="memItemLeft" align="right" valign="top"><a id="a07669bbe3b65cbfb80300631ce85fb76"></a>
-std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFreqValues.html#a07669bbe3b65cbfb80300631ce85fb76">values</a></td></tr>
-<tr class="memdesc:a07669bbe3b65cbfb80300631ce85fb76 inherit pub_attribs_structFreqValues"><td class="mdescLeft">&#160;</td><td class="mdescRight">RF power values (dBm), gain values (dB or dBi), noise figure values (dB), etc. <br /></td></tr>
-<tr class="separator:a07669bbe3b65cbfb80300631ce85fb76 inherit pub_attribs_structFreqValues"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb9c44b6a1b0e5178053a85af0c89346 inherit pub_attribs_structFreqValues"><td class="memItemLeft" align="right" valign="top"><a id="aeb9c44b6a1b0e5178053a85af0c89346"></a>
+std::vector&lt; value_type &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFreqValues.html#aeb9c44b6a1b0e5178053a85af0c89346">values</a></td></tr>
+<tr class="memdesc:aeb9c44b6a1b0e5178053a85af0c89346 inherit pub_attribs_structFreqValues"><td class="mdescLeft">&#160;</td><td class="mdescRight">RF power values (dBm), gain values (dB or dBi), noise figure values (dB), etc. <br /></td></tr>
+<tr class="separator:aeb9c44b6a1b0e5178053a85af0c89346 inherit pub_attribs_structFreqValues"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b625831a46019f93a0999c1bed5c3a0 inherit pub_attribs_structFreqValues"><td class="memItemLeft" align="right" valign="top"><a id="a2b625831a46019f93a0999c1bed5c3a0"></a>
 std::vector&lt; std::uint_least64_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFreqValues.html#a2b625831a46019f93a0999c1bed5c3a0">frequencies</a></td></tr>
 <tr class="memdesc:a2b625831a46019f93a0999c1bed5c3a0 inherit pub_attribs_structFreqValues"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frequency values in Hz. <br /></td></tr>

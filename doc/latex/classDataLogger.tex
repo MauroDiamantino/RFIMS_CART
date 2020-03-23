@@ -9,6 +9,14 @@ The class {\itshape \hyperlink{classDataLogger}{Data\+Logger}} is intended to ha
 
 {\ttfamily \#include $<$Sweep\+Processing.\+h$>$}
 
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classDataLogger_ae3b42b5c9f4066ffc85d01ad588310aa}\label{classDataLogger_ae3b42b5c9f4066ffc85d01ad588310aa}} 
+enum {\bfseries Timestamp\+Source} \{ {\bfseries S\+W\+E\+EP}, 
+{\bfseries F\+R\+O\+N\+T\+E\+N\+D\+P\+A\+R\+AM}
+ \}
+\end{DoxyCompactItemize}
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -17,6 +25,12 @@ The class {\itshape \hyperlink{classDataLogger}{Data\+Logger}} is intended to ha
 \mbox{\Hypertarget{classDataLogger_a9aaff109f3e7749a0a0a0313655da50a}\label{classDataLogger_a9aaff109f3e7749a0a0a0313655da50a}} 
 \hyperlink{classDataLogger_a9aaff109f3e7749a0a0a0313655da50a}{$\sim$\+Data\+Logger} ()
 \begin{DoxyCompactList}\small\item\em The class destructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classDataLogger_a5148797e38cdb1538bcf794939b9b4a6}\label{classDataLogger_a5148797e38cdb1538bcf794939b9b4a6}} 
+void \hyperlink{classDataLogger_a5148797e38cdb1538bcf794939b9b4a6}{Set\+Num\+Of\+Sweeps} (unsigned int number)
+\begin{DoxyCompactList}\small\item\em A method which allows to set the number of sweeps of a measurement cycle (the two calibration sweeps are not considered), i.\+e. the number of sweeps which must be store in the same file. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classDataLogger_acbde5e2f6c1dafdedc285f1a42d994bb}\label{classDataLogger_acbde5e2f6c1dafdedc285f1a42d994bb}} 
+void \hyperlink{classDataLogger_acbde5e2f6c1dafdedc285f1a42d994bb}{Set\+Filename\+Timestamp\+Src} (Timestamp\+Source source)
+\begin{DoxyCompactList}\small\item\em A method which allows to define the timestamp source which will be used for the name of the file where the sweeps will be stored. \end{DoxyCompactList}\item 
 void \hyperlink{classDataLogger_a2ffe9fb45883c2880e1c45a4406fc22b}{Save\+Bands\+Param\+As\+C\+SV} (const std\+::vector$<$ \hyperlink{structBandParameters}{Band\+Parameters} $>$ \&bands\+Param\+Vector)
 \begin{DoxyCompactList}\small\item\em This method is intended to save the bands parameters in a C\+SV file which is more adequately to be read in the remote server. \end{DoxyCompactList}\item 
 void \hyperlink{classDataLogger_a058ed66d04269e7d37501ecfe775c067}{Save\+Front\+End\+Param} (const \hyperlink{structFreqValues}{Freq\+Values} \&gain, const \hyperlink{structFreqValues}{Freq\+Values} \&noise\+Figure)

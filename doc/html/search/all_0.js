@@ -12,6 +12,6 @@ var searchData=
   ['archiveandcompress',['ArchiveAndCompress',['../classDataLogger.html#a147fb7eaee1c38bbf57ef2d6cddf70d5',1,'DataLogger']]],
   ['areparamempty',['AreParamEmpty',['../classFrontEndCalibrator.html#a9a1173af037c656b63cce0f9dc1b51be',1,'FrontEndCalibrator']]],
   ['attenfactor',['attenFactor',['../structSpectranConfigurator_1_1FixedParameters.html#aa5eb199d61f2c5763e32b70d2bf7c368',1,'SpectranConfigurator::FixedParameters']]],
-  ['available',['Available',['../classGPSInterface.html#a3f92ed959a1ea60258e48ca7c379aec1',1,'GPSInterface::Available()'],['../classSpectranInterface.html#a31b64b69e1d99723fea1fd9c112dcfda',1,'SpectranInterface::Available()']]],
+  ['available',['Available',['../classSpectranInterface.html#a31b64b69e1d99723fea1fd9c112dcfda',1,'SpectranInterface']]],
   ['azimuthangle',['azimuthAngle',['../structSweep.html#a1400ee785843eba210c37a8f7e24c941',1,'Sweep::azimuthAngle()'],['../structRFI.html#aeb10ac61d7897dbaa6971607e56ea244',1,'RFI::azimuthAngle()']]]
 ];

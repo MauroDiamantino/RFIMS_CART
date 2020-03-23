@@ -27,6 +27,12 @@ Collaboration diagram for Freq\+Values\+:\nopagebreak
 \includegraphics[width=156pt]{structFreqValues__coll__graph}
 \end{center}
 \end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structFreqValues_af93b30b6d2ecdcb55be9810292ed301f}\label{structFreqValues_af93b30b6d2ecdcb55be9810292ed301f}} 
+typedef float {\bfseries value\+\_\+type}
+\end{DoxyCompactItemize}
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -49,8 +55,8 @@ const \hyperlink{structFreqValues}{Freq\+Values} \& \hyperlink{structFreqValues_
 \begin{DoxyCompactList}\small\item\em An overloading of the assignment operator adapted for this structure. \end{DoxyCompactList}\item 
 const \hyperlink{structFreqValues}{Freq\+Values} \& \hyperlink{structFreqValues_a8024942907aaf5fd4aaa49850bbe6cd5}{operator+=} (const \hyperlink{structFreqValues}{Freq\+Values} \&rhs)
 \begin{DoxyCompactList}\small\item\em An overloading of the operator += adapted for this structure. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{structFreqValues_a954b961f99175f11f09d1cd5d834c545}\label{structFreqValues_a954b961f99175f11f09d1cd5d834c545}} 
-float \hyperlink{structFreqValues_a954b961f99175f11f09d1cd5d834c545}{Mean\+Value} () const
+\mbox{\Hypertarget{structFreqValues_ae1e93224906ea823dd3e930a447c8bd9}\label{structFreqValues_ae1e93224906ea823dd3e930a447c8bd9}} 
+value\+\_\+type \hyperlink{structFreqValues_ae1e93224906ea823dd3e930a447c8bd9}{Mean\+Value} () const
 \begin{DoxyCompactList}\small\item\em The aim of this method is to offer the mean value of all data points, i.\+e. it calculates the average. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Public Attributes}
 \begin{DoxyCompactItemize}
@@ -58,8 +64,8 @@ float \hyperlink{structFreqValues_a954b961f99175f11f09d1cd5d834c545}{Mean\+Value
 \mbox{\Hypertarget{structFreqValues_a457f391fad53ee1e8bca839dde90c5f1}\label{structFreqValues_a457f391fad53ee1e8bca839dde90c5f1}} 
 std\+::string \hyperlink{structFreqValues_a457f391fad53ee1e8bca839dde90c5f1}{type}
 \begin{DoxyCompactList}\small\item\em Type of frequency values\+: ”sweep”, “frequency response”, “calibration curve”, “threshold curve”, “rfi", etc. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{structFreqValues_a07669bbe3b65cbfb80300631ce85fb76}\label{structFreqValues_a07669bbe3b65cbfb80300631ce85fb76}} 
-std\+::vector$<$ float $>$ \hyperlink{structFreqValues_a07669bbe3b65cbfb80300631ce85fb76}{values}
+\mbox{\Hypertarget{structFreqValues_aeb9c44b6a1b0e5178053a85af0c89346}\label{structFreqValues_aeb9c44b6a1b0e5178053a85af0c89346}} 
+std\+::vector$<$ value\+\_\+type $>$ \hyperlink{structFreqValues_aeb9c44b6a1b0e5178053a85af0c89346}{values}
 \begin{DoxyCompactList}\small\item\em RF power values (d\+Bm), gain values (dB or d\+Bi), noise figure values (dB), etc. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{structFreqValues_a2b625831a46019f93a0999c1bed5c3a0}\label{structFreqValues_a2b625831a46019f93a0999c1bed5c3a0}} 
 std\+::vector$<$ std\+::uint\+\_\+least64\+\_\+t $>$ \hyperlink{structFreqValues_a2b625831a46019f93a0999c1bed5c3a0}{frequencies}
@@ -73,34 +79,64 @@ std\+::vector$<$ std\+::uint\+\_\+least64\+\_\+t $>$ \hyperlink{structFreqValues
 \begin{DoxyCompactList}\small\item\em An overloading of the unary operator -\/ which negates a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object. \end{DoxyCompactList}\item 
 \hyperlink{structFreqValues}{Freq\+Values} \hyperlink{structFreqValues_aa27b2370e9b314e6e0f308f4efb39a2f}{operator+} (const \hyperlink{structFreqValues}{Freq\+Values} \&lhs, const \hyperlink{structFreqValues}{Freq\+Values} \&rhs)
 \begin{DoxyCompactList}\small\item\em An overloading of operator + which calculates the sum of two objects of structure {\itshape \hyperlink{structFreqValues}{Freq\+Values}}. \end{DoxyCompactList}\item 
+\hyperlink{structFreqValues}{Freq\+Values} \hyperlink{structFreqValues_aea7bf21485b730f47cb3823920a10b57}{operator+} (const \hyperlink{structFreqValues}{Freq\+Values} \&lhs, const double rhs)
+\begin{DoxyCompactList}\small\item\em An overloading of operator + which calculates the sum of a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object and a {\itshape double} value, in that order. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structFreqValues_afa29d8e6cf56d1c724c712bcc95c0e4b}\label{structFreqValues_afa29d8e6cf56d1c724c712bcc95c0e4b}} 
 \hyperlink{structFreqValues}{Freq\+Values} \hyperlink{structFreqValues_afa29d8e6cf56d1c724c712bcc95c0e4b}{operator+} (const \hyperlink{structFreqValues}{Freq\+Values} \&lhs, const float rhs)
 \begin{DoxyCompactList}\small\item\em An overloading of operator + which calculates the sum of a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object and a {\itshape float} value, in that order. \end{DoxyCompactList}\item 
+\hyperlink{structFreqValues}{Freq\+Values} \hyperlink{structFreqValues_aac08336f88cf5e787fda3a6515f2b7ad}{operator+} (const double lhs, const \hyperlink{structFreqValues}{Freq\+Values} \&rhs)
+\begin{DoxyCompactList}\small\item\em An overloading of operator + which calculates the sum of a {\itshape double} value and a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object, in that order. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structFreqValues_add1a78bbae864d4a24ac7b491ae41b2e}\label{structFreqValues_add1a78bbae864d4a24ac7b491ae41b2e}} 
 \hyperlink{structFreqValues}{Freq\+Values} \hyperlink{structFreqValues_add1a78bbae864d4a24ac7b491ae41b2e}{operator+} (const float lhs, const \hyperlink{structFreqValues}{Freq\+Values} \&rhs)
 \begin{DoxyCompactList}\small\item\em An overloading of operator + which calculates the sum of a {\itshape float} value and a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object, in that order. \end{DoxyCompactList}\item 
 \hyperlink{structFreqValues}{Freq\+Values} \hyperlink{structFreqValues_a05184c79e4dadc7a4e1f3a76fba1c3c8}{operator-\/} (const \hyperlink{structFreqValues}{Freq\+Values} \&lhs, const \hyperlink{structFreqValues}{Freq\+Values} \&rhs)
 \begin{DoxyCompactList}\small\item\em An overloading of operator -\/ which calculates the subtraction of two objects of structure {\itshape \hyperlink{structFreqValues}{Freq\+Values}}. \end{DoxyCompactList}\item 
+\hyperlink{structFreqValues}{Freq\+Values} \hyperlink{structFreqValues_ab6c8a27a2c665b80adfb29735d9040f4}{operator-\/} (const \hyperlink{structFreqValues}{Freq\+Values} \&lhs, const double rhs)
+\begin{DoxyCompactList}\small\item\em An overloading of operator -\/ which calculates the subtraction of a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object and a {\itshape double} value, in that order. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structFreqValues_ade558a5146a3dbea46f85e64d959ff3d}\label{structFreqValues_ade558a5146a3dbea46f85e64d959ff3d}} 
 \hyperlink{structFreqValues}{Freq\+Values} \hyperlink{structFreqValues_ade558a5146a3dbea46f85e64d959ff3d}{operator-\/} (const \hyperlink{structFreqValues}{Freq\+Values} \&lhs, const float rhs)
 \begin{DoxyCompactList}\small\item\em An overloading of operator -\/ which calculates the subtraction of a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object and a {\itshape float} value, in that order. \end{DoxyCompactList}\item 
+\hyperlink{structFreqValues}{Freq\+Values} \hyperlink{structFreqValues_a1a94fe29740b86be6a1c148554f3b254}{operator-\/} (const double lhs, const \hyperlink{structFreqValues}{Freq\+Values} \&rhs)
+\begin{DoxyCompactList}\small\item\em An overloading of operator -\/ which calculates the subtraction of a {\itshape double} value and a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object, in that order. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structFreqValues_aa248d5bc83ba0c614137b042947064a8}\label{structFreqValues_aa248d5bc83ba0c614137b042947064a8}} 
 \hyperlink{structFreqValues}{Freq\+Values} \hyperlink{structFreqValues_aa248d5bc83ba0c614137b042947064a8}{operator-\/} (const float lhs, const \hyperlink{structFreqValues}{Freq\+Values} \&rhs)
 \begin{DoxyCompactList}\small\item\em An overloading of operator -\/ which calculates the subtraction of a {\itshape float} value and a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object, in that order. \end{DoxyCompactList}\item 
 \hyperlink{structFreqValues}{Freq\+Values} \hyperlink{structFreqValues_a3e567844a5d4347e3b30e696132bfb7c}{operator$\ast$} (const \hyperlink{structFreqValues}{Freq\+Values} \&lhs, const \hyperlink{structFreqValues}{Freq\+Values} \&rhs)
 \begin{DoxyCompactList}\small\item\em An overloading of operator $\ast$ which multiplies two objects of structure {\itshape \hyperlink{structFreqValues}{Freq\+Values}}. \end{DoxyCompactList}\item 
+\hyperlink{structFreqValues}{Freq\+Values} \hyperlink{structFreqValues_a59745e45a1a440ca1240667127ff01bd}{operator$\ast$} (const \hyperlink{structFreqValues}{Freq\+Values} \&lhs, const double rhs)
+\begin{DoxyCompactList}\small\item\em An overloading of operator $\ast$ which multiplies a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object and a {\itshape double} value, in that order. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structFreqValues_aea565aadf51307e09845c72179e5082d}\label{structFreqValues_aea565aadf51307e09845c72179e5082d}} 
 \hyperlink{structFreqValues}{Freq\+Values} \hyperlink{structFreqValues_aea565aadf51307e09845c72179e5082d}{operator$\ast$} (const \hyperlink{structFreqValues}{Freq\+Values} \&lhs, const float rhs)
 \begin{DoxyCompactList}\small\item\em An overloading of operator $\ast$ which multiplies a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object and a {\itshape float} value, in that order. \end{DoxyCompactList}\item 
+\hyperlink{structFreqValues}{Freq\+Values} \hyperlink{structFreqValues_a1e7f2019d7cdca3a4feb63014297baab}{operator$\ast$} (const double lhs, const \hyperlink{structFreqValues}{Freq\+Values} \&rhs)
+\begin{DoxyCompactList}\small\item\em An overloading of operator $\ast$ which multiplies a {\itshape double} value and a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object, in that order. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structFreqValues_ab9bb62425b97f45a5eb485cf745bfe4a}\label{structFreqValues_ab9bb62425b97f45a5eb485cf745bfe4a}} 
 \hyperlink{structFreqValues}{Freq\+Values} \hyperlink{structFreqValues_ab9bb62425b97f45a5eb485cf745bfe4a}{operator$\ast$} (const float lhs, const \hyperlink{structFreqValues}{Freq\+Values} \&rhs)
 \begin{DoxyCompactList}\small\item\em An overloading of operator $\ast$ which multiplies a {\itshape float} value and a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object, in that order. \end{DoxyCompactList}\item 
 \hyperlink{structFreqValues}{Freq\+Values} \hyperlink{structFreqValues_a26f13922dd72ad292bea45072abc2c96}{operator/} (const \hyperlink{structFreqValues}{Freq\+Values} \&lhs, const \hyperlink{structFreqValues}{Freq\+Values} \&rhs)
 \begin{DoxyCompactList}\small\item\em An overloading of operator / which calculates the division between two objects of structure {\itshape \hyperlink{structFreqValues}{Freq\+Values}}. \end{DoxyCompactList}\item 
+\hyperlink{structFreqValues}{Freq\+Values} \hyperlink{structFreqValues_afa5b83c0e8fbe09dea81891f5062703d}{operator/} (const \hyperlink{structFreqValues}{Freq\+Values} \&lhs, const double rhs)
+\begin{DoxyCompactList}\small\item\em An overloading of operator / which calculates the division between a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object and a {\itshape double} value, in that order. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structFreqValues_a392b5ed122a4deafa3ba773f4829c20a}\label{structFreqValues_a392b5ed122a4deafa3ba773f4829c20a}} 
 \hyperlink{structFreqValues}{Freq\+Values} \hyperlink{structFreqValues_a392b5ed122a4deafa3ba773f4829c20a}{operator/} (const \hyperlink{structFreqValues}{Freq\+Values} \&lhs, const float rhs)
 \begin{DoxyCompactList}\small\item\em An overloading of operator / which calculates the division between a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object and a {\itshape float} value, in that order. \end{DoxyCompactList}\item 
+\hyperlink{structFreqValues}{Freq\+Values} \hyperlink{structFreqValues_a051f343ecd05c5459b26948cfc3160b6}{operator/} (const double lhs, const \hyperlink{structFreqValues}{Freq\+Values} \&rhs)
+\begin{DoxyCompactList}\small\item\em An overloading of operator / which calculates the division between a {\itshape double} value and a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object, in that order. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structFreqValues_aed1d809f52aa8f6da3afa2af8a45d288}\label{structFreqValues_aed1d809f52aa8f6da3afa2af8a45d288}} 
 \hyperlink{structFreqValues}{Freq\+Values} \hyperlink{structFreqValues_aed1d809f52aa8f6da3afa2af8a45d288}{operator/} (const float lhs, const \hyperlink{structFreqValues}{Freq\+Values} \&rhs)
 \begin{DoxyCompactList}\small\item\em An overloading of operator / which calculates the division between a {\itshape float} value and a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object, in that order. \end{DoxyCompactList}\item 
 \hyperlink{structFreqValues}{Freq\+Values} \hyperlink{structFreqValues_a90781867604621a99e59d4fcdc4a5f38}{log10} (const \hyperlink{structFreqValues}{Freq\+Values} \&argument)
 \begin{DoxyCompactList}\small\item\em An overloading of function {\ttfamily \hyperlink{structFreqValues_a90781867604621a99e59d4fcdc4a5f38}{log10()}}, decimal logarithm, adapted to receive an argument of type {\itshape \hyperlink{structFreqValues}{Freq\+Values}}. \end{DoxyCompactList}\item 
+\hyperlink{structFreqValues}{Freq\+Values} \hyperlink{structFreqValues_a337378f9483d9399a5872d3b16ad497e}{pow} (const \hyperlink{structFreqValues}{Freq\+Values} \&base, const double exponent)
+\begin{DoxyCompactList}\small\item\em An overloading of function {\ttfamily \hyperlink{structFreqValues_a337378f9483d9399a5872d3b16ad497e}{pow()}}, power function, adapted to receive an argument of type {\itshape \hyperlink{structFreqValues}{Freq\+Values}} as base and an argument of type {\itshape double} as exponent. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structFreqValues_a8b8ee90b9d108ad7008a3613b31253e7}\label{structFreqValues_a8b8ee90b9d108ad7008a3613b31253e7}} 
 \hyperlink{structFreqValues}{Freq\+Values} \hyperlink{structFreqValues_a8b8ee90b9d108ad7008a3613b31253e7}{pow} (const \hyperlink{structFreqValues}{Freq\+Values} \&base, const float exponent)
-\begin{DoxyCompactList}\small\item\em An overloading of function {\ttfamily \hyperlink{structFreqValues_a8b8ee90b9d108ad7008a3613b31253e7}{pow()}}, power function, adapted to receive an argument of type {\itshape \hyperlink{structFreqValues}{Freq\+Values}} as base and an argument of type {\itshape float} as exponent. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em An overloading of function {\ttfamily \hyperlink{structFreqValues_a337378f9483d9399a5872d3b16ad497e}{pow()}}, power function, adapted to receive an argument of type {\itshape \hyperlink{structFreqValues}{Freq\+Values}} as base and an argument of type {\itshape float} as exponent. \end{DoxyCompactList}\item 
+\hyperlink{structFreqValues}{Freq\+Values} \hyperlink{structFreqValues_a04cc1cee137dba78c365af490aa9ebaa}{pow} (const double base, const \hyperlink{structFreqValues}{Freq\+Values} \&exponent)
+\begin{DoxyCompactList}\small\item\em An overloading of function {\ttfamily \hyperlink{structFreqValues_a337378f9483d9399a5872d3b16ad497e}{pow()}}, exponentiation, adapted to receive an argument of type {\itshape double} as base and an argument of type {\itshape \hyperlink{structFreqValues}{Freq\+Values}} as exponent. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structFreqValues_a4a50ddd9aa3d48c0b3da456ca07551a5}\label{structFreqValues_a4a50ddd9aa3d48c0b3da456ca07551a5}} 
 \hyperlink{structFreqValues}{Freq\+Values} \hyperlink{structFreqValues_a4a50ddd9aa3d48c0b3da456ca07551a5}{pow} (const float base, const \hyperlink{structFreqValues}{Freq\+Values} \&exponent)
-\begin{DoxyCompactList}\small\item\em An overloading of function {\ttfamily \hyperlink{structFreqValues_a8b8ee90b9d108ad7008a3613b31253e7}{pow()}}, exponentiation, adapted to receive an argument of type {\itshape float} as base and an argument of type {\itshape \hyperlink{structFreqValues}{Freq\+Values}} as exponent. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em An overloading of function {\ttfamily \hyperlink{structFreqValues_a337378f9483d9399a5872d3b16ad497e}{pow()}}, exponentiation, adapted to receive an argument of type {\itshape float} as base and an argument of type {\itshape \hyperlink{structFreqValues}{Freq\+Values}} as exponent. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
@@ -224,15 +260,15 @@ The function returns a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} obj
 \mbox{\tt in}  & {\em rhs} & The right-\/hand side operand. \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{structFreqValues_aea565aadf51307e09845c72179e5082d}\label{structFreqValues_aea565aadf51307e09845c72179e5082d}} 
+\mbox{\Hypertarget{structFreqValues_a59745e45a1a440ca1240667127ff01bd}\label{structFreqValues_a59745e45a1a440ca1240667127ff01bd}} 
 \index{Freq\+Values@{Freq\+Values}!operator$\ast$@{operator$\ast$}}
 \index{operator$\ast$@{operator$\ast$}!Freq\+Values@{Freq\+Values}}
 \subsubsection{\texorpdfstring{operator$\ast$}{operator*}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
-{\footnotesize\ttfamily \hyperlink{structFreqValues}{Freq\+Values} operator$\ast$ (\begin{DoxyParamCaption}\item[{const \hyperlink{structFreqValues}{Freq\+Values} \&}]{lhs,  }\item[{const float}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+{\footnotesize\ttfamily \hyperlink{structFreqValues}{Freq\+Values} operator$\ast$ (\begin{DoxyParamCaption}\item[{const \hyperlink{structFreqValues}{Freq\+Values} \&}]{lhs,  }\item[{const double}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
 
 
 
-An overloading of operator $\ast$ which multiplies a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object and a {\itshape float} value, in that order. 
+An overloading of operator $\ast$ which multiplies a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object and a {\itshape double} value, in that order. 
 
 This function calls the function {\ttfamily operator$\ast$(float,\+Freq\+Values)} with the order of its argument inverted, taking into account the commutative property of the multiplication.
 
@@ -243,15 +279,15 @@ The function returns a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} obj
 \mbox{\tt in}  & {\em rhs} & The right-\/hand side operand. \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{structFreqValues_ab9bb62425b97f45a5eb485cf745bfe4a}\label{structFreqValues_ab9bb62425b97f45a5eb485cf745bfe4a}} 
+\mbox{\Hypertarget{structFreqValues_a1e7f2019d7cdca3a4feb63014297baab}\label{structFreqValues_a1e7f2019d7cdca3a4feb63014297baab}} 
 \index{Freq\+Values@{Freq\+Values}!operator$\ast$@{operator$\ast$}}
 \index{operator$\ast$@{operator$\ast$}!Freq\+Values@{Freq\+Values}}
 \subsubsection{\texorpdfstring{operator$\ast$}{operator*}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
-{\footnotesize\ttfamily \hyperlink{structFreqValues}{Freq\+Values} operator$\ast$ (\begin{DoxyParamCaption}\item[{const float}]{lhs,  }\item[{const \hyperlink{structFreqValues}{Freq\+Values} \&}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+{\footnotesize\ttfamily \hyperlink{structFreqValues}{Freq\+Values} operator$\ast$ (\begin{DoxyParamCaption}\item[{const double}]{lhs,  }\item[{const \hyperlink{structFreqValues}{Freq\+Values} \&}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
 
 
 
-An overloading of operator $\ast$ which multiplies a {\itshape float} value and a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object, in that order. 
+An overloading of operator $\ast$ which multiplies a {\itshape double} value and a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object, in that order. 
 
 The values of the object to be returned are determined by the operation, while the rest of attributes (frequency, type, timestamp, etc.) are copied from the right-\/hand argument, which is the only argument that is of type {\itshape \hyperlink{structFreqValues}{Freq\+Values}}.
 
@@ -281,15 +317,15 @@ The function returns a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} obj
 \mbox{\tt in}  & {\em rhs} & The right-\/hand side operand. \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{structFreqValues_afa29d8e6cf56d1c724c712bcc95c0e4b}\label{structFreqValues_afa29d8e6cf56d1c724c712bcc95c0e4b}} 
+\mbox{\Hypertarget{structFreqValues_aea7bf21485b730f47cb3823920a10b57}\label{structFreqValues_aea7bf21485b730f47cb3823920a10b57}} 
 \index{Freq\+Values@{Freq\+Values}!operator+@{operator+}}
 \index{operator+@{operator+}!Freq\+Values@{Freq\+Values}}
 \subsubsection{\texorpdfstring{operator+}{operator+}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
-{\footnotesize\ttfamily \hyperlink{structFreqValues}{Freq\+Values} operator+ (\begin{DoxyParamCaption}\item[{const \hyperlink{structFreqValues}{Freq\+Values} \&}]{lhs,  }\item[{const float}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+{\footnotesize\ttfamily \hyperlink{structFreqValues}{Freq\+Values} operator+ (\begin{DoxyParamCaption}\item[{const \hyperlink{structFreqValues}{Freq\+Values} \&}]{lhs,  }\item[{const double}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
 
 
 
-An overloading of operator + which calculates the sum of a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object and a {\itshape float} value, in that order. 
+An overloading of operator + which calculates the sum of a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object and a {\itshape double} value, in that order. 
 
 The values of the of object to be returned are determined by the operation, while the rest of attributes (frequency, type, timestamp, etc.) are copied from the left-\/hand side argument, which is the only argument that is of type {\itshape \hyperlink{structFreqValues}{Freq\+Values}}.
 
@@ -300,15 +336,15 @@ The function returns a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} obj
 \mbox{\tt in}  & {\em rhs} & The right-\/hand side operand. \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{structFreqValues_add1a78bbae864d4a24ac7b491ae41b2e}\label{structFreqValues_add1a78bbae864d4a24ac7b491ae41b2e}} 
+\mbox{\Hypertarget{structFreqValues_aac08336f88cf5e787fda3a6515f2b7ad}\label{structFreqValues_aac08336f88cf5e787fda3a6515f2b7ad}} 
 \index{Freq\+Values@{Freq\+Values}!operator+@{operator+}}
 \index{operator+@{operator+}!Freq\+Values@{Freq\+Values}}
 \subsubsection{\texorpdfstring{operator+}{operator+}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
-{\footnotesize\ttfamily \hyperlink{structFreqValues}{Freq\+Values} operator+ (\begin{DoxyParamCaption}\item[{const float}]{lhs,  }\item[{const \hyperlink{structFreqValues}{Freq\+Values} \&}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+{\footnotesize\ttfamily \hyperlink{structFreqValues}{Freq\+Values} operator+ (\begin{DoxyParamCaption}\item[{const double}]{lhs,  }\item[{const \hyperlink{structFreqValues}{Freq\+Values} \&}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
 
 
 
-An overloading of operator + which calculates the sum of a {\itshape float} value and a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object, in that order. 
+An overloading of operator + which calculates the sum of a {\itshape double} value and a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object, in that order. 
 
 This function calls the function {\ttfamily operator+(\+Freq\+Values,float)} with the order of its arguments inverted, taking into account the commutative property of the sum. The values of the of object to be returned are determined by the operation, while the rest of attributes (frequency, type, timestamp, etc.) are copied from the right-\/hand side argument, which is the only argument that is of type {\itshape \hyperlink{structFreqValues}{Freq\+Values}}.
 
@@ -353,15 +389,15 @@ The function returns a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} obj
 \mbox{\tt in}  & {\em rhs} & The right-\/hand side operand. \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{structFreqValues_ade558a5146a3dbea46f85e64d959ff3d}\label{structFreqValues_ade558a5146a3dbea46f85e64d959ff3d}} 
+\mbox{\Hypertarget{structFreqValues_ab6c8a27a2c665b80adfb29735d9040f4}\label{structFreqValues_ab6c8a27a2c665b80adfb29735d9040f4}} 
 \index{Freq\+Values@{Freq\+Values}!operator-\/@{operator-\/}}
 \index{operator-\/@{operator-\/}!Freq\+Values@{Freq\+Values}}
 \subsubsection{\texorpdfstring{operator-\/}{operator-}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
-{\footnotesize\ttfamily \hyperlink{structFreqValues}{Freq\+Values} operator-\/ (\begin{DoxyParamCaption}\item[{const \hyperlink{structFreqValues}{Freq\+Values} \&}]{lhs,  }\item[{const float}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+{\footnotesize\ttfamily \hyperlink{structFreqValues}{Freq\+Values} operator-\/ (\begin{DoxyParamCaption}\item[{const \hyperlink{structFreqValues}{Freq\+Values} \&}]{lhs,  }\item[{const double}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
 
 
 
-An overloading of operator -\/ which calculates the subtraction of a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object and a {\itshape float} value, in that order. 
+An overloading of operator -\/ which calculates the subtraction of a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object and a {\itshape double} value, in that order. 
 
 This function calls the function {\ttfamily operator+(\+Freq\+Values,float)} with the right-\/hand side operand negated.
 
@@ -372,15 +408,15 @@ The function returns a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} obj
 \mbox{\tt in}  & {\em rhs} & The right-\/hand side operand. \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{structFreqValues_aa248d5bc83ba0c614137b042947064a8}\label{structFreqValues_aa248d5bc83ba0c614137b042947064a8}} 
+\mbox{\Hypertarget{structFreqValues_a1a94fe29740b86be6a1c148554f3b254}\label{structFreqValues_a1a94fe29740b86be6a1c148554f3b254}} 
 \index{Freq\+Values@{Freq\+Values}!operator-\/@{operator-\/}}
 \index{operator-\/@{operator-\/}!Freq\+Values@{Freq\+Values}}
 \subsubsection{\texorpdfstring{operator-\/}{operator-}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
-{\footnotesize\ttfamily \hyperlink{structFreqValues}{Freq\+Values} operator-\/ (\begin{DoxyParamCaption}\item[{const float}]{lhs,  }\item[{const \hyperlink{structFreqValues}{Freq\+Values} \&}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+{\footnotesize\ttfamily \hyperlink{structFreqValues}{Freq\+Values} operator-\/ (\begin{DoxyParamCaption}\item[{const double}]{lhs,  }\item[{const \hyperlink{structFreqValues}{Freq\+Values} \&}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
 
 
 
-An overloading of operator -\/ which calculates the subtraction of a {\itshape float} value and a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object, in that order. 
+An overloading of operator -\/ which calculates the subtraction of a {\itshape double} value and a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object, in that order. 
 
 This function calls the function {\ttfamily operator+(float,\+Freq\+Values)} with the right-\/hand side operand negated.
 
@@ -410,15 +446,15 @@ The function returns a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} obj
 \mbox{\tt in}  & {\em rhs} & The right-\/hand side operand. \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{structFreqValues_a392b5ed122a4deafa3ba773f4829c20a}\label{structFreqValues_a392b5ed122a4deafa3ba773f4829c20a}} 
+\mbox{\Hypertarget{structFreqValues_afa5b83c0e8fbe09dea81891f5062703d}\label{structFreqValues_afa5b83c0e8fbe09dea81891f5062703d}} 
 \index{Freq\+Values@{Freq\+Values}!operator/@{operator/}}
 \index{operator/@{operator/}!Freq\+Values@{Freq\+Values}}
 \subsubsection{\texorpdfstring{operator/}{operator/}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
-{\footnotesize\ttfamily \hyperlink{structFreqValues}{Freq\+Values} operator/ (\begin{DoxyParamCaption}\item[{const \hyperlink{structFreqValues}{Freq\+Values} \&}]{lhs,  }\item[{const float}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+{\footnotesize\ttfamily \hyperlink{structFreqValues}{Freq\+Values} operator/ (\begin{DoxyParamCaption}\item[{const \hyperlink{structFreqValues}{Freq\+Values} \&}]{lhs,  }\item[{const double}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
 
 
 
-An overloading of operator / which calculates the division between a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object and a {\itshape float} value, in that order. 
+An overloading of operator / which calculates the division between a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object and a {\itshape double} value, in that order. 
 
 This function calls the function {\ttfamily operator$\ast$(\+Freq\+Values,float)} wit the right-\/hand argument inverted.
 
@@ -429,15 +465,15 @@ The function returns a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} obj
 \mbox{\tt in}  & {\em rhs} & The right-\/hand side operand. \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{structFreqValues_aed1d809f52aa8f6da3afa2af8a45d288}\label{structFreqValues_aed1d809f52aa8f6da3afa2af8a45d288}} 
+\mbox{\Hypertarget{structFreqValues_a051f343ecd05c5459b26948cfc3160b6}\label{structFreqValues_a051f343ecd05c5459b26948cfc3160b6}} 
 \index{Freq\+Values@{Freq\+Values}!operator/@{operator/}}
 \index{operator/@{operator/}!Freq\+Values@{Freq\+Values}}
 \subsubsection{\texorpdfstring{operator/}{operator/}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
-{\footnotesize\ttfamily \hyperlink{structFreqValues}{Freq\+Values} operator/ (\begin{DoxyParamCaption}\item[{const float}]{lhs,  }\item[{const \hyperlink{structFreqValues}{Freq\+Values} \&}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+{\footnotesize\ttfamily \hyperlink{structFreqValues}{Freq\+Values} operator/ (\begin{DoxyParamCaption}\item[{const double}]{lhs,  }\item[{const \hyperlink{structFreqValues}{Freq\+Values} \&}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
 
 
 
-An overloading of operator / which calculates the division between a {\itshape float} value and a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object, in that order. 
+An overloading of operator / which calculates the division between a {\itshape double} value and a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} object, in that order. 
 
 The values of the object to be returned are determined by the operation, while the rest of attributes (frequency, type, timestamp, etc.) are copied from the right-\/hand argument, which is the only argument that is of type {\itshape \hyperlink{structFreqValues}{Freq\+Values}}.
 
@@ -448,15 +484,15 @@ The function returns a {\itshape \hyperlink{structFreqValues}{Freq\+Values}} obj
 \mbox{\tt in}  & {\em rhs} & The right-\/hand side operand. \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{structFreqValues_a8b8ee90b9d108ad7008a3613b31253e7}\label{structFreqValues_a8b8ee90b9d108ad7008a3613b31253e7}} 
+\mbox{\Hypertarget{structFreqValues_a337378f9483d9399a5872d3b16ad497e}\label{structFreqValues_a337378f9483d9399a5872d3b16ad497e}} 
 \index{Freq\+Values@{Freq\+Values}!pow@{pow}}
 \index{pow@{pow}!Freq\+Values@{Freq\+Values}}
 \subsubsection{\texorpdfstring{pow}{pow}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily \hyperlink{structFreqValues}{Freq\+Values} pow (\begin{DoxyParamCaption}\item[{const \hyperlink{structFreqValues}{Freq\+Values} \&}]{base,  }\item[{const float}]{exponent }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+{\footnotesize\ttfamily \hyperlink{structFreqValues}{Freq\+Values} pow (\begin{DoxyParamCaption}\item[{const \hyperlink{structFreqValues}{Freq\+Values} \&}]{base,  }\item[{const double}]{exponent }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
 
 
 
-An overloading of function {\ttfamily \hyperlink{structFreqValues_a8b8ee90b9d108ad7008a3613b31253e7}{pow()}}, power function, adapted to receive an argument of type {\itshape \hyperlink{structFreqValues}{Freq\+Values}} as base and an argument of type {\itshape float} as exponent. 
+An overloading of function {\ttfamily \hyperlink{structFreqValues_a337378f9483d9399a5872d3b16ad497e}{pow()}}, power function, adapted to receive an argument of type {\itshape \hyperlink{structFreqValues}{Freq\+Values}} as base and an argument of type {\itshape double} as exponent. 
 
 This function takes each point of the structure, raises its value to the exponent and stores the result in a different {\itshape \hyperlink{structFreqValues}{Freq\+Values}} structure, which is then returned. The rest of attributes (frequency, type, timestamp, etc.) are copied from the left-\/hand side argument, which the only argument that is of type {\itshape \hyperlink{structFreqValues}{Freq\+Values}}. 
 \begin{DoxyParams}[1]{Parameters}
@@ -465,15 +501,15 @@ This function takes each point of the structure, raises its value to the exponen
 \mbox{\tt in}  & {\em exponent} & The float value which will be used as the exponent. \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{structFreqValues_a4a50ddd9aa3d48c0b3da456ca07551a5}\label{structFreqValues_a4a50ddd9aa3d48c0b3da456ca07551a5}} 
+\mbox{\Hypertarget{structFreqValues_a04cc1cee137dba78c365af490aa9ebaa}\label{structFreqValues_a04cc1cee137dba78c365af490aa9ebaa}} 
 \index{Freq\+Values@{Freq\+Values}!pow@{pow}}
 \index{pow@{pow}!Freq\+Values@{Freq\+Values}}
 \subsubsection{\texorpdfstring{pow}{pow}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily \hyperlink{structFreqValues}{Freq\+Values} pow (\begin{DoxyParamCaption}\item[{const float}]{base,  }\item[{const \hyperlink{structFreqValues}{Freq\+Values} \&}]{exponent }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+{\footnotesize\ttfamily \hyperlink{structFreqValues}{Freq\+Values} pow (\begin{DoxyParamCaption}\item[{const double}]{base,  }\item[{const \hyperlink{structFreqValues}{Freq\+Values} \&}]{exponent }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
 
 
 
-An overloading of function {\ttfamily \hyperlink{structFreqValues_a8b8ee90b9d108ad7008a3613b31253e7}{pow()}}, exponentiation, adapted to receive an argument of type {\itshape float} as base and an argument of type {\itshape \hyperlink{structFreqValues}{Freq\+Values}} as exponent. 
+An overloading of function {\ttfamily \hyperlink{structFreqValues_a337378f9483d9399a5872d3b16ad497e}{pow()}}, exponentiation, adapted to receive an argument of type {\itshape double} as base and an argument of type {\itshape \hyperlink{structFreqValues}{Freq\+Values}} as exponent. 
 
 This function takes the {\ttfamily float} value, given as the base, and raises it to each of the values of the {\itshape \hyperlink{structFreqValues}{Freq\+Values}} structure given as the exponent. Each result is stored in a different {\itshape \hyperlink{structFreqValues}{Freq\+Values}} structure which is then returned. The rest of attributes (frequency, type, timestamp, etc.) of this structure are copied from the right-\/hand side argument, which is the only argument that is of type {\itshape \hyperlink{structFreqValues}{Freq\+Values}}. 
 \begin{DoxyParams}[1]{Parameters}

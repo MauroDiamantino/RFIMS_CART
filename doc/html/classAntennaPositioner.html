@@ -61,7 +61,9 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#friends">Friends</a> &#124;
 <a href="classAntennaPositioner-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">AntennaPositioner Class Reference</div>  </div>
@@ -76,11 +78,15 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ad7e864f6073421c98585c64802a3e78e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAntennaPositioner.html#ad7e864f6073421c98585c64802a3e78e">AntennaPositioner</a> (<a class="el" href="classGPSInterface.html">GPSInterface</a> &amp;gpsInterf)</td></tr>
-<tr class="memdesc:ad7e864f6073421c98585c64802a3e78e"><td class="mdescLeft">&#160;</td><td class="mdescRight">An index which allows to know how many positions have been swept and how many remains to reach the last position.  <a href="#ad7e864f6073421c98585c64802a3e78e">More...</a><br /></td></tr>
+<tr class="memdesc:ad7e864f6073421c98585c64802a3e78e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The unique constructor of the class <em><a class="el" href="classAntennaPositioner.html" title="The aim of the class AntennaPositioner is to handle the antenna positioning system. ">AntennaPositioner</a></em>.  <a href="#ad7e864f6073421c98585c64802a3e78e">More...</a><br /></td></tr>
 <tr class="separator:ad7e864f6073421c98585c64802a3e78e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7a3a48b1aab43b9a43b664567a8c5829"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAntennaPositioner.html#a7a3a48b1aab43b9a43b664567a8c5829">~AntennaPositioner</a> ()</td></tr>
 <tr class="memdesc:a7a3a48b1aab43b9a43b664567a8c5829"><td class="mdescLeft">&#160;</td><td class="mdescRight">The class destructor.  <a href="#a7a3a48b1aab43b9a43b664567a8c5829">More...</a><br /></td></tr>
 <tr class="separator:a7a3a48b1aab43b9a43b664567a8c5829"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c9f91b2ad5d5cc3e23312a395d0abda"><td class="memItemLeft" align="right" valign="top"><a id="a0c9f91b2ad5d5cc3e23312a395d0abda"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAntennaPositioner.html#a0c9f91b2ad5d5cc3e23312a395d0abda">SetNumOfAzimPos</a> (unsigned int number)</td></tr>
+<tr class="memdesc:a0c9f91b2ad5d5cc3e23312a395d0abda"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method allows to set the number of azimuth positions. <br /></td></tr>
+<tr class="separator:a0c9f91b2ad5d5cc3e23312a395d0abda"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5087caa452709b33082c41b2cef2a23e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAntennaPositioner.html#a5087caa452709b33082c41b2cef2a23e">Initialize</a> ()</td></tr>
 <tr class="memdesc:a5087caa452709b33082c41b2cef2a23e"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method performs the initialization of the antenna positioning system.  <a href="#a5087caa452709b33082c41b2cef2a23e">More...</a><br /></td></tr>
 <tr class="separator:a5087caa452709b33082c41b2cef2a23e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -97,22 +103,25 @@ float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 <tr class="memitem:a897b759fa711bd8a4261e57177e3db1c"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAntennaPositioner.html#a897b759fa711bd8a4261e57177e3db1c">GetPolarizationString</a> () const</td></tr>
 <tr class="memdesc:a897b759fa711bd8a4261e57177e3db1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method returns the current antenna polarization, as a <code>std::string</code> object.  <a href="#a897b759fa711bd8a4261e57177e3db1c">More...</a><br /></td></tr>
 <tr class="separator:a897b759fa711bd8a4261e57177e3db1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a590e07740567be77f677d822cf63b69a"><td class="memItemLeft" align="right" valign="top"><a id="a590e07740567be77f677d822cf63b69a"></a>
-<a class="el" href="AntennaPositioning_8h.html#a55887c7bc32d70c0308472ff4de3e282">Polarization</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAntennaPositioner.html#a590e07740567be77f677d822cf63b69a">GetPolarization</a> () const</td></tr>
-<tr class="memdesc:a590e07740567be77f677d822cf63b69a"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method returns the current antenna polarization, as a value of the enumeration <a class="el" href="AntennaPositioning_8h.html#a55887c7bc32d70c0308472ff4de3e282">Polarization</a>. <br /></td></tr>
+<tr class="memitem:a590e07740567be77f677d822cf63b69a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="AntennaPositioning_8h.html#a55887c7bc32d70c0308472ff4de3e282">Polarization</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAntennaPositioner.html#a590e07740567be77f677d822cf63b69a">GetPolarization</a> () const</td></tr>
+<tr class="memdesc:a590e07740567be77f677d822cf63b69a"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method returns the current antenna polarization, as a value of the enumeration <a class="el" href="AntennaPositioning_8h.html#a55887c7bc32d70c0308472ff4de3e282">Polarization</a>.  <a href="#a590e07740567be77f677d822cf63b69a">More...</a><br /></td></tr>
 <tr class="separator:a590e07740567be77f677d822cf63b69a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa77a4d7ef1dd79ae4253167ebaf66a5e"><td class="memItemLeft" align="right" valign="top"><a id="aa77a4d7ef1dd79ae4253167ebaf66a5e"></a>
-unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAntennaPositioner.html#aa77a4d7ef1dd79ae4253167ebaf66a5e">GetPositionIndex</a> () const</td></tr>
-<tr class="memdesc:aa77a4d7ef1dd79ae4253167ebaf66a5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method returns the current azimuth position index. <br /></td></tr>
-<tr class="separator:aa77a4d7ef1dd79ae4253167ebaf66a5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a62c014613a812a0d2948dcebb0b1c9dc"><td class="memItemLeft" align="right" valign="top"><a id="a62c014613a812a0d2948dcebb0b1c9dc"></a>
-unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAntennaPositioner.html#a62c014613a812a0d2948dcebb0b1c9dc">GetNumOfPositions</a> () const</td></tr>
-<tr class="memdesc:a62c014613a812a0d2948dcebb0b1c9dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method return the total number of azimuth positions. <br /></td></tr>
-<tr class="separator:a62c014613a812a0d2948dcebb0b1c9dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a512104fe937395e266284eded6a8359d"><td class="memItemLeft" align="right" valign="top"><a id="a512104fe937395e266284eded6a8359d"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAntennaPositioner.html#a512104fe937395e266284eded6a8359d">IsLastPosition</a> () const</td></tr>
-<tr class="memdesc:a512104fe937395e266284eded6a8359d"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method states if the current position is the last one. <br /></td></tr>
+<tr class="memitem:acec3d655aa86c9a819b2a4f16590573b"><td class="memItemLeft" align="right" valign="top"><a id="acec3d655aa86c9a819b2a4f16590573b"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAntennaPositioner.html#acec3d655aa86c9a819b2a4f16590573b">GetPositionIndex</a> () const</td></tr>
+<tr class="memdesc:acec3d655aa86c9a819b2a4f16590573b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method returns the current azimuth position index. <br /></td></tr>
+<tr class="separator:acec3d655aa86c9a819b2a4f16590573b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a512104fe937395e266284eded6a8359d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAntennaPositioner.html#a512104fe937395e266284eded6a8359d">IsLastPosition</a> () const</td></tr>
+<tr class="memdesc:a512104fe937395e266284eded6a8359d"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method return the total number of azimuth positions.  <a href="#a512104fe937395e266284eded6a8359d">More...</a><br /></td></tr>
 <tr class="separator:a512104fe937395e266284eded6a8359d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:a9cc03f0eb0621d563accfce76ce7eeee"><td class="memItemLeft" align="right" valign="top"><a id="a9cc03f0eb0621d563accfce76ce7eeee"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>canalA</b> ()</td></tr>
+<tr class="separator:a9cc03f0eb0621d563accfce76ce7eeee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03e4c5761544a2e9305d2cc4d70c202d"><td class="memItemLeft" align="right" valign="top"><a id="a03e4c5761544a2e9305d2cc4d70c202d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>canalB</b> ()</td></tr>
+<tr class="separator:a03e4c5761544a2e9305d2cc4d70c202d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The aim of the class <em><a class="el" href="classAntennaPositioner.html" title="The aim of the class AntennaPositioner is to handle the antenna positioning system. ">AntennaPositioner</a></em> is to handle the antenna positioning system. </p>
@@ -133,8 +142,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
       </table>
 </div><div class="memdoc">
 
-<p>An index which allows to know how many positions have been swept and how many remains to reach the last position. </p>
-<p>The unique constructor of the class <em><a class="el" href="classAntennaPositioner.html" title="The aim of the class AntennaPositioner is to handle the antenna positioning system. ">AntennaPositioner</a></em>.</p>
+<p>The unique constructor of the class <em><a class="el" href="classAntennaPositioner.html" title="The aim of the class AntennaPositioner is to handle the antenna positioning system. ">AntennaPositioner</a></em>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">gpsInterf</td><td>A reference to the object which is responsible for the communication with the Aaronia GPS receiver. </td></tr>
@@ -193,6 +201,26 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
+<a id="a590e07740567be77f677d822cf63b69a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a590e07740567be77f677d822cf63b69a">&#9670;&nbsp;</a></span>GetPolarization()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="AntennaPositioning_8h.html#a55887c7bc32d70c0308472ff4de3e282">Polarization</a> AntennaPositioner::GetPolarization </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This method returns the current antenna polarization, as a value of the enumeration <a class="el" href="AntennaPositioning_8h.html#a55887c7bc32d70c0308472ff4de3e282">Polarization</a>. </p>
+<dl class="section return"><dt>Returns</dt><dd>A value of the enumeration 'Polarization'. </dd></dl>
+
+</div>
+</div>
 <a id="a897b759fa711bd8a4261e57177e3db1c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a897b759fa711bd8a4261e57177e3db1c">&#9670;&nbsp;</a></span>GetPolarizationString()</h2>
 
@@ -233,6 +261,34 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
+<a id="a512104fe937395e266284eded6a8359d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a512104fe937395e266284eded6a8359d">&#9670;&nbsp;</a></span>IsLastPosition()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool AntennaPositioner::IsLastPosition </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This method return the total number of azimuth positions. </p>
+<p>This method states if the current position is the last one. </p>
+
+</div>
+</div>
 <a id="a2e05c385b9933d2ee1d4f8f953c99070"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2e05c385b9933d2ee1d4f8f953c99070">&#9670;&nbsp;</a></span>NextAzimPosition()</h2>
 
@@ -249,7 +305,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><div class="memdoc">
 
 <p>This method moves the antenna to the next azimuth position. </p>
-<p>To move the antenna to the next position, this is rotated an angle determined by the number of positions (360/number of positions) and in a clockwise way. If the current position is the last one, then the antenna is move to the initial position, rotating this one counterclockwise to avoid the cables to tangle or stretch.</p>
+<p>To move the antenna to the next position, this is rotated an angle determined by the number of positions (360/number of positions) and in a clockwise way (seen from above). If the current position is the last one, then the antenna is move to the initial position, rotating this one counterclockwise (seen from above) to avoid the cables to tangle or stretch.</p>
 <p>Taking into account the method <a class="el" href="classAntennaPositioner.html#a5087caa452709b33082c41b2cef2a23e" title="This method performs the initialization of the antenna positioning system. ">Initialize()</a>, it is waited this method to be called when the antenna polarization changes from vertical to horizontal. </p><dl class="section return"><dt>Returns</dt><dd>A <code>true</code> if the operation was successful or a <code>false</code> otherwise. </dd></dl>
 
 </div>

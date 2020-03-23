@@ -489,6 +489,10 @@ int main(int argc, char * argv[])
 		TurnOffFrontEnd();
 		TurnOffLeds();
 
+#ifdef RASPBERRY_PI
+		digitalWrite(piPins.LED_ERROR, pinsValues.LED_ERROR_ON);
+#endif
+
 		//cout << "\nExiting from the rfims software..." << endl;
 		cout << "\nPress enter to finish the rfims software..." << endl;
 		WaitForEnter();
@@ -496,7 +500,7 @@ int main(int argc, char * argv[])
 		std::exit(EXIT_FAILURE);
 	}
 
-	cout << "\nThe sweeps capturing process finished." << endl;
+	cout << "\nThe sweeps capturing process finished successfully." << endl;
 
 	if( !timer.is_stopped() )
 		cout << "\nThe elapsed time since the beginning is: " << GetTimeAsString(timer) << endl;

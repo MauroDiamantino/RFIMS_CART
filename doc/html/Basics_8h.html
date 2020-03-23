@@ -66,7 +66,6 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
@@ -91,7 +90,7 @@ $(function() {
 <code>#include &lt;cstdint&gt;</code><br />
 <code>#include &lt;cstdlib&gt;</code><br />
 <code>#include &lt;pthread.h&gt;</code><br />
-<code>#include &lt;wiringPi.h&gt;</code><br />
+<code>#include &lt;algorithm&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for Basics.h:</div>
 <div class="dyncontent">
@@ -155,13 +154,13 @@ Functions</h2></td></tr>
 <tr class="memitem:adee734e43e4a9a5f4b9f610ccdd3f8e0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8h.html#adee734e43e4a9a5f4b9f610ccdd3f8e0">approximatelyEqual</a> (std::vector&lt; float &gt; vectorA, std::vector&lt; float &gt; vectorB)</td></tr>
 <tr class="memdesc:adee734e43e4a9a5f4b9f610ccdd3f8e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function intended to compare <code>std::vector&lt;float&gt;</code> containers as approximately equal, taking into account the floating-point rounding errors.  <a href="#adee734e43e4a9a5f4b9f610ccdd3f8e0">More...</a><br /></td></tr>
 <tr class="separator:adee734e43e4a9a5f4b9f610ccdd3f8e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac744212c600f3f610807ec4add576822"><td class="memItemLeft" align="right" valign="top">std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8h.html#ac744212c600f3f610807ec4add576822">operator-</a> (const std::vector&lt; float &gt; &amp;<a class="el" href="Spectran_8h.html#a16fa8eb91a19fde7a399d85c521f63fd">vect</a>)</td></tr>
-<tr class="memdesc:ac744212c600f3f610807ec4add576822"><td class="mdescLeft">&#160;</td><td class="mdescRight">An overloading of unary operator - which negates the elements of a <code>std::vector&lt;float&gt;</code> container.  <a href="#ac744212c600f3f610807ec4add576822">More...</a><br /></td></tr>
-<tr class="separator:ac744212c600f3f610807ec4add576822"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe6b1466ff5e3b09c33ca5dc9fc81c5a"><td class="memItemLeft" align="right" valign="top"><a id="abe6b1466ff5e3b09c33ca5dc9fc81c5a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8h.html#abe6b1466ff5e3b09c33ca5dc9fc81c5a">WaitForKey</a> ()</td></tr>
-<tr class="memdesc:abe6b1466ff5e3b09c33ca5dc9fc81c5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function stop the execution until any key is pressed by the user and it was used for debugging purpose. <br /></td></tr>
-<tr class="separator:abe6b1466ff5e3b09c33ca5dc9fc81c5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f56d4e90764072380d4303d96fe6879"><td class="memItemLeft" align="right" valign="top">std::vector&lt; FreqValues::value_type &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8h.html#a8f56d4e90764072380d4303d96fe6879">operator-</a> (const std::vector&lt; FreqValues::value_type &gt; &amp;<a class="el" href="Spectran_8h.html#a16fa8eb91a19fde7a399d85c521f63fd">vect</a>)</td></tr>
+<tr class="memdesc:a8f56d4e90764072380d4303d96fe6879"><td class="mdescLeft">&#160;</td><td class="mdescRight">An overloading of unary operator - which negates the elements of a <code>std::vector&lt;float&gt;</code> container.  <a href="#a8f56d4e90764072380d4303d96fe6879">More...</a><br /></td></tr>
+<tr class="separator:a8f56d4e90764072380d4303d96fe6879"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8242aec445329b2023609afe53abf99"><td class="memItemLeft" align="right" valign="top"><a id="ae8242aec445329b2023609afe53abf99"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8h.html#ae8242aec445329b2023609afe53abf99">WaitForEnter</a> ()</td></tr>
+<tr class="memdesc:ae8242aec445329b2023609afe53abf99"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function stop the execution until any key is pressed by the user and it was used for debugging purpose. <br /></td></tr>
+<tr class="separator:ae8242aec445329b2023609afe53abf99"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb434b11769fc3a9acd409f2fe534395"><td class="memItemLeft" align="right" valign="top"><a id="adb434b11769fc3a9acd409f2fe534395"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8h.html#adb434b11769fc3a9acd409f2fe534395">InitializeGPIO</a> ()</td></tr>
 <tr class="memdesc:adb434b11769fc3a9acd409f2fe534395"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function initializes all GPIO pins which are used for the input and output signals, in the way it is described in structure <em>piPins</em>. <br /></td></tr>
@@ -176,99 +175,82 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basi
 <tr class="memitem:a5ffe8b7dfe9c6702ed65b2b8b47bc3e1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8h.html#a5ffe8b7dfe9c6702ed65b2b8b47bc3e1">TurnOffFrontEnd</a> ()</td></tr>
 <tr class="memdesc:a5ffe8b7dfe9c6702ed65b2b8b47bc3e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The aim of this function is to turn off the RF front-end elements in a sequential manner, from the antenna to the spectrum analyzer.  <a href="#a5ffe8b7dfe9c6702ed65b2b8b47bc3e1">More...</a><br /></td></tr>
 <tr class="separator:a5ffe8b7dfe9c6702ed65b2b8b47bc3e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae964ff8411b4fdcaf65cb5529aea4bef"><td class="memItemLeft" align="right" valign="top"><a id="ae964ff8411b4fdcaf65cb5529aea4bef"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8h.html#ae964ff8411b4fdcaf65cb5529aea4bef">PrintHelp</a> ()</td></tr>
-<tr class="memdesc:ae964ff8411b4fdcaf65cb5529aea4bef"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function prints a message, in the <code>stdout</code>, with a software description and the descriptions of its arguments. <br /></td></tr>
-<tr class="separator:ae964ff8411b4fdcaf65cb5529aea4bef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abab505eef94a08a9092f916c62637071"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8h.html#abab505eef94a08a9092f916c62637071">ProcessMainArguments</a> (int argc, char *argv[])</td></tr>
-<tr class="memdesc:abab505eef94a08a9092f916c62637071"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function process the software's arguments, which define the behavior of this one.  <a href="#abab505eef94a08a9092f916c62637071">More...</a><br /></td></tr>
-<tr class="separator:abab505eef94a08a9092f916c62637071"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:a0423f4cb393331ce0b9f6b3a43adcaae"><td class="memItemLeft" align="right" valign="top"><a id="a0423f4cb393331ce0b9f6b3a43adcaae"></a>
-const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8h.html#a0423f4cb393331ce0b9f6b3a43adcaae">BASE_PATH</a> = &quot;/home/pi/RFIMS-CART&quot;</td></tr>
+const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8h.html#a0423f4cb393331ce0b9f6b3a43adcaae">BASE_PATH</a> = &quot;/home/new-mauro/RFIMS-CART&quot;</td></tr>
 <tr class="memdesc:a0423f4cb393331ce0b9f6b3a43adcaae"><td class="mdescLeft">&#160;</td><td class="mdescRight">This constant define the base path where there are the files and folders used by the software. <br /></td></tr>
 <tr class="separator:a0423f4cb393331ce0b9f6b3a43adcaae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c3522c6627edfbe8f9bd33aeb45b8c2"><td class="memItemLeft" ><a id="a1c3522c6627edfbe8f9bd33aeb45b8c2"></a>
 struct {</td></tr>
 <tr class="memitem:a0022ff2d0e6875b59cfcf647952a1c82"><td class="memItemLeft" >
-&#160;&#160;&#160;const unsigned int&#160;&#160;&#160;<a class="el" href="Basics_8h.html#a88cf59242b5a2ace3d90704ab4d2bcda">SWITCH</a> = 8</td></tr>
+&#160;&#160;&#160;const unsigned int&#160;&#160;&#160;<a class="el" href="Basics_8h.html#a88cf59242b5a2ace3d90704ab4d2bcda">SWITCH</a> = 10</td></tr>
 <tr class="memdesc:a0022ff2d0e6875b59cfcf647952a1c82"><td class="mdescLeft">&#160;</td><td class="mdescRight">This pin is initialized as an output in LOW state, so the RF switch output will start connected to the noise source. <br /></td></tr>
 <tr class="separator:a0022ff2d0e6875b59cfcf647952a1c82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb44ee1fd7ff6ed6631795e7033a071d"><td class="memItemLeft" >
-&#160;&#160;&#160;const unsigned int&#160;&#160;&#160;<a class="el" href="Basics_8h.html#ac49574191d7b969a384f488bf156f074">NOISE_SOURCE</a> = 13</td></tr>
+&#160;&#160;&#160;const unsigned int&#160;&#160;&#160;<a class="el" href="Basics_8h.html#ac49574191d7b969a384f488bf156f074">NOISE_SOURCE</a> = 6</td></tr>
 <tr class="memdesc:abb44ee1fd7ff6ed6631795e7033a071d"><td class="mdescLeft">&#160;</td><td class="mdescRight">This pin is initialized as an output in LOW state, so the noise source will start turned off. <br /></td></tr>
 <tr class="separator:abb44ee1fd7ff6ed6631795e7033a071d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad243391a81e522cb3f208e99c9deaa9a"><td class="memItemLeft" >
-&#160;&#160;&#160;const unsigned int&#160;&#160;&#160;<a class="el" href="Basics_8h.html#a3082ce7a3469a197735f0df330c1db7f">LNAS</a> = 12</td></tr>
+&#160;&#160;&#160;const unsigned int&#160;&#160;&#160;<a class="el" href="Basics_8h.html#a3082ce7a3469a197735f0df330c1db7f">LNAS</a> = 26</td></tr>
 <tr class="memdesc:ad243391a81e522cb3f208e99c9deaa9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">This pin is initialized as an output in LOW state, so the LNAs will start turned off. <br /></td></tr>
 <tr class="separator:ad243391a81e522cb3f208e99c9deaa9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6221c353381acbc82429e610c84f3d4c"><td class="memItemLeft" >
-&#160;&#160;&#160;const unsigned int&#160;&#160;&#160;<a class="el" href="Basics_8h.html#a237073109a5bfa275095a6997d994c39">SPECTRAN</a> = 14</td></tr>
+&#160;&#160;&#160;const unsigned int&#160;&#160;&#160;<a class="el" href="Basics_8h.html#a237073109a5bfa275095a6997d994c39">SPECTRAN</a> = 27</td></tr>
 <tr class="memdesc:a6221c353381acbc82429e610c84f3d4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">This pin is initialized as an input with the pull-down resistor enabled, so the Spectran device will start turned off. <br /></td></tr>
 <tr class="separator:a6221c353381acbc82429e610c84f3d4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a26026656900715faf235871afb58bb69"><td class="memItemLeft" >
-&#160;&#160;&#160;const unsigned int&#160;&#160;&#160;<a class="el" href="Basics_8h.html#a1f3aea83acb94fb9385c520e133172cc">LED_SWEEP_CAPTURE</a> = 9</td></tr>
+&#160;&#160;&#160;const unsigned int&#160;&#160;&#160;<a class="el" href="Basics_8h.html#a1f3aea83acb94fb9385c520e133172cc">LED_SWEEP_CAPTURE</a> = 0</td></tr>
 <tr class="memdesc:a26026656900715faf235871afb58bb69"><td class="mdescLeft">&#160;</td><td class="mdescRight">This pin is initialized as an output in LOW state, so the led will start turned off. <br /></td></tr>
 <tr class="separator:a26026656900715faf235871afb58bb69"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a458fada8969b4c3b712563d1903a909f"><td class="memItemLeft" >
-&#160;&#160;&#160;const unsigned int&#160;&#160;&#160;<a class="el" href="Basics_8h.html#ad2b6181fa6a423c60c574fa713cbe6cd">LED_SWEEP_PROCESS</a> = 10</td></tr>
+&#160;&#160;&#160;const unsigned int&#160;&#160;&#160;<a class="el" href="Basics_8h.html#ad2b6181fa6a423c60c574fa713cbe6cd">LED_SWEEP_PROCESS</a> = 2</td></tr>
 <tr class="memdesc:a458fada8969b4c3b712563d1903a909f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This pin is initialized as an output in LOW state, so the led will start turned off. <br /></td></tr>
 <tr class="separator:a458fada8969b4c3b712563d1903a909f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae8fdbba5ea44d2a0535069ff343176b2"><td class="memItemLeft" >
-&#160;&#160;&#160;const unsigned int&#160;&#160;&#160;<a class="el" href="Basics_8h.html#a2b7714e3fe4c2724a3954fedefe07d39">LED_INIT_POS</a> = 1</td></tr>
+&#160;&#160;&#160;const unsigned int&#160;&#160;&#160;<a class="el" href="Basics_8h.html#a2b7714e3fe4c2724a3954fedefe07d39">LED_INIT_POS</a> = 12</td></tr>
 <tr class="memdesc:ae8fdbba5ea44d2a0535069ff343176b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">This pin is initialized as an output in LOW state, so the led will start turned off. <br /></td></tr>
 <tr class="separator:ae8fdbba5ea44d2a0535069ff343176b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add65f127d1281ab5fcb319cb0d949372"><td class="memItemLeft" >
-&#160;&#160;&#160;const unsigned int&#160;&#160;&#160;<a class="el" href="Basics_8h.html#af304626609da54cf58c8e0a46dac817c">LED_NEXT_POS</a> = 3</td></tr>
+&#160;&#160;&#160;const unsigned int&#160;&#160;&#160;<a class="el" href="Basics_8h.html#af304626609da54cf58c8e0a46dac817c">LED_NEXT_POS</a> = 12</td></tr>
 <tr class="memdesc:add65f127d1281ab5fcb319cb0d949372"><td class="mdescLeft">&#160;</td><td class="mdescRight">This pin is initialized as an output in LOW state, so the led will start turned off. <br /></td></tr>
 <tr class="separator:add65f127d1281ab5fcb319cb0d949372"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a26717bda7032c3c6c55e85df85d7fbd9"><td class="memItemLeft" >
-&#160;&#160;&#160;const unsigned int&#160;&#160;&#160;<a class="el" href="Basics_8h.html#a916b908a0652e7d442ecf8f1383a6b5f">LED_POLARIZ</a> = 5</td></tr>
+&#160;&#160;&#160;const unsigned int&#160;&#160;&#160;<a class="el" href="Basics_8h.html#a916b908a0652e7d442ecf8f1383a6b5f">LED_POLARIZ</a> = 3</td></tr>
 <tr class="memdesc:a26717bda7032c3c6c55e85df85d7fbd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">This pin is initialized as an output in LOW state, so the led will start turned off. <br /></td></tr>
 <tr class="separator:a26717bda7032c3c6c55e85df85d7fbd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0cad5a296823edae91a2baad311e152d"><td class="memItemLeft" >
+&#160;&#160;&#160;const unsigned int&#160;&#160;&#160;<b>LED_ERROR</b> = 13</td></tr>
+<tr class="separator:a0cad5a296823edae91a2baad311e152d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a197463a3e311eca704c68a5b5f6aa013"><td class="memItemLeft" >
-&#160;&#160;&#160;const unsigned int&#160;&#160;&#160;<a class="el" href="Basics_8h.html#a95f3adabd348cd13ff295c9edce98d38">BUTTON_ENTER</a> = 2</td></tr>
+&#160;&#160;&#160;const unsigned int&#160;&#160;&#160;<a class="el" href="Basics_8h.html#a95f3adabd348cd13ff295c9edce98d38">BUTTON_ENTER</a> = 8</td></tr>
 <tr class="memdesc:a197463a3e311eca704c68a5b5f6aa013"><td class="mdescLeft">&#160;</td><td class="mdescRight">This pin is initialized as in input wit the pull-up resistor enabled, so the button must connect the pin to GND. <br /></td></tr>
 <tr class="separator:a197463a3e311eca704c68a5b5f6aa013"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8cdcb4f5aded4b8e2388f8602eccf5fc"><td class="memItemLeft" >
+&#160;&#160;&#160;const unsigned int&#160;&#160;&#160;<b>PUL</b> = 28</td></tr>
+<tr class="separator:a8cdcb4f5aded4b8e2388f8602eccf5fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adffa2b4309e0f162db64295e3cc3099f"><td class="memItemLeft" >
+&#160;&#160;&#160;const unsigned int&#160;&#160;&#160;<b>DIRECCION</b> = 31</td></tr>
+<tr class="separator:adffa2b4309e0f162db64295e3cc3099f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af25d459d87f8e79cb736dd9f7e9f1356"><td class="memItemLeft" >
+&#160;&#160;&#160;const unsigned int&#160;&#160;&#160;<b>EN</b> = 29</td></tr>
+<tr class="separator:af25d459d87f8e79cb736dd9f7e9f1356"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1ae82f0e97f9be4224f036aca389adf"><td class="memItemLeft" >
+&#160;&#160;&#160;const unsigned int&#160;&#160;&#160;<b>SENSOR_NORTE</b> = 30</td></tr>
+<tr class="separator:af1ae82f0e97f9be4224f036aca389adf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af592d9972df7a7badc5dadcf5d250ebf"><td class="memItemLeft" >
+&#160;&#160;&#160;const unsigned int&#160;&#160;&#160;<b>POL</b> = 5</td></tr>
+<tr class="separator:af592d9972df7a7badc5dadcf5d250ebf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9bee1c218d452e7932b656553291389"><td class="memItemLeft" >
+&#160;&#160;&#160;const unsigned int&#160;&#160;&#160;<b>FASE_A</b> = 22</td></tr>
+<tr class="separator:ad9bee1c218d452e7932b656553291389"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87d9bd0f656323e6223966b434968bf9"><td class="memItemLeft" >
+&#160;&#160;&#160;const unsigned int&#160;&#160;&#160;<b>FASE_B</b> = 21</td></tr>
+<tr class="separator:a87d9bd0f656323e6223966b434968bf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c3522c6627edfbe8f9bd33aeb45b8c2"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8h.html#a1c3522c6627edfbe8f9bd33aeb45b8c2">piPins</a></td></tr>
-<tr class="memdesc:a1c3522c6627edfbe8f9bd33aeb45b8c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">This unnamed structure is intended to store the constants with the assignment of GPIO pins to input and output external signals. <br /></td></tr>
+<tr class="memdesc:a1c3522c6627edfbe8f9bd33aeb45b8c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">This structure is intended to store the assignment of GPIO pins to input and output external signals, taking into account the Wiring Pi numbering. <br /></td></tr>
 <tr class="separator:a1c3522c6627edfbe8f9bd33aeb45b8c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adb83e5ae147752bdfbfec131998b1b41"><td class="memItemLeft" align="right" valign="top"><a id="adb83e5ae147752bdfbfec131998b1b41"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8h.html#adb83e5ae147752bdfbfec131998b1b41">SWITCH_TO_NS</a> = LOW</td></tr>
-<tr class="memdesc:adb83e5ae147752bdfbfec131998b1b41"><td class="mdescLeft">&#160;</td><td class="mdescRight">This constant define the value the switch's pin must take to connect noise source to input, provided that the noise source is connected to switch's J2 connector. <br /></td></tr>
-<tr class="separator:adb83e5ae147752bdfbfec131998b1b41"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a56077ad545aede44679ea2a7ab3a4d6f"><td class="memItemLeft" align="right" valign="top"><a id="a56077ad545aede44679ea2a7ab3a4d6f"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8h.html#a56077ad545aede44679ea2a7ab3a4d6f">SWITCH_TO_ANTENNA</a> = HIGH</td></tr>
-<tr class="memdesc:a56077ad545aede44679ea2a7ab3a4d6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This constant define the value the switch's pin must take to connect antenna to input, provided that the antenna is connected to switch's J1 connector. <br /></td></tr>
-<tr class="separator:a56077ad545aede44679ea2a7ab3a4d6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a73be6649a1d91070309752a2fbcf5b8a"><td class="memItemLeft" align="right" valign="top"><a id="a73be6649a1d91070309752a2fbcf5b8a"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8h.html#a73be6649a1d91070309752a2fbcf5b8a">flagCalEnabled</a></td></tr>
-<tr class="memdesc:a73be6649a1d91070309752a2fbcf5b8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The declaration of an external flag which defines if the calibration of the RF front end must be done or not. <br /></td></tr>
-<tr class="separator:a73be6649a1d91070309752a2fbcf5b8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a20c207881b1f505ca91715905e27bacb"><td class="memItemLeft" align="right" valign="top"><a id="a20c207881b1f505ca91715905e27bacb"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8h.html#a20c207881b1f505ca91715905e27bacb">flagPlot</a></td></tr>
-<tr class="memdesc:a20c207881b1f505ca91715905e27bacb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The declaration of an external flag which defines if the software has to generate plots. <br /></td></tr>
-<tr class="separator:a20c207881b1f505ca91715905e27bacb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6f3cbd74619175fd2b8580b37587f825"><td class="memItemLeft" align="right" valign="top"><a id="a6f3cbd74619175fd2b8580b37587f825"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8h.html#a6f3cbd74619175fd2b8580b37587f825">flagInfiniteLoop</a></td></tr>
-<tr class="memdesc:a6f3cbd74619175fd2b8580b37587f825"><td class="mdescLeft">&#160;</td><td class="mdescRight">The declaration of an external flag which defines if the software has to perform a finite number of measurement cycles or iterate infinitely. <br /></td></tr>
-<tr class="separator:a6f3cbd74619175fd2b8580b37587f825"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a816d4b897ea7e7b008ad3957e2203934"><td class="memItemLeft" align="right" valign="top"><a id="a816d4b897ea7e7b008ad3957e2203934"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8h.html#a816d4b897ea7e7b008ad3957e2203934">flagRFI</a></td></tr>
-<tr class="memdesc:a816d4b897ea7e7b008ad3957e2203934"><td class="mdescLeft">&#160;</td><td class="mdescRight">The declaration of an external flag which defines if the software has to perform <a class="el" href="structRFI.html" title="The aim of this structure is to store the data related with the detected RF interference (RFI): frequ...">RFI</a> detection or not. <br /></td></tr>
-<tr class="separator:a816d4b897ea7e7b008ad3957e2203934"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7616186dd32bbd21eb512dfdc580214c"><td class="memItemLeft" align="right" valign="top"><a id="a7616186dd32bbd21eb512dfdc580214c"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8h.html#a7616186dd32bbd21eb512dfdc580214c">flagUpload</a></td></tr>
-<tr class="memdesc:a7616186dd32bbd21eb512dfdc580214c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The declaration of an external flag which defines if the software has to upload the measurements or not. <br /></td></tr>
-<tr class="separator:a7616186dd32bbd21eb512dfdc580214c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a22fc28d7ca5b183f4a901f4dafd4a6"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8h.html#a4a22fc28d7ca5b183f4a901f4dafd4a6">numOfMeasCycles</a></td></tr>
-<tr class="memdesc:a4a22fc28d7ca5b183f4a901f4dafd4a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The declaration of an external variable which stores the number of measurements cycles which left to be done. It is used when the user wishes a finite number of measurements cycles.  <a href="#a4a22fc28d7ca5b183f4a901f4dafd4a6">More...</a><br /></td></tr>
-<tr class="separator:a4a22fc28d7ca5b183f4a901f4dafd4a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5fca012de3aeabad258f4f0fa6877334"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structRFI.html#a18cfa7d24274bbcd14acc6b513860cb0">RFI::ThresholdsNorm</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8h.html#a5fca012de3aeabad258f4f0fa6877334">rfiNorm</a></td></tr>
-<tr class="memdesc:a5fca012de3aeabad258f4f0fa6877334"><td class="mdescLeft">&#160;</td><td class="mdescRight">The declaration of an external variable which saves the norm which defines the harmful interference levels: ska-mode1, ska-mode2, itu-ra769-2-vlbi.  <a href="#a5fca012de3aeabad258f4f0fa6877334">More...</a><br /></td></tr>
-<tr class="separator:a5fca012de3aeabad258f4f0fa6877334"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This header file contains the declarations of the most basic and global entities which are used by many others entities. </p>
@@ -358,16 +340,16 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basi
 
 </div>
 </div>
-<a id="ac744212c600f3f610807ec4add576822"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac744212c600f3f610807ec4add576822">&#9670;&nbsp;</a></span>operator-()</h2>
+<a id="a8f56d4e90764072380d4303d96fe6879"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f56d4e90764072380d4303d96fe6879">&#9670;&nbsp;</a></span>operator-()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;float&gt; operator- </td>
+          <td class="memname">std::vector&lt;FreqValues::value_type&gt; operator- </td>
           <td>(</td>
-          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramtype">const std::vector&lt; FreqValues::value_type &gt; &amp;&#160;</td>
           <td class="paramname"><em>vect</em></td><td>)</td>
           <td></td>
         </tr>
@@ -378,43 +360,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basi
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">vect</td><td>A <code>std::vector&lt;float&gt;</code> container which must be negated. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="abab505eef94a08a9092f916c62637071"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abab505eef94a08a9092f916c62637071">&#9670;&nbsp;</a></span>ProcessMainArguments()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool ProcessMainArguments </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>argc</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>argv</em>[]&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>This function process the software's arguments, which define the behavior of this one. </p>
-<p>This function determines the values of the behavior flags (flagCalEnabled, flagPlot, flagRFI, etc.) taking into account the arguments that were received and its values. The function returns a <code>true</code> value if the arguments were processed correctly and a <code>false</code> value if there was an argument which could not be recognized, and in that case it presents a message, in the <code>stdout</code>, explaining the correct use of the software arguments. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">argc</td><td>The number of arguments that were received by the software. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">argv</td><td>An array of C strings (<code>char*</code>) where each one is a software's argument. </td></tr>
   </table>
   </dd>
 </dl>
@@ -458,41 +403,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basi
 
 <p>The aim of this function is to turn on the RF front-end elements in a sequential manner, from the spectrum analyzer to the antenna.. </p>
 <p>To turn on the RF front-end elements in a sequential manner, first, this function turns the spectrum analyzer on, then it waits 5 seconds, it turns the LNAs on, it waits again but this time just 1 second and, finally, it switches the input to the antenna. </p>
-
-</div>
-</div>
-<h2 class="groupheader">Variable Documentation</h2>
-<a id="a4a22fc28d7ca5b183f4a901f4dafd4a6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4a22fc28d7ca5b183f4a901f4dafd4a6">&#9670;&nbsp;</a></span>numOfMeasCycles</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">unsigned int numOfMeasCycles</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>The declaration of an external variable which stores the number of measurements cycles which left to be done. It is used when the user wishes a finite number of measurements cycles. </p>
-<p>The declaration of an external variable which stores the number of measurements cycles which left to be done. It is used when the user wishes a finite number of measurements cycles. </p>
-
-</div>
-</div>
-<a id="a5fca012de3aeabad258f4f0fa6877334"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5fca012de3aeabad258f4f0fa6877334">&#9670;&nbsp;</a></span>rfiNorm</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structRFI.html#a18cfa7d24274bbcd14acc6b513860cb0">RFI::ThresholdsNorm</a> rfiNorm</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>The declaration of an external variable which saves the norm which defines the harmful interference levels: ska-mode1, ska-mode2, itu-ra769-2-vlbi. </p>
-<p>The declaration of an external variable which saves the norm which defines the harmful interference levels: ska-mode1, ska-mode2, itu-ra769-2-vlbi. </p>
 
 </div>
 </div>

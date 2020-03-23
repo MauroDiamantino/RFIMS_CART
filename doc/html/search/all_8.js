@@ -13,5 +13,6 @@ var searchData=
   ['islogged',['IsLogged',['../classSpectranInterface.html#a7e80df1d7f5709f2976847ee1c91a85d',1,'SpectranInterface']]],
   ['isnoisesourceoff',['IsNoiseSourceOff',['../classFrontEndCalibrator.html#a0a10567c6a721f166e3ad63873813745',1,'FrontEndCalibrator']]],
   ['isright',['IsRight',['../classReply.html#a8527429859aeab3a0e62081871e5ce92',1,'Reply']]],
+  ['isstreamingenabled',['IsStreamingEnabled',['../classGPSInterface.html#a2c67fa6d56d0c422f92f29f5970fa57b',1,'GPSInterface']]],
   ['issweepenabled',['IsSweepEnabled',['../classSpectranInterface.html#ad921e08380e246d03d01b4ad080cec99',1,'SpectranInterface']]]
 ];

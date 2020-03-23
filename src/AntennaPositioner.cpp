@@ -202,6 +202,8 @@ bool AntennaPositioner::Initialize()
 		digitalWrite(piPins.EN, pinsValues.EN_OFF);
 	#endif
 #endif
+
+	return false;
 }
 
 /*!	To move the antenna to the next position, this is rotated an angle determined by the number of positions

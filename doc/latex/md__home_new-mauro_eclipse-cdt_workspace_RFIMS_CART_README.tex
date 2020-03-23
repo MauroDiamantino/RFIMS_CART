@@ -1,4 +1,4 @@
-/////////////////////////////////////////////////////////////////////\+E\+N\+G\+L\+I\+S\+H/////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////\+E\+N\+G\+L\+I\+S\+H/////////////////////////////////////////////////////////////////////
 
 This software is intended to run in the \char`\"{}\+R\+F Interference Measurement System (\+R\+F\+I\+M\+S)\char`\"{} which is going to be installed beside the China-\/\+Argentina Radio Telescope (C\+A\+RT) to analize the RF interference (\hyperlink{structRFI}{R\+FI}) which could reach the telescope, taking into account different azimuth angles and two antenna polarizations, horizontal and vertical.
 
@@ -32,7 +32,9 @@ sudo make copy-files
 \end{DoxyVerb}
 
 
-The first instruction compiles the software and it generates the binay file ./bin/rfims-\/cart. The second instruction copies the previous binary file to the path /usr/local/bin/, which is inside the environment variable P\+A\+TH, so that the software could be run without writing the path where the binary file is; the python scritp ./scripts/client.py, which is used by the software to upload the data, is copied to the path /usr/local/; the file ./data/99-\/aaronia-\/spectran.rules is copied to the path /etc/udev/rules.d/, which allows a non-\/root user to run the software; and, finally, the directory tree ./data/\+R\+F\+I\+M\+S-\/\+C\+A\+R\+T/, which contains several files which are accesed by the software, are copied to the path /home/pi/. These directories and files are accesed by the software to load the configuration parameters and to save there the measurements.
+The first instruction compiles the software and it generates the binay file ./bin/rfims-\/cart. The second instruction copies the previous binary file to the path /usr/local/bin/, which is inside the environment variable P\+A\+TH, so that the software could be run without writing the path where the binary file is; the python scritp ./scripts/client.py, which is used by the software to upload the data, is copied to the path /usr/local/; the file ./data/99-\/aaronia-\/spectran.rules is copied to the path /etc/udev/rules.d/, which allows a non-\/root user to run the software; and, finally, the directory tree ./data/\+R\+F\+I\+M\+S-\/\+C\+A\+R\+T/, which contains several files which are accesed by the software, are copied to the path /home/pi/. These directories and files are accesed by the software to load the configuration parameters and to save there the measurements. To ensure the software can read and write into the files which are in /home/pi/\+R\+F\+I\+M\+S-\/\+C\+A\+R\+T/, it is necessary to run the following\+: \begin{DoxyVerb}sudo chmod -r a+rw /home/pi/RFIMS-CART
+\end{DoxyVerb}
+
 
 To run the software, it must be typed \char`\"{}rfims-\/cart\char`\"{} in a terminal. The software has several arguments which define its behavior. To know the arguments and their usage it must be typed \char`\"{}rfims-\/cart -\/-\/help\char`\"{} or \char`\"{}rims-\/cart -\/h\char`\"{}.
 
@@ -45,9 +47,9 @@ make pdf
 \end{DoxyVerb}
 
 
-After that, the scripts \char`\"{}\+Software\+\_\+manual\+\_\+pdf\char`\"{} and \char`\"{}\+Software\+\_\+manual\+\_\+html\char`\"{}, which are in the folder doc/, will allow you to access the corresponding files.
+After that, the linux scripts \char`\"{}\+Software\+\_\+manual\+\_\+pdf\char`\"{} and \char`\"{}\+Software\+\_\+manual\+\_\+html\char`\"{}, which are in the folder doc/, will allow you to access the corresponding files.
 
-///////////////////////////////////////////////////////////////////////\+E\+S\+P\+AÑ\+O\+L////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////\+E\+S\+P\+AÑ\+O\+L///////////////////////////////////////////////////////////////////////
 
 Este software está pensado para ser ejecutado en el \char`\"{}\+Sistema de Monitoreo de Interferencias de R\+F (\+R\+F\+I\+M\+S)\char`\"{} que será instalado junto al Radio\+Telescopio Chino-\/\+Argentino (C\+A\+RT) para analizar las interferencias de RF (\hyperlink{structRFI}{R\+FI}) que podrían alcanzar el telescopio, teniendo en cuenta diferentes ángulos azimutales y dos polarizaciones de la antena, horizontal y vertical.
 
@@ -81,7 +83,9 @@ sudo make copy-files
 \end{DoxyVerb}
 
 
-Con la primer instrucción se compila el programa y se genera el binario ./bin/rfims-\/cart. Con la segunda instrucción se copia el binario anterior a la ruta /usr/local/bin/, que está dentro de la variable de entorno P\+A\+TH, para que se puede ejecutar el mismo sin escribir la ruta donde se encuentra; se copia el script de python ./scripts/client.py, que es usado por el programa para enviar los datos al servidor remoto, a la ruta /usr/local/; se copia el archivo con udev rules ./data/99-\/aaronia-\/spectran.rules a la ruta /etc/udev/rules.d/, que permite que un usuario no root pueda ejecutar el software; y, por último, se copia el árbol de directorios con archivos ./data/\+R\+F\+I\+M\+S-\/\+C\+A\+R\+T/ a /home/pi/. Estos directorios y archivos son utilizados por el programa para cargar los parámetros de configuración y para almacenar las mediciones y datos capturados.
+Con la primer instrucción se compila el programa y se genera el binario ./bin/rfims-\/cart. Con la segunda instrucción se copia el binario anterior a la ruta /usr/local/bin/, que está dentro de la variable de entorno P\+A\+TH, para que se puede ejecutar el mismo sin escribir la ruta donde se encuentra; se copia el script de python ./scripts/client.py, que es usado por el programa para enviar los datos al servidor remoto, a la ruta /usr/local/; se copia el archivo con udev rules ./data/99-\/aaronia-\/spectran.rules a la ruta /etc/udev/rules.d/, que permite que un usuario no root pueda ejecutar el software; y, por último, se copia el árbol de directorios con archivos ./data/\+R\+F\+I\+M\+S-\/\+C\+A\+R\+T/ a /home/pi/. Estos directorios y archivos son utilizados por el programa para cargar los parámetros de configuración y para almacenar las mediciones y datos capturados. Para asegurarse de que el software pueda escribir en los archivos correspondientes ubicados en /home/pi/\+R\+F\+I\+M\+S-\/\+C\+A\+RT es necesario modificar los permisos de este arbol de directorios, con el siguiente comando\+: \begin{DoxyVerb}sudo chmod -R a+rw /home/pi/RFIMS-CART
+\end{DoxyVerb}
+
 
 Para ejecutar el programa se debe tipear \char`\"{}rfims-\/cart\char`\"{} en la terminal. El programa tiene multiples argumentos que permiten modificar su comportamiento. Para conocer los argumentos y cómo deben usarse, se debe tipear \char`\"{}rfims-\/cart -\/-\/help\char`\"{} o \char`\"{}rfims-\/cart -\/h\char`\"{}.
 
@@ -94,4 +98,4 @@ make pdf
 \end{DoxyVerb}
 
 
-Luego los scripts \char`\"{}\+Software\+\_\+manual\+\_\+pdf\char`\"{} y \char`\"{}\+Software\+\_\+manual\+\_\+html\char`\"{} de la carpeta doc/ permitirán abrir los archivos correspondientes. 
+Luego, los scripts de linux \char`\"{}\+Software\+\_\+manual\+\_\+pdf\char`\"{} y \char`\"{}\+Software\+\_\+manual\+\_\+html\char`\"{} de la carpeta doc/ permitirán abrir los archivos correspondientes. 

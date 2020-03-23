@@ -21,8 +21,11 @@ Collaboration diagram for Signal\+Handler\+:\nopagebreak
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{classSignalHandler_a9d6599351f7c8b007410145cb23f18f4}\label{classSignalHandler_a9d6599351f7c8b007410145cb23f18f4}} 
-void \hyperlink{classSignalHandler_a9d6599351f7c8b007410145cb23f18f4}{Setup\+Signal\+Handler} (\hyperlink{classSpectranInterface}{Spectran\+Interface} $\ast$spec\+Interf\+Pt, \hyperlink{classSpectranConfigurator}{Spectran\+Configurator} $\ast$spec\+Configurator\+Pt, \hyperlink{classSweepBuilder}{Sweep\+Builder} $\ast$sweep\+Builder\+Pt, \hyperlink{classCurveAdjuster}{Curve\+Adjuster} $\ast$adjuster\+Pt, \hyperlink{classFrontEndCalibrator}{Front\+End\+Calibrator} $\ast$calibrator\+Pt, \hyperlink{classRFIDetector}{R\+F\+I\+Detector} $\ast$rfi\+Detector\+Pt=nullptr, \hyperlink{classDataLogger}{Data\+Logger} $\ast$data\+Logger\+Pt=nullptr, \hyperlink{classGPSInterface}{G\+P\+S\+Interface} $\ast$gps\+Interface\+Pt=nullptr, \hyperlink{classAntennaPositioner}{Antenna\+Positioner} $\ast$ant\+Positioner\+Pt=nullptr, \hyperlink{classRFPlotter}{R\+F\+Plotter} $\ast$sweep\+Plotter\+Pt=nullptr, \hyperlink{classRFPlotter}{R\+F\+Plotter} $\ast$gain\+Plotter\+Pt=nullptr, \hyperlink{classRFPlotter}{R\+F\+Plotter} $\ast$nf\+Plotter\+Pt=nullptr)
+\mbox{\Hypertarget{classSignalHandler_a3149ab1b5e1c8940d11b182f8059d916}\label{classSignalHandler_a3149ab1b5e1c8940d11b182f8059d916}} 
+\hyperlink{classSignalHandler_a3149ab1b5e1c8940d11b182f8059d916}{Signal\+Handler} ()
+\begin{DoxyCompactList}\small\item\em The \hyperlink{classSignalHandler}{Signal\+Handler} constructor which set up the function which handles the signals. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSignalHandler_a2151d93e15108f311501da2d3320fe5c}\label{classSignalHandler_a2151d93e15108f311501da2d3320fe5c}} 
+void \hyperlink{classSignalHandler_a2151d93e15108f311501da2d3320fe5c}{Set\+All\+Pointers} (\hyperlink{classSpectranInterface}{Spectran\+Interface} $\ast$spec\+Interf\+Pt, \hyperlink{classSpectranConfigurator}{Spectran\+Configurator} $\ast$spec\+Configurator\+Pt, \hyperlink{classSweepBuilder}{Sweep\+Builder} $\ast$sweep\+Builder\+Pt, \hyperlink{classCurveAdjuster}{Curve\+Adjuster} $\ast$adjuster\+Pt, \hyperlink{classFrontEndCalibrator}{Front\+End\+Calibrator} $\ast$calibrator\+Pt, \hyperlink{classRFIDetector}{R\+F\+I\+Detector} $\ast$rfi\+Detector\+Pt, \hyperlink{classDataLogger}{Data\+Logger} $\ast$data\+Logger\+Pt, \hyperlink{classGPSInterface}{G\+P\+S\+Interface} $\ast$gps\+Interface\+Pt, \hyperlink{classAntennaPositioner}{Antenna\+Positioner} $\ast$ant\+Positioner\+Pt, \hyperlink{classRFPlotter}{R\+F\+Plotter} $\ast$sweep\+Plotter\+Pt, \hyperlink{classRFPlotter}{R\+F\+Plotter} $\ast$gain\+Plotter\+Pt, \hyperlink{classRFPlotter}{R\+F\+Plotter} $\ast$nf\+Plotter\+Pt)
 \begin{DoxyCompactList}\small\item\em This method is intended to set the pointers to the high-\/level objects and to set handler functions. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Static Public Member Functions}
 \begin{DoxyCompactItemize}
@@ -32,29 +35,29 @@ static void \hyperlink{classSignalHandler_af32b7213b43fd13fa12587a0c0d9b565}{Exi
 \subsection*{Static Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-static \hyperlink{classSpectranInterface}{Spectran\+Interface} $\ast$ \hyperlink{classSignalHandler_a855d0b79fcbacf50e4a1d12bd5d1bf53}{spec\+Interf\+Ptr}
+static \hyperlink{classSpectranInterface}{Spectran\+Interface} $\ast$ \hyperlink{classSignalHandler_a855d0b79fcbacf50e4a1d12bd5d1bf53}{spec\+Interf\+Ptr} =nullptr
 \begin{DoxyCompactList}\small\item\em A pointer to the {\itshape \hyperlink{classSpectranInterface}{Spectran\+Interface}} object. \end{DoxyCompactList}\item 
-static \hyperlink{classSpectranConfigurator}{Spectran\+Configurator} $\ast$ \hyperlink{classSignalHandler_a0b9c75b3e3c928c01cc5e44d42e5ac38}{spec\+Configurator\+Ptr}
+static \hyperlink{classSpectranConfigurator}{Spectran\+Configurator} $\ast$ \hyperlink{classSignalHandler_a0b9c75b3e3c928c01cc5e44d42e5ac38}{spec\+Configurator\+Ptr} =nullptr
 \begin{DoxyCompactList}\small\item\em A pointer to the {\itshape \hyperlink{classSpectranConfigurator}{Spectran\+Configurator}} object. \end{DoxyCompactList}\item 
-static \hyperlink{classSweepBuilder}{Sweep\+Builder} $\ast$ \hyperlink{classSignalHandler_a23ec28699521fb435a5eb90f2c36bccb}{sweep\+Builder\+Ptr}
+static \hyperlink{classSweepBuilder}{Sweep\+Builder} $\ast$ \hyperlink{classSignalHandler_a23ec28699521fb435a5eb90f2c36bccb}{sweep\+Builder\+Ptr} =nullptr
 \begin{DoxyCompactList}\small\item\em A pointer to the {\itshape \hyperlink{classSweepBuilder}{Sweep\+Builder}} object. \end{DoxyCompactList}\item 
-static \hyperlink{classCurveAdjuster}{Curve\+Adjuster} $\ast$ \hyperlink{classSignalHandler_ab3328bb82a0e67153d8ff39bf04c7196}{adjuster\+Ptr}
+static \hyperlink{classCurveAdjuster}{Curve\+Adjuster} $\ast$ \hyperlink{classSignalHandler_ab3328bb82a0e67153d8ff39bf04c7196}{adjuster\+Ptr} =nullptr
 \begin{DoxyCompactList}\small\item\em A pointer to the {\itshape \hyperlink{classCurveAdjuster}{Curve\+Adjuster}} object. \end{DoxyCompactList}\item 
-static \hyperlink{classFrontEndCalibrator}{Front\+End\+Calibrator} $\ast$ \hyperlink{classSignalHandler_ae5bbe309adfefeb3b7e9ebf31d32b763}{calibrator\+Ptr}
+static \hyperlink{classFrontEndCalibrator}{Front\+End\+Calibrator} $\ast$ \hyperlink{classSignalHandler_ae5bbe309adfefeb3b7e9ebf31d32b763}{calibrator\+Ptr} =nullptr
 \begin{DoxyCompactList}\small\item\em A pointer to the {\itshape \hyperlink{classFrontEndCalibrator}{Front\+End\+Calibrator}} object. \end{DoxyCompactList}\item 
-static \hyperlink{classRFIDetector}{R\+F\+I\+Detector} $\ast$ \hyperlink{classSignalHandler_a9ce3533694e1e412496dc5a9b339ccc3}{rfi\+Detector\+Ptr}
+static \hyperlink{classRFIDetector}{R\+F\+I\+Detector} $\ast$ \hyperlink{classSignalHandler_a9ce3533694e1e412496dc5a9b339ccc3}{rfi\+Detector\+Ptr} =nullptr
 \begin{DoxyCompactList}\small\item\em A pointer to the {\itshape \hyperlink{classRFIDetector}{R\+F\+I\+Detector}} object. \end{DoxyCompactList}\item 
-static \hyperlink{classDataLogger}{Data\+Logger} $\ast$ \hyperlink{classSignalHandler_a114e600bdc2ad95efbc2991c97f3732c}{data\+Logger\+Ptr}
+static \hyperlink{classDataLogger}{Data\+Logger} $\ast$ \hyperlink{classSignalHandler_a114e600bdc2ad95efbc2991c97f3732c}{data\+Logger\+Ptr} =nullptr
 \begin{DoxyCompactList}\small\item\em A pointer to the {\itshape \hyperlink{classDataLogger}{Data\+Logger}} object. \end{DoxyCompactList}\item 
-static \hyperlink{classGPSInterface}{G\+P\+S\+Interface} $\ast$ \hyperlink{classSignalHandler_ac6bc3decceefdff9d3e5c15e4125fe08}{gps\+Interface\+Ptr}
+static \hyperlink{classGPSInterface}{G\+P\+S\+Interface} $\ast$ \hyperlink{classSignalHandler_ac6bc3decceefdff9d3e5c15e4125fe08}{gps\+Interface\+Ptr} =nullptr
 \begin{DoxyCompactList}\small\item\em A pointer to the {\itshape \hyperlink{classGPSInterface}{G\+P\+S\+Interface}} object. \end{DoxyCompactList}\item 
-static \hyperlink{classAntennaPositioner}{Antenna\+Positioner} $\ast$ \hyperlink{classSignalHandler_a04f82481d0f5795308e6e2cef7bb0f88}{ant\+Positioner\+Ptr}
+static \hyperlink{classAntennaPositioner}{Antenna\+Positioner} $\ast$ \hyperlink{classSignalHandler_a04f82481d0f5795308e6e2cef7bb0f88}{ant\+Positioner\+Ptr} =nullptr
 \begin{DoxyCompactList}\small\item\em A pointer to the {\itshape \hyperlink{classAntennaPositioner}{Antenna\+Positioner}} object. \end{DoxyCompactList}\item 
-static \hyperlink{classRFPlotter}{R\+F\+Plotter} $\ast$ \hyperlink{classSignalHandler_a7ec978dc8c16c31aa8faefe4e350302c}{sweep\+Plotter\+Ptr}
+static \hyperlink{classRFPlotter}{R\+F\+Plotter} $\ast$ \hyperlink{classSignalHandler_a7ec978dc8c16c31aa8faefe4e350302c}{sweep\+Plotter\+Ptr} =nullptr
 \begin{DoxyCompactList}\small\item\em A pointer to the {\itshape \hyperlink{classRFPlotter}{R\+F\+Plotter}} object which is responsible for the plotting of the last captured sweep. \end{DoxyCompactList}\item 
-static \hyperlink{classRFPlotter}{R\+F\+Plotter} $\ast$ \hyperlink{classSignalHandler_a040fa3711d4239933dd28a00b24965b2}{gain\+Plotter\+Ptr}
+static \hyperlink{classRFPlotter}{R\+F\+Plotter} $\ast$ \hyperlink{classSignalHandler_a040fa3711d4239933dd28a00b24965b2}{gain\+Plotter\+Ptr} =nullptr
 \begin{DoxyCompactList}\small\item\em A pointer to the {\itshape \hyperlink{classRFPlotter}{R\+F\+Plotter}} object which is responsible for the plotting of the last estimated gain curve. \end{DoxyCompactList}\item 
-static \hyperlink{classRFPlotter}{R\+F\+Plotter} $\ast$ \hyperlink{classSignalHandler_ad5f57e0f7a4ca52357bdd00c358d3a3a}{nf\+Plotter\+Ptr}
+static \hyperlink{classRFPlotter}{R\+F\+Plotter} $\ast$ \hyperlink{classSignalHandler_ad5f57e0f7a4ca52357bdd00c358d3a3a}{nf\+Plotter\+Ptr} =nullptr
 \begin{DoxyCompactList}\small\item\em A pointer to the {\itshape \hyperlink{classRFPlotter}{R\+F\+Plotter}} object which is responsible for the plotting of the last estimated noise figure curve. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
@@ -86,7 +89,7 @@ The function calls the destructor of almost all the high-\/level objects (define
 \index{Signal\+Handler@{Signal\+Handler}!adjuster\+Ptr@{adjuster\+Ptr}}
 \index{adjuster\+Ptr@{adjuster\+Ptr}!Signal\+Handler@{Signal\+Handler}}
 \subsubsection{\texorpdfstring{adjuster\+Ptr}{adjusterPtr}}
-{\footnotesize\ttfamily \hyperlink{classCurveAdjuster}{Curve\+Adjuster} $\ast$ Signal\+Handler\+::adjuster\+Ptr\hspace{0.3cm}{\ttfamily [static]}}
+{\footnotesize\ttfamily \hyperlink{classCurveAdjuster}{Curve\+Adjuster} $\ast$ Signal\+Handler\+::adjuster\+Ptr =nullptr\hspace{0.3cm}{\ttfamily [static]}}
 
 
 
@@ -96,7 +99,7 @@ The instantiation of the pointer to the {\itshape Curve\+Ajuster} object. \mbox{
 \index{Signal\+Handler@{Signal\+Handler}!ant\+Positioner\+Ptr@{ant\+Positioner\+Ptr}}
 \index{ant\+Positioner\+Ptr@{ant\+Positioner\+Ptr}!Signal\+Handler@{Signal\+Handler}}
 \subsubsection{\texorpdfstring{ant\+Positioner\+Ptr}{antPositionerPtr}}
-{\footnotesize\ttfamily \hyperlink{classAntennaPositioner}{Antenna\+Positioner} $\ast$ Signal\+Handler\+::ant\+Positioner\+Ptr\hspace{0.3cm}{\ttfamily [static]}}
+{\footnotesize\ttfamily \hyperlink{classAntennaPositioner}{Antenna\+Positioner} $\ast$ Signal\+Handler\+::ant\+Positioner\+Ptr =nullptr\hspace{0.3cm}{\ttfamily [static]}}
 
 
 
@@ -106,7 +109,7 @@ The instantiation of the pointer to the {\itshape \hyperlink{classAntennaPositio
 \index{Signal\+Handler@{Signal\+Handler}!calibrator\+Ptr@{calibrator\+Ptr}}
 \index{calibrator\+Ptr@{calibrator\+Ptr}!Signal\+Handler@{Signal\+Handler}}
 \subsubsection{\texorpdfstring{calibrator\+Ptr}{calibratorPtr}}
-{\footnotesize\ttfamily \hyperlink{classFrontEndCalibrator}{Front\+End\+Calibrator} $\ast$ Signal\+Handler\+::calibrator\+Ptr\hspace{0.3cm}{\ttfamily [static]}}
+{\footnotesize\ttfamily \hyperlink{classFrontEndCalibrator}{Front\+End\+Calibrator} $\ast$ Signal\+Handler\+::calibrator\+Ptr =nullptr\hspace{0.3cm}{\ttfamily [static]}}
 
 
 
@@ -116,7 +119,7 @@ The instantiation of the pointer to the {\itshape \hyperlink{classFrontEndCalibr
 \index{Signal\+Handler@{Signal\+Handler}!data\+Logger\+Ptr@{data\+Logger\+Ptr}}
 \index{data\+Logger\+Ptr@{data\+Logger\+Ptr}!Signal\+Handler@{Signal\+Handler}}
 \subsubsection{\texorpdfstring{data\+Logger\+Ptr}{dataLoggerPtr}}
-{\footnotesize\ttfamily \hyperlink{classDataLogger}{Data\+Logger} $\ast$ Signal\+Handler\+::data\+Logger\+Ptr\hspace{0.3cm}{\ttfamily [static]}}
+{\footnotesize\ttfamily \hyperlink{classDataLogger}{Data\+Logger} $\ast$ Signal\+Handler\+::data\+Logger\+Ptr =nullptr\hspace{0.3cm}{\ttfamily [static]}}
 
 
 
@@ -126,7 +129,7 @@ The instantiation of the pointer to the {\itshape \hyperlink{classDataLogger}{Da
 \index{Signal\+Handler@{Signal\+Handler}!gain\+Plotter\+Ptr@{gain\+Plotter\+Ptr}}
 \index{gain\+Plotter\+Ptr@{gain\+Plotter\+Ptr}!Signal\+Handler@{Signal\+Handler}}
 \subsubsection{\texorpdfstring{gain\+Plotter\+Ptr}{gainPlotterPtr}}
-{\footnotesize\ttfamily \hyperlink{classRFPlotter}{R\+F\+Plotter} $\ast$ Signal\+Handler\+::gain\+Plotter\+Ptr\hspace{0.3cm}{\ttfamily [static]}}
+{\footnotesize\ttfamily \hyperlink{classRFPlotter}{R\+F\+Plotter} $\ast$ Signal\+Handler\+::gain\+Plotter\+Ptr =nullptr\hspace{0.3cm}{\ttfamily [static]}}
 
 
 
@@ -136,7 +139,7 @@ The instantiation of the pointer to the {\itshape \hyperlink{classRFPlotter}{R\+
 \index{Signal\+Handler@{Signal\+Handler}!gps\+Interface\+Ptr@{gps\+Interface\+Ptr}}
 \index{gps\+Interface\+Ptr@{gps\+Interface\+Ptr}!Signal\+Handler@{Signal\+Handler}}
 \subsubsection{\texorpdfstring{gps\+Interface\+Ptr}{gpsInterfacePtr}}
-{\footnotesize\ttfamily \hyperlink{classGPSInterface}{G\+P\+S\+Interface} $\ast$ Signal\+Handler\+::gps\+Interface\+Ptr\hspace{0.3cm}{\ttfamily [static]}}
+{\footnotesize\ttfamily \hyperlink{classGPSInterface}{G\+P\+S\+Interface} $\ast$ Signal\+Handler\+::gps\+Interface\+Ptr =nullptr\hspace{0.3cm}{\ttfamily [static]}}
 
 
 
@@ -146,7 +149,7 @@ The instantiation of the pointer to the {\itshape \hyperlink{classGPSInterface}{
 \index{Signal\+Handler@{Signal\+Handler}!nf\+Plotter\+Ptr@{nf\+Plotter\+Ptr}}
 \index{nf\+Plotter\+Ptr@{nf\+Plotter\+Ptr}!Signal\+Handler@{Signal\+Handler}}
 \subsubsection{\texorpdfstring{nf\+Plotter\+Ptr}{nfPlotterPtr}}
-{\footnotesize\ttfamily \hyperlink{classRFPlotter}{R\+F\+Plotter} $\ast$ Signal\+Handler\+::nf\+Plotter\+Ptr\hspace{0.3cm}{\ttfamily [static]}}
+{\footnotesize\ttfamily \hyperlink{classRFPlotter}{R\+F\+Plotter} $\ast$ Signal\+Handler\+::nf\+Plotter\+Ptr =nullptr\hspace{0.3cm}{\ttfamily [static]}}
 
 
 
@@ -156,7 +159,7 @@ The instantiation of the pointer to the {\itshape \hyperlink{classRFPlotter}{R\+
 \index{Signal\+Handler@{Signal\+Handler}!rfi\+Detector\+Ptr@{rfi\+Detector\+Ptr}}
 \index{rfi\+Detector\+Ptr@{rfi\+Detector\+Ptr}!Signal\+Handler@{Signal\+Handler}}
 \subsubsection{\texorpdfstring{rfi\+Detector\+Ptr}{rfiDetectorPtr}}
-{\footnotesize\ttfamily \hyperlink{classRFIDetector}{R\+F\+I\+Detector} $\ast$ Signal\+Handler\+::rfi\+Detector\+Ptr\hspace{0.3cm}{\ttfamily [static]}}
+{\footnotesize\ttfamily \hyperlink{classRFIDetector}{R\+F\+I\+Detector} $\ast$ Signal\+Handler\+::rfi\+Detector\+Ptr =nullptr\hspace{0.3cm}{\ttfamily [static]}}
 
 
 
@@ -166,7 +169,7 @@ The instantiation of the pointer to the {\itshape \hyperlink{classRFIDetector}{R
 \index{Signal\+Handler@{Signal\+Handler}!spec\+Configurator\+Ptr@{spec\+Configurator\+Ptr}}
 \index{spec\+Configurator\+Ptr@{spec\+Configurator\+Ptr}!Signal\+Handler@{Signal\+Handler}}
 \subsubsection{\texorpdfstring{spec\+Configurator\+Ptr}{specConfiguratorPtr}}
-{\footnotesize\ttfamily \hyperlink{classSpectranConfigurator}{Spectran\+Configurator} $\ast$ Signal\+Handler\+::spec\+Configurator\+Ptr\hspace{0.3cm}{\ttfamily [static]}}
+{\footnotesize\ttfamily \hyperlink{classSpectranConfigurator}{Spectran\+Configurator} $\ast$ Signal\+Handler\+::spec\+Configurator\+Ptr =nullptr\hspace{0.3cm}{\ttfamily [static]}}
 
 
 
@@ -176,17 +179,17 @@ The instantiation of the pointer to the {\itshape \hyperlink{classSpectranConfig
 \index{Signal\+Handler@{Signal\+Handler}!spec\+Interf\+Ptr@{spec\+Interf\+Ptr}}
 \index{spec\+Interf\+Ptr@{spec\+Interf\+Ptr}!Signal\+Handler@{Signal\+Handler}}
 \subsubsection{\texorpdfstring{spec\+Interf\+Ptr}{specInterfPtr}}
-{\footnotesize\ttfamily \hyperlink{classSpectranInterface}{Spectran\+Interface} $\ast$ Signal\+Handler\+::spec\+Interf\+Ptr\hspace{0.3cm}{\ttfamily [static]}}
+{\footnotesize\ttfamily \hyperlink{classSpectranInterface}{Spectran\+Interface} $\ast$ Signal\+Handler\+::spec\+Interf\+Ptr =nullptr\hspace{0.3cm}{\ttfamily [static]}}
 
 
 
 A pointer to the {\itshape \hyperlink{classSpectranInterface}{Spectran\+Interface}} object. 
 
-The instantiation of the pointer to the {\itshape \hyperlink{classSpectranInterface}{Spectran\+Interface}} object. \mbox{\Hypertarget{classSignalHandler_a23ec28699521fb435a5eb90f2c36bccb}\label{classSignalHandler_a23ec28699521fb435a5eb90f2c36bccb}} 
+Global variables which are used by the \hyperlink{classSignalHandler}{Signal\+Handler} class/////////////// The instantiation of the pointer to the {\itshape \hyperlink{classSpectranInterface}{Spectran\+Interface}} object. \mbox{\Hypertarget{classSignalHandler_a23ec28699521fb435a5eb90f2c36bccb}\label{classSignalHandler_a23ec28699521fb435a5eb90f2c36bccb}} 
 \index{Signal\+Handler@{Signal\+Handler}!sweep\+Builder\+Ptr@{sweep\+Builder\+Ptr}}
 \index{sweep\+Builder\+Ptr@{sweep\+Builder\+Ptr}!Signal\+Handler@{Signal\+Handler}}
 \subsubsection{\texorpdfstring{sweep\+Builder\+Ptr}{sweepBuilderPtr}}
-{\footnotesize\ttfamily \hyperlink{classSweepBuilder}{Sweep\+Builder} $\ast$ Signal\+Handler\+::sweep\+Builder\+Ptr\hspace{0.3cm}{\ttfamily [static]}}
+{\footnotesize\ttfamily \hyperlink{classSweepBuilder}{Sweep\+Builder} $\ast$ Signal\+Handler\+::sweep\+Builder\+Ptr =nullptr\hspace{0.3cm}{\ttfamily [static]}}
 
 
 
@@ -196,7 +199,7 @@ The instantiation of the pointer to the {\itshape \hyperlink{classSweepBuilder}{
 \index{Signal\+Handler@{Signal\+Handler}!sweep\+Plotter\+Ptr@{sweep\+Plotter\+Ptr}}
 \index{sweep\+Plotter\+Ptr@{sweep\+Plotter\+Ptr}!Signal\+Handler@{Signal\+Handler}}
 \subsubsection{\texorpdfstring{sweep\+Plotter\+Ptr}{sweepPlotterPtr}}
-{\footnotesize\ttfamily \hyperlink{classRFPlotter}{R\+F\+Plotter} $\ast$ Signal\+Handler\+::sweep\+Plotter\+Ptr\hspace{0.3cm}{\ttfamily [static]}}
+{\footnotesize\ttfamily \hyperlink{classRFPlotter}{R\+F\+Plotter} $\ast$ Signal\+Handler\+::sweep\+Plotter\+Ptr =nullptr\hspace{0.3cm}{\ttfamily [static]}}
 
 
 
@@ -207,4 +210,4 @@ The instantiation of the pointer to the {\itshape \hyperlink{classRFPlotter}{R\+
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
 /home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/\hyperlink{TopLevel_8h}{Top\+Level.\+h}\item 
-/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/\hyperlink{main_8cpp}{main.\+cpp}\end{DoxyCompactItemize}
+/home/new-\/mauro/eclipse-\/cdt/workspace/\+R\+F\+I\+M\+S\+\_\+\+C\+A\+R\+T/src/Top\+Level.\+cpp\end{DoxyCompactItemize}

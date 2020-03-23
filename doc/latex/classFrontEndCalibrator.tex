@@ -20,6 +20,8 @@ The aim of this class is to calculate the total gain and total noise figure curv
 \begin{DoxyCompactList}\small\item\em The {\itshape \hyperlink{classFrontEndCalibrator}{Front\+End\+Calibrator}} destructor. \end{DoxyCompactList}\item 
 void \hyperlink{classFrontEndCalibrator_a6fcf8e8343878614d1b03910bb97a3d6}{Set\+Bands\+Parameters} (const std\+::vector$<$ \hyperlink{structBandParameters}{Band\+Parameters} $>$ \&bands\+Param)
 \begin{DoxyCompactList}\small\item\em This method allows to insert a vector with the parameters of all frequency bands. \end{DoxyCompactList}\item 
+void \hyperlink{classFrontEndCalibrator_a97e4fb11d9160b4e56f5f2e2ddcf41a7}{Build\+R\+B\+W\+Curve} ()
+\begin{DoxyCompactList}\small\item\em This method builds a curve with R\+BW values versus frequency, taking into account this parameter for each frequency band. \end{DoxyCompactList}\item 
 void \hyperlink{classFrontEndCalibrator_af166e90f4fe0dfd7cdf825b88d33a479}{Load\+E\+NR} ()
 \begin{DoxyCompactList}\small\item\em This method load the curve of E\+NR values versus frequency of the noise generator, from the corresponding file. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{classFrontEndCalibrator_a548817f0476ac8a459a991a0518e9be5}\label{classFrontEndCalibrator_a548817f0476ac8a459a991a0518e9be5}} 
@@ -131,7 +133,17 @@ The {\itshape \hyperlink{classFrontEndCalibrator}{Front\+End\+Calibrator}} destr
 Its implementation is empty because the attributes destruction is implicitly. However, the destructor is defined here to allow this one to be called explicitly in any part of the code, what is used by the signals handler to destroy the objects when a signal to finish the execution of the software is received. 
 
 \subsection{Member Function Documentation}
-\mbox{\Hypertarget{classFrontEndCalibrator_afd5775502a0aa05976dccd6142ad46b0}\label{classFrontEndCalibrator_afd5775502a0aa05976dccd6142ad46b0}} 
+\mbox{\Hypertarget{classFrontEndCalibrator_a97e4fb11d9160b4e56f5f2e2ddcf41a7}\label{classFrontEndCalibrator_a97e4fb11d9160b4e56f5f2e2ddcf41a7}} 
+\index{Front\+End\+Calibrator@{Front\+End\+Calibrator}!Build\+R\+B\+W\+Curve@{Build\+R\+B\+W\+Curve}}
+\index{Build\+R\+B\+W\+Curve@{Build\+R\+B\+W\+Curve}!Front\+End\+Calibrator@{Front\+End\+Calibrator}}
+\subsubsection{\texorpdfstring{Build\+R\+B\+W\+Curve()}{BuildRBWCurve()}}
+{\footnotesize\ttfamily void Front\+End\+Calibrator\+::\+Build\+R\+B\+W\+Curve (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+This method builds a curve with R\+BW values versus frequency, taking into account this parameter for each frequency band. 
+
+The aim of the R\+BW curve is to simplify the syntax of the equations which are used in the methods {\ttfamily \hyperlink{classFrontEndCalibrator_a2d643afa2c6bcf15b0f051cdc34855c2}{Front\+End\+Calibrator\+::\+Estimate\+Parameters()}} and {\ttfamily \hyperlink{classFrontEndCalibrator_afd5775502a0aa05976dccd6142ad46b0}{Front\+End\+Calibrator\+::\+Calibrate\+Sweep()}}. Firstly, the R\+BW curve is loaded with two points for each frequency band\+: one point with the R\+BW value of that band and its start frequency (Fstart) and the other point with the same R\+BW value and its stop frequency (Fstop). Then, the R\+BW curve is adjusted using the {\itshape \hyperlink{classCurveAdjuster}{Curve\+Adjuster}} object and, because of the way the first values ​​were loaded, the end R\+BW curve will be formed by steps, i.\+e. all the frequencies which corresponds to the same band will have the same R\+BW value. \mbox{\Hypertarget{classFrontEndCalibrator_afd5775502a0aa05976dccd6142ad46b0}\label{classFrontEndCalibrator_afd5775502a0aa05976dccd6142ad46b0}} 
 \index{Front\+End\+Calibrator@{Front\+End\+Calibrator}!Calibrate\+Sweep@{Calibrate\+Sweep}}
 \index{Calibrate\+Sweep@{Calibrate\+Sweep}!Front\+End\+Calibrator@{Front\+End\+Calibrator}}
 \subsubsection{\texorpdfstring{Calibrate\+Sweep()}{CalibrateSweep()}}

@@ -129,9 +129,7 @@ Variables</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The aim of this script is to upload the data collected by the software 'rfims-cart' (which calls this script). </p>
 <p>First, the script checks many times if there is Internet connection, through one hour, if so then it sends a compressed archive file with the rfims-cart data to the remote server, using scp, later it wakes up the server and, finally, it deletes the local archive file. If any error occurs the local archive file is not removed and it remains in a queue (in the software rfims-data) waiting to be uploaded. The path and name of the file to be sent is passed as an argument.</p>
-<dl class="section author"><dt>Author</dt><dd>Leandro Saldivar </dd>
-<dd>
-Mauro Diamantino </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Leandro Saldivar </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="file_af02a90f3bd6542c0620a930e41d8f11f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#file_af02a90f3bd6542c0620a930e41d8f11f">&#9670;&nbsp;</a></span>Internet_on()</h2>

@@ -62,6 +62,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#friends">Friends</a> &#124;
 <a href="classGPSInterface-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">GPSInterface Class Reference</div>  </div>
@@ -84,72 +85,160 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac4a2712c98235f5ca2d826525180840b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#ac4a2712c98235f5ca2d826525180840b">Initialize</a> ()</td></tr>
 <tr class="memdesc:ac4a2712c98235f5ca2d826525180840b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method is intended to try the communication with the Aaronia GPS receiver and configure the device.  <a href="#ac4a2712c98235f5ca2d826525180840b">More...</a><br /></td></tr>
 <tr class="separator:ac4a2712c98235f5ca2d826525180840b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3f92ed959a1ea60258e48ca7c379aec1"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#a3f92ed959a1ea60258e48ca7c379aec1">Available</a> ()</td></tr>
-<tr class="memdesc:a3f92ed959a1ea60258e48ca7c379aec1"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method returns the number of bytes in the input buffer.  <a href="#a3f92ed959a1ea60258e48ca7c379aec1">More...</a><br /></td></tr>
-<tr class="separator:a3f92ed959a1ea60258e48ca7c379aec1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acfbd1398a99916c1009b0ac00098ca67"><td class="memItemLeft" align="right" valign="top"><a id="acfbd1398a99916c1009b0ac00098ca67"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#acfbd1398a99916c1009b0ac00098ca67">ReadOneDataSet</a> ()</td></tr>
-<tr class="memdesc:acfbd1398a99916c1009b0ac00098ca67"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method send a command to get just one data set (GPS and sensors data) and it updates the class attributes with that data set. <br /></td></tr>
-<tr class="separator:acfbd1398a99916c1009b0ac00098ca67"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a663c36374cc097040cb8945a3c25b190"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#a663c36374cc097040cb8945a3c25b190">DisableStreaming</a> ()</td></tr>
-<tr class="memdesc:a663c36374cc097040cb8945a3c25b190"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method is intended to disable the data streaming from the Aaronia GPS receiver.  <a href="#a663c36374cc097040cb8945a3c25b190">More...</a><br /></td></tr>
+<tr class="memitem:a9082fdd405532c59d4f085e62edc8ad7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#a9082fdd405532c59d4f085e62edc8ad7">EnableStreaming</a> ()</td></tr>
+<tr class="memdesc:a9082fdd405532c59d4f085e62edc8ad7"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method is intended to enable the streaming of data from the GPS receiver.  <a href="#a9082fdd405532c59d4f085e62edc8ad7">More...</a><br /></td></tr>
+<tr class="separator:a9082fdd405532c59d4f085e62edc8ad7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a663c36374cc097040cb8945a3c25b190"><td class="memItemLeft" align="right" valign="top"><a id="a663c36374cc097040cb8945a3c25b190"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#a663c36374cc097040cb8945a3c25b190">DisableStreaming</a> ()</td></tr>
+<tr class="memdesc:a663c36374cc097040cb8945a3c25b190"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method is intended to disable the data streaming from the Aaronia GPS receiver. <br /></td></tr>
 <tr class="separator:a663c36374cc097040cb8945a3c25b190"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a698c9b38eaaa36fef1abcbc19614e2ad"><td class="memItemLeft" align="right" valign="top"><a id="a698c9b38eaaa36fef1abcbc19614e2ad"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#a698c9b38eaaa36fef1abcbc19614e2ad">Purge</a> ()</td></tr>
 <tr class="memdesc:a698c9b38eaaa36fef1abcbc19614e2ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">A method intended to purge the input and output buffers of the USB interface. <br /></td></tr>
 <tr class="separator:a698c9b38eaaa36fef1abcbc19614e2ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ca2cb996a9ed3c6cd436491c56aab18"><td class="memItemLeft" align="right" valign="top"><a id="a6ca2cb996a9ed3c6cd436491c56aab18"></a>
-const <a class="el" href="structTimeData.html">TimeData</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#a6ca2cb996a9ed3c6cd436491c56aab18">GetTimeData</a> () const</td></tr>
-<tr class="memdesc:a6ca2cb996a9ed3c6cd436491c56aab18"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method returns the time data (date and time) which was received from the GPS satellites. <br /></td></tr>
-<tr class="separator:a6ca2cb996a9ed3c6cd436491c56aab18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c827a6ce3078c5e748105019b75e0e0"><td class="memItemLeft" align="right" valign="top"><a id="a9c827a6ce3078c5e748105019b75e0e0"></a>
-const <a class="el" href="structGPSCoordinates.html">GPSCoordinates</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#a9c827a6ce3078c5e748105019b75e0e0">GetCoordinates</a> () const</td></tr>
-<tr class="memdesc:a9c827a6ce3078c5e748105019b75e0e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method returns the GPS coordinates. <br /></td></tr>
-<tr class="separator:a9c827a6ce3078c5e748105019b75e0e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab07cafce284ff50540a2be5b00410e34"><td class="memItemLeft" align="right" valign="top"><a id="ab07cafce284ff50540a2be5b00410e34"></a>
-unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#ab07cafce284ff50540a2be5b00410e34">GetNumOfSatellites</a> () const</td></tr>
-<tr class="memdesc:ab07cafce284ff50540a2be5b00410e34"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method returns the current number of satellites which the GPS receiver is connected with. <br /></td></tr>
-<tr class="separator:ab07cafce284ff50540a2be5b00410e34"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac70e16c9a95f440bc8ff58429b0db42a"><td class="memItemLeft" align="right" valign="top"><a id="ac70e16c9a95f440bc8ff58429b0db42a"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#ac70e16c9a95f440bc8ff58429b0db42a">GetGPSElevation</a> () const</td></tr>
-<tr class="memdesc:ac70e16c9a95f440bc8ff58429b0db42a"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method returns the elevation of the GPS receiver over the sea level, measured in meters (m) and based on GPS data. <br /></td></tr>
-<tr class="separator:ac70e16c9a95f440bc8ff58429b0db42a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac3672cc76506fe6ed1ee4824a57c0857"><td class="memItemLeft" align="right" valign="top"><a id="ac3672cc76506fe6ed1ee4824a57c0857"></a>
-const <a class="el" href="structData3D.html">Data3D</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#ac3672cc76506fe6ed1ee4824a57c0857">GetGyroData</a> () const</td></tr>
-<tr class="memdesc:ac3672cc76506fe6ed1ee4824a57c0857"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method returns the 3D gyroscope data. <br /></td></tr>
-<tr class="separator:ac3672cc76506fe6ed1ee4824a57c0857"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa0032f67cd64db9ddeee1b275025b417"><td class="memItemLeft" align="right" valign="top"><a id="aa0032f67cd64db9ddeee1b275025b417"></a>
-const <a class="el" href="structData3D.html">Data3D</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#aa0032f67cd64db9ddeee1b275025b417">GetCompassData</a> () const</td></tr>
-<tr class="memdesc:aa0032f67cd64db9ddeee1b275025b417"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method returns the 3D compass data. <br /></td></tr>
-<tr class="separator:aa0032f67cd64db9ddeee1b275025b417"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a675644b668df300d19afaefff9849886"><td class="memItemLeft" align="right" valign="top"><a id="a675644b668df300d19afaefff9849886"></a>
-const <a class="el" href="structData3D.html">Data3D</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#a675644b668df300d19afaefff9849886">GetAccelerData</a> () const</td></tr>
-<tr class="memdesc:a675644b668df300d19afaefff9849886"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method returns the 3D accelerometer data. <br /></td></tr>
-<tr class="separator:a675644b668df300d19afaefff9849886"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a63ed7a32797c2fc7557bfdfdb74c43ed"><td class="memItemLeft" align="right" valign="top"><a id="a63ed7a32797c2fc7557bfdfdb74c43ed"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#a63ed7a32797c2fc7557bfdfdb74c43ed">GetPressure</a> () const</td></tr>
-<tr class="memdesc:a63ed7a32797c2fc7557bfdfdb74c43ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method returns the ambient temperature, measured in hectopascal (hPa). <br /></td></tr>
-<tr class="separator:a63ed7a32797c2fc7557bfdfdb74c43ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa6c34c4c04bea958c4ad15a2cd728e5e"><td class="memItemLeft" align="right" valign="top"><a id="aa6c34c4c04bea958c4ad15a2cd728e5e"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#aa6c34c4c04bea958c4ad15a2cd728e5e">GetPressElevation</a> () const</td></tr>
-<tr class="memdesc:aa6c34c4c04bea958c4ad15a2cd728e5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method returns the elevation of the GPS receiver over the sea level, measured in meters (m) and based on the ambient pressure. <br /></td></tr>
-<tr class="separator:aa6c34c4c04bea958c4ad15a2cd728e5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5443691a26eb05587190cf631ffbcec3"><td class="memItemLeft" align="right" valign="top"><a id="a5443691a26eb05587190cf631ffbcec3"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#a5443691a26eb05587190cf631ffbcec3">GetYaw</a> () const</td></tr>
-<tr class="memdesc:a5443691a26eb05587190cf631ffbcec3"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method returns the yaw angle, measured in degrees and whose range is 0 to 359. North corresponds to 0°, east to 90°, south to 180° and west to 270°. <br /></td></tr>
-<tr class="separator:a5443691a26eb05587190cf631ffbcec3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5cb902ccc2165294b4dacc7f660dcb5a"><td class="memItemLeft" align="right" valign="top"><a id="a5cb902ccc2165294b4dacc7f660dcb5a"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#a5cb902ccc2165294b4dacc7f660dcb5a">GetRoll</a> () const</td></tr>
-<tr class="memdesc:a5cb902ccc2165294b4dacc7f660dcb5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method returns the roll angle, measured in degrees and whose range is -180 to 180. This angle is zero if the device is put on horizontal surface, positive if it turns right and negative if it turns left. <br /></td></tr>
-<tr class="separator:a5cb902ccc2165294b4dacc7f660dcb5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a27f5655d78068177d901933528f3ac6f"><td class="memItemLeft" align="right" valign="top"><a id="a27f5655d78068177d901933528f3ac6f"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#a27f5655d78068177d901933528f3ac6f">GetPitch</a> () const</td></tr>
-<tr class="memdesc:a27f5655d78068177d901933528f3ac6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method returns the pitch angle, measured in degrees and whose range is -180 to 180. This angle is zero if the device is put on horizontal surface, positive if the elevation is over the surface and negative if the elevation is below the surface. <br /></td></tr>
-<tr class="separator:a27f5655d78068177d901933528f3ac6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7294a8a32b9ed2f10c5eaae3cf289995"><td class="memItemLeft" align="right" valign="top"><a id="a7294a8a32b9ed2f10c5eaae3cf289995"></a>
+<a class="el" href="structTimeData.html">TimeData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#a7294a8a32b9ed2f10c5eaae3cf289995">UpdateTimeData</a> ()</td></tr>
+<tr class="memdesc:a7294a8a32b9ed2f10c5eaae3cf289995"><td class="mdescLeft">&#160;</td><td class="mdescRight">A method which reads the corresponding data reply to update the time data and returns it. <br /></td></tr>
+<tr class="separator:a7294a8a32b9ed2f10c5eaae3cf289995"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3eab2087c81b2847d08f6d2d1143ebf9"><td class="memItemLeft" align="right" valign="top"><a id="a3eab2087c81b2847d08f6d2d1143ebf9"></a>
+<a class="el" href="structData3D.html">Data3D</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#a3eab2087c81b2847d08f6d2d1143ebf9">UpdateGyroData</a> ()</td></tr>
+<tr class="memdesc:a3eab2087c81b2847d08f6d2d1143ebf9"><td class="mdescLeft">&#160;</td><td class="mdescRight">A method which reads the corresponding data reply to update the gyroscope data and returns them. <br /></td></tr>
+<tr class="separator:a3eab2087c81b2847d08f6d2d1143ebf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0dcab52fb85346bdac3037d042da7ff"><td class="memItemLeft" align="right" valign="top"><a id="aa0dcab52fb85346bdac3037d042da7ff"></a>
+<a class="el" href="structData3D.html">Data3D</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#aa0dcab52fb85346bdac3037d042da7ff">UpdateCompassData</a> ()</td></tr>
+<tr class="memdesc:aa0dcab52fb85346bdac3037d042da7ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">A method which reads the corresponding data reply to update the compass data and returns them. <br /></td></tr>
+<tr class="separator:aa0dcab52fb85346bdac3037d042da7ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac80f02467033a37c5ed61317ec03fc6a"><td class="memItemLeft" align="right" valign="top"><a id="ac80f02467033a37c5ed61317ec03fc6a"></a>
+<a class="el" href="structData3D.html">Data3D</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#ac80f02467033a37c5ed61317ec03fc6a">UpdateAccelerData</a> ()</td></tr>
+<tr class="memdesc:ac80f02467033a37c5ed61317ec03fc6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">A method which reads the corresponding data reply to update the accelerometer data and returns them. <br /></td></tr>
+<tr class="separator:ac80f02467033a37c5ed61317ec03fc6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31cc076fd378b133a8549644f0bc647d"><td class="memItemLeft" align="right" valign="top"><a id="a31cc076fd378b133a8549644f0bc647d"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#a31cc076fd378b133a8549644f0bc647d">UpdateYaw</a> ()</td></tr>
+<tr class="memdesc:a31cc076fd378b133a8549644f0bc647d"><td class="mdescLeft">&#160;</td><td class="mdescRight">A method which reads the corresponding data replies to update the yaw angle and returns it. <br /></td></tr>
+<tr class="separator:a31cc076fd378b133a8549644f0bc647d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ecdea88151717981ee50935aab30b90"><td class="memItemLeft" align="right" valign="top"><a id="a1ecdea88151717981ee50935aab30b90"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#a1ecdea88151717981ee50935aab30b90">UpdateRoll</a> ()</td></tr>
+<tr class="memdesc:a1ecdea88151717981ee50935aab30b90"><td class="mdescLeft">&#160;</td><td class="mdescRight">A method which reads the corresponding data replies to update the roll angle and returns it. <br /></td></tr>
+<tr class="separator:a1ecdea88151717981ee50935aab30b90"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf915f785dec180e91766fb3900542c0"><td class="memItemLeft" align="right" valign="top"><a id="adf915f785dec180e91766fb3900542c0"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#adf915f785dec180e91766fb3900542c0">UpdatePitch</a> ()</td></tr>
+<tr class="memdesc:adf915f785dec180e91766fb3900542c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">A method which reads the corresponding data replies to update the pitch angle and returns it. <br /></td></tr>
+<tr class="separator:adf915f785dec180e91766fb3900542c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a756ac8b2cbe6d206089f8e5be7bc844a"><td class="memItemLeft" align="right" valign="top"><a id="a756ac8b2cbe6d206089f8e5be7bc844a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#a756ac8b2cbe6d206089f8e5be7bc844a">UpdatePressAndElevat</a> ()</td></tr>
+<tr class="memdesc:a756ac8b2cbe6d206089f8e5be7bc844a"><td class="mdescLeft">&#160;</td><td class="mdescRight">A method which reads the corresponding data reply to update the pressure and the pressure-based elevation. <br /></td></tr>
+<tr class="separator:a756ac8b2cbe6d206089f8e5be7bc844a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a602aac740af9b1a98a977572be09a657"><td class="memItemLeft" align="right" valign="top"><a id="a602aac740af9b1a98a977572be09a657"></a>
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#a602aac740af9b1a98a977572be09a657">UpdateNumOfSatellites</a> ()</td></tr>
+<tr class="memdesc:a602aac740af9b1a98a977572be09a657"><td class="mdescLeft">&#160;</td><td class="mdescRight">A method which reads the corresponding data reply (GPGGA reply) to update the number of satellites and returns it. <br /></td></tr>
+<tr class="separator:a602aac740af9b1a98a977572be09a657"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4feebd6ac12f24ff93fea932e5272ae8"><td class="memItemLeft" align="right" valign="top"><a id="a4feebd6ac12f24ff93fea932e5272ae8"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#a4feebd6ac12f24ff93fea932e5272ae8">UpdateAll</a> ()</td></tr>
+<tr class="memdesc:a4feebd6ac12f24ff93fea932e5272ae8"><td class="mdescLeft">&#160;</td><td class="mdescRight">A method which reads all data replies to update all attributes. <br /></td></tr>
+<tr class="separator:a4feebd6ac12f24ff93fea932e5272ae8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2656b318d0476d12067861d2477df52"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#af2656b318d0476d12067861d2477df52">NewTimeData</a> () const</td></tr>
+<tr class="memdesc:af2656b318d0476d12067861d2477df52"><td class="mdescLeft">&#160;</td><td class="mdescRight">A method which allows to know if there are new time data.  <a href="#af2656b318d0476d12067861d2477df52">More...</a><br /></td></tr>
+<tr class="separator:af2656b318d0476d12067861d2477df52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af09baa1ae4d3b7618272d1c5bfbc5bd6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#af09baa1ae4d3b7618272d1c5bfbc5bd6">NewCoordinates</a> () const</td></tr>
+<tr class="memdesc:af09baa1ae4d3b7618272d1c5bfbc5bd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">A method which allows to know if there are new GPS coordinates.  <a href="#af09baa1ae4d3b7618272d1c5bfbc5bd6">More...</a><br /></td></tr>
+<tr class="separator:af09baa1ae4d3b7618272d1c5bfbc5bd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4bce28d69aae9fe5d256ad6ec35cd9d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#af4bce28d69aae9fe5d256ad6ec35cd9d">NewNumOfSatellites</a> () const</td></tr>
+<tr class="memdesc:af4bce28d69aae9fe5d256ad6ec35cd9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">A method which allows to know if there is a new value of the number of satellites.  <a href="#af4bce28d69aae9fe5d256ad6ec35cd9d">More...</a><br /></td></tr>
+<tr class="separator:af4bce28d69aae9fe5d256ad6ec35cd9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d8395626efc9a191ff2635c486dbd56"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#a9d8395626efc9a191ff2635c486dbd56">NewGPSElevation</a> () const</td></tr>
+<tr class="memdesc:a9d8395626efc9a191ff2635c486dbd56"><td class="mdescLeft">&#160;</td><td class="mdescRight">A method which allows to know if there is a new value of the GPS-based elevation.  <a href="#a9d8395626efc9a191ff2635c486dbd56">More...</a><br /></td></tr>
+<tr class="separator:a9d8395626efc9a191ff2635c486dbd56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a009d3be64d7b6fbc26f3afc0e6b5e364"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#a009d3be64d7b6fbc26f3afc0e6b5e364">NewGyroData</a> () const</td></tr>
+<tr class="memdesc:a009d3be64d7b6fbc26f3afc0e6b5e364"><td class="mdescLeft">&#160;</td><td class="mdescRight">A method which allows to know if there are new gyroscope data.  <a href="#a009d3be64d7b6fbc26f3afc0e6b5e364">More...</a><br /></td></tr>
+<tr class="separator:a009d3be64d7b6fbc26f3afc0e6b5e364"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ced63a896cdadd2c49dab6beb0502a5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#a4ced63a896cdadd2c49dab6beb0502a5">NewCompassData</a> () const</td></tr>
+<tr class="memdesc:a4ced63a896cdadd2c49dab6beb0502a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">A method which allows to know if there are new compass data.  <a href="#a4ced63a896cdadd2c49dab6beb0502a5">More...</a><br /></td></tr>
+<tr class="separator:a4ced63a896cdadd2c49dab6beb0502a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8f9b0517efbb5566a0a9220f23dd07a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#aa8f9b0517efbb5566a0a9220f23dd07a">NewAccelerData</a> () const</td></tr>
+<tr class="memdesc:aa8f9b0517efbb5566a0a9220f23dd07a"><td class="mdescLeft">&#160;</td><td class="mdescRight">A method which allows to know if there are new accelerometer data.  <a href="#aa8f9b0517efbb5566a0a9220f23dd07a">More...</a><br /></td></tr>
+<tr class="separator:aa8f9b0517efbb5566a0a9220f23dd07a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88d33d42e29b20e62619fc5c217868ae"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#a88d33d42e29b20e62619fc5c217868ae">NewPressure</a> () const</td></tr>
+<tr class="memdesc:a88d33d42e29b20e62619fc5c217868ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">A method which allows to know if there is a new value of pressure.  <a href="#a88d33d42e29b20e62619fc5c217868ae">More...</a><br /></td></tr>
+<tr class="separator:a88d33d42e29b20e62619fc5c217868ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdd55479e220aa489095de6034f644c7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#afdd55479e220aa489095de6034f644c7">NewYaw</a> () const</td></tr>
+<tr class="memdesc:afdd55479e220aa489095de6034f644c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">A method which allows to know if there is a new value of pressure.  <a href="#afdd55479e220aa489095de6034f644c7">More...</a><br /></td></tr>
+<tr class="separator:afdd55479e220aa489095de6034f644c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89f1f28d2effdc31de745b7496e6f09a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#a89f1f28d2effdc31de745b7496e6f09a">NewRoll</a> () const</td></tr>
+<tr class="memdesc:a89f1f28d2effdc31de745b7496e6f09a"><td class="mdescLeft">&#160;</td><td class="mdescRight">A method which allows to know if there is a new value of the roll angle.  <a href="#a89f1f28d2effdc31de745b7496e6f09a">More...</a><br /></td></tr>
+<tr class="separator:a89f1f28d2effdc31de745b7496e6f09a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0f5da64a7320e246bc49fa869f498f5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#ab0f5da64a7320e246bc49fa869f498f5">NewPitch</a> () const</td></tr>
+<tr class="memdesc:ab0f5da64a7320e246bc49fa869f498f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">A method which allows to know if there is a new value of the pitch angle.  <a href="#ab0f5da64a7320e246bc49fa869f498f5">More...</a><br /></td></tr>
+<tr class="separator:ab0f5da64a7320e246bc49fa869f498f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5972705822baff825ef090a99b215f55"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#a5972705822baff825ef090a99b215f55">NewGPSData</a> () const</td></tr>
+<tr class="memdesc:a5972705822baff825ef090a99b215f55"><td class="mdescLeft">&#160;</td><td class="mdescRight">A method which allows to know if there are new GPS data.  <a href="#a5972705822baff825ef090a99b215f55">More...</a><br /></td></tr>
+<tr class="separator:a5972705822baff825ef090a99b215f55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf5b6366242ce4828ba13d13f692b744"><td class="memItemLeft" align="right" valign="top"><a id="acf5b6366242ce4828ba13d13f692b744"></a>
+const <a class="el" href="structTimeData.html">TimeData</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#acf5b6366242ce4828ba13d13f692b744">GetTimeData</a> ()</td></tr>
+<tr class="memdesc:acf5b6366242ce4828ba13d13f692b744"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method returns the time data (date and time) which was received from the GPS satellites. <br /></td></tr>
+<tr class="separator:acf5b6366242ce4828ba13d13f692b744"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21b7fb470d3e3641f9456a249e7df492"><td class="memItemLeft" align="right" valign="top"><a id="a21b7fb470d3e3641f9456a249e7df492"></a>
+const <a class="el" href="structGPSCoordinates.html">GPSCoordinates</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#a21b7fb470d3e3641f9456a249e7df492">GetCoordinates</a> ()</td></tr>
+<tr class="memdesc:a21b7fb470d3e3641f9456a249e7df492"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method returns the GPS coordinates. <br /></td></tr>
+<tr class="separator:a21b7fb470d3e3641f9456a249e7df492"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acfacca3208f482716bf3408f9ba04aff"><td class="memItemLeft" align="right" valign="top"><a id="acfacca3208f482716bf3408f9ba04aff"></a>
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#acfacca3208f482716bf3408f9ba04aff">GetNumOfSatellites</a> ()</td></tr>
+<tr class="memdesc:acfacca3208f482716bf3408f9ba04aff"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method returns the current number of satellites which the GPS receiver is connected with. <br /></td></tr>
+<tr class="separator:acfacca3208f482716bf3408f9ba04aff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c71f18097c6486574ae1e5ef84aeb4e"><td class="memItemLeft" align="right" valign="top"><a id="a8c71f18097c6486574ae1e5ef84aeb4e"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#a8c71f18097c6486574ae1e5ef84aeb4e">GetGPSElevation</a> ()</td></tr>
+<tr class="memdesc:a8c71f18097c6486574ae1e5ef84aeb4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method returns the elevation of the GPS receiver over the sea level, measured in meters (m) and based on GPS data. <br /></td></tr>
+<tr class="separator:a8c71f18097c6486574ae1e5ef84aeb4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a808e10398c33792afd17a0868bc37a31"><td class="memItemLeft" align="right" valign="top"><a id="a808e10398c33792afd17a0868bc37a31"></a>
+const <a class="el" href="structData3D.html">Data3D</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#a808e10398c33792afd17a0868bc37a31">GetGyroData</a> ()</td></tr>
+<tr class="memdesc:a808e10398c33792afd17a0868bc37a31"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method returns the 3D gyroscope data. <br /></td></tr>
+<tr class="separator:a808e10398c33792afd17a0868bc37a31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a128eca920d581fafa3a497db0a385c31"><td class="memItemLeft" align="right" valign="top"><a id="a128eca920d581fafa3a497db0a385c31"></a>
+const <a class="el" href="structData3D.html">Data3D</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#a128eca920d581fafa3a497db0a385c31">GetCompassData</a> ()</td></tr>
+<tr class="memdesc:a128eca920d581fafa3a497db0a385c31"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method returns the 3D compass data. <br /></td></tr>
+<tr class="separator:a128eca920d581fafa3a497db0a385c31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a550dfc4020abe8de5d64802a15404fd2"><td class="memItemLeft" align="right" valign="top"><a id="a550dfc4020abe8de5d64802a15404fd2"></a>
+const <a class="el" href="structData3D.html">Data3D</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#a550dfc4020abe8de5d64802a15404fd2">GetAccelerData</a> ()</td></tr>
+<tr class="memdesc:a550dfc4020abe8de5d64802a15404fd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method returns the 3D accelerometer data. <br /></td></tr>
+<tr class="separator:a550dfc4020abe8de5d64802a15404fd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0b9cef2de5103ee5ada0154cda9b326"><td class="memItemLeft" align="right" valign="top"><a id="ac0b9cef2de5103ee5ada0154cda9b326"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#ac0b9cef2de5103ee5ada0154cda9b326">GetPressure</a> ()</td></tr>
+<tr class="memdesc:ac0b9cef2de5103ee5ada0154cda9b326"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method returns the ambient temperature, measured in hectopascal (hPa). <br /></td></tr>
+<tr class="separator:ac0b9cef2de5103ee5ada0154cda9b326"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a543f9df860565afa6ebe8c280cce1ba9"><td class="memItemLeft" align="right" valign="top"><a id="a543f9df860565afa6ebe8c280cce1ba9"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#a543f9df860565afa6ebe8c280cce1ba9">GetPressElevation</a> ()</td></tr>
+<tr class="memdesc:a543f9df860565afa6ebe8c280cce1ba9"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method returns the elevation of the GPS receiver over the sea level, measured in meters (m) and based on the ambient pressure. <br /></td></tr>
+<tr class="separator:a543f9df860565afa6ebe8c280cce1ba9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbb49a7fc74d393a41d447bfc4dbeed7"><td class="memItemLeft" align="right" valign="top"><a id="afbb49a7fc74d393a41d447bfc4dbeed7"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#afbb49a7fc74d393a41d447bfc4dbeed7">GetYaw</a> ()</td></tr>
+<tr class="memdesc:afbb49a7fc74d393a41d447bfc4dbeed7"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method returns the yaw angle, measured in degrees and whose range is 0 to 359. North corresponds to 0°, east to 90°, south to 180° and west to 270°. <br /></td></tr>
+<tr class="separator:afbb49a7fc74d393a41d447bfc4dbeed7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9f9c8e37b88f966ba1f12a52fcd5a16"><td class="memItemLeft" align="right" valign="top"><a id="ae9f9c8e37b88f966ba1f12a52fcd5a16"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#ae9f9c8e37b88f966ba1f12a52fcd5a16">GetRoll</a> ()</td></tr>
+<tr class="memdesc:ae9f9c8e37b88f966ba1f12a52fcd5a16"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method returns the roll angle, measured in degrees and whose range is -180 to 180. This angle is zero if the device is put on horizontal surface, positive if it turns right and negative if it turns left. <br /></td></tr>
+<tr class="separator:ae9f9c8e37b88f966ba1f12a52fcd5a16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbea020a31dde632a8e7c6f1595eedf6"><td class="memItemLeft" align="right" valign="top"><a id="afbea020a31dde632a8e7c6f1595eedf6"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#afbea020a31dde632a8e7c6f1595eedf6">GetPitch</a> ()</td></tr>
+<tr class="memdesc:afbea020a31dde632a8e7c6f1595eedf6"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method returns the pitch angle, measured in degrees and whose range is -180 to 180. This angle is zero if the device is put on horizontal surface, positive if the elevation is over the surface and negative if the elevation is below the surface. <br /></td></tr>
+<tr class="separator:afbea020a31dde632a8e7c6f1595eedf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a460c65aca30831d73e2cad9c57856fd7"><td class="memItemLeft" align="right" valign="top"><a id="a460c65aca30831d73e2cad9c57856fd7"></a>
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#a460c65aca30831d73e2cad9c57856fd7">GetDataRate</a> () const</td></tr>
+<tr class="memdesc:a460c65aca30831d73e2cad9c57856fd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method returns the data rate when the streaming is enabled. <br /></td></tr>
+<tr class="separator:a460c65aca30831d73e2cad9c57856fd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a568715247cbcfa261d68a030df7bd1ef"><td class="memItemLeft" align="right" valign="top"><a id="a568715247cbcfa261d68a030df7bd1ef"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#a568715247cbcfa261d68a030df7bd1ef">IsConnected</a> () const</td></tr>
 <tr class="memdesc:a568715247cbcfa261d68a030df7bd1ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method states if the communication with the Aaronia GPS receiver has been initialized. <br /></td></tr>
 <tr class="separator:a568715247cbcfa261d68a030df7bd1ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c67fa6d56d0c422f92f29f5970fa57b"><td class="memItemLeft" align="right" valign="top"><a id="a2c67fa6d56d0c422f92f29f5970fa57b"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#a2c67fa6d56d0c422f92f29f5970fa57b">IsStreamingEnabled</a> () const</td></tr>
+<tr class="memdesc:a2c67fa6d56d0c422f92f29f5970fa57b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method states if the data streaming is enabled. <br /></td></tr>
+<tr class="separator:a2c67fa6d56d0c422f92f29f5970fa57b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:a95d1d8f71a2e0f4de76627a6a2cab84a"><td class="memItemLeft" align="right" valign="top"><a id="a95d1d8f71a2e0f4de76627a6a2cab84a"></a>
+void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGPSInterface.html#a95d1d8f71a2e0f4de76627a6a2cab84a">StreamingThread</a> (void *arg)</td></tr>
+<tr class="memdesc:a95d1d8f71a2e0f4de76627a6a2cab84a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The function which is executed by the thread which reads each reply of the GPS Logger and extract the data from them. <br /></td></tr>
+<tr class="separator:a95d1d8f71a2e0f4de76627a6a2cab84a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The class <em>GPSInterace</em> is intended to establish the communication with the Aaronia GPS receiver, to request and capture messages from this one and extract useful data from the messages. </p>
@@ -195,14 +284,14 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a3f92ed959a1ea60258e48ca7c379aec1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3f92ed959a1ea60258e48ca7c379aec1">&#9670;&nbsp;</a></span>Available()</h2>
+<a id="a9082fdd405532c59d4f085e62edc8ad7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9082fdd405532c59d4f085e62edc8ad7">&#9670;&nbsp;</a></span>EnableStreaming()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">unsigned int GPSInterface::Available </td>
+          <td class="memname">void GPSInterface::EnableStreaming </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -210,28 +299,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
       </table>
 </div><div class="memdoc">
 
-<p>This method returns the number of bytes in the input buffer. </p>
-<p>It uses the function FT_GetQueueStatus() of the D2XX library. </p>
-
-</div>
-</div>
-<a id="a663c36374cc097040cb8945a3c25b190"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a663c36374cc097040cb8945a3c25b190">&#9670;&nbsp;</a></span>DisableStreaming()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void GPSInterface::DisableStreaming </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>This method is intended to disable the data streaming from the Aaronia GPS receiver. </p>
-<p>! This method is intended to enable the streaming of data from the GPS receiver. *! After the streaming has been enable the method CaptureStreamData() must be used to get the stream data ! This method is intended to capture the continuous flow of data (stream) which sent from the Aaronia GPS receiver (when the streming is enabled). *! When this method is called the GPS interface reads one set of data from the USB interface and calls the method </p>
+<p>This method is intended to enable the streaming of data from the GPS receiver. </p>
+<p>After the streaming has been enable the method CaptureStreamData() must be used to get the stream data and update the class attributes from them. </p>
 
 </div>
 </div>
@@ -252,6 +321,342 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 <p>This method is intended to try the communication with the Aaronia GPS receiver and configure the device. </p>
 <p>First, this method tries the communication with an ID command, and if the reply is right it shows the hardware version, firmware version and protocol version and then it disables the data streaming and the data logging into the microSD card. After, the GPS interface set up the following variables: data rate of streaming, accelerometer range and bandwidth of the average filter of the gyroscope sensor. </p>
+
+</div>
+</div>
+<a id="aa8f9b0517efbb5566a0a9220f23dd07a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa8f9b0517efbb5566a0a9220f23dd07a">&#9670;&nbsp;</a></span>NewAccelerData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool GPSInterface::NewAccelerData </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A method which allows to know if there are new accelerometer data. </p>
+<p>This method is mainly intended to be used with the streaming option. When a PAAG,DATA,T reply is received and the accelerometer data are extracted from it, it is considered these data are new. Once the accelerometer data are got with the method <a class="el" href="classGPSInterface.html#a550dfc4020abe8de5d64802a15404fd2" title="This method returns the 3D accelerometer data. ">GetAccelerData()</a>, then they are considered old data. </p>
+
+</div>
+</div>
+<a id="a4ced63a896cdadd2c49dab6beb0502a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ced63a896cdadd2c49dab6beb0502a5">&#9670;&nbsp;</a></span>NewCompassData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool GPSInterface::NewCompassData </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A method which allows to know if there are new compass data. </p>
+<p>This method is mainly intended to be used with the streaming option. When a PAAG,DATA,C reply is received and the compass data are extracted from it, it is considered these data are new. Once the compass data are got with the method <a class="el" href="classGPSInterface.html#a128eca920d581fafa3a497db0a385c31" title="This method returns the 3D compass data. ">GetCompassData()</a>, then they are considered old data. </p>
+
+</div>
+</div>
+<a id="af09baa1ae4d3b7618272d1c5bfbc5bd6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af09baa1ae4d3b7618272d1c5bfbc5bd6">&#9670;&nbsp;</a></span>NewCoordinates()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool GPSInterface::NewCoordinates </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A method which allows to know if there are new GPS coordinates. </p>
+<p>This method is mainly intended to be used with the streaming option. When a GPRMC reply is received and the coordinates are extracted from it, it is considered the coordinates are new data. Once the GPS coordinates are got with the method <a class="el" href="classGPSInterface.html#a21b7fb470d3e3641f9456a249e7df492" title="This method returns the GPS coordinates. ">GetCoordinates()</a>, then they are considered old data. </p>
+
+</div>
+</div>
+<a id="a5972705822baff825ef090a99b215f55"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5972705822baff825ef090a99b215f55">&#9670;&nbsp;</a></span>NewGPSData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool GPSInterface::NewGPSData </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A method which allows to know if there are new GPS data. </p>
+<p>This method is mainly intended to be used with the streaming option. When the corresponding replies, GPRMC and GPGGA, are received and the GPS data (time, coordinates, etc.) are extracted from them, it is considered these data are new. Once these data are got with the corresponding methods, then they are considered old data. </p>
+
+</div>
+</div>
+<a id="a9d8395626efc9a191ff2635c486dbd56"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d8395626efc9a191ff2635c486dbd56">&#9670;&nbsp;</a></span>NewGPSElevation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool GPSInterface::NewGPSElevation </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A method which allows to know if there is a new value of the GPS-based elevation. </p>
+<p>This method is mainly intended to be used with the streaming option. When a GPGGA reply is received and the elevation is extracted from it, it is considered this number as a new data. Once the GPS-based elevation is got with the method <a class="el" href="classGPSInterface.html#a8c71f18097c6486574ae1e5ef84aeb4e" title="This method returns the elevation of the GPS receiver over the sea level, measured in meters (m) and ...">GetGPSElevation()</a>, then it is considered old data. </p>
+
+</div>
+</div>
+<a id="a009d3be64d7b6fbc26f3afc0e6b5e364"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a009d3be64d7b6fbc26f3afc0e6b5e364">&#9670;&nbsp;</a></span>NewGyroData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool GPSInterface::NewGyroData </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A method which allows to know if there are new gyroscope data. </p>
+<p>This method is mainly intended to be used with the streaming option. When a PAAG,DATA,G reply is received and the gyroscope data are extracted from it, it is considered these data are new. Once the gyroscope data are got with the method <a class="el" href="classGPSInterface.html#a808e10398c33792afd17a0868bc37a31" title="This method returns the 3D gyroscope data. ">GetGyroData()</a>, then they are considered old data. </p>
+
+</div>
+</div>
+<a id="af4bce28d69aae9fe5d256ad6ec35cd9d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4bce28d69aae9fe5d256ad6ec35cd9d">&#9670;&nbsp;</a></span>NewNumOfSatellites()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool GPSInterface::NewNumOfSatellites </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A method which allows to know if there is a new value of the number of satellites. </p>
+<p>This method is mainly intended to be used with the streaming option. When a GPGGA reply is received and the number of satellites is extracted from it, it is considered this number as a new data. Once the number of satellites is got with the method <a class="el" href="classGPSInterface.html#acfacca3208f482716bf3408f9ba04aff" title="This method returns the current number of satellites which the GPS receiver is connected with...">GetNumOfSatellites()</a>, then it is considered old data. </p>
+
+</div>
+</div>
+<a id="ab0f5da64a7320e246bc49fa869f498f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0f5da64a7320e246bc49fa869f498f5">&#9670;&nbsp;</a></span>NewPitch()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool GPSInterface::NewPitch </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A method which allows to know if there is a new value of the pitch angle. </p>
+<p>This method is mainly intended to be used with the streaming option. When the corresponding replies are received and the pitch angle is calculated from their data, it is considered this value is new. Once this value is got with the method <a class="el" href="classGPSInterface.html#afbea020a31dde632a8e7c6f1595eedf6" title="This method returns the pitch angle, measured in degrees and whose range is -180 to 180...">GetPitch()</a>, then it is considered old data. </p>
+
+</div>
+</div>
+<a id="a88d33d42e29b20e62619fc5c217868ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88d33d42e29b20e62619fc5c217868ae">&#9670;&nbsp;</a></span>NewPressure()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool GPSInterface::NewPressure </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A method which allows to know if there is a new value of pressure. </p>
+<p>This method is mainly intended to be used with the streaming option. When a PAAG,DATA,B reply is received and the pressure is extracted from it, it is considered this data is new. Once the pressure value (or the pressure-based elevation) is got with the method <a class="el" href="classGPSInterface.html#ac0b9cef2de5103ee5ada0154cda9b326" title="This method returns the ambient temperature, measured in hectopascal (hPa). ">GetPressure()</a>, then it is considered old data. </p>
+
+</div>
+</div>
+<a id="a89f1f28d2effdc31de745b7496e6f09a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a89f1f28d2effdc31de745b7496e6f09a">&#9670;&nbsp;</a></span>NewRoll()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool GPSInterface::NewRoll </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A method which allows to know if there is a new value of the roll angle. </p>
+<p>This method is mainly intended to be used with the streaming option. When the corresponding replies are received and the roll angle is calculated from their data, it is considered this value is new. Once this value is got with the method <a class="el" href="classGPSInterface.html#ae9f9c8e37b88f966ba1f12a52fcd5a16" title="This method returns the roll angle, measured in degrees and whose range is -180 to 180...">GetRoll()</a>, then it is considered old data. </p>
+
+</div>
+</div>
+<a id="af2656b318d0476d12067861d2477df52"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2656b318d0476d12067861d2477df52">&#9670;&nbsp;</a></span>NewTimeData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool GPSInterface::NewTimeData </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A method which allows to know if there are new time data. </p>
+<p>This method is mainly intended to be used with the streaming option. When a GPRMC reply is received and the time data are extracted from it, it is considered the time data are new data. Once the time data are got with the method <a class="el" href="classGPSInterface.html#acf5b6366242ce4828ba13d13f692b744" title="This method returns the time data (date and time) which was received from the GPS satellites...">GetTimeData()</a>, then they are considered old data. </p>
+
+</div>
+</div>
+<a id="afdd55479e220aa489095de6034f644c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afdd55479e220aa489095de6034f644c7">&#9670;&nbsp;</a></span>NewYaw()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool GPSInterface::NewYaw </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A method which allows to know if there is a new value of pressure. </p>
+<p>This method is mainly intended to be used with the streaming option. When a PAAG,DATA,B reply is received and the pressure is extracted from it, it is considered this data is new. Once the pressure value (or the pressure-based elevation) is got with the method <a class="el" href="classGPSInterface.html#ac0b9cef2de5103ee5ada0154cda9b326" title="This method returns the ambient temperature, measured in hectopascal (hPa). ">GetPressure()</a>, then it is considered old data. </p>
 
 </div>
 </div>

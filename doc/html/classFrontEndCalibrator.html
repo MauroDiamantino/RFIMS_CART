@@ -87,6 +87,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6fcf8e8343878614d1b03910bb97a3d6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFrontEndCalibrator.html#a6fcf8e8343878614d1b03910bb97a3d6">SetBandsParameters</a> (const std::vector&lt; <a class="el" href="structBandParameters.html">BandParameters</a> &gt; &amp;bandsParam)</td></tr>
 <tr class="memdesc:a6fcf8e8343878614d1b03910bb97a3d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method allows to insert a vector with the parameters of all frequency bands.  <a href="#a6fcf8e8343878614d1b03910bb97a3d6">More...</a><br /></td></tr>
 <tr class="separator:a6fcf8e8343878614d1b03910bb97a3d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97e4fb11d9160b4e56f5f2e2ddcf41a7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFrontEndCalibrator.html#a97e4fb11d9160b4e56f5f2e2ddcf41a7">BuildRBWCurve</a> ()</td></tr>
+<tr class="memdesc:a97e4fb11d9160b4e56f5f2e2ddcf41a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method builds a curve with RBW values versus frequency, taking into account this parameter for each frequency band.  <a href="#a97e4fb11d9160b4e56f5f2e2ddcf41a7">More...</a><br /></td></tr>
+<tr class="separator:a97e4fb11d9160b4e56f5f2e2ddcf41a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af166e90f4fe0dfd7cdf825b88d33a479"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFrontEndCalibrator.html#af166e90f4fe0dfd7cdf825b88d33a479">LoadENR</a> ()</td></tr>
 <tr class="memdesc:af166e90f4fe0dfd7cdf825b88d33a479"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method load the curve of ENR values versus frequency of the noise generator, from the corresponding file.  <a href="#af166e90f4fe0dfd7cdf825b88d33a479">More...</a><br /></td></tr>
 <tr class="separator:af166e90f4fe0dfd7cdf825b88d33a479"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -264,6 +267,26 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a97e4fb11d9160b4e56f5f2e2ddcf41a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97e4fb11d9160b4e56f5f2e2ddcf41a7">&#9670;&nbsp;</a></span>BuildRBWCurve()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void FrontEndCalibrator::BuildRBWCurve </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This method builds a curve with RBW values versus frequency, taking into account this parameter for each frequency band. </p>
+<p>The aim of the RBW curve is to simplify the syntax of the equations which are used in the methods <code><a class="el" href="classFrontEndCalibrator.html#a2d643afa2c6bcf15b0f051cdc34855c2" title="This is one of the central methods. It estimates the front end parameters once the two sweeps were ca...">FrontEndCalibrator::EstimateParameters()</a></code> and <code><a class="el" href="classFrontEndCalibrator.html#afd5775502a0aa05976dccd6142ad46b0" title="This another central method which is intended to calibrate (correct) the sweeps obtained with the ant...">FrontEndCalibrator::CalibrateSweep()</a></code>. Firstly, the RBW curve is loaded with two points for each frequency band: one point with the RBW value of that band and its start frequency (Fstart) and the other point with the same RBW value and its stop frequency (Fstop). Then, the RBW curve is adjusted using the <em><a class="el" href="classCurveAdjuster.html" title="The aim of the class CurveAdjuster is to adjust any frequency curve, this is to interpolate and/or ex...">CurveAdjuster</a></em> object and, because of the way the first values ​​were loaded, the end RBW curve will be formed by steps, i.e. all the frequencies which corresponds to the same band will have the same RBW value. </p>
+
+</div>
+</div>
 <a id="afd5775502a0aa05976dccd6142ad46b0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afd5775502a0aa05976dccd6142ad46b0">&#9670;&nbsp;</a></span>CalibrateSweep()</h2>
 

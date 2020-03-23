@@ -66,6 +66,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">TopLevel.h File Reference</div>  </div>
@@ -77,6 +78,7 @@ $(function() {
 <div class="textblock"><code>#include &quot;<a class="el" href="Spectran_8h_source.html">Spectran.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="SweepProcessing_8h_source.html">SweepProcessing.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="AntennaPositioning_8h_source.html">AntennaPositioning.h</a>&quot;</code><br />
+<code>#include &lt;cstddef&gt;</code><br />
 <code>#include &lt;signal.h&gt;</code><br />
 <code>#include &lt;boost/timer/timer.hpp&gt;</code><br />
 <code>#include &lt;boost/date_time/posix_time/posix_time.hpp&gt;</code><br />
@@ -108,8 +110,58 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The class <em><a class="el" href="classSignalHandler.html" title="The class SignalHandler is intended to handle the interprocess signals (IPC) which terminates the sof...">SignalHandler</a></em> is intended to handle the interprocess signals (IPC) which terminates the software.  <a href="classSignalHandler.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:ae964ff8411b4fdcaf65cb5529aea4bef"><td class="memItemLeft" align="right" valign="top"><a id="ae964ff8411b4fdcaf65cb5529aea4bef"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="TopLevel_8h.html#ae964ff8411b4fdcaf65cb5529aea4bef">PrintHelp</a> ()</td></tr>
+<tr class="memdesc:ae964ff8411b4fdcaf65cb5529aea4bef"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function prints a message, in the <code>stdout</code>, with a software description and the descriptions of its arguments. <br /></td></tr>
+<tr class="separator:ae964ff8411b4fdcaf65cb5529aea4bef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abab505eef94a08a9092f916c62637071"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="TopLevel_8h.html#abab505eef94a08a9092f916c62637071">ProcessMainArguments</a> (int argc, char *argv[])</td></tr>
+<tr class="memdesc:abab505eef94a08a9092f916c62637071"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function process the software's arguments, which define the behavior of this one.  <a href="#abab505eef94a08a9092f916c62637071">More...</a><br /></td></tr>
+<tr class="separator:abab505eef94a08a9092f916c62637071"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82fe4b4b4770924e5c32e5d092d337cb"><td class="memItemLeft" align="right" valign="top"><a id="a82fe4b4b4770924e5c32e5d092d337cb"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="TopLevel_8h.html#a82fe4b4b4770924e5c32e5d092d337cb">GetTimeAsString</a> (boost::timer::cpu_timer &amp;<a class="el" href="TopLevel_8h.html#add9d7dd1477d4336f2912fed380aeeea">timer</a>)</td></tr>
+<tr class="memdesc:a82fe4b4b4770924e5c32e5d092d337cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function which extracts data from a timer and returns it as a string in a human-readable format. <br /></td></tr>
+<tr class="separator:a82fe4b4b4770924e5c32e5d092d337cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
+<tr class="memitem:a0bf321e8e8dbf75e77cb9828d5c30ab7"><td class="memItemLeft" align="right" valign="top"><a id="a0bf321e8e8dbf75e77cb9828d5c30ab7"></a>
+const unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="TopLevel_8h.html#a0bf321e8e8dbf75e77cb9828d5c30ab7">DEF_NUM_AZIM_POS</a> = 6</td></tr>
+<tr class="memdesc:a0bf321e8e8dbf75e77cb9828d5c30ab7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of azimuth positions where the system will perform sweeps. <br /></td></tr>
+<tr class="separator:a0bf321e8e8dbf75e77cb9828d5c30ab7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73be6649a1d91070309752a2fbcf5b8a"><td class="memItemLeft" align="right" valign="top"><a id="a73be6649a1d91070309752a2fbcf5b8a"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="TopLevel_8h.html#a73be6649a1d91070309752a2fbcf5b8a">flagCalEnabled</a></td></tr>
+<tr class="memdesc:a73be6649a1d91070309752a2fbcf5b8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The declaration of a flag which defines if the calibration of the RF front end must be done or not. By default the calibration is enabled. <br /></td></tr>
+<tr class="separator:a73be6649a1d91070309752a2fbcf5b8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20c207881b1f505ca91715905e27bacb"><td class="memItemLeft" align="right" valign="top"><a id="a20c207881b1f505ca91715905e27bacb"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="TopLevel_8h.html#a20c207881b1f505ca91715905e27bacb">flagPlot</a></td></tr>
+<tr class="memdesc:a20c207881b1f505ca91715905e27bacb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The declaration of a flag which defines if the software has to generate plots or not. By default the plotting is not performed. <br /></td></tr>
+<tr class="separator:a20c207881b1f505ca91715905e27bacb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f3cbd74619175fd2b8580b37587f825"><td class="memItemLeft" align="right" valign="top"><a id="a6f3cbd74619175fd2b8580b37587f825"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="TopLevel_8h.html#a6f3cbd74619175fd2b8580b37587f825">flagInfiniteLoop</a></td></tr>
+<tr class="memdesc:a6f3cbd74619175fd2b8580b37587f825"><td class="mdescLeft">&#160;</td><td class="mdescRight">The declaration of a flag which defines if the software has to perform a finite number of measurement cycles or iterate infinitely. By default the software iterates infinitely. <br /></td></tr>
+<tr class="separator:a6f3cbd74619175fd2b8580b37587f825"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a816d4b897ea7e7b008ad3957e2203934"><td class="memItemLeft" align="right" valign="top"><a id="a816d4b897ea7e7b008ad3957e2203934"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="TopLevel_8h.html#a816d4b897ea7e7b008ad3957e2203934">flagRFI</a></td></tr>
+<tr class="memdesc:a816d4b897ea7e7b008ad3957e2203934"><td class="mdescLeft">&#160;</td><td class="mdescRight">The declaration of a flag which defines if the software has to perform <a class="el" href="structRFI.html" title="The aim of this structure is to store the data related with the detected RF interference (RFI): frequ...">RFI</a> detection or not. By this task is not performed. <br /></td></tr>
+<tr class="separator:a816d4b897ea7e7b008ad3957e2203934"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7616186dd32bbd21eb512dfdc580214c"><td class="memItemLeft" align="right" valign="top"><a id="a7616186dd32bbd21eb512dfdc580214c"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="TopLevel_8h.html#a7616186dd32bbd21eb512dfdc580214c">flagUpload</a></td></tr>
+<tr class="memdesc:a7616186dd32bbd21eb512dfdc580214c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The declaration of a flag which defines if the software has to upload the measurements or not. By default the uploading is performed. <br /></td></tr>
+<tr class="separator:a7616186dd32bbd21eb512dfdc580214c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a22fc28d7ca5b183f4a901f4dafd4a6"><td class="memItemLeft" align="right" valign="top"><a id="a4a22fc28d7ca5b183f4a901f4dafd4a6"></a>
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="TopLevel_8h.html#a4a22fc28d7ca5b183f4a901f4dafd4a6">numOfMeasCycles</a></td></tr>
+<tr class="memdesc:a4a22fc28d7ca5b183f4a901f4dafd4a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">A variable which saves the number of measurements cycles which left to be done. It is used when the user wishes a finite number of measurements cycles. <br /></td></tr>
+<tr class="separator:a4a22fc28d7ca5b183f4a901f4dafd4a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5fca012de3aeabad258f4f0fa6877334"><td class="memItemLeft" align="right" valign="top"><a id="a5fca012de3aeabad258f4f0fa6877334"></a>
+<a class="el" href="structRFI.html#a18cfa7d24274bbcd14acc6b513860cb0">RFI::ThresholdsNorm</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="TopLevel_8h.html#a5fca012de3aeabad258f4f0fa6877334">rfiNorm</a></td></tr>
+<tr class="memdesc:a5fca012de3aeabad258f4f0fa6877334"><td class="mdescLeft">&#160;</td><td class="mdescRight">A variable which saves the norm which defines the harmful RF interference levels: ska-mode1, ska-mode2, itu-ra769-2-vlbi. <br /></td></tr>
+<tr class="separator:a5fca012de3aeabad258f4f0fa6877334"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af491cfc5930b63b730cf15cbc845c990"><td class="memItemLeft" align="right" valign="top"><a id="af491cfc5930b63b730cf15cbc845c990"></a>
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="TopLevel_8h.html#af491cfc5930b63b730cf15cbc845c990">numOfAzimPos</a></td></tr>
+<tr class="memdesc:af491cfc5930b63b730cf15cbc845c990"><td class="mdescLeft">&#160;</td><td class="mdescRight">A variable which receives the number of azimuth positions from the corresponding software's argument. The number of sweeps will be the double of this value. <br /></td></tr>
+<tr class="separator:af491cfc5930b63b730cf15cbc845c990"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add9d7dd1477d4336f2912fed380aeeea"><td class="memItemLeft" align="right" valign="top"><a id="add9d7dd1477d4336f2912fed380aeeea"></a>
 boost::timer::cpu_timer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="TopLevel_8h.html#add9d7dd1477d4336f2912fed380aeeea">timer</a></td></tr>
 <tr class="memdesc:add9d7dd1477d4336f2912fed380aeeea"><td class="mdescLeft">&#160;</td><td class="mdescRight">A timer which is used to measure the execution time when the number of iterations is finite. <br /></td></tr>
@@ -118,7 +170,45 @@ boost::timer::cpu_timer&#160;</td><td class="memItemRight" valign="bottom"><a cl
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This header file includes the rest of the header files and the class of the signal handler is declared here. </p>
 <p>This header file simplifies the include in the <a class="el" href="main_8cpp.html" title="This file contains the main function of the RFIMS-CART software. ">main.cpp</a> file. The declaration of the class <em><a class="el" href="classSignalHandler.html" title="The class SignalHandler is intended to handle the interprocess signals (IPC) which terminates the sof...">SignalHandler</a></em> must be put in an high-level header file because this class must know the declarations of almost all the classes of the software. </p><dl class="section author"><dt>Author</dt><dd>Mauro Diamantino </dd></dl>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Function Documentation</h2>
+<a id="abab505eef94a08a9092f916c62637071"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abab505eef94a08a9092f916c62637071">&#9670;&nbsp;</a></span>ProcessMainArguments()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ProcessMainArguments </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>argc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>argv</em>[]&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This function process the software's arguments, which define the behavior of this one. </p>
+<p>This function determines the values of the behavior flags (flagCalEnabled, flagPlot, flagRFI, etc.) taking into account the arguments that were received and its values. The function returns a <code>true</code> value if the arguments were processed correctly and a <code>false</code> value if there was an argument which could not be recognized, and in that case it presents a message, in the <code>stdout</code>, explaining the correct use of the software arguments. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">argc</td><td>The number of arguments that were received by the software. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">argv</td><td>An array of C strings (<code>char*</code>) where each one is a software's argument. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

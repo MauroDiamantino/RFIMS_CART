@@ -20,6 +20,7 @@
 
 
 //#///////////////Constants///////////////////
+//! The number of azimuth positions where the system will perform sweeps.
 const unsigned int DEF_NUM_AZIM_POS = 6;
 
 
@@ -140,6 +141,7 @@ public:
 			nfPlotterPtr->~RFPlotter();
 
 		TurnOffFrontEnd();
+		TurnOffLeds();
 
 		if( !timer.is_stopped() )
 			cout << "\nThe elapsed time since the beginning is: " << GetTimeAsString(timer) << endl;

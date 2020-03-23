@@ -322,6 +322,7 @@ public:
 	bool IsSweepEnabled() const {	return flagSweepsEnabled;	}
 	//! This method allows to perform the a sound to state the capturing of a sweep has finished.
 	void SoundNewSweep();
+
 	//Inline methods//
 	//! This method is intended to perform all the writing operations.
 	/*! First, the method copies the bytes of the command to an auxiliary array, because the function `FT_Write()`
@@ -346,13 +347,15 @@ public:
 		else if (writtenBytes!=numOfBytes)
 			throw rfims_exception("a Spectran command could not be written correctly because not all bytes were written");
 	}
+
 	//! This method is intended to perform all the reading operations.
 	/*! Before the calling of the function `FT_Read()`, there is a loop where it is queried if the number of waited bytes are available.
-	 * 	After each query which states less bytes than what are waited, the method waits 70 ms. Once the desired number bytes are available,
-	 * 	the method waits 70 ms to avoid an error which was observed during the tests and which consists in a reading failure when this operation
-	 * 	is performed immediately after the needed number of bytes are available. After that waiting, the function `FT_Read()` is called.
-	 * 	Later, it is checked if the operation finished with errors and if all bytes were read and, finally, the read bytes are inserted in
-	 * 	the _Reply_ object.
+	 * 	After each query which states less bytes than which are waited, the method waits a certain time before the next query.
+	 * 	The loop iterates a certain number of times and, after that, if the waited bytes are not available the method finishes and raises an exception.
+	 * 	In the other hand, if the bytes are available before the last iteration, the method moves to a different loop where it is tried to read the
+	 * 	bytes using the function `FT_Read()`. If an error occurs inside this loop, the method waits during a time and then retry the operation. If many
+	 * 	errors occur the method finishes and raises an exception. But if all the bytes are read successfully, so then they are inserted in the _Reply_
+	 * 	object.
 	 * 	\param [in,out] reply A _Reply_ object which states the number of bytes must be read and which receives these bytes to the extract the info from them.
 	 */
 	void Read(Reply& reply)

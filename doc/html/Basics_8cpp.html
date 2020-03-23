@@ -91,13 +91,13 @@ Functions</h2></td></tr>
 <tr class="memitem:adee734e43e4a9a5f4b9f610ccdd3f8e0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8cpp.html#adee734e43e4a9a5f4b9f610ccdd3f8e0">approximatelyEqual</a> (std::vector&lt; float &gt; vectorA, std::vector&lt; float &gt; vectorB)</td></tr>
 <tr class="memdesc:adee734e43e4a9a5f4b9f610ccdd3f8e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function intended to compare <code>std::vector&lt;float&gt;</code> containers as approximately equal, taking into account the floating-point rounding errors.  <a href="#adee734e43e4a9a5f4b9f610ccdd3f8e0">More...</a><br /></td></tr>
 <tr class="separator:adee734e43e4a9a5f4b9f610ccdd3f8e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe6b1466ff5e3b09c33ca5dc9fc81c5a"><td class="memItemLeft" align="right" valign="top"><a id="abe6b1466ff5e3b09c33ca5dc9fc81c5a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8cpp.html#abe6b1466ff5e3b09c33ca5dc9fc81c5a">WaitForKey</a> ()</td></tr>
-<tr class="memdesc:abe6b1466ff5e3b09c33ca5dc9fc81c5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function stop the execution until any key is pressed by the user and it was used for debugging purpose. <br /></td></tr>
-<tr class="separator:abe6b1466ff5e3b09c33ca5dc9fc81c5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac744212c600f3f610807ec4add576822"><td class="memItemLeft" align="right" valign="top">std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8cpp.html#ac744212c600f3f610807ec4add576822">operator-</a> (const std::vector&lt; float &gt; &amp;<a class="el" href="Spectran_8h.html#a16fa8eb91a19fde7a399d85c521f63fd">vect</a>)</td></tr>
-<tr class="memdesc:ac744212c600f3f610807ec4add576822"><td class="mdescLeft">&#160;</td><td class="mdescRight">An overloading of unary operator - which negates the elements of a <code>std::vector&lt;float&gt;</code> container.  <a href="#ac744212c600f3f610807ec4add576822">More...</a><br /></td></tr>
-<tr class="separator:ac744212c600f3f610807ec4add576822"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8242aec445329b2023609afe53abf99"><td class="memItemLeft" align="right" valign="top"><a id="ae8242aec445329b2023609afe53abf99"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8cpp.html#ae8242aec445329b2023609afe53abf99">WaitForEnter</a> ()</td></tr>
+<tr class="memdesc:ae8242aec445329b2023609afe53abf99"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function stop the execution until any key is pressed by the user and it was used for debugging purpose. <br /></td></tr>
+<tr class="separator:ae8242aec445329b2023609afe53abf99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f56d4e90764072380d4303d96fe6879"><td class="memItemLeft" align="right" valign="top">std::vector&lt; FreqValues::value_type &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8cpp.html#a8f56d4e90764072380d4303d96fe6879">operator-</a> (const std::vector&lt; FreqValues::value_type &gt; &amp;<a class="el" href="Spectran_8h.html#a16fa8eb91a19fde7a399d85c521f63fd">vect</a>)</td></tr>
+<tr class="memdesc:a8f56d4e90764072380d4303d96fe6879"><td class="mdescLeft">&#160;</td><td class="mdescRight">An overloading of unary operator - which negates the elements of a <code>std::vector&lt;float&gt;</code> container.  <a href="#a8f56d4e90764072380d4303d96fe6879">More...</a><br /></td></tr>
+<tr class="separator:a8f56d4e90764072380d4303d96fe6879"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb434b11769fc3a9acd409f2fe534395"><td class="memItemLeft" align="right" valign="top"><a id="adb434b11769fc3a9acd409f2fe534395"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8cpp.html#adb434b11769fc3a9acd409f2fe534395">InitializeGPIO</a> ()</td></tr>
 <tr class="memdesc:adb434b11769fc3a9acd409f2fe534395"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function initializes all GPIO pins which are used for the input and output signals, in the way it is described in structure <em>piPins</em>. <br /></td></tr>
@@ -112,13 +112,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basi
 <tr class="memitem:a5ffe8b7dfe9c6702ed65b2b8b47bc3e1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8cpp.html#a5ffe8b7dfe9c6702ed65b2b8b47bc3e1">TurnOffFrontEnd</a> ()</td></tr>
 <tr class="memdesc:a5ffe8b7dfe9c6702ed65b2b8b47bc3e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The aim of this function is to turn off the RF front-end elements in a sequential manner, from the antenna to the spectrum analyzer.  <a href="#a5ffe8b7dfe9c6702ed65b2b8b47bc3e1">More...</a><br /></td></tr>
 <tr class="separator:a5ffe8b7dfe9c6702ed65b2b8b47bc3e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae964ff8411b4fdcaf65cb5529aea4bef"><td class="memItemLeft" align="right" valign="top"><a id="ae964ff8411b4fdcaf65cb5529aea4bef"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8cpp.html#ae964ff8411b4fdcaf65cb5529aea4bef">PrintHelp</a> ()</td></tr>
-<tr class="memdesc:ae964ff8411b4fdcaf65cb5529aea4bef"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function prints a message, in the <code>stdout</code>, with a software description and the descriptions of its arguments. <br /></td></tr>
-<tr class="separator:ae964ff8411b4fdcaf65cb5529aea4bef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abab505eef94a08a9092f916c62637071"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8cpp.html#abab505eef94a08a9092f916c62637071">ProcessMainArguments</a> (int argc, char *argv[])</td></tr>
-<tr class="memdesc:abab505eef94a08a9092f916c62637071"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function process the software's arguments, which define the behavior of this one.  <a href="#abab505eef94a08a9092f916c62637071">More...</a><br /></td></tr>
-<tr class="separator:abab505eef94a08a9092f916c62637071"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This file contains the definitions of the functions and classes' methods which have been declared in file <a class="el" href="Basics_8h.html" title="This header file contains the declarations of the most basic and global entities which are used by ma...">Basics.h</a>. </p>
@@ -199,16 +192,16 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basi
 
 </div>
 </div>
-<a id="ac744212c600f3f610807ec4add576822"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac744212c600f3f610807ec4add576822">&#9670;&nbsp;</a></span>operator-()</h2>
+<a id="a8f56d4e90764072380d4303d96fe6879"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f56d4e90764072380d4303d96fe6879">&#9670;&nbsp;</a></span>operator-()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;float&gt; operator- </td>
+          <td class="memname">std::vector&lt;FreqValues::value_type&gt; operator- </td>
           <td>(</td>
-          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramtype">const std::vector&lt; FreqValues::value_type &gt; &amp;&#160;</td>
           <td class="paramname"><em>vect</em></td><td>)</td>
           <td></td>
         </tr>
@@ -219,43 +212,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basi
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">vect</td><td>A <code>std::vector&lt;float&gt;</code> container which must be negated. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="abab505eef94a08a9092f916c62637071"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abab505eef94a08a9092f916c62637071">&#9670;&nbsp;</a></span>ProcessMainArguments()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool ProcessMainArguments </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>argc</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>argv</em>[]&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>This function process the software's arguments, which define the behavior of this one. </p>
-<p>This function determines the values of the behavior flags (flagCalEnabled, flagPlot, flagRFI, etc.) taking into account the arguments that were received and its values. The function returns a <code>true</code> value if the arguments were processed correctly and a <code>false</code> value if there was an argument which could not be recognized, and in that case it presents a message, in the <code>stdout</code>, explaining the correct use of the software arguments. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">argc</td><td>The number of arguments that were received by the software. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">argv</td><td>An array of C strings (<code>char*</code>) where each one is a software's argument. </td></tr>
   </table>
   </dd>
 </dl>

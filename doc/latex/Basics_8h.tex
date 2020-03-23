@@ -20,7 +20,7 @@ This header file contains the declarations of the most basic and global entities
 {\ttfamily \#include $<$cstdint$>$}\newline
 {\ttfamily \#include $<$cstdlib$>$}\newline
 {\ttfamily \#include $<$pthread.\+h$>$}\newline
-{\ttfamily \#include $<$wiring\+Pi.\+h$>$}\newline
+{\ttfamily \#include $<$algorithm$>$}\newline
 Include dependency graph for Basics.\+h\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
@@ -57,10 +57,10 @@ bool \hyperlink{Basics_8h_ab0cf00620947abc90fbfe36db36f8fc7}{approximately\+Equa
 \begin{DoxyCompactList}\small\item\em Function intended to compare floating-\/point numbers as approximately equal, taking into account the floating-\/point rounding errors. \end{DoxyCompactList}\item 
 bool \hyperlink{Basics_8h_adee734e43e4a9a5f4b9f610ccdd3f8e0}{approximately\+Equal} (std\+::vector$<$ float $>$ vectorA, std\+::vector$<$ float $>$ vectorB)
 \begin{DoxyCompactList}\small\item\em Function intended to compare {\ttfamily std\+::vector$<$float$>$} containers as approximately equal, taking into account the floating-\/point rounding errors. \end{DoxyCompactList}\item 
-std\+::vector$<$ float $>$ \hyperlink{Basics_8h_ac744212c600f3f610807ec4add576822}{operator-\/} (const std\+::vector$<$ float $>$ \&\hyperlink{Spectran_8h_a16fa8eb91a19fde7a399d85c521f63fd}{vect})
+std\+::vector$<$ Freq\+Values\+::value\+\_\+type $>$ \hyperlink{Basics_8h_a8f56d4e90764072380d4303d96fe6879}{operator-\/} (const std\+::vector$<$ Freq\+Values\+::value\+\_\+type $>$ \&\hyperlink{Spectran_8h_a16fa8eb91a19fde7a399d85c521f63fd}{vect})
 \begin{DoxyCompactList}\small\item\em An overloading of unary operator -\/ which negates the elements of a {\ttfamily std\+::vector$<$float$>$} container. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{Basics_8h_abe6b1466ff5e3b09c33ca5dc9fc81c5a}\label{Basics_8h_abe6b1466ff5e3b09c33ca5dc9fc81c5a}} 
-void \hyperlink{Basics_8h_abe6b1466ff5e3b09c33ca5dc9fc81c5a}{Wait\+For\+Key} ()
+\mbox{\Hypertarget{Basics_8h_ae8242aec445329b2023609afe53abf99}\label{Basics_8h_ae8242aec445329b2023609afe53abf99}} 
+void \hyperlink{Basics_8h_ae8242aec445329b2023609afe53abf99}{Wait\+For\+Enter} ()
 \begin{DoxyCompactList}\small\item\em This function stop the execution until any key is pressed by the user and it was used for debugging purpose. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{Basics_8h_adb434b11769fc3a9acd409f2fe534395}\label{Basics_8h_adb434b11769fc3a9acd409f2fe534395}} 
 void \hyperlink{Basics_8h_adb434b11769fc3a9acd409f2fe534395}{Initialize\+G\+P\+IO} ()
@@ -71,70 +71,48 @@ void \hyperlink{Basics_8h_a37d643c013d8e020715ec625553673e7}{Turn\+Off\+Leds} ()
 void \hyperlink{Basics_8h_a2f7418278fcdac50f5c6a73744f8013c}{Turn\+On\+Front\+End} ()
 \begin{DoxyCompactList}\small\item\em The aim of this function is to turn on the RF front-\/end elements in a sequential manner, from the spectrum analyzer to the antenna.. \end{DoxyCompactList}\item 
 void \hyperlink{Basics_8h_a5ffe8b7dfe9c6702ed65b2b8b47bc3e1}{Turn\+Off\+Front\+End} ()
-\begin{DoxyCompactList}\small\item\em The aim of this function is to turn off the RF front-\/end elements in a sequential manner, from the antenna to the spectrum analyzer. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{Basics_8h_ae964ff8411b4fdcaf65cb5529aea4bef}\label{Basics_8h_ae964ff8411b4fdcaf65cb5529aea4bef}} 
-void \hyperlink{Basics_8h_ae964ff8411b4fdcaf65cb5529aea4bef}{Print\+Help} ()
-\begin{DoxyCompactList}\small\item\em This function prints a message, in the {\ttfamily stdout}, with a software description and the descriptions of its arguments. \end{DoxyCompactList}\item 
-bool \hyperlink{Basics_8h_abab505eef94a08a9092f916c62637071}{Process\+Main\+Arguments} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
-\begin{DoxyCompactList}\small\item\em This function process the software\textquotesingle{}s arguments, which define the behavior of this one. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em The aim of this function is to turn off the RF front-\/end elements in a sequential manner, from the antenna to the spectrum analyzer. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{Basics_8h_a0423f4cb393331ce0b9f6b3a43adcaae}\label{Basics_8h_a0423f4cb393331ce0b9f6b3a43adcaae}} 
-const std\+::string \hyperlink{Basics_8h_a0423f4cb393331ce0b9f6b3a43adcaae}{B\+A\+S\+E\+\_\+\+P\+A\+TH} = \char`\"{}/home/pi/R\+F\+I\+MS-\/C\+A\+RT\char`\"{}
+const std\+::string \hyperlink{Basics_8h_a0423f4cb393331ce0b9f6b3a43adcaae}{B\+A\+S\+E\+\_\+\+P\+A\+TH} = \char`\"{}/home/new-\/mauro/R\+F\+I\+MS-\/C\+A\+RT\char`\"{}
 \begin{DoxyCompactList}\small\item\em This constant define the base path where there are the files and folders used by the software. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{Basics_8h_a1c3522c6627edfbe8f9bd33aeb45b8c2}\label{Basics_8h_a1c3522c6627edfbe8f9bd33aeb45b8c2}} 
 \begin{tabbing}
 xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
 struct \{\\
-\>const unsigned int \hyperlink{Basics_8h_a88cf59242b5a2ace3d90704ab4d2bcda}{SWITCH} = 8\\
+\>const unsigned int \hyperlink{Basics_8h_a88cf59242b5a2ace3d90704ab4d2bcda}{SWITCH} = 10\\
 \>\>{\em This pin is initialized as an output in LOW state, so the RF switch output will start connected to the noise source. }\\
-\>const unsigned int \hyperlink{Basics_8h_ac49574191d7b969a384f488bf156f074}{NOISE\_SOURCE} = 13\\
+\>const unsigned int \hyperlink{Basics_8h_ac49574191d7b969a384f488bf156f074}{NOISE\_SOURCE} = 6\\
 \>\>{\em This pin is initialized as an output in LOW state, so the noise source will start turned off. }\\
-\>const unsigned int \hyperlink{Basics_8h_a3082ce7a3469a197735f0df330c1db7f}{LNAS} = 12\\
+\>const unsigned int \hyperlink{Basics_8h_a3082ce7a3469a197735f0df330c1db7f}{LNAS} = 26\\
 \>\>{\em This pin is initialized as an output in LOW state, so the LNAs will start turned off. }\\
-\>const unsigned int \hyperlink{Basics_8h_a237073109a5bfa275095a6997d994c39}{SPECTRAN} = 14\\
+\>const unsigned int \hyperlink{Basics_8h_a237073109a5bfa275095a6997d994c39}{SPECTRAN} = 27\\
 \>\>{\em This pin is initialized as an input with the pull-\/down resistor enabled, so the Spectran device will start turned off. }\\
-\>const unsigned int \hyperlink{Basics_8h_a1f3aea83acb94fb9385c520e133172cc}{LED\_SWEEP\_CAPTURE} = 9\\
+\>const unsigned int \hyperlink{Basics_8h_a1f3aea83acb94fb9385c520e133172cc}{LED\_SWEEP\_CAPTURE} = 0\\
 \>\>{\em This pin is initialized as an output in LOW state, so the led will start turned off. }\\
-\>const unsigned int \hyperlink{Basics_8h_ad2b6181fa6a423c60c574fa713cbe6cd}{LED\_SWEEP\_PROCESS} = 10\\
+\>const unsigned int \hyperlink{Basics_8h_ad2b6181fa6a423c60c574fa713cbe6cd}{LED\_SWEEP\_PROCESS} = 2\\
 \>\>{\em This pin is initialized as an output in LOW state, so the led will start turned off. }\\
-\>const unsigned int \hyperlink{Basics_8h_a2b7714e3fe4c2724a3954fedefe07d39}{LED\_INIT\_POS} = 1\\
+\>const unsigned int \hyperlink{Basics_8h_a2b7714e3fe4c2724a3954fedefe07d39}{LED\_INIT\_POS} = 12\\
 \>\>{\em This pin is initialized as an output in LOW state, so the led will start turned off. }\\
-\>const unsigned int \hyperlink{Basics_8h_af304626609da54cf58c8e0a46dac817c}{LED\_NEXT\_POS} = 3\\
+\>const unsigned int \hyperlink{Basics_8h_af304626609da54cf58c8e0a46dac817c}{LED\_NEXT\_POS} = 12\\
 \>\>{\em This pin is initialized as an output in LOW state, so the led will start turned off. }\\
-\>const unsigned int \hyperlink{Basics_8h_a916b908a0652e7d442ecf8f1383a6b5f}{LED\_POLARIZ} = 5\\
+\>const unsigned int \hyperlink{Basics_8h_a916b908a0652e7d442ecf8f1383a6b5f}{LED\_POLARIZ} = 3\\
 \>\>{\em This pin is initialized as an output in LOW state, so the led will start turned off. }\\
-\>const unsigned int \hyperlink{Basics_8h_a95f3adabd348cd13ff295c9edce98d38}{BUTTON\_ENTER} = 2\\
+\>const unsigned int {\bfseries LED\_ERROR} = 13\\
+\>const unsigned int \hyperlink{Basics_8h_a95f3adabd348cd13ff295c9edce98d38}{BUTTON\_ENTER} = 8\\
 \>\>{\em This pin is initialized as in input wit the pull-\/up resistor enabled, so the button must connect the pin to GND. }\\
+\>const unsigned int {\bfseries PUL} = 28\\
+\>const unsigned int {\bfseries DIRECCION} = 31\\
+\>const unsigned int {\bfseries EN} = 29\\
+\>const unsigned int {\bfseries SENSOR\_NORTE} = 30\\
+\>const unsigned int {\bfseries POL} = 5\\
+\>const unsigned int {\bfseries FASE\_A} = 22\\
+\>const unsigned int {\bfseries FASE\_B} = 21\\
 \} \hyperlink{Basics_8h_a1c3522c6627edfbe8f9bd33aeb45b8c2}{piPins}\\
 
-\end{tabbing}\begin{DoxyCompactList}\small\item\em This unnamed structure is intended to store the constants with the assignment of G\+P\+IO pins to input and output external signals. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{Basics_8h_adb83e5ae147752bdfbfec131998b1b41}\label{Basics_8h_adb83e5ae147752bdfbfec131998b1b41}} 
-const int \hyperlink{Basics_8h_adb83e5ae147752bdfbfec131998b1b41}{S\+W\+I\+T\+C\+H\+\_\+\+T\+O\+\_\+\+NS} = L\+OW
-\begin{DoxyCompactList}\small\item\em This constant define the value the switch\textquotesingle{}s pin must take to connect noise source to input, provided that the noise source is connected to switch\textquotesingle{}s J2 connector. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{Basics_8h_a56077ad545aede44679ea2a7ab3a4d6f}\label{Basics_8h_a56077ad545aede44679ea2a7ab3a4d6f}} 
-const int \hyperlink{Basics_8h_a56077ad545aede44679ea2a7ab3a4d6f}{S\+W\+I\+T\+C\+H\+\_\+\+T\+O\+\_\+\+A\+N\+T\+E\+N\+NA} = H\+I\+GH
-\begin{DoxyCompactList}\small\item\em This constant define the value the switch\textquotesingle{}s pin must take to connect antenna to input, provided that the antenna is connected to switch\textquotesingle{}s J1 connector. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{Basics_8h_a73be6649a1d91070309752a2fbcf5b8a}\label{Basics_8h_a73be6649a1d91070309752a2fbcf5b8a}} 
-bool \hyperlink{Basics_8h_a73be6649a1d91070309752a2fbcf5b8a}{flag\+Cal\+Enabled}
-\begin{DoxyCompactList}\small\item\em The declaration of an external flag which defines if the calibration of the RF front end must be done or not. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{Basics_8h_a20c207881b1f505ca91715905e27bacb}\label{Basics_8h_a20c207881b1f505ca91715905e27bacb}} 
-bool \hyperlink{Basics_8h_a20c207881b1f505ca91715905e27bacb}{flag\+Plot}
-\begin{DoxyCompactList}\small\item\em The declaration of an external flag which defines if the software has to generate plots. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{Basics_8h_a6f3cbd74619175fd2b8580b37587f825}\label{Basics_8h_a6f3cbd74619175fd2b8580b37587f825}} 
-bool \hyperlink{Basics_8h_a6f3cbd74619175fd2b8580b37587f825}{flag\+Infinite\+Loop}
-\begin{DoxyCompactList}\small\item\em The declaration of an external flag which defines if the software has to perform a finite number of measurement cycles or iterate infinitely. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{Basics_8h_a816d4b897ea7e7b008ad3957e2203934}\label{Basics_8h_a816d4b897ea7e7b008ad3957e2203934}} 
-bool \hyperlink{Basics_8h_a816d4b897ea7e7b008ad3957e2203934}{flag\+R\+FI}
-\begin{DoxyCompactList}\small\item\em The declaration of an external flag which defines if the software has to perform \hyperlink{structRFI}{R\+FI} detection or not. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{Basics_8h_a7616186dd32bbd21eb512dfdc580214c}\label{Basics_8h_a7616186dd32bbd21eb512dfdc580214c}} 
-bool \hyperlink{Basics_8h_a7616186dd32bbd21eb512dfdc580214c}{flag\+Upload}
-\begin{DoxyCompactList}\small\item\em The declaration of an external flag which defines if the software has to upload the measurements or not. \end{DoxyCompactList}\item 
-unsigned int \hyperlink{Basics_8h_a4a22fc28d7ca5b183f4a901f4dafd4a6}{num\+Of\+Meas\+Cycles}
-\begin{DoxyCompactList}\small\item\em The declaration of an external variable which stores the number of measurements cycles which left to be done. It is used when the user wishes a finite number of measurements cycles. \end{DoxyCompactList}\item 
-\hyperlink{structRFI_a18cfa7d24274bbcd14acc6b513860cb0}{R\+F\+I\+::\+Thresholds\+Norm} \hyperlink{Basics_8h_a5fca012de3aeabad258f4f0fa6877334}{rfi\+Norm}
-\begin{DoxyCompactList}\small\item\em The declaration of an external variable which saves the norm which defines the harmful interference levels\+: ska-\/mode1, ska-\/mode2, itu-\/ra769-\/2-\/vlbi. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{tabbing}\begin{DoxyCompactList}\small\item\em This structure is intended to store the assignment of G\+P\+IO pins to input and output external signals, taking into account the Wiring Pi numbering. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
@@ -191,11 +169,11 @@ It is based in the Knuth’s algorithm but it uses two epsilons, an absolute eps
 \mbox{\tt in}  & {\em vectorB} & The right-\/hand side argument. \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{Basics_8h_ac744212c600f3f610807ec4add576822}\label{Basics_8h_ac744212c600f3f610807ec4add576822}} 
+\mbox{\Hypertarget{Basics_8h_a8f56d4e90764072380d4303d96fe6879}\label{Basics_8h_a8f56d4e90764072380d4303d96fe6879}} 
 \index{Basics.\+h@{Basics.\+h}!operator-\/@{operator-\/}}
 \index{operator-\/@{operator-\/}!Basics.\+h@{Basics.\+h}}
 \subsubsection{\texorpdfstring{operator-\/()}{operator-()}}
-{\footnotesize\ttfamily std\+::vector$<$float$>$ operator-\/ (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ float $>$ \&}]{vect }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily std\+::vector$<$Freq\+Values\+::value\+\_\+type$>$ operator-\/ (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ Freq\+Values\+::value\+\_\+type $>$ \&}]{vect }\end{DoxyParamCaption})}
 
 
 
@@ -204,23 +182,6 @@ An overloading of unary operator -\/ which negates the elements of a {\ttfamily 
 
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\tt in}  & {\em vect} & A {\ttfamily std\+::vector$<$float$>$} container which must be negated. \\
-\hline
-\end{DoxyParams}
-\mbox{\Hypertarget{Basics_8h_abab505eef94a08a9092f916c62637071}\label{Basics_8h_abab505eef94a08a9092f916c62637071}} 
-\index{Basics.\+h@{Basics.\+h}!Process\+Main\+Arguments@{Process\+Main\+Arguments}}
-\index{Process\+Main\+Arguments@{Process\+Main\+Arguments}!Basics.\+h@{Basics.\+h}}
-\subsubsection{\texorpdfstring{Process\+Main\+Arguments()}{ProcessMainArguments()}}
-{\footnotesize\ttfamily bool Process\+Main\+Arguments (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
-
-
-
-This function process the software\textquotesingle{}s arguments, which define the behavior of this one. 
-
-This function determines the values of the behavior flags (flag\+Cal\+Enabled, flag\+Plot, flag\+R\+FI, etc.) taking into account the arguments that were received and its values. The function returns a {\ttfamily true} value if the arguments were processed correctly and a {\ttfamily false} value if there was an argument which could not be recognized, and in that case it presents a message, in the {\ttfamily stdout}, explaining the correct use of the software arguments. 
-\begin{DoxyParams}[1]{Parameters}
-\mbox{\tt in}  & {\em argc} & The number of arguments that were received by the software. \\
-\hline
-\mbox{\tt in}  & {\em argv} & An array of C strings ({\ttfamily char$\ast$}) where each one is a software\textquotesingle{}s argument. \\
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{Basics_8h_a5ffe8b7dfe9c6702ed65b2b8b47bc3e1}\label{Basics_8h_a5ffe8b7dfe9c6702ed65b2b8b47bc3e1}} 
@@ -244,26 +205,3 @@ To turn off the RF front-\/end elements sequentially, this function begins ensur
 The aim of this function is to turn on the RF front-\/end elements in a sequential manner, from the spectrum analyzer to the antenna.. 
 
 To turn on the RF front-\/end elements in a sequential manner, first, this function turns the spectrum analyzer on, then it waits 5 seconds, it turns the L\+N\+As on, it waits again but this time just 1 second and, finally, it switches the input to the antenna. 
-
-\subsection{Variable Documentation}
-\mbox{\Hypertarget{Basics_8h_a4a22fc28d7ca5b183f4a901f4dafd4a6}\label{Basics_8h_a4a22fc28d7ca5b183f4a901f4dafd4a6}} 
-\index{Basics.\+h@{Basics.\+h}!num\+Of\+Meas\+Cycles@{num\+Of\+Meas\+Cycles}}
-\index{num\+Of\+Meas\+Cycles@{num\+Of\+Meas\+Cycles}!Basics.\+h@{Basics.\+h}}
-\subsubsection{\texorpdfstring{num\+Of\+Meas\+Cycles}{numOfMeasCycles}}
-{\footnotesize\ttfamily unsigned int num\+Of\+Meas\+Cycles}
-
-
-
-The declaration of an external variable which stores the number of measurements cycles which left to be done. It is used when the user wishes a finite number of measurements cycles. 
-
-The declaration of an external variable which stores the number of measurements cycles which left to be done. It is used when the user wishes a finite number of measurements cycles. \mbox{\Hypertarget{Basics_8h_a5fca012de3aeabad258f4f0fa6877334}\label{Basics_8h_a5fca012de3aeabad258f4f0fa6877334}} 
-\index{Basics.\+h@{Basics.\+h}!rfi\+Norm@{rfi\+Norm}}
-\index{rfi\+Norm@{rfi\+Norm}!Basics.\+h@{Basics.\+h}}
-\subsubsection{\texorpdfstring{rfi\+Norm}{rfiNorm}}
-{\footnotesize\ttfamily \hyperlink{structRFI_a18cfa7d24274bbcd14acc6b513860cb0}{R\+F\+I\+::\+Thresholds\+Norm} rfi\+Norm}
-
-
-
-The declaration of an external variable which saves the norm which defines the harmful interference levels\+: ska-\/mode1, ska-\/mode2, itu-\/ra769-\/2-\/vlbi. 
-
-The declaration of an external variable which saves the norm which defines the harmful interference levels\+: ska-\/mode1, ska-\/mode2, itu-\/ra769-\/2-\/vlbi. 

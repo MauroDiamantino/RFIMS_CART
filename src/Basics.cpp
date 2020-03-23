@@ -110,22 +110,21 @@ void InitializeGPIO()
 	digitalWrite(piPins.SPECTRAN, pinsValues.SPECTRAN_OFF);
 
 	pinMode(piPins.LED_SWEEP_CAPTURE, OUTPUT);
-	digitalWrite(piPins.LED_SWEEP_CAPTURE, pinsValues.LED_SWP_CAPT_OFF);
 
 	pinMode(piPins.LED_SWEEP_PROCESS, OUTPUT);
-	digitalWrite(piPins.LED_SWEEP_PROCESS, pinsValues.LED_SWP_PROC_OFF);
 
 	pinMode(piPins.LED_INIT_POS, OUTPUT);
-	digitalWrite(piPins.LED_INIT_POS, pinsValues.LED_INIT_POS_OFF);
+
+	pinMode(piPins.LED_NEXT_POS, OUTPUT);
+
+	pinMode(piPins.LED_POLARIZ, OUTPUT);
+
+	pinMode(piPins.LED_ERROR, OUTPUT);
+
+	TurnOffLeds();
 
 	pinMode(piPins.BUTTON_ENTER, INPUT);
 	pullUpDnControl(piPins.BUTTON_ENTER, PUD_UP);
-
-	pinMode(piPins.LED_NEXT_POS, OUTPUT);
-	digitalWrite(piPins.LED_NEXT_POS, pinsValues.LED_NEXT_POS_OFF);
-
-	pinMode(piPins.LED_POLARIZ, OUTPUT);
-	digitalWrite(piPins.LED_POLARIZ, pinsValues.LED_POL_OFF);
 
 	//Inicializacion de los pines de la clase AntennaPositioner
 	pinMode(piPins.PUL, OUTPUT);          //SEÑAL DE PULSOS
@@ -156,6 +155,7 @@ void TurnOffLeds()
 	digitalWrite(piPins.LED_INIT_POS, pinsValues.LED_INIT_POS_OFF);
 	digitalWrite(piPins.LED_NEXT_POS, pinsValues.LED_NEXT_POS_OFF);
 	digitalWrite(piPins.LED_POLARIZ, pinsValues.LED_POL_OFF);
+	digitalWrite(piPins.LED_ERROR, pinsValues.LED_ERROR_OFF);
 #endif
 }
 

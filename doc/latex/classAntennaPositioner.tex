@@ -13,9 +13,12 @@ The aim of the class {\itshape \hyperlink{classAntennaPositioner}{Antenna\+Posit
 \begin{DoxyCompactItemize}
 \item 
 \hyperlink{classAntennaPositioner_ad7e864f6073421c98585c64802a3e78e}{Antenna\+Positioner} (\hyperlink{classGPSInterface}{G\+P\+S\+Interface} \&gps\+Interf)
-\begin{DoxyCompactList}\small\item\em An index which allows to know how many positions have been swept and how many remains to reach the last position. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em The unique constructor of the class {\itshape \hyperlink{classAntennaPositioner}{Antenna\+Positioner}}. \end{DoxyCompactList}\item 
 \hyperlink{classAntennaPositioner_a7a3a48b1aab43b9a43b664567a8c5829}{$\sim$\+Antenna\+Positioner} ()
 \begin{DoxyCompactList}\small\item\em The class destructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classAntennaPositioner_a0c9f91b2ad5d5cc3e23312a395d0abda}\label{classAntennaPositioner_a0c9f91b2ad5d5cc3e23312a395d0abda}} 
+void \hyperlink{classAntennaPositioner_a0c9f91b2ad5d5cc3e23312a395d0abda}{Set\+Num\+Of\+Azim\+Pos} (unsigned int number)
+\begin{DoxyCompactList}\small\item\em This method allows to set the number of azimuth positions. \end{DoxyCompactList}\item 
 bool \hyperlink{classAntennaPositioner_a5087caa452709b33082c41b2cef2a23e}{Initialize} ()
 \begin{DoxyCompactList}\small\item\em This method performs the initialization of the antenna positioning system. \end{DoxyCompactList}\item 
 bool \hyperlink{classAntennaPositioner_a2e05c385b9933d2ee1d4f8f953c99070}{Next\+Azim\+Position} ()
@@ -27,18 +30,22 @@ float \hyperlink{classAntennaPositioner_a72cb61d647eaad277f256b3ca9555f8a}{Get\+
 \begin{DoxyCompactList}\small\item\em This method returns the current antenna azimuth angle. \end{DoxyCompactList}\item 
 std\+::string \hyperlink{classAntennaPositioner_a897b759fa711bd8a4261e57177e3db1c}{Get\+Polarization\+String} () const
 \begin{DoxyCompactList}\small\item\em This method returns the current antenna polarization, as a {\ttfamily std\+::string} object. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classAntennaPositioner_a590e07740567be77f677d822cf63b69a}\label{classAntennaPositioner_a590e07740567be77f677d822cf63b69a}} 
 \hyperlink{AntennaPositioning_8h_a55887c7bc32d70c0308472ff4de3e282}{Polarization} \hyperlink{classAntennaPositioner_a590e07740567be77f677d822cf63b69a}{Get\+Polarization} () const
 \begin{DoxyCompactList}\small\item\em This method returns the current antenna polarization, as a value of the enumeration \hyperlink{AntennaPositioning_8h_a55887c7bc32d70c0308472ff4de3e282}{Polarization}. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classAntennaPositioner_aa77a4d7ef1dd79ae4253167ebaf66a5e}\label{classAntennaPositioner_aa77a4d7ef1dd79ae4253167ebaf66a5e}} 
-unsigned int \hyperlink{classAntennaPositioner_aa77a4d7ef1dd79ae4253167ebaf66a5e}{Get\+Position\+Index} () const
+\mbox{\Hypertarget{classAntennaPositioner_acec3d655aa86c9a819b2a4f16590573b}\label{classAntennaPositioner_acec3d655aa86c9a819b2a4f16590573b}} 
+int \hyperlink{classAntennaPositioner_acec3d655aa86c9a819b2a4f16590573b}{Get\+Position\+Index} () const
 \begin{DoxyCompactList}\small\item\em This method returns the current azimuth position index. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classAntennaPositioner_a62c014613a812a0d2948dcebb0b1c9dc}\label{classAntennaPositioner_a62c014613a812a0d2948dcebb0b1c9dc}} 
-unsigned int \hyperlink{classAntennaPositioner_a62c014613a812a0d2948dcebb0b1c9dc}{Get\+Num\+Of\+Positions} () const
-\begin{DoxyCompactList}\small\item\em This method return the total number of azimuth positions. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classAntennaPositioner_a512104fe937395e266284eded6a8359d}\label{classAntennaPositioner_a512104fe937395e266284eded6a8359d}} 
 bool \hyperlink{classAntennaPositioner_a512104fe937395e266284eded6a8359d}{Is\+Last\+Position} () const
-\begin{DoxyCompactList}\small\item\em This method states if the current position is the last one. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em This method return the total number of azimuth positions. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classAntennaPositioner_a9cc03f0eb0621d563accfce76ce7eeee}\label{classAntennaPositioner_a9cc03f0eb0621d563accfce76ce7eeee}} 
+void {\bfseries canalA} ()
+\item 
+\mbox{\Hypertarget{classAntennaPositioner_a03e4c5761544a2e9305d2cc4d70c202d}\label{classAntennaPositioner_a03e4c5761544a2e9305d2cc4d70c202d}} 
+void {\bfseries canalB} ()
+\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
@@ -53,9 +60,7 @@ The aim of the class {\itshape \hyperlink{classAntennaPositioner}{Antenna\+Posit
 
 
 
-An index which allows to know how many positions have been swept and how many remains to reach the last position. 
-
-The unique constructor of the class {\itshape \hyperlink{classAntennaPositioner}{Antenna\+Positioner}}.
+The unique constructor of the class {\itshape \hyperlink{classAntennaPositioner}{Antenna\+Positioner}}. 
 
 
 \begin{DoxyParams}{Parameters}
@@ -88,6 +93,19 @@ This method change the antenna polarization.
 If the current polarization is horizontal, then it is changed to vertical, and vice versa. \begin{DoxyReturn}{Returns}
 A {\ttfamily true} if the operation was successful or a {\ttfamily false} otherwise. 
 \end{DoxyReturn}
+\mbox{\Hypertarget{classAntennaPositioner_a590e07740567be77f677d822cf63b69a}\label{classAntennaPositioner_a590e07740567be77f677d822cf63b69a}} 
+\index{Antenna\+Positioner@{Antenna\+Positioner}!Get\+Polarization@{Get\+Polarization}}
+\index{Get\+Polarization@{Get\+Polarization}!Antenna\+Positioner@{Antenna\+Positioner}}
+\subsubsection{\texorpdfstring{Get\+Polarization()}{GetPolarization()}}
+{\footnotesize\ttfamily \hyperlink{AntennaPositioning_8h_a55887c7bc32d70c0308472ff4de3e282}{Polarization} Antenna\+Positioner\+::\+Get\+Polarization (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+This method returns the current antenna polarization, as a value of the enumeration \hyperlink{AntennaPositioning_8h_a55887c7bc32d70c0308472ff4de3e282}{Polarization}. 
+
+\begin{DoxyReturn}{Returns}
+A value of the enumeration \textquotesingle{}Polarization\textquotesingle{}. 
+\end{DoxyReturn}
 \mbox{\Hypertarget{classAntennaPositioner_a897b759fa711bd8a4261e57177e3db1c}\label{classAntennaPositioner_a897b759fa711bd8a4261e57177e3db1c}} 
 \index{Antenna\+Positioner@{Antenna\+Positioner}!Get\+Polarization\+String@{Get\+Polarization\+String}}
 \index{Get\+Polarization\+String@{Get\+Polarization\+String}!Antenna\+Positioner@{Antenna\+Positioner}}
@@ -114,7 +132,17 @@ This method performs the initialization of the antenna positioning system.
 This initialization implies to move the antenna to its initial position, to capture the initial azimuth angle and to ensure the antenna polarization is horizontal. \begin{DoxyReturn}{Returns}
 A {\ttfamily true} if the initialization was successful or a {\ttfamily false} otherwise. 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classAntennaPositioner_a2e05c385b9933d2ee1d4f8f953c99070}\label{classAntennaPositioner_a2e05c385b9933d2ee1d4f8f953c99070}} 
+\mbox{\Hypertarget{classAntennaPositioner_a512104fe937395e266284eded6a8359d}\label{classAntennaPositioner_a512104fe937395e266284eded6a8359d}} 
+\index{Antenna\+Positioner@{Antenna\+Positioner}!Is\+Last\+Position@{Is\+Last\+Position}}
+\index{Is\+Last\+Position@{Is\+Last\+Position}!Antenna\+Positioner@{Antenna\+Positioner}}
+\subsubsection{\texorpdfstring{Is\+Last\+Position()}{IsLastPosition()}}
+{\footnotesize\ttfamily bool Antenna\+Positioner\+::\+Is\+Last\+Position (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+This method return the total number of azimuth positions. 
+
+This method states if the current position is the last one. \mbox{\Hypertarget{classAntennaPositioner_a2e05c385b9933d2ee1d4f8f953c99070}\label{classAntennaPositioner_a2e05c385b9933d2ee1d4f8f953c99070}} 
 \index{Antenna\+Positioner@{Antenna\+Positioner}!Next\+Azim\+Position@{Next\+Azim\+Position}}
 \index{Next\+Azim\+Position@{Next\+Azim\+Position}!Antenna\+Positioner@{Antenna\+Positioner}}
 \subsubsection{\texorpdfstring{Next\+Azim\+Position()}{NextAzimPosition()}}
@@ -124,7 +152,7 @@ A {\ttfamily true} if the initialization was successful or a {\ttfamily false} o
 
 This method moves the antenna to the next azimuth position. 
 
-To move the antenna to the next position, this is rotated an angle determined by the number of positions (360/number of positions) and in a clockwise way. If the current position is the last one, then the antenna is move to the initial position, rotating this one counterclockwise to avoid the cables to tangle or stretch.
+To move the antenna to the next position, this is rotated an angle determined by the number of positions (360/number of positions) and in a clockwise way (seen from above). If the current position is the last one, then the antenna is move to the initial position, rotating this one counterclockwise (seen from above) to avoid the cables to tangle or stretch.
 
 Taking into account the method \hyperlink{classAntennaPositioner_a5087caa452709b33082c41b2cef2a23e}{Initialize()}, it is waited this method to be called when the antenna polarization changes from vertical to horizontal. \begin{DoxyReturn}{Returns}
 A {\ttfamily true} if the operation was successful or a {\ttfamily false} otherwise. 

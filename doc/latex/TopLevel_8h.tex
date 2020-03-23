@@ -8,6 +8,7 @@ This header file includes the rest of the header files and the class of the sign
 {\ttfamily \#include \char`\"{}Spectran.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Sweep\+Processing.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Antenna\+Positioning.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$cstddef$>$}\newline
 {\ttfamily \#include $<$signal.\+h$>$}\newline
 {\ttfamily \#include $<$boost/timer/timer.\+hpp$>$}\newline
 {\ttfamily \#include $<$boost/date\+\_\+time/posix\+\_\+time/posix\+\_\+time.\+hpp$>$}\newline
@@ -30,9 +31,47 @@ This graph shows which files directly or indirectly include this file\+:\nopageb
 \item 
 class \hyperlink{classSignalHandler}{Signal\+Handler}
 \begin{DoxyCompactList}\small\item\em The class {\itshape \hyperlink{classSignalHandler}{Signal\+Handler}} is intended to handle the interprocess signals (I\+PC) which terminates the software. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{TopLevel_8h_ae964ff8411b4fdcaf65cb5529aea4bef}\label{TopLevel_8h_ae964ff8411b4fdcaf65cb5529aea4bef}} 
+void \hyperlink{TopLevel_8h_ae964ff8411b4fdcaf65cb5529aea4bef}{Print\+Help} ()
+\begin{DoxyCompactList}\small\item\em This function prints a message, in the {\ttfamily stdout}, with a software description and the descriptions of its arguments. \end{DoxyCompactList}\item 
+bool \hyperlink{TopLevel_8h_abab505eef94a08a9092f916c62637071}{Process\+Main\+Arguments} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em This function process the software\textquotesingle{}s arguments, which define the behavior of this one. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{TopLevel_8h_a82fe4b4b4770924e5c32e5d092d337cb}\label{TopLevel_8h_a82fe4b4b4770924e5c32e5d092d337cb}} 
+std\+::string \hyperlink{TopLevel_8h_a82fe4b4b4770924e5c32e5d092d337cb}{Get\+Time\+As\+String} (boost\+::timer\+::cpu\+\_\+timer \&\hyperlink{TopLevel_8h_add9d7dd1477d4336f2912fed380aeeea}{timer})
+\begin{DoxyCompactList}\small\item\em A function which extracts data from a timer and returns it as a string in a human-\/readable format. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
+\mbox{\Hypertarget{TopLevel_8h_a0bf321e8e8dbf75e77cb9828d5c30ab7}\label{TopLevel_8h_a0bf321e8e8dbf75e77cb9828d5c30ab7}} 
+const unsigned int \hyperlink{TopLevel_8h_a0bf321e8e8dbf75e77cb9828d5c30ab7}{D\+E\+F\+\_\+\+N\+U\+M\+\_\+\+A\+Z\+I\+M\+\_\+\+P\+OS} = 6
+\begin{DoxyCompactList}\small\item\em The number of azimuth positions where the system will perform sweeps. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{TopLevel_8h_a73be6649a1d91070309752a2fbcf5b8a}\label{TopLevel_8h_a73be6649a1d91070309752a2fbcf5b8a}} 
+bool \hyperlink{TopLevel_8h_a73be6649a1d91070309752a2fbcf5b8a}{flag\+Cal\+Enabled}
+\begin{DoxyCompactList}\small\item\em The declaration of a flag which defines if the calibration of the RF front end must be done or not. By default the calibration is enabled. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{TopLevel_8h_a20c207881b1f505ca91715905e27bacb}\label{TopLevel_8h_a20c207881b1f505ca91715905e27bacb}} 
+bool \hyperlink{TopLevel_8h_a20c207881b1f505ca91715905e27bacb}{flag\+Plot}
+\begin{DoxyCompactList}\small\item\em The declaration of a flag which defines if the software has to generate plots or not. By default the plotting is not performed. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{TopLevel_8h_a6f3cbd74619175fd2b8580b37587f825}\label{TopLevel_8h_a6f3cbd74619175fd2b8580b37587f825}} 
+bool \hyperlink{TopLevel_8h_a6f3cbd74619175fd2b8580b37587f825}{flag\+Infinite\+Loop}
+\begin{DoxyCompactList}\small\item\em The declaration of a flag which defines if the software has to perform a finite number of measurement cycles or iterate infinitely. By default the software iterates infinitely. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{TopLevel_8h_a816d4b897ea7e7b008ad3957e2203934}\label{TopLevel_8h_a816d4b897ea7e7b008ad3957e2203934}} 
+bool \hyperlink{TopLevel_8h_a816d4b897ea7e7b008ad3957e2203934}{flag\+R\+FI}
+\begin{DoxyCompactList}\small\item\em The declaration of a flag which defines if the software has to perform \hyperlink{structRFI}{R\+FI} detection or not. By this task is not performed. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{TopLevel_8h_a7616186dd32bbd21eb512dfdc580214c}\label{TopLevel_8h_a7616186dd32bbd21eb512dfdc580214c}} 
+bool \hyperlink{TopLevel_8h_a7616186dd32bbd21eb512dfdc580214c}{flag\+Upload}
+\begin{DoxyCompactList}\small\item\em The declaration of a flag which defines if the software has to upload the measurements or not. By default the uploading is performed. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{TopLevel_8h_a4a22fc28d7ca5b183f4a901f4dafd4a6}\label{TopLevel_8h_a4a22fc28d7ca5b183f4a901f4dafd4a6}} 
+unsigned int \hyperlink{TopLevel_8h_a4a22fc28d7ca5b183f4a901f4dafd4a6}{num\+Of\+Meas\+Cycles}
+\begin{DoxyCompactList}\small\item\em A variable which saves the number of measurements cycles which left to be done. It is used when the user wishes a finite number of measurements cycles. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{TopLevel_8h_a5fca012de3aeabad258f4f0fa6877334}\label{TopLevel_8h_a5fca012de3aeabad258f4f0fa6877334}} 
+\hyperlink{structRFI_a18cfa7d24274bbcd14acc6b513860cb0}{R\+F\+I\+::\+Thresholds\+Norm} \hyperlink{TopLevel_8h_a5fca012de3aeabad258f4f0fa6877334}{rfi\+Norm}
+\begin{DoxyCompactList}\small\item\em A variable which saves the norm which defines the harmful RF interference levels\+: ska-\/mode1, ska-\/mode2, itu-\/ra769-\/2-\/vlbi. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{TopLevel_8h_af491cfc5930b63b730cf15cbc845c990}\label{TopLevel_8h_af491cfc5930b63b730cf15cbc845c990}} 
+unsigned int \hyperlink{TopLevel_8h_af491cfc5930b63b730cf15cbc845c990}{num\+Of\+Azim\+Pos}
+\begin{DoxyCompactList}\small\item\em A variable which receives the number of azimuth positions from the corresponding software\textquotesingle{}s argument. The number of sweeps will be the double of this value. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{TopLevel_8h_add9d7dd1477d4336f2912fed380aeeea}\label{TopLevel_8h_add9d7dd1477d4336f2912fed380aeeea}} 
 boost\+::timer\+::cpu\+\_\+timer \hyperlink{TopLevel_8h_add9d7dd1477d4336f2912fed380aeeea}{timer}
 \begin{DoxyCompactList}\small\item\em A timer which is used to measure the execution time when the number of iterations is finite. \end{DoxyCompactList}\end{DoxyCompactItemize}
@@ -44,3 +83,23 @@ This header file includes the rest of the header files and the class of the sign
 This header file simplifies the include in the \hyperlink{main_8cpp}{main.\+cpp} file. The declaration of the class {\itshape \hyperlink{classSignalHandler}{Signal\+Handler}} must be put in an high-\/level header file because this class must know the declarations of almost all the classes of the software. \begin{DoxyAuthor}{Author}
 Mauro Diamantino 
 \end{DoxyAuthor}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{TopLevel_8h_abab505eef94a08a9092f916c62637071}\label{TopLevel_8h_abab505eef94a08a9092f916c62637071}} 
+\index{Top\+Level.\+h@{Top\+Level.\+h}!Process\+Main\+Arguments@{Process\+Main\+Arguments}}
+\index{Process\+Main\+Arguments@{Process\+Main\+Arguments}!Top\+Level.\+h@{Top\+Level.\+h}}
+\subsubsection{\texorpdfstring{Process\+Main\+Arguments()}{ProcessMainArguments()}}
+{\footnotesize\ttfamily bool Process\+Main\+Arguments (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+This function process the software\textquotesingle{}s arguments, which define the behavior of this one. 
+
+This function determines the values of the behavior flags (flag\+Cal\+Enabled, flag\+Plot, flag\+R\+FI, etc.) taking into account the arguments that were received and its values. The function returns a {\ttfamily true} value if the arguments were processed correctly and a {\ttfamily false} value if there was an argument which could not be recognized, and in that case it presents a message, in the {\ttfamily stdout}, explaining the correct use of the software arguments. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em argc} & The number of arguments that were received by the software. \\
+\hline
+\mbox{\tt in}  & {\em argv} & An array of C strings ({\ttfamily char$\ast$}) where each one is a software\textquotesingle{}s argument. \\
+\hline
+\end{DoxyParams}

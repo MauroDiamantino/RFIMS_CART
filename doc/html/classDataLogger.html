@@ -61,6 +61,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#friends">Friends</a> &#124;
 <a href="classDataLogger-members.html">List of all members</a>  </div>
@@ -74,6 +75,13 @@ $(function() {
 
 <p><code>#include &lt;<a class="el" href="SweepProcessing_8h_source.html">SweepProcessing.h</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:ae3b42b5c9f4066ffc85d01ad588310aa"><td class="memItemLeft" align="right" valign="top"><a id="ae3b42b5c9f4066ffc85d01ad588310aa"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>TimestampSource</b> { <b>SWEEP</b>, 
+<b>FRONTENDPARAM</b>
+ }</td></tr>
+<tr class="separator:ae3b42b5c9f4066ffc85d01ad588310aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a7abebacd4747644d22982f9676466bad"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataLogger.html#a7abebacd4747644d22982f9676466bad">DataLogger</a> ()</td></tr>
@@ -83,6 +91,14 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataLogger.html#a9aaff109f3e7749a0a0a0313655da50a">~DataLogger</a> ()</td></tr>
 <tr class="memdesc:a9aaff109f3e7749a0a0a0313655da50a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The class destructor. <br /></td></tr>
 <tr class="separator:a9aaff109f3e7749a0a0a0313655da50a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5148797e38cdb1538bcf794939b9b4a6"><td class="memItemLeft" align="right" valign="top"><a id="a5148797e38cdb1538bcf794939b9b4a6"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataLogger.html#a5148797e38cdb1538bcf794939b9b4a6">SetNumOfSweeps</a> (unsigned int number)</td></tr>
+<tr class="memdesc:a5148797e38cdb1538bcf794939b9b4a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">A method which allows to set the number of sweeps of a measurement cycle (the two calibration sweeps are not considered), i.e. the number of sweeps which must be store in the same file. <br /></td></tr>
+<tr class="separator:a5148797e38cdb1538bcf794939b9b4a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acbde5e2f6c1dafdedc285f1a42d994bb"><td class="memItemLeft" align="right" valign="top"><a id="acbde5e2f6c1dafdedc285f1a42d994bb"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataLogger.html#acbde5e2f6c1dafdedc285f1a42d994bb">SetFilenameTimestampSrc</a> (TimestampSource source)</td></tr>
+<tr class="memdesc:acbde5e2f6c1dafdedc285f1a42d994bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">A method which allows to define the timestamp source which will be used for the name of the file where the sweeps will be stored. <br /></td></tr>
+<tr class="separator:acbde5e2f6c1dafdedc285f1a42d994bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ffe9fb45883c2880e1c45a4406fc22b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataLogger.html#a2ffe9fb45883c2880e1c45a4406fc22b">SaveBandsParamAsCSV</a> (const std::vector&lt; <a class="el" href="structBandParameters.html">BandParameters</a> &gt; &amp;bandsParamVector)</td></tr>
 <tr class="memdesc:a2ffe9fb45883c2880e1c45a4406fc22b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method is intended to save the bands parameters in a CSV file which is more adequately to be read in the remote server.  <a href="#a2ffe9fb45883c2880e1c45a4406fc22b">More...</a><br /></td></tr>
 <tr class="separator:a2ffe9fb45883c2880e1c45a4406fc22b"><td class="memSeparator" colspan="2">&#160;</td></tr>
