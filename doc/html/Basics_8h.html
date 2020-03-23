@@ -66,6 +66,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
@@ -91,10 +92,13 @@ $(function() {
 <code>#include &lt;cstdlib&gt;</code><br />
 <code>#include &lt;pthread.h&gt;</code><br />
 <code>#include &lt;algorithm&gt;</code><br />
+<code>#include &lt;wiringPi.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for Basics.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="Basics_8h__incl.png" border="0" usemap="#_2home_2new-mauro_2eclipse-cdt_2workspace_2RFIMS__CART_2src_2Basics_8h" alt=""/></div>
+<map name="_2home_2new-mauro_2eclipse-cdt_2workspace_2RFIMS__CART_2src_2Basics_8h" id="_2home_2new-mauro_2eclipse-cdt_2workspace_2RFIMS__CART_2src_2Basics_8h">
+</map>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -179,7 +183,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basi
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:a0423f4cb393331ce0b9f6b3a43adcaae"><td class="memItemLeft" align="right" valign="top"><a id="a0423f4cb393331ce0b9f6b3a43adcaae"></a>
-const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8h.html#a0423f4cb393331ce0b9f6b3a43adcaae">BASE_PATH</a> = &quot;/home/new-mauro/RFIMS-CART&quot;</td></tr>
+const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8h.html#a0423f4cb393331ce0b9f6b3a43adcaae">BASE_PATH</a> = &quot;/home/pi/RFIMS-CART&quot;</td></tr>
 <tr class="memdesc:a0423f4cb393331ce0b9f6b3a43adcaae"><td class="mdescLeft">&#160;</td><td class="mdescRight">This constant define the base path where there are the files and folders used by the software. <br /></td></tr>
 <tr class="separator:a0423f4cb393331ce0b9f6b3a43adcaae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c3522c6627edfbe8f9bd33aeb45b8c2"><td class="memItemLeft" ><a id="a1c3522c6627edfbe8f9bd33aeb45b8c2"></a>
@@ -251,6 +255,121 @@ struct {</td></tr>
 <tr class="memitem:a1c3522c6627edfbe8f9bd33aeb45b8c2"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8h.html#a1c3522c6627edfbe8f9bd33aeb45b8c2">piPins</a></td></tr>
 <tr class="memdesc:a1c3522c6627edfbe8f9bd33aeb45b8c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">This structure is intended to store the assignment of GPIO pins to input and output external signals, taking into account the Wiring Pi numbering. <br /></td></tr>
 <tr class="separator:a1c3522c6627edfbe8f9bd33aeb45b8c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a254aed33fe8517a018a3721a50c277"><td class="memItemLeft" ><a id="a4a254aed33fe8517a018a3721a50c277"></a>
+struct {</td></tr>
+<tr class="memitem:a8355a0db6b40f64ef603c9592af17103"><td class="memItemLeft" >
+&#160;&#160;&#160;const int&#160;&#160;&#160;<a class="el" href="Basics_8h.html#adb83e5ae147752bdfbfec131998b1b41">SWITCH_TO_NS</a> = HIGH</td></tr>
+<tr class="memdesc:a8355a0db6b40f64ef603c9592af17103"><td class="mdescLeft">&#160;</td><td class="mdescRight">This constant define the value the switch's pin must take to connect noise source to input, provided that the noise source is connected to switch's J2 connector. <br /></td></tr>
+<tr class="separator:a8355a0db6b40f64ef603c9592af17103"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a129a716f1b264385976222ab2bd7aff4"><td class="memItemLeft" >
+&#160;&#160;&#160;const int&#160;&#160;&#160;<a class="el" href="Basics_8h.html#a443faa6e8379fdc77c7ea27ea8dca056">SWITCH_TO_ANT</a> = !<a class="el" href="Basics_8h.html#adb83e5ae147752bdfbfec131998b1b41">SWITCH_TO_NS</a></td></tr>
+<tr class="memdesc:a129a716f1b264385976222ab2bd7aff4"><td class="mdescLeft">&#160;</td><td class="mdescRight">This constant define the value the switch's pin must take to connect antenna to input, provided that the antenna is connected to switch's J1 connector. <br /></td></tr>
+<tr class="separator:a129a716f1b264385976222ab2bd7aff4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa38ad25753c3037c22ce76804af078f4"><td class="memItemLeft" >
+&#160;&#160;&#160;const int&#160;&#160;&#160;<b>NS_ON</b> = HIGH</td></tr>
+<tr class="separator:aa38ad25753c3037c22ce76804af078f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b0aeff0c800fe64fa786aecbf6e3915"><td class="memItemLeft" >
+&#160;&#160;&#160;const int&#160;&#160;&#160;<b>NS_OFF</b> = !NS_ON</td></tr>
+<tr class="separator:a0b0aeff0c800fe64fa786aecbf6e3915"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35f9669fa7f2429813bbea1ba3f8771b"><td class="memItemLeft" >
+&#160;&#160;&#160;const int&#160;&#160;&#160;<b>LNAS_ON</b> = HIGH</td></tr>
+<tr class="separator:a35f9669fa7f2429813bbea1ba3f8771b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18f57dd07af72ede7e3d7a56381abdd5"><td class="memItemLeft" >
+&#160;&#160;&#160;const int&#160;&#160;&#160;<b>LNAS_OFF</b> = !LNAS_ON</td></tr>
+<tr class="separator:a18f57dd07af72ede7e3d7a56381abdd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c98ca32102f287964a36a8aa3b2adc4"><td class="memItemLeft" >
+&#160;&#160;&#160;const int&#160;&#160;&#160;<b>SPECTRAN_ON</b> = HIGH</td></tr>
+<tr class="separator:a1c98ca32102f287964a36a8aa3b2adc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedae8f62b54e674520f6ddd14dc3bb59"><td class="memItemLeft" >
+&#160;&#160;&#160;const int&#160;&#160;&#160;<b>SPECTRAN_OFF</b> = !SPECTRAN_ON</td></tr>
+<tr class="separator:aedae8f62b54e674520f6ddd14dc3bb59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0054652d3a726993d4f3e65d7de48d7"><td class="memItemLeft" >
+&#160;&#160;&#160;const int&#160;&#160;&#160;<b>LED_SWP_CAPT_ON</b> = HIGH</td></tr>
+<tr class="separator:ab0054652d3a726993d4f3e65d7de48d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a808c301f429c493dae5342849d58faf6"><td class="memItemLeft" >
+&#160;&#160;&#160;const int&#160;&#160;&#160;<b>LED_SWP_CAPT_OFF</b> = !LED_SWP_CAPT_ON</td></tr>
+<tr class="separator:a808c301f429c493dae5342849d58faf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d5ad97d7142dfc4e8e9efe9206b49eb"><td class="memItemLeft" >
+&#160;&#160;&#160;const int&#160;&#160;&#160;<b>LED_SWP_PROC_ON</b> = HIGH</td></tr>
+<tr class="separator:a9d5ad97d7142dfc4e8e9efe9206b49eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9050112ca5948484c9c60a3f7b51f49b"><td class="memItemLeft" >
+&#160;&#160;&#160;const int&#160;&#160;&#160;<b>LED_SWP_PROC_OFF</b> = !LED_SWP_PROC_ON</td></tr>
+<tr class="separator:a9050112ca5948484c9c60a3f7b51f49b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b7ec8353651604c17eb4a17c9457f65"><td class="memItemLeft" >
+&#160;&#160;&#160;const int&#160;&#160;&#160;<b>LED_INIT_POS_ON</b> = HIGH</td></tr>
+<tr class="separator:a6b7ec8353651604c17eb4a17c9457f65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1a2eacbc0ff3a047fb52704c6b924bd"><td class="memItemLeft" >
+&#160;&#160;&#160;const int&#160;&#160;&#160;<b>LED_INIT_POS_OFF</b> = !LED_INIT_POS_ON</td></tr>
+<tr class="separator:aa1a2eacbc0ff3a047fb52704c6b924bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a377159fbaa9c4c0b08a5b325d5db4a1c"><td class="memItemLeft" >
+&#160;&#160;&#160;const int&#160;&#160;&#160;<b>LED_NEXT_POS_ON</b> = HIGH</td></tr>
+<tr class="separator:a377159fbaa9c4c0b08a5b325d5db4a1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9832d292d7a174faa70075d453971fb"><td class="memItemLeft" >
+&#160;&#160;&#160;const int&#160;&#160;&#160;<b>LED_NEXT_POS_OFF</b> = !LED_NEXT_POS_ON</td></tr>
+<tr class="separator:ae9832d292d7a174faa70075d453971fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05240d303a03d067d24c470e208f92d4"><td class="memItemLeft" >
+&#160;&#160;&#160;const int&#160;&#160;&#160;<b>LED_POL_ON</b> = HIGH</td></tr>
+<tr class="separator:a05240d303a03d067d24c470e208f92d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a978c949a25f9210118077cf2898c01c5"><td class="memItemLeft" >
+&#160;&#160;&#160;const int&#160;&#160;&#160;<b>LED_POL_OFF</b> = !LED_POL_ON</td></tr>
+<tr class="separator:a978c949a25f9210118077cf2898c01c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82dafc5c8e4bea2558cb0b8e3a37c2a7"><td class="memItemLeft" >
+&#160;&#160;&#160;const int&#160;&#160;&#160;<b>LED_ERROR_ON</b> = HIGH</td></tr>
+<tr class="separator:a82dafc5c8e4bea2558cb0b8e3a37c2a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a324c09c226a907b4eceeddddfd8e30fd"><td class="memItemLeft" >
+&#160;&#160;&#160;const int&#160;&#160;&#160;<b>LED_ERROR_OFF</b> = !LED_ERROR_ON</td></tr>
+<tr class="separator:a324c09c226a907b4eceeddddfd8e30fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01ecf485a6403263bcae6506564a602f"><td class="memItemLeft" >
+&#160;&#160;&#160;const int&#160;&#160;&#160;<b>BUTTON_ON</b> = LOW</td></tr>
+<tr class="separator:a01ecf485a6403263bcae6506564a602f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef3758d2393e840e935ea24ae2970ad9"><td class="memItemLeft" >
+&#160;&#160;&#160;const int&#160;&#160;&#160;<b>BUTTON_OFF</b> = !BUTTON_ON</td></tr>
+<tr class="separator:aef3758d2393e840e935ea24ae2970ad9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30b1894fe00c1b15d93dd152a542b825"><td class="memItemLeft" >
+&#160;&#160;&#160;const int&#160;&#160;&#160;<b>PUL_ON</b> = HIGH</td></tr>
+<tr class="separator:a30b1894fe00c1b15d93dd152a542b825"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d98036a6adc5488d352054907fe73f9"><td class="memItemLeft" >
+&#160;&#160;&#160;const int&#160;&#160;&#160;<b>PUL_OFF</b> = !PUL_ON</td></tr>
+<tr class="separator:a9d98036a6adc5488d352054907fe73f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38286f470f86ef0658280edbb8fec479"><td class="memItemLeft" >
+&#160;&#160;&#160;const int&#160;&#160;&#160;<b>DIR_ANTIHOR</b> = HIGH</td></tr>
+<tr class="separator:a38286f470f86ef0658280edbb8fec479"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa31cf23ddeac7f85f9e4813c3aee618b"><td class="memItemLeft" >
+&#160;&#160;&#160;const int&#160;&#160;&#160;<b>DIR_HOR</b> = !DIR_ANTIHOR</td></tr>
+<tr class="separator:aa31cf23ddeac7f85f9e4813c3aee618b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a421897f94970e3f88b2a7b4759904011"><td class="memItemLeft" >
+&#160;&#160;&#160;const int&#160;&#160;&#160;<b>EN_ON</b> = HIGH</td></tr>
+<tr class="separator:a421897f94970e3f88b2a7b4759904011"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a764f93b3cc5459e0cba94f7481e748f0"><td class="memItemLeft" >
+&#160;&#160;&#160;const int&#160;&#160;&#160;<b>EN_OFF</b> = !EN_ON</td></tr>
+<tr class="separator:a764f93b3cc5459e0cba94f7481e748f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d252a04bd117dc3861f5df3b5af6dfc"><td class="memItemLeft" >
+&#160;&#160;&#160;const int&#160;&#160;&#160;<b>SENS_NOR_ON</b> = LOW</td></tr>
+<tr class="separator:a8d252a04bd117dc3861f5df3b5af6dfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b24eb2b3c4313f486808614bd91754d"><td class="memItemLeft" >
+&#160;&#160;&#160;const int&#160;&#160;&#160;<b>SENS_NOR_OFF</b> = !SENS_NOR_ON</td></tr>
+<tr class="separator:a9b24eb2b3c4313f486808614bd91754d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d2e1851849a73ceacc6579501d2d1d8"><td class="memItemLeft" >
+&#160;&#160;&#160;const int&#160;&#160;&#160;<b>POL_HOR</b> = LOW</td></tr>
+<tr class="separator:a5d2e1851849a73ceacc6579501d2d1d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9150be29acc2af1f427cd305e03fa9b"><td class="memItemLeft" >
+&#160;&#160;&#160;const int&#160;&#160;&#160;<b>POL_VERT</b> = !POL_HOR</td></tr>
+<tr class="separator:ad9150be29acc2af1f427cd305e03fa9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9bed577973a161f5c79394d007db2f6b"><td class="memItemLeft" >
+&#160;&#160;&#160;const int&#160;&#160;&#160;<b>FASE_A_ON</b> = HIGH</td></tr>
+<tr class="separator:a9bed577973a161f5c79394d007db2f6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ca190508a0ba445845036e3987209d1"><td class="memItemLeft" >
+&#160;&#160;&#160;const int&#160;&#160;&#160;<b>FASE_A_OFF</b> = !FASE_A_ON</td></tr>
+<tr class="separator:a5ca190508a0ba445845036e3987209d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace12025111cb88d9570a3061218d1a33"><td class="memItemLeft" >
+&#160;&#160;&#160;const int&#160;&#160;&#160;<b>FASE_B_ON</b> = HIGH</td></tr>
+<tr class="separator:ace12025111cb88d9570a3061218d1a33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d8b710162c15bee07aa57c3bf14c9b1"><td class="memItemLeft" >
+&#160;&#160;&#160;const int&#160;&#160;&#160;<b>FASE_B_OFF</b> = !FASE_B_ON</td></tr>
+<tr class="separator:a3d8b710162c15bee07aa57c3bf14c9b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a254aed33fe8517a018a3721a50c277"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Basics_8h.html#a4a254aed33fe8517a018a3721a50c277">pinsValues</a></td></tr>
+<tr class="memdesc:a4a254aed33fe8517a018a3721a50c277"><td class="mdescLeft">&#160;</td><td class="mdescRight">This structure contains the digital pins' assertive values (HIGH or LOW). <br /></td></tr>
+<tr class="separator:a4a254aed33fe8517a018a3721a50c277"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This header file contains the declarations of the most basic and global entities which are used by many others entities. </p>

@@ -52,5 +52,7 @@ var searchData=
   ['sweepprocessing_2eh',['SweepProcessing.h',['../SweepProcessing_8h.html',1,'']]],
   ['sweepreply',['SweepReply',['../classSweepReply.html',1,'SweepReply'],['../classSweepReply.html#a27d588db63e7c9d5374cfbfc88d9bc4f',1,'SweepReply::SweepReply()'],['../classSweepReply.html#a64fa7237d721d3dc95a06f145a0e7a7d',1,'SweepReply::SweepReply(const std::uint8_t *bytesPtr)']]],
   ['sweeptime',['sweepTime',['../structBandParameters.html#a184931085fad14897c5639c5a321fd1d',1,'BandParameters']]],
-  ['switch',['SWITCH',['../Basics_8h.html#a88cf59242b5a2ace3d90704ab4d2bcda',1,'Basics.h']]]
+  ['switch',['SWITCH',['../Basics_8h.html#a88cf59242b5a2ace3d90704ab4d2bcda',1,'Basics.h']]],
+  ['switch_5fto_5fant',['SWITCH_TO_ANT',['../Basics_8h.html#a443faa6e8379fdc77c7ea27ea8dca056',1,'Basics.h']]],
+  ['switch_5fto_5fns',['SWITCH_TO_NS',['../Basics_8h.html#adb83e5ae147752bdfbfec131998b1b41',1,'Basics.h']]]
 ];

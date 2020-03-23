@@ -2,6 +2,7 @@ var searchData=
 [
   ['password',['PASSWORD',['../client_8py.html#a9669c4cc19a3ff55592a7cd864b523d2',1,'client']]],
   ['peaklevelaudiotone',['peakLevelAudioTone',['../structSpectranConfigurator_1_1FixedParameters.html#a5d0c325f17d9e3efce429b187c833911',1,'SpectranConfigurator::FixedParameters']]],
+  ['pinsvalues',['pinsValues',['../Basics_8h.html#a4a254aed33fe8517a018a3721a50c277',1,'Basics.h']]],
   ['pipins',['piPins',['../Basics_8h.html#a1c3522c6627edfbe8f9bd33aeb45b8c2',1,'Basics.h']]],
   ['plot',['Plot',['../classRFPlotter.html#a18d4b13f13b2b1ac9fd9f011ac101303',1,'RFPlotter']]],
   ['plotrfi',['PlotRFI',['../classRFPlotter.html#a85da775645cb7beae79dfbdeab45f272',1,'RFPlotter']]],

@@ -199,19 +199,24 @@ int main(int argc, char * argv[])
 
 						if(numOfErrors==2)
 						{
+							cerr << "\nWarning: two errors related to the Spectran device occurred. A soft reset will be performed ";
+							cerr << "in the device and then the operations will continue normally." << endl;
 							specInterface.SoftReset();
 							specInterface.Initialize();
 							specConfigurator.InitialConfiguration();
 						}
 						else if(numOfErrors==3)
 						{
+							cerr << "\nWarning: three errors related to the Spectran device occurred. A hard reset will be performed ";
+							cerr << "in the device (which involves turning the whole front on and off) and then the operations";
+							cerr << "will continue normally." << endl;
 							specInterface.HardReset();
 							specInterface.Initialize();
 							specConfigurator.InitialConfiguration();
 						}
 						else if(numOfErrors>3)
 						{
-							exc.Prepend("the capturing of a sweep failed");
+							exc.Prepend("the capturing of a sweep failed because of many errors related to the Spectran device occurred");
 							throw;
 						}
 					}

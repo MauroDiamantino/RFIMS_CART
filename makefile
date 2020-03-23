@@ -12,6 +12,7 @@ CXX = g++
 CPPFLAGS = -std=c++11 -O3 -g0 -Wall -fmessage-length=0 -I/usr/local/include
 LDFLAGS = -g0
 
+
 LDLIBS = -L/usr/local/lib -lftd2xx -lboost_filesystem -lboost_system -lboost_timer -lnmea -lwiringPi -lpthread #For Raspberry Pi boards
 #LDLIBS = -L/usr/local/lib -lftd2xx -lboost_filesystem -lboost_system -lboost_timer -lnmea -lpthread #For non-Raspberry boards
 
@@ -130,11 +131,15 @@ clean:
 	@echo "Cleaning..."
 	rm -f -r obj/ bin/
 
-copy-files:
-	@echo "Copying the program binary, the scripts and the program data files..."
+copy-all-files:
+	@echo "Copying the program binary, the scripts, the configuration files and the program data files..."
 	cp -f $(MAIN_TARGET) /usr/local/bin
 	cp -f scripts/client.py /usr/local
 	cp -f -r data/RFIMS-CART/ /home/pi/
 	cp -f data/99-aaronia-spectran.rules /etc/udev/rules.d
 	mkdir -p /home/pi/.config/autostart
 	cp -f scripts/rfims.desktop /home/pi/.config/autostart
+
+copy-bin:
+	@echo "Copying only the program binary..."
+	cp -f $(MAIN_TARGET) /usr/local/bin

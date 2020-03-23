@@ -21,14 +21,17 @@ This header file contains the declarations of the most basic and global entities
 {\ttfamily \#include $<$cstdlib$>$}\newline
 {\ttfamily \#include $<$pthread.\+h$>$}\newline
 {\ttfamily \#include $<$algorithm$>$}\newline
-Include dependency graph for Basics.\+h\+:\nopagebreak
+{\ttfamily \#include $<$wiring\+Pi.\+h$>$}\newline
+Include dependency graph for Basics.\+h\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{Basics_8h__incl}
 \end{center}
 \end{figure}
-This graph shows which files directly or indirectly include this file\+:\nopagebreak
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -76,7 +79,7 @@ void \hyperlink{Basics_8h_a5ffe8b7dfe9c6702ed65b2b8b47bc3e1}{Turn\+Off\+Front\+E
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{Basics_8h_a0423f4cb393331ce0b9f6b3a43adcaae}\label{Basics_8h_a0423f4cb393331ce0b9f6b3a43adcaae}} 
-const std\+::string \hyperlink{Basics_8h_a0423f4cb393331ce0b9f6b3a43adcaae}{B\+A\+S\+E\+\_\+\+P\+A\+TH} = \char`\"{}/home/new-\/mauro/R\+F\+I\+MS-\/C\+A\+RT\char`\"{}
+const std\+::string \hyperlink{Basics_8h_a0423f4cb393331ce0b9f6b3a43adcaae}{B\+A\+S\+E\+\_\+\+P\+A\+TH} = \char`\"{}/home/pi/R\+F\+I\+MS-\/C\+A\+RT\char`\"{}
 \begin{DoxyCompactList}\small\item\em This constant define the base path where there are the files and folders used by the software. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{Basics_8h_a1c3522c6627edfbe8f9bd33aeb45b8c2}\label{Basics_8h_a1c3522c6627edfbe8f9bd33aeb45b8c2}} 
 \begin{tabbing}
@@ -112,7 +115,52 @@ struct \{\\
 \>const unsigned int {\bfseries FASE\_B} = 21\\
 \} \hyperlink{Basics_8h_a1c3522c6627edfbe8f9bd33aeb45b8c2}{piPins}\\
 
-\end{tabbing}\begin{DoxyCompactList}\small\item\em This structure is intended to store the assignment of G\+P\+IO pins to input and output external signals, taking into account the Wiring Pi numbering. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{tabbing}\begin{DoxyCompactList}\small\item\em This structure is intended to store the assignment of G\+P\+IO pins to input and output external signals, taking into account the Wiring Pi numbering. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{Basics_8h_a4a254aed33fe8517a018a3721a50c277}\label{Basics_8h_a4a254aed33fe8517a018a3721a50c277}} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>const int \hyperlink{Basics_8h_adb83e5ae147752bdfbfec131998b1b41}{SWITCH\_TO\_NS} = HIGH\\
+\>\>{\em This constant define the value the switch\textquotesingle{}s pin must take to connect noise source to input, provided that the noise source is connected to switch\textquotesingle{}s J2 connector. }\\
+\>const int \hyperlink{Basics_8h_a443faa6e8379fdc77c7ea27ea8dca056}{SWITCH\_TO\_ANT} = !\hyperlink{Basics_8h_adb83e5ae147752bdfbfec131998b1b41}{SWITCH\_TO\_NS}\\
+\>\>{\em This constant define the value the switch\textquotesingle{}s pin must take to connect antenna to input, provided that the antenna is connected to switch\textquotesingle{}s J1 connector. }\\
+\>const int {\bfseries NS\_ON} = HIGH\\
+\>const int {\bfseries NS\_OFF} = !NS\_ON\\
+\>const int {\bfseries LNAS\_ON} = HIGH\\
+\>const int {\bfseries LNAS\_OFF} = !LNAS\_ON\\
+\>const int {\bfseries SPECTRAN\_ON} = HIGH\\
+\>const int {\bfseries SPECTRAN\_OFF} = !SPECTRAN\_ON\\
+\>const int {\bfseries LED\_SWP\_CAPT\_ON} = HIGH\\
+\>const int {\bfseries LED\_SWP\_CAPT\_OFF} = !LED\_SWP\_CAPT\_ON\\
+\>const int {\bfseries LED\_SWP\_PROC\_ON} = HIGH\\
+\>const int {\bfseries LED\_SWP\_PROC\_OFF} = !LED\_SWP\_PROC\_ON\\
+\>const int {\bfseries LED\_INIT\_POS\_ON} = HIGH\\
+\>const int {\bfseries LED\_INIT\_POS\_OFF} = !LED\_INIT\_POS\_ON\\
+\>const int {\bfseries LED\_NEXT\_POS\_ON} = HIGH\\
+\>const int {\bfseries LED\_NEXT\_POS\_OFF} = !LED\_NEXT\_POS\_ON\\
+\>const int {\bfseries LED\_POL\_ON} = HIGH\\
+\>const int {\bfseries LED\_POL\_OFF} = !LED\_POL\_ON\\
+\>const int {\bfseries LED\_ERROR\_ON} = HIGH\\
+\>const int {\bfseries LED\_ERROR\_OFF} = !LED\_ERROR\_ON\\
+\>const int {\bfseries BUTTON\_ON} = LOW\\
+\>const int {\bfseries BUTTON\_OFF} = !BUTTON\_ON\\
+\>const int {\bfseries PUL\_ON} = HIGH\\
+\>const int {\bfseries PUL\_OFF} = !PUL\_ON\\
+\>const int {\bfseries DIR\_ANTIHOR} = HIGH\\
+\>const int {\bfseries DIR\_HOR} = !DIR\_ANTIHOR\\
+\>const int {\bfseries EN\_ON} = HIGH\\
+\>const int {\bfseries EN\_OFF} = !EN\_ON\\
+\>const int {\bfseries SENS\_NOR\_ON} = LOW\\
+\>const int {\bfseries SENS\_NOR\_OFF} = !SENS\_NOR\_ON\\
+\>const int {\bfseries POL\_HOR} = LOW\\
+\>const int {\bfseries POL\_VERT} = !POL\_HOR\\
+\>const int {\bfseries FASE\_A\_ON} = HIGH\\
+\>const int {\bfseries FASE\_A\_OFF} = !FASE\_A\_ON\\
+\>const int {\bfseries FASE\_B\_ON} = HIGH\\
+\>const int {\bfseries FASE\_B\_OFF} = !FASE\_B\_ON\\
+\} \hyperlink{Basics_8h_a4a254aed33fe8517a018a3721a50c277}{pinsValues}\\
+
+\end{tabbing}\begin{DoxyCompactList}\small\item\em This structure contains the digital pins\textquotesingle{} assertive values (H\+I\+GH or L\+OW). \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}

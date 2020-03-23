@@ -279,9 +279,12 @@ class AntennaPositioner
 	static volatile float cuenta;
 	volatile float yaw;
 	float n;
-	//int dire; // 0 DERECHA Y 1 IZQUIERDA
 	int cantPosiciones; //Variable que almacena la cantidad de posiciones azimutales
 	int polar; //POLAR = 0 (HORIZONTAL) ; POLAR = 1 (VERTICAL)
+	bool band_mueve_inicial;
+	bool band_norte;
+	bool band_salta;
+	bool band_gps_ok;
 	GPSInterface & gpsInterface;
 	//Variables agregadas por mauro
 	double anguloInicial;

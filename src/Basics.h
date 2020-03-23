@@ -18,7 +18,7 @@
 
 //#//////////////////////DEFINE'S//////////////////////////////
 
-//#define RASPBERRY_PI // This preprocessor definition enables the use of the code which can only be used in the Raspberry Pi board (for example WiringPi functions).
+#define RASPBERRY_PI // This preprocessor definition enables the use of the code which can only be used in the Raspberry Pi board (for example WiringPi functions).
 //#define DEBUG // This definition enables some code blocks which are aimed to test the software performance.
 //#define MANUAL
 

@@ -345,7 +345,7 @@ bool AntennaPositioner::ChangePolarization()
 		if (polar == 0)
 		{
 	#ifdef RASPBERRY_PI
-			digitalWrite(piPins.POL, pinsValues.POL_VER); // PONE LA ANTENA EN POSICION VERTICAL
+			digitalWrite(piPins.POL, pinsValues.POL_VERT); // PONE LA ANTENA EN POSICION VERTICAL
 	#endif
 			aux = 100;
 			while ( ((aux < 85) || (aux > 95)) )

@@ -14,5 +14,7 @@ var searchData=
   ['sweepdelayacc',['sweepDelayAcc',['../structSpectranConfigurator_1_1FixedParameters.html#ad835d567560a9fb3bf1f9469955c2363',1,'SpectranConfigurator::FixedParameters']]],
   ['sweepplotterptr',['sweepPlotterPtr',['../classSignalHandler.html#a7ec978dc8c16c31aa8faefe4e350302c',1,'SignalHandler']]],
   ['sweeptime',['sweepTime',['../structBandParameters.html#a184931085fad14897c5639c5a321fd1d',1,'BandParameters']]],
-  ['switch',['SWITCH',['../Basics_8h.html#a88cf59242b5a2ace3d90704ab4d2bcda',1,'Basics.h']]]
+  ['switch',['SWITCH',['../Basics_8h.html#a88cf59242b5a2ace3d90704ab4d2bcda',1,'Basics.h']]],
+  ['switch_5fto_5fant',['SWITCH_TO_ANT',['../Basics_8h.html#a443faa6e8379fdc77c7ea27ea8dca056',1,'Basics.h']]],
+  ['switch_5fto_5fns',['SWITCH_TO_NS',['../Basics_8h.html#adb83e5ae147752bdfbfec131998b1b41',1,'Basics.h']]]
 ];
