@@ -44,8 +44,8 @@ To run the software, it must be typed "rfims-cart" in a terminal. The software h
 
 To avoid interferences produced by the Raspberry Pi itself, it is very important to disable the Wi-Fi and Bluetooth interfaces, which is done editing the file /boot/config.txt, the following lines must be added:
 
-dtoverlay=disable-wifi
-dtoverlay=disable-bt
+	dtoverlay=disable-wifi
+	dtoverlay=disable-bt
 
 To genearate/regenerate the software manual, you must run the following commands in a terminal:
 
@@ -100,8 +100,8 @@ Para ejecutar el programa se debe tipear "rfims-cart" en la terminal. El program
 
 Para evitar interferencias producidas por la misma placa Raspberry Pi, resulta trascendental desactivar las interfaces Wi-Fi y Bluetooth, lo cual se realiza modificando el archivo /boot/config.txt, se deben agregar las siguientes lineas:
 
-dtoverlay=disable-wifi
-dtoverlay=disable-bt
+	dtoverlay=disable-wifi
+	dtoverlay=disable-bt
 
 Para generar/regenerar el manual del software, ejecutar en una terminal los siguientes comandos:
 
