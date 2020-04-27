@@ -36,6 +36,19 @@ void canalB()
 
 void AntennaPositioner::inicia_variables()
 {
+	pos_actual = {0.0, 0.0, 0};
+	pos_anterior = {0.0, 0.0, 0};
+	cuenta = 0.0;
+	yaw = 0.0;
+	n = 2.0;
+	cantPosiciones = 6;
+	polar = 0; //POLAR = 0 (HORIZONTAL) ; POLAR = 1 (VERTICAL)
+	anguloInicial=0.0;
+	band_mueve_inicial = 0;
+	band_norte = 0;
+	band_salta = 0;
+	band_gps_ok = 0;
+	
 #ifdef RASPBERRY_PI
 	//SE INICIAN LAS INTERRUPCIONES
 	wiringPiISR(piPins.FASE_A, INT_EDGE_RISING, canalA);
@@ -73,7 +86,7 @@ bool AntennaPositioner::Initialize()
 		//SE PONE EN BAJO LA HABILITACION (PARA ASEGURAR QUE EL MOTOR NO SE MUEVA)
 		digitalWrite(piPins.EN, pinsValues.EN_OFF);
 		// PONER LA ANTENA EN POSICION HORIZONTAL
-		digitalWrite(piPins.POL, pinsValues.POL_HOR); // PONE LA ANTENA EN POSICION HORIZONTAL
+		digitalWrite(piPins.POL, pinsValues.POL_HOR);
 	#endif
         sleep(5);   //DELAY(5segundos) PARA DARLE TIEMPO AL ACTUADOR LINEAL A CAMBIAR DE POLARIZACION Y LUEGO ENTRAR AL WHILE
 		double aux = 100.0;
@@ -90,10 +103,10 @@ bool AntennaPositioner::Initialize()
         }
         else
         {
-         polar = 0;// AHORA LA ANTENA QUEDO EN POLARIZACION HORIZONTAL
+			polar = 0;// AHORA LA ANTENA QUEDO EN POLARIZACION HORIZONTAL
         }
 
-//A PARTIR DE ACA EMPIEZA LA BUSQUEDA DEL NORTE
+	//A PARTIR DE ACA EMPIEZA LA BUSQUEDA DEL NORTE
 
 	#ifdef RASPBERRY_PI
             //SE PONE EN ALTO LA HABILITACION DEL MOTOR
@@ -451,15 +464,7 @@ bool AntennaPositioner::regresar()
 /*! \param gpsInterf A reference to the object which is responsible for the communication with the Aaronia GPS receiver. */
 AntennaPositioner::AntennaPositioner(GPSInterface & gpsInterf) : gpsInterface(gpsInterf)
 {
-	pos_actual = {0.0, 0.0, 0};
-	pos_anterior = {0.0, 0.0, 0};
-	cuenta = 0.0;
-	yaw = 0.0;
-	//roll = 0.0;
-	n = 2.0;
-	cantPosiciones = 6;
-	polar = 0; //POLAR = 0 (HORIZONTAL) ; POLAR = 1 (VERTICAL)
-	anguloInicial=0.0;
+	inicia_variables();
 
 	//Se abre el archivo gps.txt para definir como se determinara el angulo inicial
 	std::ifstream ifs(BASE_PATH + "/gps.txt");
